@@ -31,6 +31,5 @@ int main(int argc, const char * argv[]) {
     Game game;
     game.Execute(filepath);
     
-    
     return 0;
 }

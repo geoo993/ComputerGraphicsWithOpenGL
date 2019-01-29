@@ -9,5 +9,18 @@
 #ifndef RenderType_h
 #define RenderType_h
 
+//screen and debuging
+public enum RenderType {
+    UsualRendering,
+    InstancedRendering,
+    DeferredRendering,
+    DirectionalShadowMapping,
+    OmnidirectionalShadowMapping,
+    HDRToneMapping,
+    HDRBloom,
+    PorcupineRendering,
+   
+    NumberOfShaderOptions,
+}
 
 #endif /* RenderType_h */

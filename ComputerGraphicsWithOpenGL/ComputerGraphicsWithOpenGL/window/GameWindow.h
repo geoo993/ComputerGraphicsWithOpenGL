@@ -9,8 +9,8 @@ public:
     ~CGameWindow();
     
     void CreateWindow(const std::string &appName = "OpenGL Window",
-                      const int &w = 1080,
-                      const int &h = 720,
+                      const int &w = SCREEN_WIDTH,
+                      const int &h = SCREEN_HEIGHT,
                       const bool &fullscreen = false);
     void CreateGameWindow(const std::string &screenTitle);
     bool InitOpenGL();

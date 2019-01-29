@@ -6,7 +6,7 @@
 // Constructor for camera -- initialise with some default values
 CCamera::CCamera()
 {
-	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_position = glm::vec3(0.0f, 0.0f, -15.0f);
     m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_view = glm::vec3(0.0f, 0.0f, 0.0f);
     m_front = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -20,7 +20,7 @@ CCamera::CCamera()
     m_screenWidth = (GLfloat)SCREEN_WIDTH;
     m_screenHeight = (GLfloat)SCREEN_HEIGHT;
     SetPerspectiveProjectionMatrix(m_fieldOfView, (m_screenWidth/m_screenHeight), ZNEAR, ZFAR);
-    SetOrthographicProjectionMatrix(m_screenWidth,m_screenHeight );
+    SetOrthographicProjectionMatrix(m_screenWidth, m_screenHeight );
 }
 CCamera::~CCamera()
 {}
@@ -43,7 +43,7 @@ void CCamera::Create(
     this->m_up = glm::vec3(0.0f, 1.0f, 0.0f);
     this->m_fieldOfView = fieldOfView;
     this->SetPerspectiveProjectionMatrix(fieldOfView, (width/height), zNear, zFar);
-    this->SetOrthographicProjectionMatrix(width,height);
+    this->SetOrthographicProjectionMatrix(width, height);
     this->m_pitch = pitch;
     this->m_yaw = yaw;
     this->m_movementSpeed = (GLfloat)SPEED;

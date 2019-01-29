@@ -8,7 +8,6 @@ uniform struct Matrices
     mat4 viewMatrix;
     mat3 normalMatrix;
     mat4 inverseViewMatrix;
-    mat4 viewMatrixWithoutTranslation;
 } matrices;
 
 // Layout of vertex attributes in VBO
@@ -18,6 +17,7 @@ layout (location = 2) in vec3 inNormal;
 
 out vec3 vTextureDirection;    // used for skybox
 
+out vec2 vTexCoord;    // Texture coordinate
 
 // This is the entry point into the vertex shader
 void main()
@@ -27,7 +27,12 @@ void main()
     // Save the world position for rendering the skybox
     vTextureDirection = inPosition;
     
+    // Pass through the texture coordinate
+    vTexCoord = inCoord;
+    
     // Transform the vertex spatial position using
-    gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
-    //gl_Position = (projection * matrices.viewMatrixWithoutTranslation * position).xyww;
+    vec4 glPosition = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
+    //vec4 glPosition = projection * matrices.viewMatrixWithoutTranslation * position;
+    gl_Position = glPosition.xyww;
+    
 }

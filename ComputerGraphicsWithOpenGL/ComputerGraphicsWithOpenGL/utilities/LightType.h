@@ -10,14 +10,9 @@
 #define LightType_h
 
 public enum LightType {
-    Dark,
-    Sunny,
+    Directional
     Point,
     Spot,
-    Toon,
-    BumpMap,
-    NormalMap,
-    ShadowMap
 };
 
 #endif /* LightType_h */

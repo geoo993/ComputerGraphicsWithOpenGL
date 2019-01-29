@@ -17,7 +17,12 @@ CGameWindow &CGameWindow::operator=(const CGameWindow &other){
     return *this;
 }
 
-CGameWindow::CGameWindow() : m_appName(""), m_fullscreen(false), m_width(0), m_height(0) {}
+CGameWindow::CGameWindow() {
+    this -> m_appName = "";
+    this -> m_width = 0;
+    this -> m_height = 0;
+    this -> m_fullscreen = false;
+}
 
 void CGameWindow::Set(const std::string &appName, const int &w, const int &h, const bool &fullscreen){
     m_appName = appName;
@@ -26,11 +31,31 @@ void CGameWindow::Set(const std::string &appName, const int &w, const int &h, co
     m_fullscreen = fullscreen;
 }
 
+// Initialise GLEW and create the real game window
+void CGameWindow::CreateWindow(const std::string &appName,
+                               const int &w,
+                               const int &h,
+                               const bool &fullscreen)
+{
+    Set(appName, w, h, fullscreen);
+    
+    if(!InitGLFW()){
+        return;
+    }
+    
+    CreateGameWindow(m_appName);
+    
+    return;
+}
+
+
 // Create a dummy window, intialise GLEW, and then delete the dummy window
 bool CGameWindow::InitGLFW()
 {
 	static bool bGlewInitialized = false;
-	if(bGlewInitialized) return true;
+    if(bGlewInitialized) {
+        return true;
+    }
 
     // start GL context and O/S window using the GLFW helper library
     if (!glfwInit()) {
@@ -65,24 +90,6 @@ bool CGameWindow::InitGLFW()
     glfwTerminate();
 
 	return bResult;
-}
-
-
-// Initialise GLEW and create the real game window
-void CGameWindow::CreateWindow(const std::string &appName,
-                       const int &w,
-                       const int &h,
-                       const bool &fullscreen)
-{
-    Set(appName, w, h, fullscreen);
-
-    if(!InitGLFW()){
-        return;
-    }
-
-    CreateGameWindow(m_appName);
-
-    return;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -206,6 +213,20 @@ bool CGameWindow::InitOpenGL()
 	return bError;
 }
 
+void CGameWindow::SetInputs(const GLFWkeyfun &cbfunKey, const GLFWmousebuttonfun &cbfunMouse){
+    
+    //glfwSetWindowSizeCallback(m_window, ReshapeWindow);
+    //glfwSetWindowShouldClose(m_window, GLUS_TRUE);
+    
+    glfwSetKeyCallback(m_window, cbfunKey);
+    //glfwSetCursorPosCallback(m_window, cbfunMove);
+    glfwSetMouseButtonCallback(m_window, cbfunMouse );
+    //glfwSetInputMode(m_window, GLFW_STICKY_KEYS, 1);
+    
+    glfwMakeContextCurrent(m_window);
+    
+}
+
 void CGameWindow::SetCursorVisible( const bool &isVisible )
 {
     if( m_window == nullptr )
@@ -221,20 +242,6 @@ void CGameWindow::SetCursorVisible( const bool &isVisible )
 
     //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-}
-
-void CGameWindow::SetInputs(const GLFWkeyfun &cbfunKey, const GLFWmousebuttonfun &cbfunMouse){
-
-    //glfwSetWindowSizeCallback(m_window, ReshapeWindow);
-    //glfwSetWindowShouldClose(m_window, GLUS_TRUE);
-
-    glfwSetKeyCallback(m_window, cbfunKey);
-    //glfwSetCursorPosCallback(m_window, cbfunMove);
-    glfwSetMouseButtonCallback(m_window, cbfunMouse );
-    //glfwSetInputMode(m_window, GLFW_STICKY_KEYS, 1);
-
-    glfwMakeContextCurrent(m_window);
 
 }
 
@@ -553,12 +560,8 @@ void CGameWindow::ClearBuffers(){
     glClearColor(0.2f, 0.9f, 0.2f, 1.0f);
     //// CLEAR Buffers, The default clear value for the depth is 1.0f, which is equal to the depth of your far clipping plane
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); ////<-- CLEAR WINDOW
-    //glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer
+    glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_STENCIL_TEST);
-    
-    
 }
 
 //Swap front and back buffers

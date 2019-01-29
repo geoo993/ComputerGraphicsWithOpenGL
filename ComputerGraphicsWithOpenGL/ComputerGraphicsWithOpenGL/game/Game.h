@@ -23,6 +23,7 @@
 #include "Audio.h"
 #include "OpenAssetImportMesh.h"
 #include "FreeTypeFont.h"
+#include "PostProcessingEffectMode.h"
 #include "Skybox.h"
 #include "Plane.h"
 
@@ -91,10 +92,13 @@ private:
     
     //audio
     CAudio *m_pAudio;
+    GLint m_audioNumber;
+    GLboolean m_changeAudio;
     std::vector <std::string> m_audioFiles;
     
     // terrain
     CPlane *m_pPlanarTerrain;
+    glm::vec3 m_terrainPosition;
     
     //models
     COpenAssetImportMesh * m_pBarrel;
@@ -113,6 +117,8 @@ private:
     GLint m_lastKeyPress;
     GLboolean m_isKeyPressRestriction;
    
+    // post processing effects
+    PostProcessingEffectMode m_currentPPFXMode;
     
 public:
     Game();
@@ -124,6 +130,8 @@ public:
                  const GLuint &width = SCREEN_WIDTH,
                  const GLuint &height = SCREEN_HEIGHT);
     
+    void RenderScene();
+    void RenderPPFX(const PostProcessingEffectMode &mode);
     void Render();
     
     // inputs

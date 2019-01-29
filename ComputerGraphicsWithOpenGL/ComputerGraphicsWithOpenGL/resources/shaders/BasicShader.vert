@@ -65,9 +65,6 @@ void main()
     
     vec4 position = vec4(inPosition, 1.0f);
     
-    // Transform the vertex spatial position using
-    gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
-    
     // Pass through the texture coordinate
     vs_out.vTexCoord = inCoord;
     
@@ -76,7 +73,11 @@ void main()
     vs_out.vEyeNormal = normalize(matrices.normalMatrix * inNormal);
     vs_out.vLocalNormal = inNormal;
     
-    vs_out.vEyePosition = vec3(matrices.modelMatrix * position); 
+    vs_out.vEyePosition = vec3(matrices.modelMatrix * position);
     vs_out.vLocalPosition = inPosition;
+    
+    // Transform the vertex spatial position using
+    gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
+    
     
 } 

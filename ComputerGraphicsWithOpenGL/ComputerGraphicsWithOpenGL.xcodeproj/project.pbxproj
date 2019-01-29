@@ -488,6 +488,7 @@
 		C7C8F42B21FFA74300AB865A /* SkyBoxShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SkyBoxShader.frag; sourceTree = "<group>"; };
 		C7C8F42C21FFA74300AB865A /* BasicShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BasicShader.vert; sourceTree = "<group>"; };
 		C7C8F42D21FFA74300AB865A /* BasicShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BasicShader.frag; sourceTree = "<group>"; };
+		C7F053192200B16F00864C31 /* PostProcessingEffectMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostProcessingEffectMode.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -687,8 +688,10 @@
 		C7C8F2D721FF6D0D00AB865A /* utilities */ = {
 			isa = PBXGroup;
 			children = (
+				C7C8F31821FF8A7500AB865A /* LightType.h */,
 				C7C8F31921FF8B3800AB865A /* MatrixStack.cpp */,
 				C7C8F31A21FF8B3800AB865A /* MatrixStack.h */,
+				C7F053192200B16F00864C31 /* PostProcessingEffectMode.h */,
 				C7C8F31321FF879F00AB865A /* RenderMode.h */,
 				C7C8F31421FF87AD00AB865A /* RenderType.h */,
 				C7C8F30621FF700F00AB865A /* Transform.cpp */,
@@ -696,7 +699,6 @@
 				C7C8F30521FF700F00AB865A /* Vector.cpp */,
 				C7C8F30F21FF803700AB865A /* Vector.h */,
 				C7C8F30421FF700F00AB865A /* Vertex.h */,
-				C7C8F31821FF8A7500AB865A /* LightType.h */,
 			);
 			path = utilities;
 			sourceTree = "<group>";

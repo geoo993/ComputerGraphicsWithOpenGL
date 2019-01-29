@@ -17,6 +17,7 @@ Game::Game()
     
     // terrain
     m_pPlanarTerrain = nullptr;
+    m_terrainPosition = glm::vec3(0.0f, 0.0f, 0.0f);
     
     // skybox
     m_pSkybox = nullptr;
@@ -35,6 +36,8 @@ Game::Game()
     
     //audio settings
     m_pAudio = nullptr;
+    m_audioNumber = 0;
+    m_changeAudio = false;
     m_audioFiles.reserve(5);
     
     //textures settings
@@ -60,6 +63,8 @@ Game::Game()
     m_lastKeyPress = -1;
     m_isKeyPressRestriction = true;
     
+    // post processing
+    m_currentPPFXMode = PostProcessingEffectMode::DefaultFrameBuffer;
 }
 
 // Destructor
@@ -124,41 +129,44 @@ void Game::InitialiseCamera(const GLuint &width, const GLuint &height, const glm
 }
 
 void Game::InitialiseAudio(const std::string &path){
-    /*
+    
     ////add audio files from ////http://freemusicarchive.org/music/Kai_Engel/
-    m_audioFiles.push_back("Kai_Engel_-_02_-_Better_Way.mp3");
-    m_audioFiles.push_back("Kai_Engel_-_03_-_Brooks.mp3");
-    m_audioFiles.push_back("Kai_Engel_-_03_-_Realness.mp3");
-    m_audioFiles.push_back("Kai_Engel_-_08_-_Oecumene_Sleeps.mp3");
-    m_audioFiles.push_back("Marcel_Pequel_-_06_-_Six.mp3");
+    m_audioFiles.push_back(path+"/audio/Kai_Engel_-_02_-_Better_Way.mp3");
+    m_audioFiles.push_back(path+"/audio/Kai_Engel_-_03_-_Brooks.mp3");
+    m_audioFiles.push_back(path+"/audio/Kai_Engel_-_03_-_Realness.mp3");
+    m_audioFiles.push_back(path+"/audio/Kai_Engel_-_08_-_Oecumene_Sleeps.mp3");
+    m_audioFiles.push_back(path+"/audio/Marcel_Pequel_-_06_-_Six.mp3");
     
     //// Initialise audio and play background music
     m_pAudio->Initialise();
-    std::string audio = path+"/audio/"+m_audioFiles[rand() % 5];
-    m_pAudio->LoadMusicStream(audio.c_str());
+    m_pAudio->LoadMusicStream(m_audioFiles[m_audioNumber].c_str());
     m_pAudio->PlayMusicStream();
-    */
+    
 }
-
 
 void Game::LoadFromResources(const std::string &path)
 {
    
     // font
-    m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 48);
+    m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32);
     
     // Create the skybox
     // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
     m_pSkybox->Create(m_mapSize, path, m_skyboxNumber);
     
     // Create the planar terrain
-    //m_pPlanarTerrain->Create(path+"/textures/terrain/grassfloor.jpg", m_mapSize, m_mapSize, 50.0f, 50); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
-
+    m_pPlanarTerrain->Create(path+"/textures/terrain/grassfloor.jpg", m_mapSize, m_mapSize, 50.0f, 50); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    
 }
 
-// Render scene method runs
-void Game::Render()
-{
+void Game::RenderScene(){
+    
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_STENCIL_TEST);
+    
+    // uncomment if stencil buffer is not used
+    glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
+    
     // start by deleting current skybox and create new one
     if (m_changeSkybox == true) {
         m_pSkybox->Release();
@@ -167,9 +175,12 @@ void Game::Render()
         m_changeSkybox = false;
     }
     
-    
-    // uncomment if stencil buffer is not used
-    glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
+    if (m_changeAudio == true) {
+        m_pAudio->StopAll();
+        m_pAudio->LoadMusicStream(m_audioFiles[m_audioNumber].c_str());
+        m_pAudio->PlayMusicStream();
+        m_changeAudio = false;
+    }
     
     // draw skybox as last
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
@@ -180,8 +191,6 @@ void Game::Render()
     pSkyBoxProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
     pSkyBoxProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
-    glm::mat4 viewMatrixWithoutTranslation = glm::mat4(glm::mat3(m_pCamera->GetViewMatrix()));
-    pSkyBoxProgram->SetUniform("matrices.viewMatrixWithoutTranslation", viewMatrixWithoutTranslation);
     
     glm::vec3 vEye = m_pCamera->GetPosition();
     m_pSkybox->transform.SetIdentity();
@@ -189,22 +198,51 @@ void Game::Render()
     
     glm::mat4 skyBoxModel = m_pSkybox->transform.GetModel();
     pSkyBoxProgram->SetUniform("matrices.modelMatrix", skyBoxModel);
-    pSkyBoxProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix
-                               (skyBoxModel));
+    pSkyBoxProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(skyBoxModel));
     m_pSkybox->Render(CUBEMAPTEXTUREUNIT);
     glDepthFunc(GL_LESS);
     
     
+    // Use the main shader program
+    CShaderProgram *pBasicProgram = (*m_pShaderPrograms)[2];
+    pBasicProgram->UseProgram();
+    pBasicProgram->SetUniform("bUseTexture", true);
+    pBasicProgram->SetUniform("sampler0", 0);
+    
+    // Set the projection matrix
+    pBasicProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
+    pBasicProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    // Render the planar terrain
+    m_pPlanarTerrain->transform.SetIdentity();
+    m_pPlanarTerrain->transform.Translate(m_terrainPosition);
+    glm::mat4 terrainModel = m_pPlanarTerrain->transform.GetModel();
+    pBasicProgram->SetUniform("matrices.modelMatrix", terrainModel);
+    pBasicProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(terrainModel));
+    m_pPlanarTerrain->Render();
+}
+
+// Render scene method runs
+void Game::RenderPPFX(const PostProcessingEffectMode &mode)
+{
+    
+    
+}
+
+// Render scene method runs
+void Game::Render()
+{
+
+    RenderScene();
+    
     // It is useful to switch back to the default framebuffer for this to easily see your results.
     // Unbind to render to our default framebuffer or switching back to the default buffer at 0.
     // To make sure all rendering operations will have a visual impact on the main window we need to make the default framebuffer active again by binding to 0:
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
     m_gameWindow.SetViewport();
     
     // Post Processing Effects
-    //RunPostProcessingShader( m_currentRenderMode );
+    RenderPPFX( m_currentPPFXMode );
     
     // Draw the 2D graphics after the 3D graphics
     RenderHUD();
@@ -230,14 +268,11 @@ void Game::Update()
 // The game loop runs repeatedly until game over
 void Game::GameLoop()
 {
-  
-    ///*
     // Variable timer
     m_pGameTimer->Start();
     Update();
     Render();
     m_deltaTime = m_pGameTimer->Elapsed();
-    //*/
 }
 
 
@@ -246,7 +281,6 @@ static void OnMouseDown_callback(GLFWwindow* window, int button, int action, int
     //std::cout << "Mouse Down with button: " << button << " and with action: " << action << std::endl;
     mouseButton = button;
     mouseAction = action;
-    
 }
 
 
@@ -280,7 +314,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     
     Initialise();
     InitialiseFrameBuffers(width, height);
-    InitialiseCamera(width, height, glm::vec3(0.0f, 50.0f, 0.0f));
+    InitialiseCamera(width, height, glm::vec3(1.0f, 20.0f, 1.0f));
     InitialiseAudio(filepath);
     
     CreateShaderPrograms(filepath);

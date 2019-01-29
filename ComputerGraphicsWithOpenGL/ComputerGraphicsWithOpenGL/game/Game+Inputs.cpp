@@ -172,6 +172,10 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
                 m_mouseMouseMoveClickSwitch = !m_mouseMouseMoveClickSwitch;
                 break;
             case GLFW_KEY_APOSTROPHE:
+                m_audioNumber = (m_audioNumber + 1) % 5;
+                m_changeAudio = true;
+                break;
+            case GLFW_KEY_SEMICOLON:
                 m_enableHud = !m_enableHud;
                 break;
             default:

@@ -34,16 +34,19 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/norm.hpp>
 
+//GLEW
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GL/gl.h>
+
+
+//GLFW
 #define GLFW_INCLUDE_GL3  // don't drag in legacy GL headers.
 #define GLFW_NO_GLU       // don't drag in the old GLU lib - unless you must.
 
-#define GLEW_STATIC
-#include <GL/glew.h>  
-#include <GL/gl.h>
-
-//GLFW
 #define GLFW_DLL
 #include <GLFW/glfw3.h>// GLFW helper library
+
 
 //Free Type Font
 #include <ft2build.h>
@@ -88,5 +91,15 @@
 #define SENSITIVTY 0.15
 #define ZOOM 45.0f
 
+#define INVALID_OGL_VALUE 0xFFFFFFFF
+#define SAFE_DELETE(p) if (p) { delete p; p = NULL; }
+#define INVALID_MATERIAL 0xFFFFFFFF
+
+//keyboard and mouse controlls
+static int keyPressedCode = -1;
+static int keyReleasedCode = -1;
+static int keyPressedAction = -1;
+static int mouseButton = -1;
+static int mouseAction = -1;
 
 using namespace std;

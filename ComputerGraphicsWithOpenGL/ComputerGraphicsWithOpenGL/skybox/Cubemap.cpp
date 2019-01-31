@@ -1,5 +1,13 @@
 #include "Cubemap.h"
 
+CCubemap::CCubemap()
+{}
+
+CCubemap::~CCubemap()
+{
+    Release();
+}
+
 
 bool CCubemap::LoadTexture(std::string filename, BYTE **bmpBytes, int &iWidth, int &iHeight)
 {
@@ -109,8 +117,6 @@ void CCubemap::Create(std::string sPositiveX, std::string sNegativeX, std::strin
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
 }
-
-
 
 // Release resources
 void CCubemap::Release()

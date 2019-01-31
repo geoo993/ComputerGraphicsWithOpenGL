@@ -10,6 +10,7 @@ m_started(false), elapsedTime(0.0)
 
 CHighResolutionTimer::~CHighResolutionTimer()
 {
+    Release();
 }
 
 void CHighResolutionTimer::Start()
@@ -34,4 +35,8 @@ double CHighResolutionTimer::Elapsed()
     //std::cout << elapsedTime << " ms.\n";
     
     return elapsedTime;
+}
+
+void CHighResolutionTimer::Release() {
+    
 }

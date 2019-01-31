@@ -5,7 +5,9 @@
 
 CPlane::CPlane()
 {
-   
+    m_width = 0;
+    m_height = 0;
+    m_totalVertices = 0;
 }
 
 CPlane::~CPlane()
@@ -13,8 +15,7 @@ CPlane::~CPlane()
     Release();
 }
 
-
-void CPlane::Create(float fWidth, float fHeight, float fTextureRepeat, unsigned int fDivisions){
+void CPlane::Create(float fWidth, float fHeight, float fTextureRepeat, unsigned int fDivisions) {
     
     m_width = fWidth;
     m_height = fHeight;
@@ -111,12 +112,22 @@ void CPlane::Create(const std::string &fLocation, float fWidth, float fHeight, f
     
 }
 
+void CPlane::Transform(const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale) {
+    // Render the planar terrain
+    transform.SetIdentity();
+    transform.Translate(position.x, position.y, position.z);
+    transform.RotateX(rotation.x);
+    transform.RotateY(rotation.y);
+    transform.RotateZ(rotation.z);
+    transform.Scale(scale);
+}
+
 // Render the plane as a triangle strip
 void CPlane::Render(const bool &useTexture)
 {
 	glBindVertexArray(m_vao);
     if (useTexture) {
-        m_texture.BindTexture2D();
+        this->m_texture.BindTexture2D();
     }
     glDrawArrays(GL_TRIANGLE_STRIP, 0, m_totalVertices);
 }
@@ -124,8 +135,8 @@ void CPlane::Render(const bool &useTexture)
 // Release resources
 void CPlane::Release()
 {
-    m_texture.Release();
+    this->m_texture.Release();
     
 	glDeleteVertexArrays(1, &m_vao);
-	m_vbo.Release();
+	this->m_vbo.Release();
 }

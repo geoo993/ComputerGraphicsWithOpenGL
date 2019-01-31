@@ -13,6 +13,7 @@ CVertexBufferObject::CVertexBufferObject()
 
 CVertexBufferObject::~CVertexBufferObject()
 {
+    Release();
 }
 
 // Create a VBO 

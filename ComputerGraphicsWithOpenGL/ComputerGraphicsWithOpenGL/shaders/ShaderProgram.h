@@ -70,7 +70,7 @@ public:
     void SetUniform(std::string sName, int* iValues, int iCount = 1);
     void SetUniform(std::string sName, const int iValue);
     
-    
+    void Release();
 private:
     uint m_uiProgram; // ID of program
     bool m_bLinked; // Whether program was linked and is ready to use

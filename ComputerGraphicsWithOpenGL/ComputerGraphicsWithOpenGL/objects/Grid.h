@@ -1,19 +1,21 @@
 #pragma once
 
 #include "VertexBufferObject.h"
-#include "Transform.h"
+#include "GameObject.h"
 
 // Class for rendering a grid-like terrain
-class CGrid
+class CGrid: public GameObject
 {
 public:
 	CGrid();
 	~CGrid();
 	void Create(float fWidth, float fHeight, int iLines);
-	void Render();
-	void Release();
+    void Transform(const glm::vec3 & position,
+                   const glm::vec3 & rotation = glm::vec3(0, 0, 0),
+                   const glm::vec3 & scale = glm::vec3(1, 1, 1));
     
-    CTransform transform;
+    void Render(const bool &useTexture = true);
+    void Release();
     
 private:
 	GLuint m_vao;

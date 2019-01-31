@@ -84,6 +84,7 @@ public:
     
 	glm::mat3 ComputeNormalMatrix(const glm::mat4 &modelMatrix);
     
+    void Release();
 private:
 
     //view and projection matrix

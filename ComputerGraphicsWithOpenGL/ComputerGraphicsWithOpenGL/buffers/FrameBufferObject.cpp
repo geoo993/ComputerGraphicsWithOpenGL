@@ -31,9 +31,8 @@ CFrameBufferObject::~CFrameBufferObject()
 	Release();
 }
 
-
 // Create an FBO with a texture attachment:  note this code comes mostly from the Superbible, 6th edition, page 367
-bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHeight, const FBOType &fboType)
+bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHeight, const FrameBufferType &fboType)
 {
     m_iWidth = a_iWidth;
     m_iHeight = a_iHeight;
@@ -49,7 +48,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
     // The application of framebuffers might not immediately make sense, but rendering your scene to a different framebuffer allows us to create mirrors in a scene or do cool post-processing effects for example. 
     */
     
-    if (fboType == FBOType::MultiSampling){
+    if (fboType == FrameBufferType::MultiSampling){
         
         glGenFramebuffers(1, &m_uiFramebuffer);
         glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
@@ -88,7 +87,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
     }
     
     
-    if (fboType == FBOType::PointShadowMapping){
+    if (fboType == FrameBufferType::PointShadowMapping){
         
         // configure depth map FBO
         // -----------------------
@@ -137,7 +136,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
         
     }
     
-    if (fboType == FBOType::DirectionalShadowMapping){
+    if (fboType == FrameBufferType::DirectionalShadowMapping){
     
         // configure depth map FBO
         // -----------------------
@@ -186,7 +185,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
         return shadowMapFramebufferComplete;
     }
     
-    if (fboType == FBOType::HighDynamicRangeMapping){
+    if (fboType == FrameBufferType::HighDynamicRangeMapping){
         
         /*  https://learnopengl.com/#!Advanced-Lighting/HDR
              To implement high dynamic range rendering we need some way to prevent color values getting clamped after each fragment shader run. When framebuffers use a normalized fixed-point color format (like GL_RGB) as their colorbuffer's internal format OpenGL automatically clamps the values between 0.0 and 1.0 before storing them in the framebuffer. This operation holds for most types of framebuffer formats, except for floating point formats that are used for their extended range of values.
@@ -250,7 +249,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
         
     }
     
-    if (fboType == FBOType::HighDynamicRangeMultipleRenderTargets){
+    if (fboType == FrameBufferType::HighDynamicRangeMultipleRenderTargets){
         
         /*  https://learnopengl.com/#!Advanced-Lighting/Bloom
          High Dynamic Range Multiple Render Targets for extracting bright colors
@@ -323,7 +322,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
         return MRTframebufferComplete;
     }
     
-    if (fboType == FBOType::PingPongRendering){
+    if (fboType == FrameBufferType::PingPongRendering){
         
         // ping-pong-framebuffer for blurring
         glGenFramebuffers(2, m_uiPingpongFramebuffers);
@@ -364,7 +363,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
         
     }
     
-    if (fboType == FBOType::DeferredRendering){
+    if (fboType == FrameBufferType::DeferredRendering){
         // configure g-buffer framebuffer
         // ------------------------------
         glGenFramebuffers(1, &m_uiFramebuffer);
@@ -425,7 +424,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
         return deferredRenderingFramebufferComplete;
     }
     
-    if (fboType == FBOType::SSAORendering){
+    if (fboType == FrameBufferType::SSAORendering){
         // configure g-buffer framebuffer
         // ------------------------------
         glGenFramebuffers(1, &m_uiFramebuffer);
@@ -487,7 +486,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
         return ssaoRenderingFramebufferComplete;
     }
     
-    if (fboType == FBOType::SSAOProcessing){
+    if (fboType == FrameBufferType::SSAOProcessing){
         
         // configure g-buffer framebuffer
         // ------------------------------
@@ -520,7 +519,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
         
     }
     
-    if (fboType == FBOType::SSAOBlur) {
+    if (fboType == FrameBufferType::SSAOBlur) {
         
         // configure g-buffer framebuffer
         // ------------------------------
@@ -553,7 +552,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
         
     }
     
-    if (fboType == FBOType::Default){
+    if (fboType == FrameBufferType::Default){
         
     // first we create a framebuffer object, bind it as the active framebuffer, do some operations and unbind the framebuffer.
     
@@ -741,16 +740,16 @@ void CFrameBufferObject::BindPingPong(const GLuint &index, bool bSetFullViewport
 
 
 // Binding the framebuffer color texture so it is active
-void CFrameBufferObject::BindTexture(GLuint iTextureUnit, const FBOType &fboType)
+void CFrameBufferObject::BindTexture(GLuint iTextureUnit, const FrameBufferType &fboType)
 {
     
     glActiveTexture(GL_TEXTURE0+iTextureUnit);
     
-    if (fboType == FBOType::MultiSampling){
+    if (fboType == FrameBufferType::MultiSampling){
         // not working yet, check https://learnopengl.com/#!Advanced-OpenGL/Anti-Aliasing
         glBindTexture(GL_TEXTURE_2D, m_uiColourTextureMultiSampled);
     }
-    if (fboType == FBOType::HighDynamicRangeMapping){
+    if (fboType == FrameBufferType::HighDynamicRangeMapping){
         glBindTexture(GL_TEXTURE_2D, m_uiHdrColorTexture);
     }
     else{

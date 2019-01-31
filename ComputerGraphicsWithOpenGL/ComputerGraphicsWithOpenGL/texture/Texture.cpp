@@ -5,7 +5,9 @@ CTexture::CTexture()
 	m_mipMapsGenerated = false;
 }
 CTexture::~CTexture()
-{}
+{
+    Release();
+}
 
 // Create a texture from the data stored in bData.  
 void CTexture::CreateFromData(BYTE* data, int width, int height, int bpp, GLenum format, bool generateMipMaps, bool gammaCorrection)
@@ -219,7 +221,7 @@ void CTexture::SetSamplerObjectParameterf(GLenum parameter, float value)
 
 
 // Binds a texture for rendering
-void CTexture::BindTexture2D(int iTextureUnit)
+void CTexture::BindTexture2D(int iTextureUnit) const
 {
 	glActiveTexture(GL_TEXTURE0+iTextureUnit);
 	glBindTexture(GL_TEXTURE_2D, m_textureID);

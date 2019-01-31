@@ -23,7 +23,9 @@ CCamera::CCamera()
     SetOrthographicProjectionMatrix(m_screenWidth, m_screenHeight );
 }
 CCamera::~CCamera()
-{}
+{
+    Release();
+}
  
 void CCamera::Create(
             const glm::vec3 &position,
@@ -422,4 +424,8 @@ glm::vec3 CCamera::GetBackward()
 glm::vec3 CCamera::GetVelocity()
 {
     return m_velocity;
+}
+
+void CCamera::Release() {
+    
 }

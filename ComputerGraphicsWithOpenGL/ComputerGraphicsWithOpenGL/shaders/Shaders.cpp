@@ -7,7 +7,9 @@ CShader::CShader()
     m_bLoaded = false;
 }
 CShader::~CShader()
-{}
+{
+    Release();
+}
 
 // Loads a shader, stored as a text file with filename sFile.  The shader is of type iType (vertex, fragment, geometry, etc.)
 bool CShader::LoadShader(string sFile, int iType)
@@ -141,4 +143,8 @@ void CShader::DeleteShader()
         return;
     m_bLoaded = false;
     glDeleteShader(m_uiShader);
+}
+
+void CShader::Release() {
+    
 }

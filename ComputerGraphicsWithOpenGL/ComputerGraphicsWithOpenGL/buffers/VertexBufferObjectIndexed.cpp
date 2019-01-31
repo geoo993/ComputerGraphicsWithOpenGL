@@ -12,7 +12,9 @@ CVertexBufferObjectIndexed::CVertexBufferObjectIndexed()
 }
 
 CVertexBufferObjectIndexed::~CVertexBufferObjectIndexed()
-{}
+{
+    Release();
+}
 
 
 // Create buffer objects for the vertices and indices

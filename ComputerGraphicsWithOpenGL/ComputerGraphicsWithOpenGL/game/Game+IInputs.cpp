@@ -1,5 +1,5 @@
 //
-//  Game+Inputs.cpp
+//  Game+IInputs.cpp
 //  New_OpenGL_CourseWork_Template
 //
 //  Created by GEORGE QUENTIN on 06/10/2017.
@@ -109,12 +109,6 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_0:
                 
                 break;
-            case GLFW_KEY_COMMA:
-                
-                break;
-            case GLFW_KEY_PERIOD:
-                
-                break;
             case GLFW_KEY_MINUS:
                 
                 break;
@@ -164,19 +158,24 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
                 break;
             case GLFW_KEY_Q:
                 break;
-            case GLFW_KEY_BACKSLASH:
+            case GLFW_KEY_COMMA:
                 m_skyboxNumber = (m_skyboxNumber + 1) % 14;
                 m_changeSkybox = true;
                 break;
-            case GLFW_KEY_SLASH:
-                m_mouseMouseMoveClickSwitch = !m_mouseMouseMoveClickSwitch;
-                break;
-            case GLFW_KEY_APOSTROPHE:
+            case GLFW_KEY_PERIOD:
                 m_audioNumber = (m_audioNumber + 1) % 5;
                 m_changeAudio = true;
                 break;
-            case GLFW_KEY_SEMICOLON:
+            case GLFW_KEY_SLASH:
                 m_enableHud = !m_enableHud;
+                break;
+            case GLFW_KEY_BACKSLASH:
+                m_mouseMouseMoveClickSwitch = !m_mouseMouseMoveClickSwitch;
+                break;
+            case GLFW_KEY_APOSTROPHE:
+                m_isMouseCursorVisible = !m_isMouseCursorVisible;
+                break;
+            case GLFW_KEY_SEMICOLON:
                 break;
             default:
                 break;

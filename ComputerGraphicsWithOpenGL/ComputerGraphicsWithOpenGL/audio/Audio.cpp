@@ -7,14 +7,7 @@ CAudio::CAudio()
 
 CAudio::~CAudio()
 {
-    m_result = m_eventSound->release();
-    m_result = m_FmodSystem->close();
-    m_result = m_FmodSystem->release();
-    
-    delete m_FmodSystem;
-    delete m_eventSound;
-    delete m_music;
-    delete m_musicChannel;
+    Release();
 }
 
 bool CAudio::Initialise()
@@ -149,4 +142,16 @@ void CAudio::DecreaseMusicVolume()
  */
 GLfloat CAudio::Volume() const {
     return  m_musicVolume;
+}
+
+void CAudio::Release() {
+    m_result = m_eventSound->release();
+    m_result = m_FmodSystem->close();
+    m_result = m_FmodSystem->release();
+    
+    delete m_FmodSystem;
+    delete m_eventSound;
+    delete m_music;
+    delete m_musicChannel;
+    
 }

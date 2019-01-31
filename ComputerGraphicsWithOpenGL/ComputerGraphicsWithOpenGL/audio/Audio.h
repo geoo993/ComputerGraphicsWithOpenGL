@@ -19,6 +19,8 @@ public:
     void DecreaseMusicVolume();
     GLfloat Volume() const;
 
+    void Release();
+    
 private:
 		
 	void FmodErrorCheck(FMOD_RESULT result);

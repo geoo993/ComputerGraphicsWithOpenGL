@@ -17,6 +17,7 @@ public:
 	bool IsLoaded();
 	uint GetShaderID();
 
+    void Release();
 private:
 	uint m_uiShader; // ID of shader
 	int m_iType; // GL_VERTEX_SHADER, GL_FRAGMENT_SHADER...

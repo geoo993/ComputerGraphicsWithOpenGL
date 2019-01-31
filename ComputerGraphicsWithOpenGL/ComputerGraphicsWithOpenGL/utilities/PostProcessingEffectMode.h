@@ -34,8 +34,6 @@ enum PostProcessingEffectMode {
     MultiScreenFishEye,
     FishEyeLens,
     FishEyeAntiFishEye,
-    FXAA,
-    SSAO,
     GaussianBlur,
     Blur,
     RadialBlur,
@@ -43,8 +41,9 @@ enum PostProcessingEffectMode {
     Vignetting,
     BrightParts,
     Bloom,
-    LensFlarePartOne,
-    LensFlarePartTwo,
+    LensFlare,
+    FXAA,
+    SSAO,
     
     NumberOfPPFX,
 };

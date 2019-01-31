@@ -14,7 +14,9 @@ CShaderProgram::CShaderProgram()
 }
 
 CShaderProgram::~CShaderProgram()
-{}
+{
+    Release();
+}
 
 // Creates a new shader program
 void CShaderProgram::CreateProgram()
@@ -259,4 +261,8 @@ void CShaderProgram::SetUniform(std::string sName, const int iValue)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniform1i(iLoc, iValue);
+}
+
+void CShaderProgram::Release() {
+    
 }

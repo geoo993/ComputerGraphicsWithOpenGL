@@ -10,7 +10,7 @@ public:
 	bool Load(std::string path, bool generateMipMaps = true);
     GLuint CreateTexture(std::string path, bool generateMipMaps = true, GLint textureUnitAt = 0, bool gammaCorrection = false);
     GLuint CreateSimpleTexture(int width, int height, bool generateMipMaps = true, GLint textureUnitAt = 0, const GLvoid * data = nullptr);
-	void BindTexture2D(int textureUnit = 0);
+	void BindTexture2D(int textureUnit = 0) const;
     void BindTexture3D(int textureUnit = 0);
     void BindTextureCubeMap(int textureUnit = 0);
 
@@ -18,14 +18,15 @@ public:
 	void SetSamplerObjectParameterf(GLenum parameter, float value);
 
 	int GetWidth();
-	int GetHeight();
-	int GetBPP();
+    int GetHeight();
+    int GetBPP();
 
-	void Release();
+    void Release();
 
-	CTexture();
-	~CTexture();
+    CTexture();
+    ~CTexture();
 private:
+    
 	int m_width, m_height, m_bpp; // Texture width, height, and bytes per pixel
 	uint m_textureID; // Texture id
 	uint m_samplerObjectID; // Sampler id

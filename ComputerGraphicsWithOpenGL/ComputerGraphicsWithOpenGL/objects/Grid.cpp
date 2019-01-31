@@ -7,7 +7,9 @@ CGrid::CGrid()
 }
 
 CGrid::~CGrid()
-{}
+{
+    Release();
+}
 
 
 // Create a planar grid
@@ -84,8 +86,19 @@ void CGrid::Create(float fWidth, float fHeight, int iLines)
 	
 }
 
+
+void CGrid::Transform(const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale) {
+    // Render the planar terrain
+    transform.SetIdentity();
+    transform.Translate(position.x, position.y, position.z);
+    transform.RotateX(rotation.x);
+    transform.RotateY(rotation.y);
+    transform.RotateZ(rotation.z);
+    transform.Scale(scale);
+}
+
 // Render the grid with lines
-void CGrid::Render()
+void CGrid::Render(const bool &useTexture)
 {
 	if (m_iVertices < 2)
 		return;

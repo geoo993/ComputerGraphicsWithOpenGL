@@ -6,6 +6,13 @@
 //  Copyright © 2019 GEORGE QUENTIN. All rights reserved.
 //
 
+/* SOLID Principles
+ 
+ Single Responsability Principle
+ - A class should have a single reason to change.
+
+
+*/
 #include "game/Game.h"
 
 int main(int argc, const char * argv[]) {
@@ -29,7 +36,7 @@ int main(int argc, const char * argv[]) {
     
     //start game
     Game game;
-    game.Execute(filepath);
+    game.Execute(filepath, SCREEN_WIDTH, SCREEN_HEIGHT);
     
     return 0;
 }

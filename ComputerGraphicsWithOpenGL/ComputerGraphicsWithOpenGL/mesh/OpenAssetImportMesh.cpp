@@ -33,15 +33,7 @@ COpenAssetImportMesh::COpenAssetImportMesh()
 
 COpenAssetImportMesh::~COpenAssetImportMesh()
 {
-    Clear();
-}
-
-void COpenAssetImportMesh::Clear()
-{
-    for (unsigned int i = 0 ; i < m_Textures.size() ; i++) {
-        SAFE_DELETE(m_Textures[i]);
-    }
-    glDeleteVertexArrays(1, &m_vao);
+    Release();
 }
 
 bool COpenAssetImportMesh::LoadWithInstances(
@@ -64,7 +56,7 @@ bool COpenAssetImportMesh::LoadWithInstances(
 bool COpenAssetImportMesh::Load(const std::string& Filename)
 {
     // Release the previously loaded mesh (if it exists)
-    Clear();
+    Release();
 
     /*
      The great thing about Assimp is that it neatly abstracts from all the technical details of loading all the different file formats and does all this with a single one-liner:
@@ -323,7 +315,16 @@ std::vector<glm::mat4> COpenAssetImportMesh::GetModelMatrixInstancesData(){
     return m;
 }
 
-void COpenAssetImportMesh::Render()
+void COpenAssetImportMesh::Transform(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale) {
+    transform.SetIdentity();
+    transform.Translate(position.x, position.y, position.z);
+    transform.RotateX(rotation.x);
+    transform.RotateY(rotation.y);
+    transform.RotateZ(rotation.z);
+    transform.Scale(scale);
+}
+
+void COpenAssetImportMesh::Render(const bool &useTexture)
 {
 
 
@@ -409,10 +410,12 @@ void COpenAssetImportMesh::Render()
 
         const unsigned int MaterialIndex = m_Meshes[i].m_materialIndex;
 
-        if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
-            m_Textures[MaterialIndex]->BindTexture2D(0);
+        if (useTexture) {
+            if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
+                m_Textures[MaterialIndex]->BindTexture2D(0);
+            }
         }
-
+        
         if ( m_UseInstances ) {
             glDrawElementsInstanced(GL_TRIANGLES, m_Meshes[i].m_numIndices, GL_UNSIGNED_INT, 0, m_InstanceCount);
         }else{
@@ -431,7 +434,12 @@ void COpenAssetImportMesh::Render()
         glDisableVertexAttribArray(8);
 
     }
-
-
 }
 
+void COpenAssetImportMesh::Release()
+{
+    for (unsigned int i = 0 ; i < m_Textures.size() ; i++) {
+        SAFE_DELETE(m_Textures[i]);
+    }
+    glDeleteVertexArrays(1, &m_vao);
+}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FrameBufferType.h"
 #include "Texture.h"
 #include "Shaders.h"
 
@@ -9,22 +10,8 @@ public:
 	CFrameBufferObject();
 	~CFrameBufferObject();
 
-    enum FBOType {
-        Default,
-        MultiSampling,
-        DirectionalShadowMapping,
-        PointShadowMapping,
-        HighDynamicRangeMapping,
-        HighDynamicRangeMultipleRenderTargets, //(MRT)
-        PingPongRendering,
-        DeferredRendering,
-        SSAORendering,
-        SSAOProcessing,
-        SSAOBlur,
-    };
-    
 	// Create a framebuffer object with a texture of a given size
-	bool CreateFramebuffer(const int &a_iWidth, const int &a_iHeight, const FBOType &fboType = FBOType::Default);
+	bool CreateFramebuffer(const int &a_iWidth, const int &a_iHeight, const FrameBufferType &fboType = FrameBufferType::Default);
 
 	// Bind the FBO for rendering to texture
 	void Bind(bool bSetFullViewport = true);
@@ -33,7 +20,7 @@ public:
     void BindPingPong(const GLuint &index, bool bSetFullViewport = true);
 
     // Bind the texture (usually on a 2nd or later pass in a multi-pass rendering technique)
-    void BindTexture(GLuint iTextureUnit, const FBOType &fboType = FBOType::Default);
+    void BindTexture(GLuint iTextureUnit, const FrameBufferType &fboType = FrameBufferType::Default);
 
     // Binding the framebuffer normal texture so it is active
     void BindNormalTexture(GLuint iTextureUnit);

@@ -18,7 +18,7 @@ public:
 
     void Print(CShaderProgram* program, string text, int x, int y, int pixelSize = -1);
     void Render(CShaderProgram* program, int x, int y, int pixelSize, char* text, ...);
-    void ReleaseFont();
+    void Release();
 
 private:
 
@@ -36,7 +36,6 @@ private:
 
 	FT_Library m_ftLib;
 	FT_Face m_ftFace;
-
 
 
     // Second way of loading font

@@ -8,8 +8,7 @@
 
 #include "Game.h"
 
-
-void Game::CreateShaderPrograms(const std::string &path){
+void Game::LoadShaderPrograms(const std::string &path) {
     
     // Load shaders
     std::vector<CShader> shShaders;

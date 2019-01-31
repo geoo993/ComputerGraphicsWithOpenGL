@@ -11,8 +11,9 @@ CSkybox::CSkybox()
 {}
 
 CSkybox::~CSkybox()
-{}
-
+{
+    Release();
+}
 
 // Create a skybox of a given size with six textures
 void CSkybox::Create(const float &size, const std::string &path, const unsigned int &skyboxNumber)
@@ -135,6 +136,20 @@ void CSkybox::Create(const float &size, const std::string &path, const unsigned 
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, istride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)));
 	
+}
+
+void CSkybox::Transform(const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale) {
+    // Render the planar terrain
+    transform.SetIdentity();
+    transform.Translate(position.x, position.y, position.z);
+    transform.RotateX(rotation.x);
+    transform.RotateY(rotation.y);
+    transform.RotateZ(rotation.z);
+    transform.Scale(scale);
+}
+
+void CSkybox::Render(const bool &useTexture) {
+    
 }
 
 // Render the skybox

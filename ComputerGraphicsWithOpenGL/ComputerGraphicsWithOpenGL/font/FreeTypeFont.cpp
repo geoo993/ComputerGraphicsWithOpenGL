@@ -5,7 +5,9 @@ CFreeTypeFont::CFreeTypeFont()
 	m_isLoaded = false;
 }
 CFreeTypeFont::~CFreeTypeFont()
-{}
+{
+    Release();
+}
 
 /* -----------------------------------------------
 
@@ -162,7 +164,7 @@ void CFreeTypeFont::Render(CShaderProgram* program, int x, int y, int pixelSize,
 }
 
 // Deletes all font textures
-void CFreeTypeFont::ReleaseFont()
+void CFreeTypeFont::Release()
 {
     for (int i = 0; i < 128; i++)
         m_charTextures[i].Release();

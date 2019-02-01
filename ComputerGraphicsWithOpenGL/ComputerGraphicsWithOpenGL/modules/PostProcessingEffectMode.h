@@ -9,8 +9,11 @@
 #ifndef PostProcessingEffectMode_h
 #define PostProcessingEffectMode_h
 
+// https://stackoverflow.com/questions/18335861/why-is-enum-class-preferred-over-plain-enum
+// https://docs.microsoft.com/en-us/cpp/cpp/enumerations-cpp?view=vs-2017
+// https://docs.microsoft.com/en-us/cpp/windows/enum-class-cpp-component-extensions?view=vs-2017
 // shader types
-enum PostProcessingEffectMode {
+enum class PostProcessingEffectMode {
     DefaultFrameBuffer,
     ColorInversion,
     GrayScale,

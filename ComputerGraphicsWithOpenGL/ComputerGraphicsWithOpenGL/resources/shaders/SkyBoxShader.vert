@@ -17,8 +17,6 @@ layout (location = 2) in vec3 inNormal;
 
 out vec3 vTextureDirection;    // used for skybox
 
-out vec2 vTexCoord;    // Texture coordinate
-
 // This is the entry point into the vertex shader
 void main()
 {
@@ -26,9 +24,6 @@ void main()
     
     // Save the world position for rendering the skybox
     vTextureDirection = inPosition;
-    
-    // Pass through the texture coordinate
-    vTexCoord = inCoord;
     
     // Transform the vertex spatial position using
     vec4 glPosition = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;

@@ -7,13 +7,14 @@
 //
 #pragma once
 
-
+#include <stdio.h>
 #include <iostream>
 #include <ctime>
 #include <assert.h>
 #include <cstring>
 #include <vector>
 #include <list>
+#include <fstream>
 #include <sstream>
 #include <stdio.h>
 #include <map>
@@ -25,6 +26,7 @@
 #include <complex>
 #include <memory.h>
 #include <unistd.h>
+#include <iomanip>
 
 //GLM
 #include <glm/glm.hpp>
@@ -69,6 +71,9 @@
 
 //STB Image
 #include <stb/stb_image.h>
+
+// Color
+#include "utilities/Colours.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>

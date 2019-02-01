@@ -12,6 +12,23 @@
 #pragma once
 #include "Common.h"
 
+class CVertex
+{
+public:
+    CVertex(){};
+    CVertex(glm::vec3 positionIn, glm::vec2 textureCoordIn, glm::vec3 normalIn)
+    {
+        position = positionIn;
+        textureCoord = textureCoordIn;
+        normal = normalIn;
+    };
+    
+    glm::vec3 position;
+    glm::vec2 textureCoord;
+    glm::vec3 normal;
+};
+
+
 struct Vertex
 {
     glm::vec3 m_pos;

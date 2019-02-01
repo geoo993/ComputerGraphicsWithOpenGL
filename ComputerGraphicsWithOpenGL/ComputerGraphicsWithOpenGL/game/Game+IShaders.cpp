@@ -17,9 +17,10 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("HudShader.frag");
     sShaderFileNames.push_back("SkyBoxShader.vert");//1
     sShaderFileNames.push_back("SkyBoxShader.frag");
-    sShaderFileNames.push_back("BasicShader.vert");//2
-    sShaderFileNames.push_back("BasicShader.frag");
-    
+    sShaderFileNames.push_back("TerrainShader.vert");//2
+    sShaderFileNames.push_back("TerrainShader.frag");
+    sShaderFileNames.push_back("PhysicallyBasedRenderingShader.vert");//3
+    sShaderFileNames.push_back("PhysicallyBasedRenderingShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -44,7 +45,7 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pFontProgram->LinkProgram();
     m_pShaderPrograms->push_back(pFontProgram);
     
-    // Create a shader program for fonts
+    // Create a skyboxshader program
     CShaderProgram *pSkyboxProgram = new CShaderProgram;
     pSkyboxProgram->CreateProgram();
     pSkyboxProgram->AddShaderToProgram(&shShaders[2]);
@@ -52,13 +53,21 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pSkyboxProgram->LinkProgram();
     m_pShaderPrograms->push_back(pSkyboxProgram);
     
-    // Create the phong shader program
-    CShaderProgram *pBasicProgram = new CShaderProgram;
-    pBasicProgram->CreateProgram();
-    pBasicProgram->AddShaderToProgram(&shShaders[4]);
-    pBasicProgram->AddShaderToProgram(&shShaders[5]);
-    pBasicProgram->LinkProgram();
-    m_pShaderPrograms->push_back(pBasicProgram);
+    // Create the terrain shader program
+    CShaderProgram *pTerrainProgram = new CShaderProgram;
+    pTerrainProgram->CreateProgram();
+    pTerrainProgram->AddShaderToProgram(&shShaders[4]);
+    pTerrainProgram->AddShaderToProgram(&shShaders[5]);
+    pTerrainProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pTerrainProgram);
+    
+    // Create the Physically Based Rendering shader program
+    CShaderProgram *pPBRProgram = new CShaderProgram;
+    pPBRProgram->CreateProgram();
+    pPBRProgram->AddShaderToProgram(&shShaders[6]);
+    pPBRProgram->AddShaderToProgram(&shShaders[7]);
+    pPBRProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pPBRProgram);
  
 }
 

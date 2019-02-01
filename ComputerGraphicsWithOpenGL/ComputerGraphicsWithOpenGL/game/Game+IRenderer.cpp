@@ -8,33 +8,6 @@
 
 #include "Game.h"
 
-void Game::RenderSkyBox(CShaderProgram *pShaderProgram, const int &cubeMapTextureUnit) {
-    // start by deleting current skybox and create new one
-    if (m_changeSkybox == true) {
-        m_pSkybox->Release();
-        m_pSkybox->Create(m_mapSize, m_gameManager.GetResourcePath(), m_skyboxNumber);
-        //cout << "Changing skybox to " << m_skyboxNumber << endl;
-        m_changeSkybox = false;
-    }
-    
-    // draw skybox as last
-    glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("cubeMapTex", cubeMapTextureUnit);
-    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
-    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
-    
-    m_pSkybox->Transform(m_pCamera->GetPosition());
-    glm::mat4 skyBoxModel = m_pSkybox->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", skyBoxModel);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(skyBoxModel));
-    m_pSkybox->Render(cubeMapTextureUnit);
-    glDepthFunc(GL_LESS);
-    
-}
-
 void Game::RenderScene(){
     
     glEnable(GL_DEPTH_TEST);
@@ -43,24 +16,16 @@ void Game::RenderScene(){
     // uncomment if stencil buffer is not used
     glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
     
-    // render others
-    // Use the main shader program
-    CShaderProgram *pBasicProgram = (*m_pShaderPrograms)[2];
-    pBasicProgram->UseProgram();
-    pBasicProgram->SetUniform("bUseTexture", true);
-    pBasicProgram->SetUniform("sampler0", 0);
+    // Use terrain shader program
+    CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[2];
+    RenderTerrain(pTerrainProgram, true, true);
     
-    // Set the projection matrix
-    pBasicProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pBasicProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    
-    // Render the planar terrain
-    m_pPlanarTerrain->Transform(m_terrainPosition);
-    glm::mat4 terrainModel = m_pPlanarTerrain->Model();
-    pBasicProgram->SetUniform("matrices.modelMatrix", terrainModel);
-    pBasicProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(terrainModel));
-    m_pPlanarTerrain->Render();
-    
+    CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[3];
+    RenderBarrel(pPBRProgram, 30.0f, true);
+    RenderCube(pPBRProgram, 10.0f, false);
+    RenderSphere(pPBRProgram, 20.0f, false);
+    RenderTorus(pPBRProgram, 5.0f, false);
+    RenderTorusKnot(pPBRProgram, 5.0f, false);
     
     // render skybox
     CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[1];

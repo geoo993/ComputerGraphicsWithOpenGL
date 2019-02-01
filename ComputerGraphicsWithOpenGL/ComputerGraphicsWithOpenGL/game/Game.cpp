@@ -17,7 +17,9 @@ Game::Game()
     
     // terrain
     m_pPlanarTerrain = nullptr;
-    m_terrainPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    m_pHeightmapTerrain = nullptr;
+    m_heightMapMinHeight = 0.0f ;
+    m_heightMapMaxHeight = 100.0f;
     
     // skybox
     m_pSkybox = nullptr;
@@ -48,6 +50,22 @@ Game::Game()
     m_barrelPosition = glm::vec3(30.0f,10.0f,0.0f);
     m_barrelRotation = 0.0f;
     
+    //sphere object
+    m_pSphere = nullptr;
+    m_spherePosition = glm::vec3(130.0f,50.0f,50.0f);
+    
+    //cube object
+    m_pCube = nullptr;
+    m_cubePosition = glm::vec3(20.0f,120.0f, -50.0f);
+    
+    //torus object
+    m_pTorus = nullptr;
+    m_torusPosition = glm::vec3(-160.0f,30.0f,150.0f);
+    
+    //torusknot object
+    m_pTorusKnot = nullptr;
+    m_torusKnotPosition = glm::vec3(130.0f,160.0f,250.0f);
+    
     //camera setting
     m_pCamera = nullptr;
     
@@ -76,7 +94,12 @@ Game::~Game()
     delete m_pAudio;
     delete m_pSkybox;
     delete m_pPlanarTerrain;
+    delete m_pHeightmapTerrain;
     delete m_pBarrel;
+    delete m_pSphere;
+    delete m_pCube;
+    delete m_pTorus;
+    delete m_pTorusKnot;
     
     if (m_pShaderPrograms != nullptr) {
         for (unsigned int i = 0; i < m_pShaderPrograms->size(); i++)
@@ -86,7 +109,6 @@ Game::~Game()
     
     delete m_pGameTimer;
 }
-
 
 // Initialisation:  This method only runs once at startup
 void Game::Initialise()
@@ -99,8 +121,12 @@ void Game::Initialise()
     m_pAudio = new CAudio;
     m_pSkybox = new CSkybox;
     m_pPlanarTerrain = new CPlane;
+    m_pHeightmapTerrain = new CHeightMapTerrain;
     m_pBarrel = new COpenAssetImportMesh;
-    
+    m_pSphere = new CSphere;
+    m_pCube = new CCube(1.0f);
+    m_pTorus = new CTorus(5.0f);
+    m_pTorusKnot = new CTorusKnot;
 }
 
 void Game::LoadResources(const std::string &path)
@@ -115,6 +141,42 @@ void Game::LoadResources(const std::string &path)
     
     // Create the planar terrain
     m_pPlanarTerrain->Create(path+"/textures/terrain/grassfloor.jpg", m_mapSize, m_mapSize, 50.0f, 50); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    
+    // Create the heightmap terrain
+    m_pHeightmapTerrain->Create((path+"/textures/terrain/heightmap4.bmp").c_str(),
+                                {
+                                    path+"/textures/terrain/sand.png",
+                                    path+"/textures/terrain/patchygrass.png",
+                                    path+"/textures/terrain/stone.png",
+                                    path+"/textures/terrain/snow.png",
+                                },
+                                glm::vec3(0, 0, 0),
+                                m_mapSize,
+                                m_mapSize,
+                                200.0f);
+    
+    m_pBarrel->Load(path+"/models/barrel/barrel02.obj");  // Downloaded from http://www.psionicgames.com/?page_id=24 on 24 Jan 2013
+    
+    m_pCube->Create(path+"/textures/woodenBox/", "woodenBox.jpg");
+    
+    // Create a sphere
+    m_pSphere->Create(path+"/textures/", "moon_surface.jpg", 50, 50);  // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    
+    m_pTorus->Create(path+"/textures/3912Tex/", "3912-diffuse.jpg");
+    
+    m_pTorusKnot->Create(path+"/textures/pattern-design.jpg",
+                         1024,         // in: Number of steps in the torus knot
+                         32,           // in: Number of facets
+                         20.0f,         // in: Scale of the knot
+                         0.1f,         // in: Thickness of the knot
+                         0.0f,         // in: Number of clumps in the knot
+                         0.0f,         // in: Offset of the clump (in 0..2pi)
+                         0.0f,         // in: Scale of a clump
+                         2.0f,         // in: U coordinate scale
+                         32.0f,        // in: V coordinate scale
+                         7.0f,         // in: P parameter of the knot
+                         -2.0f         // in: Q parameter of the knot
+                         );
 }
 
 // Update method runs repeatedly with the Render method
@@ -142,7 +204,6 @@ void Game::GameLoop()
 
 
 static void OnMouseDown_callback(GLFWwindow* window, int button, int action, int mods){
-    
     //std::cout << "Mouse Down with button: " << button << " and with action: " << action << std::endl;
     mouseButton = button;
     mouseAction = action;
@@ -179,11 +240,12 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     
     Initialise();
     InitialiseFrameBuffers(width, height);
-    InitialiseCamera(width, height, glm::vec3(1.0f, 20.0f, 1.0f));
+    InitialiseCamera(width, height, glm::vec3(1.0f, 230.0f, 100.0f));
     InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
     LoadResources(filepath);
+    LoadTextures(filepath);
     
     m_gameManager.SetLoaded(true); // everything has loaded
     

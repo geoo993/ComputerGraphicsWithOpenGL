@@ -25,7 +25,7 @@
 #include "Shaders.h"
 #include "MeshEntry.h"
 
-class COpenAssetImportMesh
+class COpenAssetImportMesh: public GameObject
 {
 public:
     COpenAssetImportMesh();
@@ -41,10 +41,7 @@ public:
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     
     void Render(const bool &useTexture = true);
-protected:
-    CTransform transform;
     void Release();
-
 private:
     bool InitFromScene(const aiScene* pScene, const std::string& Filename);
     void InitMesh(unsigned int Index, const aiMesh* paiMesh);

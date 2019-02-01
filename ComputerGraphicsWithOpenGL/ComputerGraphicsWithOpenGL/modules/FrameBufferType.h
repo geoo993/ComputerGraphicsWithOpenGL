@@ -10,7 +10,7 @@
 #define FrameBufferType_h
 
 
-enum FrameBufferType {
+enum class FrameBufferType {
     Default,
     MultiSampling,
     DirectionalShadowMapping,

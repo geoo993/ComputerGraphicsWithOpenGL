@@ -40,6 +40,12 @@ struct ICamera
     virtual void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) = 0;
 };
 
+struct ITextures {
+    std::vector<CTexture> m_textures;
+    virtual void LoadTextures(const std::string &path) = 0;
+    virtual CTexture AddTexture(const std::string &textureFile, const int &textureUnit, const bool &gammaCorrection) = 0;
+};
+
 struct IShaders {
     std::vector <CShaderProgram *> *m_pShaderPrograms;
     virtual void LoadShaderPrograms(const std::string &path) = 0;
@@ -50,6 +56,17 @@ struct IRenderer
     virtual void Render() = 0;
     virtual void RenderScene() = 0;
     virtual void RenderSkyBox(CShaderProgram *pShaderProgram, const int &cubeMapTextureUnit) = 0;
+};
+
+struct IRenderObject
+{
+    virtual void RenderSkyBox(CShaderProgram *pShaderProgram, const int &cubeMapTextureUnit) = 0;
+    virtual void RenderTerrain(CShaderProgram *pShaderProgram, const bool &useHeightMap, const bool &useTexture) = 0;
+    virtual void RenderBarrel(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
+    virtual void RenderCube(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
+    virtual void RenderSphere(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
+    virtual void RenderTorus(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
+    virtual void RenderTorusKnot(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
 };
 
 struct IPostProcessing {

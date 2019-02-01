@@ -1,18 +1,18 @@
 //
-//  RenderMode.h
+//  LightType.h
 //  ComputerGraphicsWithOpenGL
 //
 //  Created by GEORGE QUENTIN on 28/01/2019.
 //  Copyright © 2019 GEORGE QUENTIN. All rights reserved.
 //
-#pragma once
 
-#ifndef RenderMode_h
-#define RenderMode_h
+#ifndef LightType_h
+#define LightType_h
 
-
-enum RenderMode {
-    
+public enum class LightType {
+    Directional
+    Point,
+    Spot,
 };
 
-#endif /* RenderMode_h */
+#endif /* LightType_h */

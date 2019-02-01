@@ -21,6 +21,11 @@
 #include "OpenAssetImportMesh.h"
 #include "Skybox.h"
 #include "Plane.h"
+#include "HeightMapTerrain.h"
+#include "Cube.h"
+#include "Sphere.h"
+#include "Torus.h"
+#include "TorusKnot.h"
 
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp,
@@ -29,8 +34,13 @@
 class CSkybox;
 class COpenAssetImportMesh;
 class CPlane;
+class CHeightMapTerrain;
+class CCube;
+class CSphere;
+class CTorus;
+class CTorusKnot;
 
-class Game: IGameTimer, IAudio, ICamera, IShaders, IRenderer, IPostProcessing, IHud, IInput {
+class Game: IGameTimer, IAudio, ICamera, ITextures, IShaders, IRenderer, IRenderObject, IPostProcessing, IHud, IInput {
 private:
     
     // Three main methods used in the game.  Initialise runs once, while Update and Render run repeatedly in the game loop.
@@ -50,17 +60,31 @@ private:
     GLfloat m_changeSkybox = true;
     GLint m_skyboxNumber;
     
-    // textures
-    std::vector<CTexture> m_textures;
-    
     // terrain
     CPlane *m_pPlanarTerrain;
-    glm::vec3 m_terrainPosition;
+    CHeightMapTerrain *m_pHeightmapTerrain;
+    float m_heightMapMinHeight, m_heightMapMaxHeight;
     
     //models
     COpenAssetImportMesh * m_pBarrel;
     glm::vec3 m_barrelPosition;
     GLfloat m_barrelRotation;
+    
+    //sphere object
+    CSphere *m_pSphere;
+    glm::vec3 m_spherePosition;
+    
+    //cube object
+    CCube * m_pCube;
+    glm::vec3 m_cubePosition;
+    
+    //torus object
+    CTorus * m_pTorus;
+    glm::vec3 m_torusPosition;
+    
+    //torus knot
+    CTorusKnot * m_pTorusKnot;
+    glm::vec3 m_torusKnotPosition;
 
 public:
     Game();
@@ -86,13 +110,25 @@ protected:
     void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) override;
     void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) override;
     
+    // texture
+    void LoadTextures(const std::string &path) override;
+    CTexture AddTexture(const std::string &textureFile, const int &textureUnit, const bool &gammaCorrection = false) override;
+    
     // shaders
     void LoadShaderPrograms(const std::string &path) override;
     
     // renderer
     void Render() override;
     void RenderScene() override;
+    
+    // render object
     void RenderSkyBox(CShaderProgram *pShaderProgram, const int &cubeMapTextureUnit) override;
+    void RenderTerrain(CShaderProgram *pShaderProgram, const bool &useHeightMap, const bool &useTexture) override;
+    void RenderBarrel(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
+    void RenderCube(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
+    void RenderSphere(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
+    void RenderTorus(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
+    void RenderTorusKnot(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
     
     // post processing
     void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) override;

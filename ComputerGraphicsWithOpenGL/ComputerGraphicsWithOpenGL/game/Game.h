@@ -26,6 +26,7 @@
 #include "Sphere.h"
 #include "Torus.h"
 #include "TorusKnot.h"
+#include "Metaballs.h"
 
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp,
@@ -39,6 +40,7 @@ class CCube;
 class CSphere;
 class CTorus;
 class CTorusKnot;
+class CMetaballs;
 
 class Game: IGameTimer, IAudio, ICamera, ITextures, IShaders, IRenderer, IRenderObject, IPostProcessing, IHud, IInput {
 private:
@@ -85,6 +87,10 @@ private:
     //torus knot
     CTorusKnot * m_pTorusKnot;
     glm::vec3 m_torusKnotPosition;
+    
+    // metal ball
+    CMetaballs *m_pMetaballs;
+    glm::vec3 m_metalballsPosition;
 
 public:
     Game();
@@ -129,6 +135,7 @@ protected:
     void RenderSphere(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
     void RenderTorus(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
     void RenderTorusKnot(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
+    void RenderMetalBalls(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
     
     // post processing
     void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) override;

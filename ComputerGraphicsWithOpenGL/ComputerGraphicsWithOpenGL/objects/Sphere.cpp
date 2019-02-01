@@ -42,13 +42,7 @@ void CSphere::Create(std::string a_sDirectory, std::string a_sFilename, int slic
 		for (int slices = 0; slices <= slicesIn; slices++) {
 			float theta = (slices / (float) slicesIn) * ((float)M_PI * 2);
 			
-            long double cosPhi = Extensions::sciToDouble(std::to_string(cos(phi)));
-            long double cosTheta = Extensions::sciToDouble(std::to_string(cos(theta)));
-            long double sinPhi = Extensions::sciToDouble(std::to_string(sin(phi)));
-            long double sinTheta = Extensions::sciToDouble(std::to_string(sin(theta)));
-            
-            //glm::vec3 v = glm::vec3(cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi));
-			glm::vec3 v = glm::vec3(cosTheta * sinPhi, sinTheta * sinPhi, cosPhi);
+            glm::vec3 v = glm::vec3(cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi));
 			glm::vec2 t = glm::vec2((float)slices / (float) slicesIn, (float)stacks / (float) stacksIn);
 			glm::vec3 n = v;
             

@@ -177,3 +177,19 @@ void Game::RenderTorusKnot(CShaderProgram *pShaderProgram, const GLfloat & scale
     pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
     m_pTorusKnot->Render();
 }
+
+void Game::RenderMetalBalls(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) {
+    // Update the metaballs' positions
+    float time = (float)m_deltaTime / 1000.0f * 2.0f * 3.14159f * 0.5f;
+    m_pMetaballs->Update(time);
+    
+    glm::mat4 model = m_pMetaballs->Model();
+    pShaderProgram->SetUniform("bUseTexture", useTexture);
+    pShaderProgram->SetUniform("matrices.modelMatrix", model);
+    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
+    
+    // Render the metaballs
+    m_pMetaballs->Transform(m_metalballsPosition, glm::vec3(0.0f), glm::vec3(scale));
+    m_pMetaballs->Render(useTexture);
+    
+}

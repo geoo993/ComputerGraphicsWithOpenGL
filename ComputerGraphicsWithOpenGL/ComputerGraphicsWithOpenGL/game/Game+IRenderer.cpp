@@ -22,10 +22,11 @@ void Game::RenderScene(){
     
     CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[3];
     RenderBarrel(pPBRProgram, 30.0f, true);
-    RenderCube(pPBRProgram, 10.0f, false);
-    RenderSphere(pPBRProgram, 20.0f, false);
-    RenderTorus(pPBRProgram, 5.0f, false);
-    RenderTorusKnot(pPBRProgram, 5.0f, false);
+    RenderCube(pPBRProgram, 20.0f, true);
+    RenderSphere(pPBRProgram, 30.0f, true);
+    RenderTorus(pPBRProgram, 5.0f, true);
+    RenderTorusKnot(pPBRProgram, 5.0f, true);
+    RenderMetalBalls(pPBRProgram, 100.0f, true);
     
     // render skybox
     CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[1];

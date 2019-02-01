@@ -67,6 +67,7 @@ struct IRenderObject
     virtual void RenderSphere(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
     virtual void RenderTorus(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
     virtual void RenderTorusKnot(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
+    virtual void RenderMetalBalls(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
 };
 
 struct IPostProcessing {

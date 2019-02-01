@@ -24,7 +24,7 @@ Game::Game()
     // skybox
     m_pSkybox = nullptr;
     m_mapSize = 3000.0f;
-    m_skyboxNumber = 0;
+    m_skyboxNumber = 10;
     m_changeSkybox = false;
     
     //screen and debuging settings
@@ -66,6 +66,10 @@ Game::Game()
     m_pTorusKnot = nullptr;
     m_torusKnotPosition = glm::vec3(130.0f,160.0f,250.0f);
     
+    // metalballs
+    m_pMetaballs = nullptr;
+    m_metalballsPosition = glm::vec3(500.0f,500.0f,0.0f);
+    
     //camera setting
     m_pCamera = nullptr;
     
@@ -100,6 +104,7 @@ Game::~Game()
     delete m_pCube;
     delete m_pTorus;
     delete m_pTorusKnot;
+    delete m_pMetaballs;
     
     if (m_pShaderPrograms != nullptr) {
         for (unsigned int i = 0; i < m_pShaderPrograms->size(); i++)
@@ -127,6 +132,7 @@ void Game::Initialise()
     m_pCube = new CCube(1.0f);
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
+    m_pMetaballs = new CMetaballs;
 }
 
 void Game::LoadResources(const std::string &path)
@@ -157,14 +163,15 @@ void Game::LoadResources(const std::string &path)
     
     m_pBarrel->Load(path+"/models/barrel/barrel02.obj");  // Downloaded from http://www.psionicgames.com/?page_id=24 on 24 Jan 2013
     
-    m_pCube->Create(path+"/textures/woodenBox/", "woodenBox.jpg");
+    m_pCube->Create(path+"/textures/pixarLibrary/wood/", "Figured_rosewood_pxr128.tif");
     
     // Create a sphere
-    m_pSphere->Create(path+"/textures/", "moon_surface.jpg", 50, 50);  // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    m_pSphere->Create(path+"/textures/pixarLibrary/stone", "Gray_granite_pxr128.tif", 50, 50);
     
     m_pTorus->Create(path+"/textures/3912Tex/", "3912-diffuse.jpg");
     
-    m_pTorusKnot->Create(path+"/textures/pattern-design.jpg",
+    m_pTorusKnot->Create(path+"/textures/pixarLibrary/metal/Round_mesh_pxr128.tif",
                          1024,         // in: Number of steps in the torus knot
                          32,           // in: Number of facets
                          20.0f,         // in: Scale of the knot
@@ -177,6 +184,11 @@ void Game::LoadResources(const std::string &path)
                          7.0f,         // in: P parameter of the knot
                          -2.0f         // in: Q parameter of the knot
                          );
+    m_pMetaballs->Create(100.0f, 10, 0, 32, path+"/textures/pixarLibrary/metal/Wire_screen_pxr128.tif");{
+        m_pMetaballs->SetGridSize(50);
+        CMarchingCubes::BuildTables();
+    }
+    
 }
 
 // Update method runs repeatedly with the Render method

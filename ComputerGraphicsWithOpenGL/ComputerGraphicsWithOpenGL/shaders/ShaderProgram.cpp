@@ -77,88 +77,12 @@ uint CShaderProgram::GetProgramID()
 {
     return m_uiProgram;
 }
-/*
- void CShaderProgram::SetMaterialUniform(const std::string &uniformName,
- const float &shininess,
- const float &intensity,
- const glm::vec3 &color
- ){
- SetUniform((uniformName + ".ambientMap").c_str(), 0);
- SetUniform((uniformName + ".normalMap").c_str(), 1);
- SetUniform((uniformName + ".diffuseMap").c_str(), 2);
- SetUniform((uniformName + ".specularMap").c_str(), 3);
- SetUniform((uniformName + ".heightMap").c_str(), 4);
- SetUniform((uniformName + ".shininess").c_str(), shininess);
- SetUniform((uniformName + ".intensity").c_str(), intensity);
- SetUniform((uniformName + ".color").c_str(), color);
- 
- }
- 
- void CShaderProgram::SetDirectionalLightUniform(
- const std::string &uniformName,
- const DirectionalLight& directionalLight,
- const glm::vec3& direction)
- {
- SetUniform((uniformName + ".base.color").c_str(), directionalLight.color);
- SetUniform((uniformName + ".base.intensity").c_str(), directionalLight.intensity);
- SetUniform((uniformName + ".base.power").c_str(), directionalLight.power);
- SetUniform((uniformName + ".base.ambient").c_str(), glm::vec4(0.05f, 0.05f, 0.05f, 1.0f));
- SetUniform((uniformName + ".base.diffuse").c_str(), glm::vec4(0.4f, 0.4f, 0.4f, 1.0f));
- SetUniform((uniformName + ".base.specular").c_str(), glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
- SetUniform((uniformName + ".direction").c_str(), direction);
- 
- }
- 
- void CShaderProgram::SetPointLightUniform(
- const std::string &uniformName,
- const PointLight& pointLight)
- {
- 
- // POINT LIGHT
- SetUniform((uniformName + ".base.color").c_str(), pointLight.color);
- SetUniform((uniformName + ".base.intensity").c_str(), pointLight.intensity);
- SetUniform((uniformName + ".base.power").c_str(), pointLight.power);
- SetUniform((uniformName + ".base.ambient").c_str(), glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
- SetUniform((uniformName + ".base.diffuse").c_str(), glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
- SetUniform((uniformName + ".base.specular").c_str(), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
- SetUniform((uniformName + ".atten.constant").c_str(), pointLight.atten.constant);
- SetUniform((uniformName + ".atten.linear").c_str(), pointLight.atten.linear);
- SetUniform((uniformName + ".atten.exponent").c_str(), pointLight.atten.exponent);
- SetUniform((uniformName + ".position").c_str(), pointLight.position);
- SetUniform((uniformName + ".range").c_str(), pointLight.range);
- 
- 
- }
- 
- void CShaderProgram::SetSpotLightUniform(
- const std::string &uniformName,
- const SpotLight& spotLight,
- const glm::vec3& direction)
- {
- // SPOT LIGHT
- SetUniform((uniformName + ".pointLight.base.color").c_str(), spotLight.color);
- SetUniform((uniformName + ".pointLight.base.intensity").c_str(), spotLight.intensity);
- SetUniform((uniformName + ".pointLight.base.power").c_str(), spotLight.power);
- SetUniform((uniformName + ".pointLight.base.ambient").c_str(), glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
- SetUniform((uniformName + ".pointLight.base.diffuse").c_str(), glm::vec4(1.0f, 1.0f, 1.0f, 1.f));
- SetUniform((uniformName + ".pointLight.base.specular").c_str(), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
- SetUniform((uniformName + ".pointLight.atten.constant").c_str(), spotLight.atten.constant);
- SetUniform((uniformName + ".pointLight.atten.linear").c_str(), spotLight.atten.linear);
- SetUniform((uniformName + ".pointLight.atten.exponent").c_str(), spotLight.atten.exponent);
- SetUniform((uniformName + ".pointLight.position").c_str(), spotLight.position );
- SetUniform((uniformName + ".pointLight.range").c_str(), spotLight.range);
- SetUniform((uniformName + ".direction").c_str(), direction );
- SetUniform((uniformName + ".cutOff").c_str(), spotLight.cutOff);
- SetUniform((uniformName + ".outerCutOff").c_str(), spotLight.outerCutOff);
- 
- }
- */
 
 // A collection of functions to set uniform variables inside shaders
 
 // Setting Uniform Buffer Objects
 
-void CShaderProgram::SetUniformBlock(std::string uniformName, const int &bindingPoint)
+void CShaderProgram::SetUniformBlock(std::string uniformName, const GLint &bindingPoint)
 {
     //    unsigned int iLoc = glGetUniformBlockIndex(GetProgramID(), uniformName.c_str());
     //    glUniformBlockBinding(GetProgramID(), iLoc, bindingPoint);
@@ -169,13 +93,13 @@ void CShaderProgram::SetUniformBlock(std::string uniformName, const int &binding
 
 // Setting floats
 
-void CShaderProgram::SetUniform(std::string sName, float* fValues, int iCount)
+void CShaderProgram::SetUniform(std::string sName, GLfloat * fValues, const GLint & iCount)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniform1fv(iLoc, iCount, fValues);
 }
 
-void CShaderProgram::SetUniform(std::string sName, const float fValue)
+void CShaderProgram::SetUniform(std::string sName, const GLfloat &fValue)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniform1fv(iLoc, 1, &fValue);
@@ -183,13 +107,11 @@ void CShaderProgram::SetUniform(std::string sName, const float fValue)
 
 // Setting vectors
 
-void CShaderProgram::SetUniform(std::string sName, glm::vec2* vVectors, int iCount)
+void CShaderProgram::SetUniform(std::string sName, glm::vec2* vVectors, const GLint & iCount)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniform2fv(iLoc, iCount, (GLfloat*)vVectors);
-    
 }
-
 
 void CShaderProgram::SetUniform(std::string sName, const glm::vec2 vVector)
 {
@@ -197,7 +119,7 @@ void CShaderProgram::SetUniform(std::string sName, const glm::vec2 vVector)
     glUniform2fv(iLoc, 1, (GLfloat*)&vVector);
 }
 
-void CShaderProgram::SetUniform(std::string sName, glm::vec3* vVectors, int iCount)
+void CShaderProgram::SetUniform(std::string sName, glm::vec3* vVectors, const GLint & iCount)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniform3fv(iLoc, iCount, (GLfloat*)vVectors);
@@ -209,7 +131,7 @@ void CShaderProgram::SetUniform(std::string sName, const glm::vec3 vVector)
     glUniform3fv(iLoc, 1, (GLfloat*)&vVector);
 }
 
-void CShaderProgram::SetUniform(std::string sName, glm::vec4* vVectors, int iCount)
+void CShaderProgram::SetUniform(std::string sName, glm::vec4* vVectors, const GLint & iCount)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniform4fv(iLoc, iCount, (GLfloat*)vVectors);
@@ -223,7 +145,7 @@ void CShaderProgram::SetUniform(std::string sName, const glm::vec4 vVector)
 
 // Setting 3x3 matrices
 
-void CShaderProgram::SetUniform(std::string sName, glm::mat3* mMatrices, int iCount)
+void CShaderProgram::SetUniform(std::string sName, glm::mat3* mMatrices, const GLint & iCount)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniformMatrix3fv(iLoc, iCount, false, (GLfloat*)mMatrices);
@@ -237,7 +159,7 @@ void CShaderProgram::SetUniform(std::string sName, const glm::mat3 mMatrix)
 
 // Setting 4x4 matrices
 
-void CShaderProgram::SetUniform(std::string sName, glm::mat4* mMatrices, int iCount)
+void CShaderProgram::SetUniform(std::string sName, glm::mat4* mMatrices, const GLint & iCount)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniformMatrix4fv(iLoc, iCount, false, (GLfloat*)mMatrices);
@@ -251,13 +173,13 @@ void CShaderProgram::SetUniform(std::string sName, const glm::mat4 mMatrix)
 
 // Setting integers
 
-void CShaderProgram::SetUniform(std::string sName, int* iValues, int iCount)
+void CShaderProgram::SetUniform(std::string sName, GLint * iValues, const GLint & iCount)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniform1iv(iLoc, iCount, iValues);
 }
 
-void CShaderProgram::SetUniform(std::string sName, const int iValue)
+void CShaderProgram::SetUniform(std::string sName, const GLint &iValue)
 {
     int iLoc = glGetUniformLocation(m_uiProgram, sName.c_str());
     glUniform1i(iLoc, iValue);

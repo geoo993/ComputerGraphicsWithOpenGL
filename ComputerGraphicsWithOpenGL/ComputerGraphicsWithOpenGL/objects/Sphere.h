@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Extensions.h"
 #include "Texture.h"
 #include "VertexBufferObjectIndexed.h"
 #include "GameObject.h"

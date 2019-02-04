@@ -21,6 +21,10 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("TerrainShader.frag");
     sShaderFileNames.push_back("PhysicallyBasedRenderingShader.vert");//3
     sShaderFileNames.push_back("PhysicallyBasedRenderingShader.frag");
+    sShaderFileNames.push_back("LampShader.vert");//4
+    sShaderFileNames.push_back("LampShader.frag");
+    sShaderFileNames.push_back("LightShader.vert");//5
+    sShaderFileNames.push_back("LightShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -68,6 +72,22 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pPBRProgram->AddShaderToProgram(&shShaders[7]);
     pPBRProgram->LinkProgram();
     m_pShaderPrograms->push_back(pPBRProgram);
+    
+    // Create the Lamp shader program
+    CShaderProgram *pLampProgram = new CShaderProgram;
+    pLampProgram->CreateProgram();
+    pLampProgram->AddShaderToProgram(&shShaders[8]);
+    pLampProgram->AddShaderToProgram(&shShaders[9]);
+    pLampProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pLampProgram);
+    
+    // Create the Light shader program
+    CShaderProgram *pLightProgram = new CShaderProgram;
+    pLightProgram->CreateProgram();
+    pLightProgram->AddShaderToProgram(&shShaders[10]);
+    pLightProgram->AddShaderToProgram(&shShaders[11]);
+    pLightProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pLightProgram);
  
 }
 

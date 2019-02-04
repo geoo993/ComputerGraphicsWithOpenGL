@@ -29,6 +29,12 @@ void Game::InitialiseCamera(const GLuint &width, const GLuint &height, const glm
     
 }
 
+void Game::SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform(uniformName+".position", camera->GetPosition());
+    pShaderProgram->SetUniform(uniformName+".front", camera->GetForward());
+}
+
 void Game::UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) {
     // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
     m_pCamera->Update(m_gameWindow.GetWindow(), deltaTime, keyPressed, true, mouseMove);

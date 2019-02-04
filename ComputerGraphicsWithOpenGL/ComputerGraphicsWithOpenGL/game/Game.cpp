@@ -5,21 +5,76 @@
 // Constructor
 Game::Game()
 {
-    // game time
+    // game timer
     m_pGameTimer = nullptr;
+    m_timeInSeconds = 0.0f;
+    m_timeInMilliSeconds = 0.0f;
+    m_timePerSecond = 0.0f;
+    m_deltaTime = 0.5f;
+    m_elapsedTime = 0.0f;
+    m_framesPerSecond = 0;
+    m_frameCount = 0;
+    
+    //audio settings
+    m_pAudio = nullptr;
+    m_audioNumber = 0;
+    m_changeAudio = false;
+    m_audioFiles.reserve(10);
+    
+    //camera setting
+    m_pCamera = nullptr;
+    
+    // materials
+    m_materialShininess = 32.0f;
+    
+    //textures settings
+    m_textures.reserve(50);
     
     // shader programs
     m_pShaderPrograms = nullptr;
     
-    // hud
-    m_enableHud = true;
-    m_pFtFont = nullptr;
+    // lights
+    m_pLamp = nullptr;
+    m_ambient = 0.2f;
+    m_diffuse = 0.7f;
+    m_specular = 0.8f;
     
-    // terrain
-    m_pPlanarTerrain = nullptr;
-    m_pHeightmapTerrain = nullptr;
-    m_heightMapMinHeight = 0.0f ;
-    m_heightMapMaxHeight = 100.0f;
+    // Attenuation
+    m_constant = 1.0f;
+    m_linear = 0.09f;
+    m_exponent = 0.32f;
+    
+    // Dir Light
+    m_dirColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    m_dirIntensity = 0.8f;
+    m_directionalLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f),
+    
+    // Point Light
+    m_pointIntensity = 1500.5f;
+    m_pointLightPositionsIndex = 0;
+    m_pointLightPositions = {
+        glm::vec3(  100.0f,  400.0f,  50.0f      ),
+        glm::vec3(  226.0f,  583.0f,  -32.0f      ),
+        glm::vec3(  -335.7f,  550.2f,  122.0f      ),
+        glm::vec3(  102.3f, 663.3f, -44.0f      ),
+        glm::vec3(  -224.0f,  612.0f, -312.0f    ),
+        glm::vec3(  420.0f,  620.0f, -233.0f      )
+    };
+    
+    m_pointLightColors = {
+        glm::vec3(  1.0f,  0.0f,  0.9f      ),
+        glm::vec3(  0.1f,  0.9f,  0.8f      ),
+        glm::vec3(  1.0f,  1.0f,  0.0f      ),
+        glm::vec3(  0.1f, 0.9f, 0.0f      ),
+        glm::vec3(  0.0f,  0.0f, 1.0f    ),
+        glm::vec3(  1.0f,  0.0f, 0.1f      )
+    };
+    
+    // Spot Light
+    m_spotColor = glm::vec3(1.0f, 1.0f, 1.0f);;
+    m_spotIntensity = 1500.4f;
+    m_spotCutOff = 12.5f;
+    m_spotOuterCutOff = 18.0f;
     
     // skybox
     m_pSkybox = nullptr;
@@ -27,23 +82,11 @@ Game::Game()
     m_skyboxNumber = 10;
     m_changeSkybox = false;
     
-    //screen and debuging settings
-    m_framesPerSecond = 0;
-    m_frameCount = 0;
-    m_elapsedTime = 0.0f;
-    m_deltaTime = 0.5f;
-    m_timeInSeconds = 0.0f;
-    m_timeInMilliSeconds = 0.0f;
-    m_timePerSecond = 0.0f;
-    
-    //audio settings
-    m_pAudio = nullptr;
-    m_audioNumber = 0;
-    m_changeAudio = false;
-    m_audioFiles.reserve(5);
-    
-    //textures settings
-    m_textures.reserve(50);
+    // terrain
+    m_pPlanarTerrain = nullptr;
+    m_pHeightmapTerrain = nullptr;
+    m_heightMapMinHeight = 0.0f ;
+    m_heightMapMaxHeight = 100.0f;
     
     //models
     m_pBarrel = nullptr;
@@ -58,6 +101,21 @@ Game::Game()
     m_pCube = nullptr;
     m_cubePosition = glm::vec3(20.0f,120.0f, -50.0f);
     
+    // woodenBox
+    m_pWoodenBox = nullptr;
+    m_woodenBoxesColor = glm::vec3(0.5f, 0.6f, 0.1f);
+    m_woodenBoxesUseTexture = true;
+    m_woodenBoxesPosition = {
+        glm::vec3(  -186.0f,  593.0f,  -132.0f   ),
+        glm::vec3(  -135.7f,  550.2f,  322.0f   ),
+        glm::vec3(  52.3f, 523.3f, -44.0f      ),
+        glm::vec3(  -24.0f,  452.0f, -112.0f    ),
+        glm::vec3(  220.0f,  620.0f, -133.0f    ),
+        glm::vec3(  -152.3f, 663.3f, -74.0f  ),
+        glm::vec3(  224.0f,  572.0f, 12.0f   ),
+        glm::vec3(  -220.0f,  610.0f, 133.0f  )
+    };
+    
     //torus object
     m_pTorus = nullptr;
     m_torusPosition = glm::vec3(-160.0f,30.0f,150.0f);
@@ -70,8 +128,12 @@ Game::Game()
     m_pMetaballs = nullptr;
     m_metalballsPosition = glm::vec3(500.0f,500.0f,0.0f);
     
-    //camera setting
-    m_pCamera = nullptr;
+    // post processing
+    m_currentPPFXMode = PostProcessingEffectMode::DefaultFrameBuffer;
+    
+    // hud
+    m_enableHud = true;
+    m_pFtFont = nullptr;
     
     // inputs
     m_mouseButtonDown = false;
@@ -85,8 +147,6 @@ Game::Game()
     m_lastKeyPress = -1;
     m_isKeyPressRestriction = true;
     
-    // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::DefaultFrameBuffer;
 }
 
 // Destructor
@@ -99,9 +159,11 @@ Game::~Game()
     delete m_pSkybox;
     delete m_pPlanarTerrain;
     delete m_pHeightmapTerrain;
+    delete m_pLamp;
     delete m_pBarrel;
     delete m_pSphere;
     delete m_pCube;
+    delete m_pWoodenBox;
     delete m_pTorus;
     delete m_pTorusKnot;
     delete m_pMetaballs;
@@ -127,9 +189,11 @@ void Game::Initialise()
     m_pSkybox = new CSkybox;
     m_pPlanarTerrain = new CPlane;
     m_pHeightmapTerrain = new CHeightMapTerrain;
+    m_pLamp = new CCube(1.0f);
     m_pBarrel = new COpenAssetImportMesh;
     m_pSphere = new CSphere;
     m_pCube = new CCube(1.0f);
+    m_pWoodenBox = new CCube(1.0f);
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
     m_pMetaballs = new CMetaballs;
@@ -151,23 +215,31 @@ void Game::LoadResources(const std::string &path)
     // Create the heightmap terrain
     m_pHeightmapTerrain->Create((path+"/textures/terrain/heightmap4.bmp").c_str(),
                                 {
-                                    path+"/textures/terrain/sand.png",
-                                    path+"/textures/terrain/patchygrass.png",
-                                    path+"/textures/terrain/stone.png",
-                                    path+"/textures/terrain/snow.png",
+                                    path+"/textures/terrain/sand.png", // ambientMap 0
+                                    path+"/textures/terrain/patchygrass.png", // normalMap 1
+                                    path+"/textures/terrain/stone.png", // diffuseMap 2
+                                    path+"/textures/terrain/snow.png", // specularMap 4
                                 },
                                 glm::vec3(0, 0, 0),
                                 m_mapSize,
                                 m_mapSize,
                                 200.0f);
+    m_pLamp->Create(path+"/textures/woodenBox/", "woodenBoxDiffuse.png");
     
     m_pBarrel->Load(path+"/models/barrel/barrel02.obj");  // Downloaded from http://www.psionicgames.com/?page_id=24 on 24 Jan 2013
     
-    m_pCube->Create(path+"/textures/pixarLibrary/wood/", "Figured_rosewood_pxr128.tif");
+    m_pCube->Create(path+"/textures/woodenBox/", "woodenBoxDiffuse.png");
+    
+    m_pWoodenBox->Create(path+"/textures/woodenBox/",
+    {   "woodDiffuse.jpg",          // ambientMap 0
+        "woodNormal.jpg",           // normalMap 1
+        "woodenBoxDiffuse.png",     // diffuseMap 2
+        "woodenBoxSpecular.png"     // specularMap 4
+    });
     
     // Create a sphere
     // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
-    m_pSphere->Create(path+"/textures/pixarLibrary/stone", "Gray_granite_pxr128.tif", 50, 50);
+    m_pSphere->Create(path+"/textures/pixarLibrary/stone/", "Gray_granite_pxr128.tif", 50, 50);
     
     m_pTorus->Create(path+"/textures/3912Tex/", "3912-diffuse.jpg");
     
@@ -252,7 +324,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     
     Initialise();
     InitialiseFrameBuffers(width, height);
-    InitialiseCamera(width, height, glm::vec3(1.0f, 230.0f, 100.0f));
+    InitialiseCamera(width, height, glm::vec3(100.0f, 430.0f, 300.0f));
     InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);

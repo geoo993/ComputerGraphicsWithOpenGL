@@ -10,12 +10,16 @@
  */
 
 // Structure holding material information:  its ambient, diffuse, and specular colours, and shininess
-uniform struct MaterialInfo
+uniform struct Material
 {
     sampler2D ambientMap;  // ambient map
     sampler2D normalMap;   // normal map
     sampler2D diffuseMap;  // diffuse map
     sampler2D specularMap; // specular map
+    
+    vec3 color;
+    float shininess;
+    float power;
 } material;
 
 uniform float fMinHeight, fMaxHeight;
@@ -32,8 +36,8 @@ in VS_OUT
     vec2 vTexCoord;    // Texture coordinate
     vec3 vLocalPosition;
     vec3 vLocalNormal;
-    vec3 vEyePosition;
-    vec3 vEyeNormal;
+    vec3 vWorldPosition;
+    vec3 vWorldNormal;
 } fs_in;
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
@@ -46,8 +50,6 @@ void main()
     vec4 vTexColour1 = texture(material.normalMap, fs_in.vTexCoord);
     vec4 vTexColour2 = texture(material.diffuseMap, fs_in.vTexCoord);
     vec4 vTexColour3 = texture(material.specularMap, fs_in.vTexCoord);
-    
-    vec3 vColour = normalize(fs_in.vEyeNormal);
     
     vec4 vTexColour;
 
@@ -70,6 +72,7 @@ void main()
         if (bUseTexture) {
             vOutputColour = vTexColour;
         }else{
+            vec3 vColour = normalize(fs_in.vWorldNormal);
             vOutputColour = vec4(vColour, 1.0f);
         }
     }

@@ -280,7 +280,7 @@ void CGameWindow::PreRendering(){
     
     // configure global opengl states
     
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f); // Set background color to black
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f); // Set background color to black
     
     /* // https://www.khronos.org/opengl/wiki/Multisampling
      Multisampling, also known as multisample antialiasing (MSAA), is one method for achieving full-screen antialiasing (FSAA). With multisampling, each pixel at the edge of a polygon is sampled multiple times. For each sample-pass, a slight offset is applied to all screen coordinates.
@@ -521,7 +521,7 @@ void CGameWindow::PreRendering(){
     // Now that we know how to set the winding order of the vertices we can start using OpenGL's face culling option which is disabled by default.
     // To enable face culling we only have to enable OpenGL's GL_CULL_FACE option:
     
-    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);//only front facing poligons are rendered, for faces having a clock wise or counter clock wise order
     // GL_CULL_FACE is to be enabled for performance reasons, as it easily removes half of the triangles to draw, normally without visual artifacts if your geometry is watertight, and CCW.
     
     // OpenGL allows us to change the type of face we want to cull as well. What if we want to cull front faces and not the back faces? We can define this behavior by calling glCullFace:
@@ -557,7 +557,7 @@ void CGameWindow::PostRendering()
 void CGameWindow::ClearBuffers(){
 
     // Clear the buffers and enable depth testing (z-buffering) or stencil testing
-    glClearColor(0.2f, 0.9f, 0.2f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     //// CLEAR Buffers, The default clear value for the depth is 1.0f, which is equal to the depth of your far clipping plane
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); ////<-- CLEAR WINDOW
     glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer

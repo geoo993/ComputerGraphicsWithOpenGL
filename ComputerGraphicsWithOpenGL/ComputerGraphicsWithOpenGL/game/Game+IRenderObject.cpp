@@ -38,10 +38,6 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram, const int &cubeMapTextur
 void Game::RenderTerrain(CShaderProgram *pShaderProgram, const bool &useHeightMap, const bool &useTexture) {
     
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("material.ambientMap", 0);
-    pShaderProgram->SetUniform("material.normalMap", 1);
-    pShaderProgram->SetUniform("material.diffuseMap", 2);
-    pShaderProgram->SetUniform("material.specularMap", 3);
     pShaderProgram->SetUniform("bUseHeightMap", useHeightMap);
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("fMinHeight", m_heightMapMinHeight);
@@ -95,6 +91,7 @@ void Game::RenderBarrel(CShaderProgram *pShaderProgram, const GLfloat & scale, c
     m_pBarrel->Render();
     
 }
+
 void Game::RenderCube(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) {
     glm::vec3 position = m_cubePosition;
     if (m_pHeightmapTerrain->IsHeightMapRendered()) {
@@ -113,6 +110,27 @@ void Game::RenderCube(CShaderProgram *pShaderProgram, const GLfloat & scale, con
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
     pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
     m_pCube->Render();
+}
+
+void Game::RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
+                           const GLfloat & angle, const bool &useTexture) {
+    glm::vec3 pos = position;
+    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
+        pos = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
+    }
+    
+    m_pWoodenBox->Transform(pos, glm::vec3(1.0f, angle, 1.0f), glm::vec3(scale));
+    
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseTexture", useTexture);
+    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
+    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    
+    glm::mat4 model = m_pWoodenBox->Model();
+    pShaderProgram->SetUniform("matrices.modelMatrix", model);
+    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
+    m_pWoodenBox->Render();
+
 }
 
 void Game::RenderSphere(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) {

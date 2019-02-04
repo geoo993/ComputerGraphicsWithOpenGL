@@ -17,20 +17,37 @@ void Game::RenderScene(){
     glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
     
     // Use terrain shader program
-    CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[2];
-    RenderTerrain(pTerrainProgram, true, true);
+    //CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[2];
+    //SetMaterialUniform(pTerrainProgram, "material");
+    //RenderTerrain(pTerrainProgram, true, true);
     
-    CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[3];
-    RenderBarrel(pPBRProgram, 30.0f, true);
-    RenderCube(pPBRProgram, 20.0f, true);
-    RenderSphere(pPBRProgram, 30.0f, true);
-    RenderTorus(pPBRProgram, 5.0f, true);
-    RenderTorusKnot(pPBRProgram, 5.0f, true);
-    RenderMetalBalls(pPBRProgram, 100.0f, true);
+    CShaderProgram *pLampProgram = (*m_pShaderPrograms)[4];
+    for (unsigned int i = 0; i < m_pointLightPositions.size(); i++) {
+        RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f, m_pointLightColors[i]);
+    }
+    
+    CShaderProgram *pLightProgram = (*m_pShaderPrograms)[5];
+    for ( GLuint i = 0; i < m_woodenBoxesPosition.size(); ++i){
+        GLfloat angle = 20.0f * (GLfloat)i;
+        SetCameraUniform(pLightProgram, "camera", m_pCamera);
+        SetMaterialUniform(pLightProgram, "material", m_woodenBoxesColor, m_materialShininess);
+        SetLightUniform(pLightProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot);
+        RenderWoodenBox(pLightProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_woodenBoxesUseTexture);
+    }
+    
+    RenderLight(pLightProgram, m_pCamera);
+    
+    //CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[3];
+    //RenderBarrel(pPBRProgram, 30.0f, true);
+    //RenderCube(pPBRProgram, 20.0f, true);
+    //RenderSphere(pPBRProgram, 30.0f, true);
+    //RenderTorus(pPBRProgram, 5.0f, false);
+    //RenderTorusKnot(pPBRProgram, 5.0f, true);
+    //RenderMetalBalls(pPBRProgram, 100.0f, true);
     
     // render skybox
-    CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[1];
-    RenderSkyBox(pSkyBoxProgram, CUBEMAPTEXTUREUNIT);
+    //CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[1];
+    //RenderSkyBox(pSkyBoxProgram, CUBEMAPTEXTUREUNIT);
     
 }
 

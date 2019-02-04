@@ -80,43 +80,93 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
                
                 break;
             case GLFW_KEY_1 :   
-                
+                m_materialShininess -= 1.0f;
                 break;
             case GLFW_KEY_2:
-               
+                m_materialShininess += 10.0f;
                 break;
             case GLFW_KEY_3:
-                
+                m_dirIntensity -= 10.0f;
                 break;
             case GLFW_KEY_4:
-                
+                m_dirIntensity += 10.0f;
                 break;
             case GLFW_KEY_5:
-                
+                m_pointIntensity -= 10.0f;
                 break;
             case GLFW_KEY_6:
-                
+                m_pointIntensity += 10.0f;
                 break;
             case GLFW_KEY_7:
-                
+                m_spotIntensity -= 10.0f;
                 break;
             case GLFW_KEY_8: 
-                
+                m_spotIntensity += 10.0f;
                 break;
             case GLFW_KEY_9:
-               
+                m_woodenBoxesUseTexture = !m_woodenBoxesUseTexture;
                 break;
             case GLFW_KEY_0:
-                
+                m_useDir = !m_useDir;
                 break;
             case GLFW_KEY_MINUS:
-                
+                m_usePoint = !m_usePoint;
                 break;
             case GLFW_KEY_EQUAL:
-                
+                m_useSpot = !m_useSpot;
+                break;
+            case GLFW_KEY_Q:
+                m_useSmoothSpot = !m_useSmoothSpot;
+                break;
+            case GLFW_KEY_E:
+                m_ambient -= 0.2f;
+                break;
+            case GLFW_KEY_R:
+                m_ambient += 0.2f;
+                break;
+            case GLFW_KEY_T:
+                m_diffuse -= 0.2f;
+                break;
+            case GLFW_KEY_Y:
+                m_diffuse += 0.2f;
+                break;
+            case GLFW_KEY_U:
+                m_specular -= 0.2f;
+                break;
+            case GLFW_KEY_I:
+                m_specular += 0.2f;
+                break;
+            case GLFW_KEY_O:
+                m_spotCutOff -= 0.2f;
+                break;
+            case GLFW_KEY_P:
+                m_spotCutOff += 0.2f;
+                break;
+            case GLFW_KEY_LEFT_BRACKET:
+                m_spotOuterCutOff -= 0.2f;
+                break;
+            case GLFW_KEY_RIGHT_BRACKET:
+                m_spotOuterCutOff += 0.2f;
+                break;
+            case GLFW_KEY_F:
+                m_constant -= 0.2f;
+                break;
+            case GLFW_KEY_G:
+                m_constant += 0.2f;
+                break;
+            case GLFW_KEY_H:
+                m_linear -= 0.2f;
+                break;
+            case GLFW_KEY_J:
+                m_linear += 0.2f;
+                break;
+            case GLFW_KEY_K:
+                m_exponent -= 0.2f;
+                break;
+            case GLFW_KEY_L:
+                m_exponent += 0.2f;
                 break;
             case GLFW_KEY_GRAVE_ACCENT:
-                
                 break;
             case GLFW_KEY_Z:
                 break;
@@ -131,32 +181,6 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_N:
                 break;
             case GLFW_KEY_M:
-                break;
-            case GLFW_KEY_R:
-                break;
-            case GLFW_KEY_T:
-                break;
-            case GLFW_KEY_Y:
-                break;
-            case GLFW_KEY_U:
-                break;
-            case GLFW_KEY_O:
-                break;
-            case GLFW_KEY_P:
-                break;
-            case GLFW_KEY_I:
-                break;
-            case GLFW_KEY_K:
-                break;
-            case GLFW_KEY_J:
-                break;
-            case GLFW_KEY_L:
-                break;
-            case GLFW_KEY_G:
-                break;
-            case GLFW_KEY_H:
-                break;
-            case GLFW_KEY_Q:
                 break;
             case GLFW_KEY_COMMA:
                 m_skyboxNumber = (m_skyboxNumber + 1) % 14;

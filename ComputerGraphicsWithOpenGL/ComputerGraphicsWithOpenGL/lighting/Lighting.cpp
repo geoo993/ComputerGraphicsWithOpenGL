@@ -15,15 +15,15 @@ BaseLight::~BaseLight()
 
 }
 
-DirectionalLight::DirectionalLight(const glm::vec3 & color, float intensity, float power) :
-BaseLight(color, intensity, power)
+DirectionalLight::DirectionalLight(const glm::vec3 & color, GLfloat intensity) :
+BaseLight(color, intensity)
 {
-    //SetShader(new Shader("forward-directional"));
+    
 }
 
-PointLight::PointLight(const glm::vec3 & color, float intensity, float power, const Attenuation& atten, const glm::vec3 & position) :
-BaseLight(color, intensity, power),
-atten(atten), position(position), range(0)
+PointLight::PointLight(const glm::vec3 & color, GLfloat intensity, const Attenuation& attenuation, const glm::vec3 & position) :
+BaseLight(color, intensity),
+attenuation(attenuation), position(position), range(0)
 {
     std::vector<GLfloat> colorVec = {
         color.x,
@@ -32,22 +32,20 @@ atten(atten), position(position), range(0)
     };
     GLfloat colorMax = *max_element(colorVec.begin(), colorVec.end());
 
-    GLfloat a = atten.exponent;
-    GLfloat b = atten.linear;
-    GLfloat c = atten.constant - COLOR_DEPTH * intensity * colorMax;
+    GLfloat a = attenuation.exponent;
+    GLfloat b = attenuation.linear;
+    GLfloat c = attenuation.constant - COLOR_DEPTH * intensity * colorMax;
 
     this->range = GLfloat(-b + sqrtf(b * b - 4.0f * a * c)) / ( 2.0f * a);
-
-    //SetShader(new Shader("forward-point"));
 }
 
-SpotLight::SpotLight(const glm::vec3 & color, float intensity, float power, const Attenuation& atten,
+SpotLight::SpotLight(const glm::vec3 & color, GLfloat intensity, const Attenuation& attenuation,
                      const glm::vec3 & position,
-                     float cutOff, float outerCutOff) :
-PointLight(color, intensity, power, atten, position),
+                     GLfloat cutOff, GLfloat outerCutOff) :
+PointLight(color, intensity, attenuation, position),
 cutOff(cutOff),
 outerCutOff(outerCutOff)
 {
-    //SetShader(new Shader("forward-spot"));
+    
 }
 

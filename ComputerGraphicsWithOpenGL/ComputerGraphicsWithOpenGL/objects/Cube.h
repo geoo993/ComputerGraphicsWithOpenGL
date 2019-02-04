@@ -4,7 +4,6 @@
 #ifndef Cube_h
 #define Cube_h
 
-#include "Extensions.h"
 #include "Texture.h"
 #include "VertexBufferObject.h"
 #include "GameObject.h"

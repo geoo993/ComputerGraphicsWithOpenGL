@@ -55,8 +55,8 @@ out VS_OUT
     vec2 vTexCoord;    // Texture coordinate
     vec3 vLocalPosition;
     vec3 vLocalNormal;
-    vec3 vEyePosition;
-    vec3 vEyeNormal;
+    vec3 vWorldPosition;
+    vec3 vWorldNormal;
 } vs_out;
 
 // This is the entry point into the vertex shader
@@ -70,10 +70,10 @@ void main()
     
     // Get the vertex normal and vertex position in eye coordinates
     //mat3 normalMatrix = transpose(inverse(mat3(model)));
-    vs_out.vEyeNormal = normalize(matrices.normalMatrix * inNormal);
+    vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
     vs_out.vLocalNormal = inNormal;
     
-    vs_out.vEyePosition = vec3(matrices.modelMatrix * position);
+    vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
     vs_out.vLocalPosition = inPosition;
     
     // Transform the vertex spatial position using

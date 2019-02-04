@@ -597,6 +597,9 @@ public:
         
         return (d);
     }
+    
+    // boolean to string conversions
+    static const char * const BoolToString(bool b){ return b ? "true" : "false"; }
 
 };
 

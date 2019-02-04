@@ -14,6 +14,7 @@
 #include "Common.h"
 
 // Setup includes
+#include "Extensions.h"
 #include "GameWindow.h"
 #include "GameManager.h"
 #include "MatrixStack.h"
@@ -42,7 +43,7 @@ class CTorus;
 class CTorusKnot;
 class CMetaballs;
 
-class Game: IGameTimer, IAudio, ICamera, ITextures, IShaders, IRenderer, IRenderObject, IPostProcessing, IHud, IInput {
+class Game: IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IInput {
 private:
     
     // Three main methods used in the game.  Initialise runs once, while Update and Render run repeatedly in the game loop.
@@ -80,6 +81,15 @@ private:
     CCube * m_pCube;
     glm::vec3 m_cubePosition;
     
+    // woodenBox
+    CCube *m_pWoodenBox;
+    GLboolean m_woodenBoxesUseTexture;
+    glm::vec3 m_woodenBoxesColor;
+    vector<glm::vec3> m_woodenBoxesPosition;
+    
+    // lamp
+    CCube *m_pLamp;
+    
     //torus object
     CTorus * m_pTorus;
     glm::vec3 m_torusPosition;
@@ -99,10 +109,7 @@ public:
     ~Game();
     
     void Execute(const std::string &filepath, const GLuint &width, const GLuint &height);
-    
-    // boolean to string conversions
-    inline const char * const BoolToString(bool b){ return b ? "true" : "false"; }
-
+   
 protected:
     
     // game timer
@@ -114,7 +121,12 @@ protected:
     
     // camera
     void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) override;
+    void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) override;
     void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) override;
+    
+    // materials
+    void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                            const glm::vec3 &color = glm::vec3(1.0f), const GLfloat &shininess = 32.0f) override;
     
     // texture
     void LoadTextures(const std::string &path) override;
@@ -122,6 +134,17 @@ protected:
     
     // shaders
     void LoadShaderPrograms(const std::string &path) override;
+    
+    // lights
+    void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
+                         const GLboolean &useSpot, const GLboolean &smoothSpot) override;
+    void SetBaseLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const BaseLight & baseLight) override;
+    void SetDirectionalLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                                    const DirectionalLight& directionalLight, const glm::vec3& direction) override;
+    void SetPointLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const PointLight& pointLight) override;
+    void SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const SpotLight& spotLight, CCamera *camera) override;
+    void RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) override;
+    void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale, const glm::vec3 & color) override;
     
     // renderer
     void Render() override;
@@ -132,6 +155,8 @@ protected:
     void RenderTerrain(CShaderProgram *pShaderProgram, const bool &useHeightMap, const bool &useTexture) override;
     void RenderBarrel(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
     void RenderCube(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
+    void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
+                         const GLfloat & angle, const bool &useTexture) override;
     void RenderSphere(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
     void RenderTorus(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;
     void RenderTorusKnot(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) override;

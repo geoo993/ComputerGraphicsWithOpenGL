@@ -14,6 +14,7 @@
 #include "FreeTypeFont.h"
 #include "Audio.h"
 #include "PostProcessingEffectMode.h"
+#include "Lighting.h"
 
 struct IGameTimer
 {
@@ -37,7 +38,14 @@ struct ICamera
 {
     CCamera *m_pCamera;
     virtual void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) = 0;
+    virtual void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) = 0;
     virtual void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) = 0;
+};
+
+struct IMaterials {
+    GLfloat m_materialShininess;
+    virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                                    const glm::vec3 &color, const GLfloat &shininess) = 0;
 };
 
 struct ITextures {
@@ -49,6 +57,50 @@ struct ITextures {
 struct IShaders {
     std::vector <CShaderProgram *> *m_pShaderPrograms;
     virtual void LoadShaderPrograms(const std::string &path) = 0;
+};
+
+struct ILights
+{
+    // Light
+    GLfloat m_ambient;
+    GLfloat m_diffuse;
+    GLfloat m_specular;
+    
+    // Attenuation
+    GLfloat m_constant;
+    GLfloat m_linear;
+    GLfloat m_exponent;
+    
+    // Directional Light
+    GLboolean m_useDir;
+    glm::vec3 m_dirColor;
+    GLfloat m_dirIntensity;
+    glm::vec3 m_directionalLightDirection;
+    
+    // Point Light
+    GLboolean m_usePoint;
+    GLfloat m_pointIntensity;
+    GLuint m_pointLightPositionsIndex = 0;
+    vector<glm::vec3> m_pointLightPositions;
+    std::vector<glm::vec3> m_pointLightColors;
+    
+    // Spot Light
+    GLboolean m_useSpot;
+    GLboolean m_useSmoothSpot;
+    glm::vec3 m_spotColor;
+    GLfloat m_spotIntensity;
+    GLfloat m_spotCutOff;
+    GLfloat m_spotOuterCutOff;
+    virtual void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
+                                 const GLboolean &useSpot, const GLboolean &smoothSpot) = 0;
+    virtual void SetBaseLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const BaseLight & baseLight) = 0;
+    virtual void SetDirectionalLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                                            const DirectionalLight& directionalLight, const glm::vec3& direction) = 0;
+    virtual void SetPointLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const PointLight& pointLight) = 0;
+    virtual void SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const SpotLight& spotLight,
+                                     CCamera *camera) = 0;
+    virtual void RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) = 0;
+    virtual void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale, const glm::vec3 & color) = 0;
 };
 
 struct IRenderer
@@ -64,6 +116,8 @@ struct IRenderObject
     virtual void RenderTerrain(CShaderProgram *pShaderProgram, const bool &useHeightMap, const bool &useTexture) = 0;
     virtual void RenderBarrel(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
     virtual void RenderCube(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
+    virtual void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
+                                 const GLfloat & angle, const bool &useTexture) = 0;
     virtual void RenderSphere(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
     virtual void RenderTorus(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;
     virtual void RenderTorusKnot(CShaderProgram *pShaderProgram, const GLfloat & scale, const bool &useTexture) = 0;

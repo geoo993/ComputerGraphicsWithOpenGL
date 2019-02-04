@@ -8,7 +8,5 @@ out vec4 vOutputColour;         //formely  gl_FragColor
 
 void main()
 {
-    
     vOutputColour = texture(cubeMapTex, vTextureDirection);
-    
 }

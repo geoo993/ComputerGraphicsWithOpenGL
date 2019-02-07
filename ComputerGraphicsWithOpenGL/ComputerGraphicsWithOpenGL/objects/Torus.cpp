@@ -21,18 +21,27 @@ CTorus::~CTorus()
     Release();
 }
 
-
-void CTorus::Create(const std::string &a_sDirectory, const std::string &textureNames){
+void CTorus::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames) {
     
-    m_directory = a_sDirectory;
-    m_textureName = textureNames;
-
-    m_texture.Load(m_directory+m_textureName, true);
+    m_directory = directory;
+    m_textureNames = textureNames;
+    m_textures.reserve(textureNames.size());
     
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // Iterate through all elements in std::map
+    for (auto it = textureNames.begin(); it != textureNames.end(); ++it) {
+        // if the current index is needed:
+        auto i = std::distance(textureNames.begin(), it);
+        
+        // access element as *it
+        m_textures.push_back(*new CTexture);
+        m_textures[i].Load(m_directory+it->first, it->second, true);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        // any code including continue, break, return
+    }
     
     // make and bind the VAO
     glGenVertexArrays(1, &m_vao);
@@ -181,12 +190,15 @@ void CTorus::Transform(const glm::vec3 & position, const glm::vec3 & rotation, c
     transform.Scale(scale);
 }
 
-void CTorus::Render(const bool &useTexture)
+void CTorus::Render(const GLboolean &useTexture)
 {
     // bind the VAO (the triangle)
     glBindVertexArray(m_vao);
-    if (useTexture) {
-        m_texture.BindTexture2D();
+    if (useTexture){
+        for (GLuint i = 0; i < m_textures.size(); ++i){
+            GLint n = static_cast<GLint>(m_textures[i].GetType());
+            m_textures[i].BindTexture2D(n);
+        }
     }
     glDrawArrays( GL_TRIANGLE_STRIP, 0, m_numTriangles ); // draw the vertixes
     
@@ -195,10 +207,13 @@ void CTorus::Render(const bool &useTexture)
 // Release memory on the GPU 
 void CTorus::Release()
 {
-    m_texture.Release();
+    
+    for (GLuint i = 0; i < m_textures.size(); ++i){
+        m_textures[i].Release();
+    }
+    m_textures.clear();
     
     glDeleteVertexArrays(1, &m_vao);
-    
     m_vbo.Release();
     
 }

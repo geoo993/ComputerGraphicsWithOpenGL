@@ -100,7 +100,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 }
 
 // Create the game window
-void CGameWindow::CreateGameWindow(const string &appName)
+void CGameWindow::CreateGameWindow(const std::string &appName)
 {
     // start GL context and O/S window using the GLFW helper library
     if (!glfwInit()) {

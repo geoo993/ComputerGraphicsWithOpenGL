@@ -25,6 +25,8 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("LampShader.frag");
     sShaderFileNames.push_back("LightShader.vert");//5
     sShaderFileNames.push_back("LightShader.frag");
+    sShaderFileNames.push_back("NormalMappingShader.vert");//6
+    sShaderFileNames.push_back("NormalMappingShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -88,6 +90,14 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pLightProgram->AddShaderToProgram(&shShaders[11]);
     pLightProgram->LinkProgram();
     m_pShaderPrograms->push_back(pLightProgram);
+    
+    // Create the Normal mapping shader program
+    CShaderProgram *pNormalMapProgram = new CShaderProgram;
+    pNormalMapProgram->CreateProgram();
+    pNormalMapProgram->AddShaderToProgram(&shShaders[12]);
+    pNormalMapProgram->AddShaderToProgram(&shShaders[13]);
+    pNormalMapProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pNormalMapProgram);
  
 }
 

@@ -9,13 +9,13 @@
 #include "Game.h"
 
 void Game::SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
-                           const GLboolean &useSpot, const GLboolean &smoothSpot) {
+                           const GLboolean &useSpot, const GLboolean &useSmoothSpot, const GLboolean& useBlinn) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("bUseDirectionalLight", useDir);
     pShaderProgram->SetUniform("bUsePointLight", usePoint);
     pShaderProgram->SetUniform("bUseSpotlight", useSpot);
-    pShaderProgram->SetUniform("bUseSmoothSpot", smoothSpot);
-    
+    pShaderProgram->SetUniform("bUseSmoothSpot", useSmoothSpot);
+    pShaderProgram->SetUniform("bUseBlinn", useBlinn);
 }
 
 void Game::SetBaseLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const BaseLight & baseLight) {
@@ -85,8 +85,12 @@ void Game::RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) {
     
     // Point Light
     for ( GLuint i = 0; i < m_pointLightPositions.size(); ++i){
-        string uniformName = "R_pointlight[" + std::to_string(i) + "]";
+        std::string uniformName = "R_pointlight[" + std::to_string(i) + "]";
+        
         glm::vec3 position = m_pointLightPositions[i];
+        if (m_pHeightmapTerrain->IsHeightMapRendered()) {
+            position = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
+        }
         glm::vec3 color = m_pointLightColors[i];
         PointLight pointLight(color, m_pointIntensity, Attenuation(m_constant, m_linear, m_exponent), position);
         SetPointLightUniform(pShaderProgram, uniformName, pointLight);

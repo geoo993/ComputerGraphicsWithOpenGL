@@ -12,14 +12,19 @@
 // Structure holding material information:  its ambient, diffuse, and specular colours, and shininess
 uniform struct Material
 {
-    sampler2D ambientMap;  // ambient map
-    sampler2D normalMap;   // normal map
-    sampler2D diffuseMap;  // diffuse map
-    sampler2D specularMap; // specular map
-    
+    sampler2D ambientMap;           // 0.   ambient map (albedo map)
+    sampler2D diffuseMap;           // 1.   diffuse map (metallic map)
+    sampler2D specularMap;          // 2.   specular map (roughness map)
+    sampler2D normalMap;            // 3.   normal map
+    sampler2D heightMap;            // 4.   height map
+    sampler2D emissionMap;          // 5.   emission map
+    sampler2D displacementMap;      // 6.   displacment map
+    sampler2D aoMap;                // 7.   ambient oclusion map
+    sampler2D glossinessMap;        // 8.   glossiness map
+    sampler2D opacityMap;           // 9.   opacity map
+    sampler2D reflectionMap;        // 10.  reflection map
     vec3 color;
     float shininess;
-    float power;
 } material;
 
 uniform float fMinHeight, fMaxHeight;
@@ -38,6 +43,7 @@ in VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
+    vec4 vEyePosition;
 } fs_in;
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor

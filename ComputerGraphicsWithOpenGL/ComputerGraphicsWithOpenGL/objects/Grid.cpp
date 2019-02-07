@@ -98,7 +98,7 @@ void CGrid::Transform(const glm::vec3 & position, const glm::vec3 & rotation, co
 }
 
 // Render the grid with lines
-void CGrid::Render(const bool &useTexture)
+void CGrid::Render(const GLboolean &useTexture)
 {
 	if (m_iVertices < 2)
 		return;

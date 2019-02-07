@@ -13,21 +13,29 @@ CSphere::~CSphere()
     Release();
 }
 
-// Create a unit sphere 
-void CSphere::Create(std::string a_sDirectory, std::string a_sFilename, int slicesIn, int stacksIn)
+// Create a unit sphere
+void CSphere::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames, int slicesIn, int stacksIn)
 {
-	// check if filename passed in -- if so, load texture
+    m_directory = directory;
+    m_textureNames = textureNames;
+    m_textures.reserve(textureNames.size());
+    
+    // Iterate through all elements in std::map
+    for (auto it = textureNames.begin(); it != textureNames.end(); ++it) {
+        // if the current index is needed:
+        auto i = std::distance(textureNames.begin(), it);
+        
+        // access element as *it
+        m_textures.push_back(*new CTexture);
+        m_textures[i].Load(m_directory+it->first, it->second, true);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        // any code including continue, break, return
+    }
 
-	m_texture.Load(a_sDirectory+a_sFilename);
-
-	m_directory = a_sDirectory;
-	m_filename = a_sFilename;
-
-	m_texture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	m_texture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-	m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-	
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
@@ -120,20 +128,30 @@ void CSphere::Transform(const glm::vec3 & position, const glm::vec3 & rotation, 
 }
 
 // Render the sphere as a set of triangles
-void CSphere::Render(const bool &useTexture)
+void CSphere::Render(const GLboolean &useTexture)
 {
-	glBindVertexArray(m_vao);
-    if (useTexture) {
-        this->m_texture.BindTexture2D();
+    // bind the VAO (the triangle)
+    glBindVertexArray(m_vao);
+    
+    if (useTexture){
+        for (GLuint i = 0; i < m_textures.size(); ++i){
+            GLint n = static_cast<GLint>(m_textures[i].GetType());
+            m_textures[i].BindTexture2D(n);
+        }
     }
-	glDrawElements(GL_TRIANGLES, m_numTriangles*3, GL_UNSIGNED_INT, 0);
-
+    glDrawElements(GL_TRIANGLES, m_numTriangles*3, GL_UNSIGNED_INT, 0);
 }
 
-// Release memory on the GPU 
+// Release memory on the GPU
 void CSphere::Release()
 {
-	m_texture.Release();
-	glDeleteVertexArrays(1, &m_vao);
-	m_vbo.Release();
+    for (GLuint i = 0; i < m_textures.size(); ++i){
+        m_textures[i].Release();
+    }
+    m_textures.clear();
+    
+    glDeleteVertexArrays(1, &m_vao);
+    
+    m_vbo.Release();
+    
 }

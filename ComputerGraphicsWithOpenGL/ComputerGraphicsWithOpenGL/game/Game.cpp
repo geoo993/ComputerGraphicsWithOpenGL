@@ -25,7 +25,7 @@ Game::Game()
     m_pCamera = nullptr;
     
     // materials
-    m_materialShininess = 32.0f;
+    m_materialShininess = 30.0f;
     
     //textures settings
     m_textures.reserve(50);
@@ -35,9 +35,9 @@ Game::Game()
     
     // lights
     m_pLamp = nullptr;
-    m_ambient = 0.2f;
-    m_diffuse = 0.7f;
-    m_specular = 0.8f;
+    m_ambient = 0.4f;
+    m_diffuse = 2.5f;
+    m_specular = 0.6f;
     
     // Attenuation
     m_constant = 1.0f;
@@ -57,8 +57,8 @@ Game::Game()
         glm::vec3(  226.0f,  583.0f,  -32.0f      ),
         glm::vec3(  -335.7f,  550.2f,  122.0f      ),
         glm::vec3(  102.3f, 663.3f, -44.0f      ),
-        glm::vec3(  -224.0f,  612.0f, -312.0f    ),
-        glm::vec3(  420.0f,  620.0f, -233.0f      )
+        glm::vec3(  -104.0f,  612.0f, -200.0f    ),
+        glm::vec3(  300.0f,  620.0f, -233.0f      )
     };
     
     m_pointLightColors = {
@@ -89,9 +89,13 @@ Game::Game()
     m_heightMapMaxHeight = 100.0f;
     
     //models
-    m_pBarrel = nullptr;
-    m_barrelPosition = glm::vec3(30.0f,10.0f,0.0f);
-    m_barrelRotation = 0.0f;
+    m_pCrossbow = nullptr;
+    m_pHorn = nullptr;
+    m_pSchofield = nullptr;
+    m_pMusket = nullptr;
+    m_pGrenade = nullptr;
+    m_pNanosuit = nullptr;
+    m_pFlashlight = nullptr;
     
     //sphere object
     m_pSphere = nullptr;
@@ -103,7 +107,7 @@ Game::Game()
     
     // woodenBox
     m_pWoodenBox = nullptr;
-    m_woodenBoxesColor = glm::vec3(0.5f, 0.6f, 0.1f);
+    m_woodenBoxesColor = glm::vec3(1.0f, 0.5f, 0.31f);
     m_woodenBoxesUseTexture = true;
     m_woodenBoxesPosition = {
         glm::vec3(  -186.0f,  593.0f,  -132.0f   ),
@@ -160,10 +164,16 @@ Game::~Game()
     delete m_pPlanarTerrain;
     delete m_pHeightmapTerrain;
     delete m_pLamp;
-    delete m_pBarrel;
+    delete m_pCrossbow;
+    delete m_pHorn;
+    delete m_pSchofield;
+    delete m_pMusket;
+    delete m_pGrenade;
+    delete m_pFlashlight;
     delete m_pSphere;
     delete m_pCube;
     delete m_pWoodenBox;
+    delete m_pNanosuit;
     delete m_pTorus;
     delete m_pTorusKnot;
     delete m_pMetaballs;
@@ -190,7 +200,13 @@ void Game::Initialise()
     m_pPlanarTerrain = new CPlane;
     m_pHeightmapTerrain = new CHeightMapTerrain;
     m_pLamp = new CCube(1.0f);
-    m_pBarrel = new COpenAssetImportMesh;
+    m_pCrossbow = new CModel;
+    m_pHorn = new CModel;
+    m_pSchofield = new CModel;
+    m_pMusket = new CModel;
+    m_pGrenade = new CModel;
+    m_pNanosuit = new CModel;
+    m_pFlashlight = new CModel;
     m_pSphere = new CSphere;
     m_pCube = new CCube(1.0f);
     m_pWoodenBox = new CCube(1.0f);
@@ -210,40 +226,66 @@ void Game::LoadResources(const std::string &path)
     m_pSkybox->Create(m_mapSize, path, m_skyboxNumber);
     
     // Create the planar terrain
-    m_pPlanarTerrain->Create(path+"/textures/terrain/grassfloor.jpg", m_mapSize, m_mapSize, 50.0f, 50); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    m_pPlanarTerrain->Create(path+"/textures/terrain/", { {"grassfloor.jpg", TextureType::AMBIENT} },
+                             m_mapSize, m_mapSize, 50.0f, 50); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
     
     // Create the heightmap terrain
     m_pHeightmapTerrain->Create((path+"/textures/terrain/heightmap4.bmp").c_str(),
                                 {
-                                    path+"/textures/terrain/sand.png", // ambientMap 0
-                                    path+"/textures/terrain/patchygrass.png", // normalMap 1
-                                    path+"/textures/terrain/stone.png", // diffuseMap 2
-                                    path+"/textures/terrain/snow.png", // specularMap 4
+                                    { path+"/textures/terrain/sand.png", TextureType::AMBIENT },            // ambientMap 0
+                                    { path+"/textures/terrain/stone.png", TextureType::DIFFUSE },           // diffuseMap 1
+                                    { path+"/textures/terrain/snow.png", TextureType::SPECULAR },           // specularMap 2
+                                    { path+"/textures/terrain/patchygrass.png", TextureType::NORMAL }       // normalMap 3
                                 },
                                 glm::vec3(0, 0, 0),
                                 m_mapSize,
                                 m_mapSize,
                                 200.0f);
-    m_pLamp->Create(path+"/textures/woodenBox/", "woodenBoxDiffuse.png");
     
-    m_pBarrel->Load(path+"/models/barrel/barrel02.obj");  // Downloaded from http://www.psionicgames.com/?page_id=24 on 24 Jan 2013
+    m_pLamp->Create(path+"/textures/woodenBox/", {} );
     
-    m_pCube->Create(path+"/textures/woodenBox/", "woodenBoxDiffuse.png");
+    /// https://www.cgtrader.com/free-3d-models/military/other/crossbow-d180227
+    //m_pCrossbow->Load(path+"/models/barrel/barrels_obj.obj");
+    
+    /// https://www.cgtrader.com/free-3d-models/household/kitchenware/drinking-horn
+    //m_pHorn;
+    
+    /// https://www.cgtrader.com/free-3d-models/military/gun/musket-d180221
+    // m_pMusket
+    
+    /// https://www.cgtrader.com/free-3d-models/military/gun/schofield-3-co2-bb
+    // m_pSchofield
+    
+    /// https://www.cgtrader.com/free-3d-models/military/other/mk2-grenade-1c0f476e-3caa-4b74-9b3f-22280615a688
+    m_pGrenade->Create(path+"/models/mk2_grenade/", "MK2.obj");
+    
+    m_pNanosuit->Create(path+"/models/nanosuit/", "nanosuit.obj");
+    
+    /// https://www.cgtrader.com/free-3d-models/military/gun/mipim-d180606
+    //m_pFlashlight
+    
+    
+    m_pCube->Create(path+"/textures/woodenBox/", { {"woodenBoxDiffuse.png", TextureType::AMBIENT} } );
     
     m_pWoodenBox->Create(path+"/textures/woodenBox/",
-    {   "woodDiffuse.jpg",          // ambientMap 0
-        "woodNormal.jpg",           // normalMap 1
-        "woodenBoxDiffuse.png",     // diffuseMap 2
-        "woodenBoxSpecular.png"     // specularMap 4
-    });
+                         { 
+                             { "woodenBoxDiffuse.png", TextureType::DIFFUSE},       // diffuseMap 1
+                             { "woodenBoxSpecular.png", TextureType::SPECULAR},      // specularMap 2
+                         });
     
     // Create a sphere
     // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
-    m_pSphere->Create(path+"/textures/pixarLibrary/stone/", "Gray_granite_pxr128.tif", 50, 50);
+    m_pSphere->Create(path+"/textures/pbr/chippedpaintmetal/",
+                      {   { "chipped-paint-metal-albedo.png", TextureType::AMBIENT },           // ambient map (albedo map)
+                          { "chipped-paint-metal-metal.png",  TextureType::DIFFUSE },           // diffuse map (metallic map)
+                          { "chipped-paint-metal-rough2.png",   TextureType::SPECULAR},         // specular map (roughness map)
+                          { "chipped-paint-metal-normal-dx.png", TextureType::NORMAL},          // normalMap 3
+                          { "chipped-paint-ao.png",   TextureType::AO}                          // aoMap 4
+                      }, 50, 50);
+  
+    m_pTorus->Create(path+"/textures/3912Tex/", { {"3912-diffuse.jpg", TextureType::DIFFUSE} });
     
-    m_pTorus->Create(path+"/textures/3912Tex/", "3912-diffuse.jpg");
-    
-    m_pTorusKnot->Create(path+"/textures/pixarLibrary/metal/Round_mesh_pxr128.tif",
+    m_pTorusKnot->Create(path+"/textures/pixarLibrary/metal/", { {"Round_mesh_pxr128.tif", TextureType::DIFFUSE} },
                          1024,         // in: Number of steps in the torus knot
                          32,           // in: Number of facets
                          20.0f,         // in: Scale of the knot
@@ -256,7 +298,7 @@ void Game::LoadResources(const std::string &path)
                          7.0f,         // in: P parameter of the knot
                          -2.0f         // in: Q parameter of the knot
                          );
-    m_pMetaballs->Create(100.0f, 10, 0, 32, path+"/textures/pixarLibrary/metal/Wire_screen_pxr128.tif");{
+    m_pMetaballs->Create(100.0f, 10, 0, 32, { { path+"/textures/pixarLibrary/metal/Wire_screen_pxr128.tif",  TextureType::DIFFUSE }} ); {
         m_pMetaballs->SetGridSize(50);
         CMarchingCubes::BuildTables();
     }
@@ -312,7 +354,6 @@ static void OnKeyDown_callback( GLFWwindow* window, int key, int scancode, int a
         default:
             break;
     }
-    
 }
 
 

@@ -1,25 +1,30 @@
 #pragma once
 
 #include "Common.h"
+#include "TextureType.h"
 
 // Class that provides a texture for texture mapping in OpenGL
 class CTexture
 {
 public:
-	void CreateFromData(BYTE* data, int width, int height, int bpp, GLenum format, bool generateMipMaps = true, bool gammaCorrection = false);
-	bool Load(std::string path, bool generateMipMaps = true);
-    GLuint CreateTexture(std::string path, bool generateMipMaps = true, GLint textureUnitAt = 0, bool gammaCorrection = false);
-    GLuint CreateSimpleTexture(int width, int height, bool generateMipMaps = true, GLint textureUnitAt = 0, const GLvoid * data = nullptr);
-	void BindTexture2D(int textureUnit = 0) const;
-    void BindTexture3D(int textureUnit = 0);
-    void BindTextureCubeMap(int textureUnit = 0);
+	void CreateFromData(BYTE* data, GLint width, GLint height, GLint bpp, GLenum format, const TextureType &type,
+                        GLboolean generateMipMaps = true, GLboolean gammaCorrection = false);
+    GLboolean Load(const std::string &path, const TextureType &type = TextureType::UNKNOWN, const GLboolean &generateMipMaps = true);
+    GLuint CreateTexture(std::string path, GLboolean generateMipMaps = true, GLint textureUnitAt = 0, GLboolean gammaCorrection = false);
+    GLuint CreateSimpleTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
+                            GLint textureUnitAt = 0, const GLvoid * data = nullptr);
+	void BindTexture2D(GLint textureUnit = 0) const;
+    void BindTexture3D(GLint textureUnit = 0);
+    void BindTextureCubeMap(GLint textureUnit = 0);
 
 	void SetSamplerObjectParameter(GLenum parameter, GLenum value);
-	void SetSamplerObjectParameterf(GLenum parameter, float value);
+	void SetSamplerObjectParameterf(GLenum parameter, GLfloat value);
 
-	int GetWidth();
-    int GetHeight();
-    int GetBPP();
+	GLint GetWidth();
+    GLint GetHeight();
+    GLint GetBPP();
+    std::string GetPath();
+    TextureType GetType();
 
     void Release();
 
@@ -27,11 +32,12 @@ public:
     ~CTexture();
 private:
     
-	int m_width, m_height, m_bpp; // Texture width, height, and bytes per pixel
-	uint m_textureID; // Texture id
-	uint m_samplerObjectID; // Sampler id
-	bool m_mipMapsGenerated;
+	GLint m_width, m_height, m_bpp; // Texture width, height, and bytes per pixel
+	GLuint m_textureID; // Texture id
+	GLuint m_samplerObjectID; // Sampler id
+	GLboolean m_mipMapsGenerated;
 
-	std::string m_path;
+    std::string m_path;
+    TextureType m_type;
 };
 

@@ -11,7 +11,7 @@ class CSkybox: public GameObject
 public:
 	CSkybox();
 	~CSkybox();
-	void Create(const float &size, const std::string &path, const unsigned int &skyboxNumber);
+	void Create(const float &size, const std::string &path, const GLuint &skyboxNumber);
 	void Render(const int &textureUnit);
     void BindSkybox(const int &textureUnit);
 
@@ -21,7 +21,7 @@ public:
     void Release();
     
 private:
-    void Render(const bool &useTexture = true);
+    void Render(const GLboolean &useTexture = true);
 	GLuint m_vao;
 	CVertexBufferObject m_vbo;
 	CCubemap m_cubemapTexture;

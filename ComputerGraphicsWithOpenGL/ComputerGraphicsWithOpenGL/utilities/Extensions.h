@@ -6,6 +6,8 @@
 //  Copyright © 2017 GEORGE QUENTIN. All rights reserved.
 //
 
+#pragma once
+
 #ifndef Extensions_h
 #define Extensions_h
 
@@ -541,6 +543,60 @@ public:
         
         return rgbColor; 
     }
+    ///https://seblagarde.wordpress.com/2011/08/17/feeding-a-physical-based-lighting-mode/
+    static rgb silver()
+    {
+        rgb rgbColor; rgbColor.r = 0.971519; rgbColor.g = 0.959915; rgbColor.b = 0.915324;
+        return rgbColor;
+    }
+    
+    static rgb aluminium()
+    {
+        rgb rgbColor; rgbColor.r = 0.913183; rgbColor.g = 0.921494; rgbColor.b = 0.924524;
+        return rgbColor;
+    }
+    
+    static rgb gold()
+    {
+        rgb rgbColor; rgbColor.r = 1.0; rgbColor.g = 0.765557; rgbColor.b = 0.336057;
+        return rgbColor;
+    }
+    
+    static rgb copper()
+    {
+        rgb rgbColor; rgbColor.r = 0.955008; rgbColor.g = 0.637427; rgbColor.b = 0.538163;
+        return rgbColor;
+    }
+    
+    static rgb chromium()
+    {
+        rgb rgbColor; rgbColor.r = 0.549585; rgbColor.g = 0.556114; rgbColor.b = 0.554256;
+        return rgbColor;
+    }
+    
+    static rgb nickel()
+    {
+        rgb rgbColor; rgbColor.r = 0.659777; rgbColor.g = 0.608679; rgbColor.b = 0.525649;
+        return rgbColor;
+    }
+    
+    static rgb titanium()
+    {
+        rgb rgbColor; rgbColor.r = 0.541931; rgbColor.g = 0.496791; rgbColor.b = 0.449419;
+        return rgbColor;
+    }
+    
+    static rgb cobalt()
+    {
+        rgb rgbColor; rgbColor.r = 0.662124; rgbColor.g = 0.654864; rgbColor.b = 0.633732;
+        return rgbColor;
+    }
+    
+    static rgb platinum()
+    {
+        rgb rgbColor; rgbColor.r = 0.672411; rgbColor.g = 0.637331; rgbColor.b = 0.585456;
+        return rgbColor;
+    }
     
     static std::vector<std::string> indexColors() {
         std::vector<std::string> c = {
@@ -580,8 +636,8 @@ public:
     }
     
     
-    static long double sciToDouble(const string& str) {
-        stringstream ss(str);
+    static long double sciToDouble(const std::string& str) {
+        std::stringstream ss(str);
         long double d = 0;
         ss.precision(10);
         ss.showpoint;
@@ -589,7 +645,7 @@ public:
         ss >> d;
         
         if (ss.fail()) {
-            string s = "Unable to format ";
+            std::string s = "Unable to format ";
             s += str;
             s += " as a number!";
             throw (s);

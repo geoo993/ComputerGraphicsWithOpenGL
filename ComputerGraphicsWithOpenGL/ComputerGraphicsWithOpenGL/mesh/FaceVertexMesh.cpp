@@ -12,7 +12,7 @@ CFaceVertexMesh::~CFaceVertexMesh()
 // Compute the normal of a triangle using the cross product
 glm::vec3 CFaceVertexMesh::ComputeTriangleNormal(const unsigned int &tId)
 {
-	CVertex v0, v1, v2;
+	Vertex v0, v1, v2;
 	glm::vec3 normal, p, q;
 	
 	v0 = m_vertices[m_triangles[3*tId]];
@@ -31,8 +31,8 @@ void CFaceVertexMesh::ComputeTextureCoordsXZ(const float &xScale, const float &z
 {
 	// Set texture coords based on the x and z coordinates
 	for (unsigned int i = 0; i < m_vertices.size(); i++) {
-		m_vertices[i].textureCoord.s = m_vertices[i].position.x / xScale;
-		m_vertices[i].textureCoord.t = m_vertices[i].position.z / zScale;
+		m_vertices[i].texture.s = m_vertices[i].position.x / xScale;
+		m_vertices[i].texture.t = m_vertices[i].position.z / zScale;
 	}
 }
 void CFaceVertexMesh::ComputeVertexNormals()
@@ -51,7 +51,7 @@ void CFaceVertexMesh::ComputeVertexNormals()
 	}
 }
 
-bool CFaceVertexMesh::CreateFromTriangleList(const std::vector<CVertex> &vertices, const std::vector<unsigned int> &triangles)
+bool CFaceVertexMesh::CreateFromTriangleList(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &triangles)
 {
 	// Set the vertices and indices
 	m_vertices = vertices;
@@ -79,27 +79,34 @@ bool CFaceVertexMesh::CreateFromTriangleList(const std::vector<CVertex> &vertice
 	glBindBuffer(GL_ARRAY_BUFFER, m_uiVBOVertices);
 
 	// Fill the vertices VBO
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(CVertex), &m_vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), &m_vertices[0], GL_STATIC_DRAW);
 
 	// Generate a VGO for the indices and bind it
 	glGenBuffers(1, &m_uiVBOIndices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uiVBOIndices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * m_triangles.size(), &m_triangles[0], GL_STATIC_DRAW);
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_triangles.size() * sizeof(GLuint), &m_triangles[0], GL_STATIC_DRAW);
-
-	GLsizei stride = 2*sizeof(glm::vec3)+sizeof(glm::vec2);
-
-	// Vertex positions
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0);
-	// Texture coordinates
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)sizeof(glm::vec3));
-	// Normal vectors
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)));
-
-
+    //vertex
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+    
+    //texcoord
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,  sizeof(Vertex), (const GLvoid*)12);
+    
+    //normal
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,  sizeof(Vertex), (const GLvoid*)20);
+    
+    //tangent
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE,  sizeof(Vertex), (const GLvoid*)32);
+    
+    //bitangent
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)44);
+    
+    
 	return true;
 }
 

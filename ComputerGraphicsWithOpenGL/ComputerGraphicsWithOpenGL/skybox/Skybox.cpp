@@ -16,7 +16,7 @@ CSkybox::~CSkybox()
 }
 
 // Create a skybox of a given size with six textures
-void CSkybox::Create(const float &size, const std::string &path, const unsigned int &skyboxNumber)
+void CSkybox::Create(const float &size, const std::string &path, const GLuint &skyboxNumber)
 {
     /*
          A skybox is a (large) cube that encompasses the entire scene and contains 6 images of a surrounding environment, giving the player the illusion that the environment he's in is actually much larger than it actually is. Some examples of skyboxes used in videogames are images of mountains, of clouds or of a starry night sky. 
@@ -148,7 +148,7 @@ void CSkybox::Transform(const glm::vec3 & position, const glm::vec3 & rotation, 
     transform.Scale(scale);
 }
 
-void CSkybox::Render(const bool &useTexture) {
+void CSkybox::Render(const GLboolean &useTexture) {
     
 }
 

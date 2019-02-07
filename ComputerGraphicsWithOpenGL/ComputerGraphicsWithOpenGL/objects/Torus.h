@@ -14,22 +14,24 @@ public:
     
     CTorus(const GLfloat & size);
     ~CTorus();
-    
-    void Create(const std::string &a_sDirectory, const std::string &textureName);
+    void Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames);
     GLfloat GetSize() const { return m_size; }
     
     void Transform(const glm::vec3 & position,
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     
-    void Render(const bool &useTexture = true);
+    void Render(const GLboolean &useTexture = true);
     void Release();
     
 private:
     GLuint m_vao, m_numTriangles;
     CVertexBufferObject m_vbo;
-    std::string m_directory, m_textureName;
-    CTexture m_texture;
+    
+    std::map<std::string, TextureType> m_textureNames;
+    std::vector<CTexture> m_textures;
+    
+    std::string m_directory;
     GLfloat m_size;
   
 };

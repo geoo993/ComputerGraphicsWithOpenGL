@@ -10,7 +10,8 @@ CTexture::~CTexture()
 }
 
 // Create a texture from the data stored in bData.  
-void CTexture::CreateFromData(BYTE* data, int width, int height, int bpp, GLenum format, bool generateMipMaps, bool gammaCorrection)
+void CTexture::CreateFromData(BYTE* data, GLint width, GLint height, GLint bpp, GLenum format, const TextureType &type,
+                              GLboolean generateMipMaps, GLboolean gammaCorrection)
 {
 	// Generate an OpenGL texture ID for this texture
 	glGenTextures(1, &m_textureID);
@@ -38,7 +39,8 @@ void CTexture::CreateFromData(BYTE* data, int width, int height, int bpp, GLenum
     if(generateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
     glGenSamplers(1, &m_samplerObjectID);
 
-	m_path = "";
+    m_path = "";
+    m_type = type;
 	m_mipMapsGenerated = generateMipMaps;
 	m_width = width;
 	m_height = height;
@@ -47,7 +49,7 @@ void CTexture::CreateFromData(BYTE* data, int width, int height, int bpp, GLenum
 }
 
 // Loads a 2D texture given the filename (sPath).  bGenerateMipMaps will generate a mipmapped texture if true
-bool CTexture::Load(std::string path, bool generateMipMaps)
+GLboolean CTexture::Load(const std::string &path, const TextureType &type, const GLboolean &generateMipMaps)
 {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	FIBITMAP* dib(0);
@@ -81,17 +83,18 @@ bool CTexture::Load(std::string path, bool generateMipMaps)
 	if(FreeImage_GetBPP(dib) == 32)format = GL_BGRA;
 	if(FreeImage_GetBPP(dib) == 24)format = GL_BGR;
 	if(FreeImage_GetBPP(dib) == 8)format = GL_LUMINANCE;
-	CreateFromData(pData, FreeImage_GetWidth(dib), FreeImage_GetHeight(dib), FreeImage_GetBPP(dib), format, generateMipMaps);
+	CreateFromData(pData, FreeImage_GetWidth(dib), FreeImage_GetHeight(dib), FreeImage_GetBPP(dib), format, type, generateMipMaps);
 	
 	FreeImage_Unload(dib);
 
 	m_path = path;
+    m_type = type;
 
 	return true; // Success
 }
 
 // loads the file "hazard.png" into gTexture
-GLuint CTexture::CreateTexture(std::string path, bool generateMipMaps, GLint textureUnitAt, bool gammaCorrection) {
+GLuint CTexture::CreateTexture(std::string path, GLboolean generateMipMaps, GLint textureUnitAt, GLboolean gammaCorrection) {
     
     //    Bitmap img(filePath.c_str());
     //    ////*-----------------------------------------------------------------------------
@@ -185,7 +188,7 @@ GLuint CTexture::CreateTexture(std::string path, bool generateMipMaps, GLint tex
     return m_textureID;
 }
 
-GLuint CTexture::CreateSimpleTexture(int width, int height, bool generateMipMaps, GLint textureUnitAt, const GLvoid * data){
+GLuint CTexture::CreateSimpleTexture(GLint width, GLint height, GLboolean generateMipMaps, GLint textureUnitAt, const GLvoid * data){
     
     // Generate an OpenGL texture ID for this texture
     //GLuint texture;
@@ -221,7 +224,7 @@ void CTexture::SetSamplerObjectParameterf(GLenum parameter, float value)
 
 
 // Binds a texture for rendering
-void CTexture::BindTexture2D(int iTextureUnit) const
+void CTexture::BindTexture2D(GLint iTextureUnit) const
 {
 	glActiveTexture(GL_TEXTURE0+iTextureUnit);
 	glBindTexture(GL_TEXTURE_2D, m_textureID);
@@ -230,7 +233,7 @@ void CTexture::BindTexture2D(int iTextureUnit) const
 }
 
 // Binds a texture for rendering
-void CTexture::BindTexture3D(int iTextureUnit)
+void CTexture::BindTexture3D(GLint iTextureUnit)
 {
     glActiveTexture(GL_TEXTURE0+iTextureUnit);
     glBindTexture(GL_TEXTURE_3D, m_textureID);
@@ -239,7 +242,7 @@ void CTexture::BindTexture3D(int iTextureUnit)
 }
 
 // Binds a texture for rendering
-void CTexture::BindTextureCubeMap(int iTextureUnit)
+void CTexture::BindTextureCubeMap(GLint iTextureUnit)
 {
     glActiveTexture(GL_TEXTURE0+iTextureUnit);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureID);
@@ -254,17 +257,25 @@ void CTexture::Release()
 	glDeleteTextures(1, &m_textureID);
 }
 
-int CTexture::GetWidth()
+GLint CTexture::GetWidth()
 {
 	return m_width;
 }
 
-int CTexture::GetHeight()
+GLint CTexture::GetHeight()
 {
 	return m_height;
 }
 
-int CTexture::GetBPP()
+GLint CTexture::GetBPP()
 {
 	return m_bpp;
+}
+
+std::string CTexture::GetPath(){
+    return m_path;
+}
+
+TextureType CTexture::GetType(){
+    return m_type;
 }

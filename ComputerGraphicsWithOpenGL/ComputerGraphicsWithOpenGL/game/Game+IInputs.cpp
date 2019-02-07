@@ -75,21 +75,19 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
         
         switch (keyPressed)
         {
-               
-            case GLFW_KEY_SPACE :   
-               
+            case GLFW_KEY_SPACE :
                 break;
             case GLFW_KEY_1 :   
-                m_materialShininess -= 1.0f;
+                m_materialShininess -= 5.0f;
                 break;
             case GLFW_KEY_2:
-                m_materialShininess += 10.0f;
+                m_materialShininess += 5.0f;
                 break;
             case GLFW_KEY_3:
-                m_dirIntensity -= 10.0f;
+                m_dirIntensity -= 0.2f;
                 break;
             case GLFW_KEY_4:
-                m_dirIntensity += 10.0f;
+                m_dirIntensity += 0.2f;
                 break;
             case GLFW_KEY_5:
                 m_pointIntensity -= 10.0f;
@@ -167,6 +165,7 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
                 m_exponent += 0.2f;
                 break;
             case GLFW_KEY_GRAVE_ACCENT:
+                m_useBlinn = !m_useBlinn;
                 break;
             case GLFW_KEY_Z:
                 break;

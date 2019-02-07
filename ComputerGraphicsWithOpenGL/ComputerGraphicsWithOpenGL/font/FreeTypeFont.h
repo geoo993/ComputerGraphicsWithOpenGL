@@ -12,11 +12,11 @@ public:
 	CFreeTypeFont();
 	~CFreeTypeFont();
 
-	bool LoadFont(string file, int pixelSize);
+	bool LoadFont(std::string file, int pixelSize);
 
-    int GetTextWidth(string text, int pixelSize);
+    int GetTextWidth(std::string text, int pixelSize);
 
-    void Print(CShaderProgram* program, string text, int x, int y, int pixelSize = -1);
+    void Print(CShaderProgram* program, std::string text, int x, int y, int pixelSize = -1);
     void Render(CShaderProgram* program, int x, int y, int pixelSize, char* text, ...);
     void Release();
 

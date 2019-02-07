@@ -27,6 +27,7 @@
 #include <memory.h>
 #include <unistd.h>
 #include <iomanip>
+#include <algorithm>
 
 //GLM
 #include <glm/glm.hpp>

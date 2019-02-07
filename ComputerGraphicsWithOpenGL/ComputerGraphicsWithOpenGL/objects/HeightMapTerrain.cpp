@@ -49,7 +49,7 @@ glm::vec3 CHeightMapTerrain::WorldToImageCoordinates(glm::vec3 p)
 
 }
 
-bool CHeightMapTerrain::GetImageBytes(char *terrainFilename, BYTE **bDataPointer, unsigned int &width, unsigned int &height)
+GLboolean CHeightMapTerrain::GetImageBytes(char *terrainFilename, BYTE **bDataPointer, GLuint &width, GLuint &height)
 {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	
@@ -82,7 +82,8 @@ bool CHeightMapTerrain::GetImageBytes(char *terrainFilename, BYTE **bDataPointer
 }
 
 // This function generates a heightmap terrain based on a bitmap
-bool CHeightMapTerrain::Create(const char *terrainFilename, const std::vector<std::string> &textureFilenames, glm::vec3 origin, float terrainSizeX, float terrainSizeZ, float terrainHeightScale)
+GLboolean CHeightMapTerrain::Create(const char *terrainFilename, const std::map<std::string, TextureType> &textureFilenames,
+                                    glm::vec3 origin, GLfloat terrainSizeX, GLfloat terrainSizeZ, GLfloat terrainHeightScale)
 {
 	BYTE *bDataPointer;
 	unsigned int width, height;
@@ -108,7 +109,7 @@ bool CHeightMapTerrain::Create(const char *terrainFilename, const std::vector<st
 	memset(m_heightMap, 0, m_width * m_height * sizeof(float));
 
 	// Form mesh
-	std::vector<CVertex> vertices;
+	std::vector<Vertex> vertices;
 	std::vector<unsigned int> triangles;
 	float halfSizeX = m_width / 2.0f;
 	float halfSizeY = m_height / 2.0f;
@@ -134,7 +135,7 @@ bool CHeightMapTerrain::Create(const char *terrainFilename, const std::vector<st
 			m_heightMap[index] = pWorld.y;
 
 			// Store the point in a vector
-			CVertex v = CVertex(pWorld, glm::vec2(0.0, 0.0), glm::vec3(0.0, 0.0, 0.0));
+			Vertex v = Vertex(pWorld, glm::vec2(0.0, 0.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 0.0, 0.0));
 			vertices.push_back(v);
 		}
 	}
@@ -160,17 +161,29 @@ bool CHeightMapTerrain::Create(const char *terrainFilename, const std::vector<st
 
     // Load a texture for texture mapping the mesh
     m_textureFileNames = textureFilenames;
-    unsigned int amountOfTextures = (textureFilenames.size() > 4) ? 4 : textureFilenames.size();
-    m_textures.reserve(amountOfTextures);
-    for (unsigned int i = 0; i < amountOfTextures; ++i){
+    m_textures.reserve(textureFilenames.size());
+    
+    // Iterate through all elements in std::map
+    for (auto it = textureFilenames.begin(); it != textureFilenames.end(); ++it) {
+        // if the current index is needed:
+        auto i = std::distance(textureFilenames.begin(), it);
+        
+        // access element as *it
         m_textures.push_back(*new CTexture);
-        m_textures[i].Load(m_textureFileNames[i], true);
+        m_textures[i].Load(it->first, it->second, true);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        // any code including continue, break, return
     }
+    
     
 	return true;
 }
 // For a point p in world coordinates, return the height of the terrain
-float CHeightMapTerrain::ReturnGroundHeight(glm::vec3 p)
+GLfloat CHeightMapTerrain::ReturnGroundHeight(glm::vec3 p)
 {
 	// Undo the transformation going from image coordinates to world coordinates
 	glm::vec3 pImage = WorldToImageCoordinates(p);
@@ -205,18 +218,19 @@ void CHeightMapTerrain::Transform(const glm::vec3 & position, const glm::vec3 & 
     transform.Scale(scale);
 }
 
-void CHeightMapTerrain::Render(const bool &useTexture)
+void CHeightMapTerrain::Render(const GLboolean &useTexture)
 {
     if (useTexture == true){
         for (unsigned int i = 0; i < m_textures.size(); ++i){
-            m_textures[i].BindTexture2D(i);
+            GLint n = static_cast<GLint>(m_textures[i].GetType());
+            m_textures[i].BindTexture2D(n);
         }
     }
 	m_mesh.Render();
     m_isRendered = true;
 }
 
-bool CHeightMapTerrain::IsHeightMapRendered() {
+GLboolean CHeightMapTerrain::IsHeightMapRendered() {
     return m_isRendered;
 }
 

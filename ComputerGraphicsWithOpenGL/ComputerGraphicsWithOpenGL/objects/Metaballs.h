@@ -36,9 +36,10 @@ public:
 	CMetaballs();
     ~CMetaballs();
     
-    void Create(const float &level, const int &numberOfBalls, const int &gridSize, const int &maxOpenVoxels, const std::string &textureFile);
+    void Create(const float &level, const int &numberOfBalls, const int &gridSize, const int &maxOpenVoxels,
+                const std::map<std::string, TextureType> &textureFiles);
 	void Compute();
-	void Update(const float &fDeltaTime);
+	void Update(const GLfloat &fDeltaTime);
 
     void SetGridSize(const int &nSize);
     void ClearVectors();
@@ -47,8 +48,8 @@ public:
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     
-    void Render(const bool &useTexture = true);
-    void DrawElements(const bool &useTexture);
+    void Render(const GLboolean &useTexture = true);
+    void DrawElements(const GLboolean &useTexture);
     void Release();
     
 protected:
@@ -90,15 +91,15 @@ protected:
     std::vector<SVertex>        m_pVertices;  // vertices data
     std::vector<unsigned short> m_pIndices;   // indices data
     
-    std::vector<glm::vec3>        m_pVertexAttribute;  // vertex data
+    std::vector<glm::vec3>      m_pVertexAttribute;  // vertex data
     std::vector<glm::vec2> m_pTextureAttribute;   // texture data
     std::vector<glm::vec3> m_pNormalAttribute;    // normal data
     
     GLuint m_vao;
     CVertexBufferObjectIndexed m_vbo;
     
-    std::string m_textureFile;
-    CTexture m_texture;
+    std::map<std::string, TextureType>m_textureFiles;
+    std::vector<CTexture> m_textures;
     
 };
 

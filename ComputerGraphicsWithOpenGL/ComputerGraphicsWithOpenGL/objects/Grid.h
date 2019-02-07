@@ -14,7 +14,7 @@ public:
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     
-    void Render(const bool &useTexture = true);
+    void Render(const GLboolean &useTexture = true);
     void Release();
     
 private:

@@ -16,7 +16,8 @@ CMetaballs::~CMetaballs(){
     Release();
 }
 
-void CMetaballs::Create(const float &level, const int &numberOfBalls, const int &gridSize, const int &maxOpenVoxels, const std::string &textureFile){
+void CMetaballs::Create(const float &level, const int &numberOfBalls, const int &gridSize, const int &maxOpenVoxels,
+                        const std::map<std::string, TextureType> &textureFiles){
     m_fLevel    = level;//100.0f;
     m_nNumBalls = numberOfBalls; //20;
 
@@ -35,12 +36,25 @@ void CMetaballs::Create(const float &level, const int &numberOfBalls, const int 
 	m_pVertices.reserve(MAX_VERTICES);
 	m_pIndices.reserve(MAX_INDICES);
 
-    m_textureFile = textureFile;
-    m_texture.Load(m_textureFile);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+    m_textureFiles = textureFiles;
+    m_textures.reserve(textureFiles.size());
+    
+    // Iterate through all elements in std::map
+    for (auto it = textureFiles.begin(); it != textureFiles.end(); ++it) {
+        // if the current index is needed:
+        auto i = std::distance(textureFiles.begin(), it);
+        
+        // access element as *it
+        m_textures.push_back(*new CTexture);
+        m_textures[i].Load(it->first, it->second, true);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        // any code including continue, break, return
+    }
+    
+    
     
     //srand ( time(nullptr) );
     srand(glfwGetTime());
@@ -64,7 +78,7 @@ void CMetaballs::Create(const float &level, const int &numberOfBalls, const int 
 }
 
 //=============================================================================
-void CMetaballs::Update(const float &fDeltaTime)
+void CMetaballs::Update(const GLfloat &fDeltaTime)
 {
 	for( int i = 0; i < m_nNumBalls; i++ )
 	{
@@ -143,7 +157,7 @@ void CMetaballs::Update(const float &fDeltaTime)
 }
 
 //=============================================================================
-void CMetaballs::Render(const bool &useTexture)
+void CMetaballs::Render(const GLboolean &useTexture)
 {
     
 	int nCase,x,y,z = 0;
@@ -614,7 +628,7 @@ inline void CMetaballs::SetGridVoxelInList(int x, int y, int z)
 
 
 // Render the metalballs as a set of triangles
-void CMetaballs::DrawElements(const bool &useTexture){
+void CMetaballs::DrawElements(const GLboolean &useTexture){
     
     // Release memory on the GPU 
     glDeleteVertexArrays(1, &m_vao);
@@ -673,9 +687,13 @@ void CMetaballs::DrawElements(const bool &useTexture){
     */
     
     glBindVertexArray(m_vao);
-    if (useTexture) {
-        this->m_texture.BindTexture2D();
+    if (useTexture){
+        for (GLuint i = 0; i < m_textures.size(); ++i){
+            GLint n = static_cast<GLint>(m_textures[i].GetType());
+            m_textures[i].BindTexture2D(n);
+        }
     }
+    
     // Render the metalBalls as a set of triangles
     glDrawElements(GL_TRIANGLES, m_nNumIndices, GL_UNSIGNED_INT, 0);
     //pDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, m_nNumVertices, 0, m_nNumIndices/3);
@@ -698,7 +716,12 @@ void CMetaballs::Release() {
     delete m_pnGridVoxelStatus;
     
     // Release memory on the GPU
-    m_texture.Release();
+    for (GLuint i = 0; i < m_textures.size(); ++i){
+        m_textures[i].Release();
+    }
+    m_textures.clear();
+    
     glDeleteVertexArrays(1, &m_vao);
+    
     m_vbo.Release();
 }

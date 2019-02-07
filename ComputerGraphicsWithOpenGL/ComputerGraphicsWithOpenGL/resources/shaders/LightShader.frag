@@ -3,8 +3,8 @@
 // https://github.com/BennyQBD/3DGameEngineCpp_60/blob/master/3DEngineCpp/res/shaders/lighting.glh
 // https://learnopengl.com/Lighting/Light-casters
 // https://learnopengl.com/Lighting/Multiple-lights
+// https://learnopengl.com/Advanced-Lighting/Advanced-Lighting
 
-#define NUMBER_OF_DIRECTIONAL_LIGHTS 1
 #define NUMBER_OF_POINT_LIGHTS 6
 
 uniform struct Camera
@@ -15,10 +15,17 @@ uniform struct Camera
 
 uniform struct Material
 {
-    sampler2D ambientMap;  // ambient map
-    sampler2D normalMap;   // normal map
-    sampler2D diffuseMap;  // diffuse map
-    sampler2D specularMap; // specular map
+    sampler2D ambientMap;           // 0.   ambient map (albedo map)
+    sampler2D diffuseMap;           // 1.   diffuse map (metallic map)
+    sampler2D specularMap;          // 2.   specular map (roughness map)
+    sampler2D normalMap;            // 3.   normal map
+    sampler2D heightMap;            // 4.   height map
+    sampler2D emissionMap;          // 5.   emission map
+    sampler2D displacementMap;      // 6.   displacment map
+    sampler2D aoMap;                // 7.   ambient oclusion map
+    sampler2D glossinessMap;        // 8.   glossiness map
+    sampler2D opacityMap;           // 9.   opacity map
+    sampler2D reflectionMap;        // 10.  reflection map
     
     vec3 color;
     float shininess;
@@ -65,7 +72,7 @@ struct SpotLight
 uniform DirectionalLight R_directionallight;
 uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
-uniform bool bUseTexture, bUseSmoothSpot;
+uniform bool bUseTexture, bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
 
 in VS_OUT
@@ -78,31 +85,29 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-
 vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
 {
     float diffuseFactor = max(dot(normal, direction), 0.0f);
     
-    // Specular to compute the reflection
     vec3 view =  camera.position + camera.front;
     vec3 directionToEye = normalize(view - vertexPosition); // viewDirection
-    vec3 reflectDirection = reflect(-direction, normal);
-    //vec3 halfDirection = normalize(directionToEye - direction);
+    vec3 reflectDirection = reflect(-direction, normal);    // specular reflection
+    vec3 halfDirection = normalize(direction + directionToEye); // halfway vector
+    float specularFactor = bUseBlinn
+    ? pow(max(dot(normal, halfDirection), 0.0f), material.shininess)
+    : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
     
-    float specularFactor = pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
-    //float specularFactor = pow(max(dot(halfDirection, normal), 0.0f), material.shininess);
-    
-    vec4 matColor = vec4(material.color, 1.0f);
-    vec4 ambient = base.ambient * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : matColor);
-    vec4 diffuse = base.diffuse * diffuseFactor * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : matColor);
-    vec4 specular = base.specular * (bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : matColor);
-    return (ambient + diffuse + specular) * base.intensity * vec4(base.color, 1.0f);
-
+    vec4 lightColor = vec4(base.color, 1.0f);
+    vec4 materialColor = vec4(material.color, 1.0f);
+    vec4 ambient = base.ambient * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+    vec4 diffuse = base.diffuse * diffuseFactor * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+    vec4 specular = base.specular * specularFactor * (bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
+    return (ambient + diffuse + specular) * base.intensity * lightColor;
 }
 
 vec4 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 vertexPosition)
 {
-    return CalcLight(directionalLight.base, -normalize(directionalLight.direction), normal, vertexPosition);
+    return CalcLight(directionalLight.base, normalize(-directionalLight.direction), normal, vertexPosition);
 }
 
 vec4 CalcPointLight(PointLight pointLight, vec3 normal, vec3 vertexPosition)

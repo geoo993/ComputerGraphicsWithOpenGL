@@ -15,10 +15,35 @@ CPlane::~CPlane()
     Release();
 }
 
-void CPlane::Create(float fWidth, float fHeight, float fTextureRepeat, unsigned int fDivisions) {
-    
+void CPlane::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames,
+                    GLfloat fWidth, GLfloat fHeight, GLfloat fTextureRepeat, GLuint fDivisions) {
     m_width = fWidth;
     m_height = fHeight;
+    
+    m_directory = directory;
+    m_textureNames = textureNames;
+    m_textures.reserve(textureNames.size());
+    
+    // Iterate through all elements in std::map
+    for (auto it = textureNames.begin(); it != textureNames.end(); ++it) {
+        // if the current index is needed:
+        auto i = std::distance(textureNames.begin(), it);
+        
+        // access element as *it
+        m_textures.push_back(*new CTexture);
+        m_textures[i].Load(m_directory+it->first, it->second, true);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        GLfloat aniso;
+        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso);
+        m_textures[i].SetSamplerObjectParameterf(GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso);
+        // any code including continue, break, return
+    }
+    
+    
     
     // Use VAO to store state associated with vertices
     glGenVertexArrays(1, &m_vao);
@@ -92,26 +117,6 @@ void CPlane::Create(float fWidth, float fHeight, float fTextureRepeat, unsigned 
     
 }
 
-// Create the plane, including its geometry, texture mapping, normal, and colour
-void CPlane::Create(const std::string &fLocation, float fWidth, float fHeight, float fTextureRepeat, unsigned int fDivisions){
-    
-    Create(fWidth, fHeight, fTextureRepeat, fDivisions);
-    
-	// Load the texture
-	m_texture.Load(fLocation, true);
-
-	// Set parameters for texturing using sampler object
-	m_texture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	m_texture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-	m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-	
-    GLfloat aniso;
-    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso);
-    m_texture.SetSamplerObjectParameterf(GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso);
-    
-}
-
 void CPlane::Transform(const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale) {
     // Render the planar terrain
     transform.SetIdentity();
@@ -123,20 +128,28 @@ void CPlane::Transform(const glm::vec3 & position, const glm::vec3 & rotation, c
 }
 
 // Render the plane as a triangle strip
-void CPlane::Render(const bool &useTexture)
+void CPlane::Render(const GLboolean &useTexture)
 {
 	glBindVertexArray(m_vao);
-    if (useTexture) {
-        this->m_texture.BindTexture2D();
+    if (useTexture){
+        for (GLuint i = 0; i < m_textures.size(); ++i){
+            GLint n = static_cast<GLint>(m_textures[i].GetType());
+            m_textures[i].BindTexture2D(n);
+        }
     }
+    
     glDrawArrays(GL_TRIANGLE_STRIP, 0, m_totalVertices);
 }
 
 // Release resources
 void CPlane::Release()
 {
-    this->m_texture.Release();
+    for (GLuint i = 0; i < m_textures.size(); ++i){
+        m_textures[i].Release();
+    }
+    m_textures.clear();
     
-	glDeleteVertexArrays(1, &m_vao);
-	this->m_vbo.Release();
+    glDeleteVertexArrays(1, &m_vao);
+    
+    m_vbo.Release();
 }

@@ -16,31 +16,26 @@ public:
     CCube(const GLfloat & size = 1.0f);
     ~CCube();
 
-    void Create(const std::string &a_sDirectory, const std::vector<std::string> &a_textureNames);
-    void Create(const std::string &a_sDirectory, const std::string &a_textureName);
+    void Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames);
     void Transform(const glm::vec3 & position,
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     
-    void Render(const bool &useTexture = true);
-    void Release();
+    void Render(const GLboolean &useTexture = true);
     GLfloat GetSize() const { return size; }
+    void Release();
     
 private:
-    void Draw();
     
     GLuint m_vao, m_numTriangles;
     CVertexBufferObject m_vbo;
     
-    std::vector<std::string> m_textureNames;
+    std::map<std::string, TextureType> m_textureNames;
     std::vector<CTexture> m_textures;
     
     std::string m_directory;
-    std::string m_textureName;
-    CTexture m_texture;
     
     GLfloat size;
-    bool m_isMultiTexture;
     std::vector<glm::vec3> m_cubeTangent;
     std::vector<glm::vec3> m_cubeBitangent;
 };

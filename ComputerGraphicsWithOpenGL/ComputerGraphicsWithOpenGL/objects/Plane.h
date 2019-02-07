@@ -10,23 +10,24 @@ class CPlane: public GameObject
 public:
 	CPlane();
 	~CPlane();
-    void Create(const std::string &fLocation, float fWidth, float fHeight, float fTextureRepeat, unsigned int fDivisions);
-    void Create(float fWidth, float fHeight, float fTextureRepeat, unsigned int fDivisions);
-    
+    void Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames,
+                GLfloat fWidth, GLfloat fHeight, GLfloat fTextureRepeat, GLuint fDivisions);
     void Transform(const glm::vec3 & position,
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
    
-    void Render(const bool &useTexture = true);
+    void Render(const GLboolean &useTexture = true);
     void Release();
 private:
     
     GLuint m_vao;
     CVertexBufferObject m_vbo;
-    CTexture m_texture;
-	float m_width;
-	float m_height;
-    float m_totalVertices;
+    
+    std::map<std::string, TextureType>m_textureNames;
+    std::vector<CTexture> m_textures;
+    
+    std::string m_directory;
+    GLfloat m_width, m_height, m_totalVertices;
 };
 
 

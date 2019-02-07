@@ -27,20 +27,40 @@ CTorusKnot::~CTorusKnot()
 // written by Jari Komppa aka Sol / Trauma
 // Based on:
 // http://www.blackpawn.com/texts/pqtorus/default.html
-
-void CTorusKnot:: Create( const std::string &textureFile,
-                      int aSteps,           // in: Number of steps in the torus knot
-                      int aFacets,          // in: Number of facets
-                      float aScale,         // in: Scale of the knot
-                      float aThickness,     // in: Thickness of the knot
-                      float aClumps,        // in: Number of clumps in the knot
-                      float aClumpOffset,   // in: Offset of the clump (in 0..2pi)
-                      float aClumpScale,    // in: Scale of a clump
-                      float aUScale,        // in: U coordinate scale
-                      float aVScale,        // in: V coordinate scale
-                      float aP,             // in: P parameter of the knot
-                      float aQ)             // in: Q parameter of the knot
+void CTorusKnot:: Create(const std::string &directory,
+                         const std::map<std::string, TextureType> &textureNames,
+                         int aSteps,           // in: Number of steps in the torus knot
+                         int aFacets,          // in: Number of facets
+                         float aScale,         // in: Scale of the knot
+                         float aThickness,     // in: Thickness of the knot
+                         float aClumps,        // in: Number of clumps in the knot
+                         float aClumpOffset,   // in: Offset of the clump (in 0..2pi)
+                         float aClumpScale,    // in: Scale of a clump
+                         float aUScale,        // in: U coordinate scale
+                         float aVScale,        // in: V coordinate scale
+                         float aP,             // in: P parameter of the knot
+                         float aQ)             // in: Q parameter of the knot
 {
+
+    m_directory = directory;
+    m_textureNames = textureNames;
+    m_textures.reserve(textureNames.size());
+   
+    // Iterate through all elements in std::map
+    for (auto it = textureNames.begin(); it != textureNames.end(); ++it) {
+        // if the current index is needed:
+        auto i = std::distance(textureNames.begin(), it);
+        
+        // access element as *it
+        m_textures.push_back(*new CTexture);
+        m_textures[i].Load(m_directory+it->first, it->second, true);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        // any code including continue, break, return
+    }
     
     
     /*
@@ -82,17 +102,7 @@ void CTorusKnot:: Create( const std::string &textureFile,
              P=8     Q=7
      */
     
-    
-    
-    m_textureFile = textureFile;
-    m_texture.Load(m_textureFile);
-    
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-    
-    
+
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
     
@@ -344,11 +354,17 @@ void CTorusKnot::Transform(const glm::vec3 & position, const glm::vec3 & rotatio
     transform.Scale(scale);
 }
 
-void CTorusKnot::Render(const bool &useTexture)
+void CTorusKnot::Render(const GLboolean &useTexture)
 {
     // bind the VAO (the triangle)
     glBindVertexArray(m_vao);
-    m_texture.BindTexture2D();
+    if (useTexture){
+        
+        for (GLuint i = 0; i < m_textures.size(); ++i){
+            GLint n = static_cast<GLint>(m_textures[i].GetType());
+            m_textures[i].BindTexture2D(n);
+        }
+    }
     
     glDrawElements(GL_TRIANGLE_STRIP, m_numIndices, GL_UNSIGNED_INT, 0);
 }
@@ -356,7 +372,10 @@ void CTorusKnot::Render(const bool &useTexture)
 // Release memory on the GPU 
 void CTorusKnot::Release()
 {
-    m_texture.Release();
+    for (GLuint i = 0; i < m_textures.size(); ++i){
+        m_textures[i].Release();
+    }
+    m_textures.clear();
     
     glDeleteVertexArrays(1, &m_vao);
     

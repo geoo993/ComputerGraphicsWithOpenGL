@@ -51,8 +51,9 @@ void Game::DisplayFrameRate(CShaderProgram *fontProgram, const GLuint &framesPer
             m_pFtFont->Render(fontProgram, 20, height - 260, 20, "Light Att Constant: %f", m_constant);
             m_pFtFont->Render(fontProgram, 20, height - 280, 20, "Light Att Linear: %f", m_linear);
             m_pFtFont->Render(fontProgram, 20, height - 300, 20, "Light Att Exponent: %f", m_exponent);
-            m_pFtFont->Render(fontProgram, 20, height - 320, 20, "Use Texture: %s", Extensions::BoolToString(m_woodenBoxesUseTexture));
-            m_pFtFont->Render(fontProgram, 20, height - 340, 20, "Use Smooth SpotLight: %s", Extensions::BoolToString(m_woodenBoxesUseTexture));
+            m_pFtFont->Render(fontProgram, 20, height - 320, 20, "Light Smooth SpotLight: %s", Extensions::BoolToString(m_useSmoothSpot));
+            m_pFtFont->Render(fontProgram, 20, height - 340, 20, "Light Use Blinn-Phong: %s", Extensions::BoolToString(m_useBlinn));
+            m_pFtFont->Render(fontProgram, 20, height - 360, 20, "Use Texture: %s", Extensions::BoolToString(m_woodenBoxesUseTexture));
         }
         
     }

@@ -12,43 +12,24 @@
 #pragma once
 #include "Common.h"
 
-class CVertex
-{
-public:
-    CVertex(){};
-    CVertex(glm::vec3 positionIn, glm::vec2 textureCoordIn, glm::vec3 normalIn)
-    {
-        position = positionIn;
-        textureCoord = textureCoordIn;
-        normal = normalIn;
-    };
-    
-    glm::vec3 position;
-    glm::vec2 textureCoord;
-    glm::vec3 normal;
-};
-
-
 struct Vertex
 {
-    glm::vec3 m_pos;
-    glm::vec2 m_tex;
-    glm::vec3 m_normal;
-    glm::vec3 m_tangent;
-    glm::vec3 m_bitangent;
+    glm::vec3 position;
+    glm::vec2 texture;
+    glm::vec3 normal;
+    glm::vec3 tangent;
+    glm::vec3 bitangent;
 
-    Vertex() {}
+    Vertex() {};
 
     Vertex(const glm::vec3& pos, const glm::vec2& tex, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec3& bitangent)
     {
-        m_pos    = pos;
-        m_tex    = tex;
-        m_normal = normal;
-        m_tangent = tangent;
-        m_bitangent = bitangent;
+        this->position      = pos;
+        this->texture       = tex;
+        this->normal        = normal;
+        this->tangent       = tangent;
+        this->bitangent     = bitangent;
     }
 };
-
-
 
 #endif /* Vertex_h */

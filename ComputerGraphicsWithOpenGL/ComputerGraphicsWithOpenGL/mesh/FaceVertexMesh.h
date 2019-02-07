@@ -12,13 +12,13 @@ public:
 	CFaceVertexMesh();
 	~CFaceVertexMesh();
 	void Render();
-	bool CreateFromTriangleList(const std::vector<CVertex> &vertices, const std::vector<unsigned int> &triangles);
+	bool CreateFromTriangleList(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &triangles);
 	void ComputeVertexNormals();
 	glm::vec3 ComputeTriangleNormal(const unsigned int &tId);
 	void ComputeTextureCoordsXZ(const float &xScale, const float &zScale);
     void Release();
 private:
-	std::vector<CVertex> m_vertices;			// A list of vertices
+	std::vector<Vertex> m_vertices;			// A list of vertices
 	std::vector<unsigned int> m_triangles;		// Stores vertex IDs -- every three makes a triangle
 	std::vector<TriangleList> m_onTriangle;	// For each vertex, stores a list of triangle IDs saying which triangles the vertex is on
 	GLuint m_uiVAO;

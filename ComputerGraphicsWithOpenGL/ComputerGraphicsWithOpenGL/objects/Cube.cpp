@@ -20,49 +20,29 @@ CCube::~CCube()
     Release();
 }
 
-void CCube::Create(const std::string &a_sDirectory, const std::string &a_textureName){
-    
-    m_isMultiTexture = false;
-    m_directory = a_sDirectory;
-    m_textureName = a_textureName;
-    
-    m_texture.Load(m_directory+m_textureName, true);
-    
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-    m_texture.SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-    
-    Draw();
-}
 // Create a unit sphere 
-void CCube::Create(const std::string &a_sDirectory, const std::vector<std::string> &a_textureNames)
+void CCube::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames)
 {
-    m_isMultiTexture = true;
-    m_directory = a_sDirectory;
-    m_textureNames = a_textureNames;
+    m_directory = directory;
+    m_textureNames = textureNames;
+    m_textures.reserve(textureNames.size());
     
-    unsigned int amountOfTextures = (a_textureNames.size() > 4) ? 4 : a_textureNames.size();
-    m_textures.reserve(amountOfTextures);
-    
-    // check if filename passed in -- if so, load texture
-    for (unsigned int i = 0; i < amountOfTextures; ++i){
-        m_textures.push_back(*new CTexture);
-        m_textures[i].Load(m_directory+m_textureNames[i], true);
+    // Iterate through all elements in std::map
+    for (auto it = textureNames.begin(); it != textureNames.end(); ++it) {
+        // if the current index is needed:
+        auto i = std::distance(textureNames.begin(), it);
         
+        // access element as *it
+        m_textures.push_back(*new CTexture);
+        m_textures[i].Load(m_directory+it->first, it->second, true);
         m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
         m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        // any code including continue, break, return
     }
     
-    Draw();
-    
-}
-
-void CCube::Draw(){
-    
-
     // make and bind the VAO
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
@@ -357,19 +337,15 @@ void CCube::Transform(const glm::vec3 & position, const glm::vec3 & rotation, co
 }
 
 // Render the cube as a set of triangles
-void CCube::Render(const bool &useTexture)
+void CCube::Render(const GLboolean &useTexture)
 {
     // bind the VAO (the triangle)
     glBindVertexArray(m_vao);
     
     if (useTexture){
-        
-        if (m_isMultiTexture == true){
-            for (unsigned int i = 0; i < m_textures.size(); ++i){
-                m_textures[i].BindTexture2D(i);
-            }
-        }else{
-            m_texture.BindTexture2D();
+        for (GLuint i = 0; i < m_textures.size(); ++i){
+            GLint n = static_cast<GLint>(m_textures[i].GetType());
+            m_textures[i].BindTexture2D(n);
         }
     }
     glDrawArrays( GL_TRIANGLES, 0, m_numTriangles ); // draw the vertixes
@@ -378,15 +354,10 @@ void CCube::Render(const bool &useTexture)
 // Release memory on the GPU 
 void CCube::Release()
 {
-    if (m_isMultiTexture == true){
-       
-        for (unsigned int i = 0; i < m_textures.size(); ++i){
-            m_textures[i].Release();
-        }
-        m_textures.clear();
-    }else{
-        m_texture.Release();
+    for (GLuint i = 0; i < m_textures.size(); ++i){
+        m_textures[i].Release();
     }
+    m_textures.clear();
     
     glDeleteVertexArrays(1, &m_vao);
     

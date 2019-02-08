@@ -5,7 +5,15 @@
 // http://www.thetenthplanet.de/archives/1180
 // 
 
+#define NUMBER_OF_POINT_LIGHTS 6
+
 precision highp float;
+
+uniform struct Camera
+{
+    vec3 position;
+    vec3 front;
+} camera;
 
 uniform struct Material
 {
@@ -25,9 +33,49 @@ uniform struct Material
     float shininess;
 } material;
 
-// Lights and materials passed in as uniform variables from client programme
-uniform bool bUseTexture;
-uniform vec2 uv_tiling;
+struct BaseLight
+{
+    vec3 color;
+    float intensity;
+    float ambient;
+    float diffuse;
+    float specular;
+};
+
+struct Attenuation
+{
+    float constant;
+    float linear;
+    float exponent;
+};
+
+struct DirectionalLight
+{
+    BaseLight base;
+    vec3 direction;
+};
+
+struct PointLight
+{
+    BaseLight base;
+    Attenuation attenuation;
+    vec3 position;
+    float range;
+};
+
+struct SpotLight
+{
+    PointLight pointLight;
+    vec3 direction;
+    float cutOff;
+    float outerCutOff;
+};
+
+uniform DirectionalLight R_directionallight;
+uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
+uniform SpotLight R_spotlight;
+uniform bool bUseTexture, bUseBlinn, bUseSmoothSpot;
+uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
 
 in VS_OUT
 {
@@ -36,44 +84,89 @@ in VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
+    vec3 vWorldTangent;
     vec4 vEyePosition;
 } fs_in;
 
-/*
-// http://www.thetenthplanet.de/archives/1180
-mat3 cotangent_frame(vec3 N, vec3 p, vec2 uv)
+
+vec4 CalcLight(BaseLight base, vec3 position, vec3 normal, vec3 tangent, vec3 vertexPosition)
 {
-    // get edge vectors of the pixel triangle
-    vec3 dp1 = dFdx( p );
-    vec3 dp2 = dFdy( p );
-    vec2 duv1 = dFdx( uv );
-    vec2 duv2 = dFdy( uv );
+    vec3 T = normalize(tangent - dot(tangent, normal) * normal);
+    vec3 B = cross(normal, tangent);
+    mat3 TBN = transpose(mat3(T, B, normal));
+    vec3 viewPosition =  camera.position + camera.front;
+    vec3 tangentLightPos        = TBN * position;
+    vec3 tangentViewPos         = TBN * viewPosition;
+    vec3 tangentFragPos         = TBN * vertexPosition;
     
-    // solve the linear system
-    vec3 dp2perp = cross( dp2, N );
-    vec3 dp1perp = cross( N, dp1 );
-    vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
-    vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
     
-    // construct a scale-invariant frame 
-    float invmax = inversesqrt( max( dot(T,T), dot(B,B) ) );
-    return mat3( T * invmax, B * invmax, N );
+    // obtain normal from normal map in range [0,1]
+    //vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;
+    vec3 normalMap = texture(material.normalMap, fs_in.vTexCoord).rgb;
+    vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
+    //vec3 specularMap = texture(material.specularMap, fs_in.vTexCoord).rgb;
+    
+    // transform normal vector to range [-1,1]
+    normalMap = normalize(normalMap * 2.0f - 1.0f);  // this normal is in tangent space
+    // ambient
+    vec3 ambient = base.ambient * diffuseMap;
+    
+    // diffuse
+    vec3 lightDirection = normalize(tangentLightPos - tangentFragPos);
+    float diffuseFactor = max(dot(lightDirection, normalMap), 0.0f);
+    vec3 diffuse = base.diffuse * diffuseFactor * diffuseMap;
+    
+    // specular
+    vec3 directionToEye = normalize(tangentViewPos - tangentFragPos); // viewDirection
+    vec3 reflectDirection = reflect(-lightDirection, normalMap);    // specular reflection
+    vec3 halfDirection = normalize(lightDirection + directionToEye); // halfway vector
+    float specularFactor = bUseBlinn
+    ? pow(max(dot(normalMap, halfDirection), 0.0f), material.shininess)
+    : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
+    vec3 specular = vec3(base.specular) * specularFactor;
+    
+    return (bUseTexture ? vec4(ambient + diffuse + specular, 1.0f) : vec4(material.color, 1.0f)) * base.intensity * vec4(base.color, 1.0f);
 }
 
-
-vec3 perturb_normal( sampler2D normalSampler, vec3 N, vec3 V, vec2 texcoord )
+vec4 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 tangent, vec3 vertexPosition)
 {
-    // assume N, the interpolated vertex normal and 
-    // V, the view vector (vertex to eye)
-    vec3 map = texture(normalSampler, texcoord ).xyz;
-    map = map * 255.0f/127.0f - 128.0f/127.0f;
-    mat3 TBN = cotangent_frame(N, -V, texcoord);
-    return normalize(TBN * map);
+    return CalcLight(directionalLight.base, vec3(1.0f), normal, tangent, vertexPosition);
 }
 
-*/
+vec4 CalcPointLight(PointLight pointLight, vec3 normal, vec3 tangent, vec3 vertexPosition)
+{
+    vec3 lightDirection = normalize(pointLight.position - vertexPosition);
+    float distanceToPoint = length(pointLight.position - vertexPosition);
+    
+    if(distanceToPoint > pointLight.range)
+        return vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    
+    vec4 color = CalcLight(pointLight.base, pointLight.position, normal, tangent, vertexPosition);
+    
+    // attenuation
+    float attenuation = 1.0f / (pointLight.attenuation.constant + pointLight.attenuation.linear * distanceToPoint +
+                                pointLight.attenuation.exponent * (distanceToPoint * distanceToPoint));
+    return color * attenuation;
+}
+
+vec4 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 tangent, vec3 vertexPosition)
+{
+    vec3 lightDirection = normalize(spotLight.pointLight.position - vertexPosition);
+    float theta = max(dot(lightDirection, normalize(-spotLight.direction)), 0.0f);
+    vec4 color = vec4( 0.0f, 0.0f, 0.0f, 0.0f);
+    
+    if(theta > spotLight.cutOff)
+    {
+        float epsilon = spotLight.cutOff - spotLight.outerCutOff;
+        float intensity = bUseSmoothSpot
+        ? (1.0f - (1.0f - theta) / (1.0f - spotLight.cutOff))
+        : clamp((theta - spotLight.outerCutOff) / epsilon, 0.0f, 1.0f);
+        color = CalcPointLight(spotLight.pointLight, normal, tangent, vertexPosition) * intensity;
+    }
+    return color;
+}
+
 out vec4 vOutputColour;        // The output colour formely  gl_FragColor
-
 
 void main()
 {
@@ -83,39 +176,31 @@ void main()
      
      
      */
-    /*
-    vec2 uv = vTexCoord * uv_tiling;
-    vec3 lightDir = light.position - vEyePosition;
-    vec3 eyeVec = vEyePosition; //-vEyePosition;
-    vec3 N = normalize(vEyeNormal.xyz);
-    vec3 L = normalize(lightDir.xyz);
-    vec3 V = normalize(eyeVec.xyz);
-    vec3 PN = perturb_normal(material.normalMap, N, V, uv);
     
-    vec3 texture_color = texture(material.ambientMap, uv).rgb;
-    vec3 final_color = vec3(0.2f, 0.15f, 0.15f) * texture_color;
-    
-    float lambertTerm = dot(PN, L);
-    if (lambertTerm > 0.0f)
-    {
-        final_color += light.Ld * material.Md * lambertTerm * texture_color;  
-        
-        vec3 E = normalize(eyeVec.xyz);
-        vec3 R = reflect(-L, PN);
-        float specular = pow( max(dot(R, E), 0.0), material.shininess);
-        final_color += light.Ls * material.Ms * specular;  
-    }
-    vOutputColour.rgb = bUseTexture ? final_color : PN.rgb;
-    vOutputColour.a = 1.0f;
-     */
-    
-    vec4 vTexColour0 = texture(material.ambientMap, fs_in.vTexCoord);
-    vec4 vTexColour1 = texture(material.normalMap, fs_in.vTexCoord);
-    vec4 vTexColour2 = texture(material.diffuseMap, fs_in.vTexCoord);
-    vec4 vTexColour3 = texture(material.specularMap, fs_in.vTexCoord);
     vec3 normal = normalize(fs_in.vWorldNormal);
+    vec3 tangent = normalize(fs_in.vWorldTangent);
     vec3 worldPos = fs_in.vWorldPosition;
-    //vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     
-    vOutputColour = vTexColour3; //vec4(normal, 1.0f);
+    // Directional lighting
+    if (bUseDirectionalLight){
+        vec4 directionalLight = CalcDirectionalLight(R_directionallight, normal, tangent, worldPos);
+        result += directionalLight;
+    }
+    
+    // Point lights
+    if (bUsePointLight){
+        for (int i = 0; i < NUMBER_OF_POINT_LIGHTS; i++){
+            vec4 pointL = CalcPointLight(R_pointlight[i], normal, tangent, worldPos);
+            result += pointL;
+        }
+    }
+    
+    // Spot light
+    if (bUseSpotlight){
+        vec4 spotL = CalcSpotLight(R_spotlight, normal, tangent, worldPos);
+        result += spotL;
+    }
+    
+    vOutputColour = result;
 }

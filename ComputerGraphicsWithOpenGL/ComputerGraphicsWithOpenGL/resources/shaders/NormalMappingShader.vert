@@ -24,6 +24,7 @@ out VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
+    vec3 vWorldTangent;
     vec4 vEyePosition;
 } vs_out;
 
@@ -40,6 +41,7 @@ void main()
     // Get the vertex normal and vertex position in eye coordinates
     //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
     vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
+    vs_out.vWorldTangent = matrices.normalMatrix * inTangent;
     vs_out.vLocalNormal = inNormal;
     
     vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;

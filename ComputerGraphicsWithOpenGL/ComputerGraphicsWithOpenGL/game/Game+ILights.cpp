@@ -74,8 +74,6 @@ void Game::SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string
 
 }
 
-
-
 void Game::RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) {
     pShaderProgram->UseProgram();
 

@@ -265,7 +265,11 @@ void Game::LoadResources(const std::string &path)
     //m_pFlashlight
     
     
-    m_pCube->Create(path+"/textures/woodenBox/", { {"woodenBoxDiffuse.png", TextureType::AMBIENT} } );
+    m_pCube->Create(path+"/textures/pixarLibrary/brick/", {
+        { "Standard_red_pxr128.tif", TextureType::DIFFUSE},
+        { "Standard_red_pxr128_normal.tif", TextureType::NORMAL},
+        { "Standard_red_pxr128_bmp.tif", TextureType::SPECULAR}
+    } );
     
     m_pWoodenBox->Create(path+"/textures/woodenBox/",
                          { 

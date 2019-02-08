@@ -16,18 +16,18 @@ void Game::RenderScene(){
     // uncomment if stencil buffer is not used
     glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
     
-    // Render terrain shader program
+    /// Render terrain shader program
     CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[2];
     SetMaterialUniform(pTerrainProgram, "material");
     RenderTerrain(pTerrainProgram, true, true);
     
-    // Render Lamps
+    /// Render Lamps
     CShaderProgram *pLampProgram = (*m_pShaderPrograms)[4];
     for (unsigned int i = 0; i < m_pointLightPositions.size(); i++) {
         RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f, m_pointLightColors[i]);
     }
     
-    // Use Render Light
+    /// All Lights shading
     CShaderProgram *pLightProgram = (*m_pShaderPrograms)[5];
     SetCameraUniform(pLightProgram, "camera", m_pCamera);
     SetLightUniform(pLightProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
@@ -42,7 +42,7 @@ void Game::RenderScene(){
     // Add Default Lights
     RenderLight(pLightProgram, m_pCamera);
     
-    // Render Physically Based Rendering Objects
+    ///  Physically Based Rendering shading
     CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[3];
     SetCameraUniform(pPBRProgram, "camera", m_pCamera);
     SetLightUniform(pPBRProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
@@ -67,19 +67,32 @@ void Game::RenderScene(){
     RenderLight(pPBRProgram, m_pCamera);
     
     //RenderBarrel(pPBRProgram, m_barrelPosition, 1.0f, true);
-    //RenderCube(pPBRProgram, m_cubePosition, 20.0f, true);
     
     //RenderSphere(pPBRProgram, m_spherePosition, 30.0f, true);
     //RenderTorus(pPBRProgram, m_torusPosition, 5.0f, false);
     //RenderTorusKnot(pPBRProgram, m_torusKnotPosition, 5.0f, true);
     //RenderMetalBalls(pPBRProgram, m_metalballsPosition, 100.0f, true);
-    CShaderProgram *pNormalMappingProgram = (*m_pShaderPrograms)[6];
-    SetMaterialUniform(pNormalMappingProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess);
-    //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
-    RenderNanosuit(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
     
+    /// Normal mapping shader
+    CShaderProgram *pNormalMappingProgram = (*m_pShaderPrograms)[6];
+    SetCameraUniform(pNormalMappingProgram, "camera", m_pCamera);
+    SetLightUniform(pNormalMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+    SetMaterialUniform(pNormalMappingProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess);
+    
+    RenderCube(pNormalMappingProgram, glm::vec3(1000.0f, 500.0f, 1000.0f), 80.0f, true);
+    RenderNanosuit(pNormalMappingProgram,  glm::vec3(1000.0f, 500.0f, -1000.0f), 20.0f, true);
+    
+    // Add Normal mapping Lights
+    RenderLight(pNormalMappingProgram, m_pCamera);
+    
+    
+    
+    glm::vec3 environmentMappingPos = glm::vec3(500.0f, 500.0f, -1000.0f);
+    glm::vec3 parallaxNormalMappingPos = glm::vec3(-500.0f, 500.0f, -1000.0f);
+    glm::vec3 chromaticAberrationCubePos = glm::vec3(-1000.0f, 500.0f, -1000.0f);
+    //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
     /*
-    // Render skybox
+    /// skybox shader
     CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[1];
     RenderSkyBox(pSkyBoxProgram, CUBEMAPTEXTUREUNIT);
     */

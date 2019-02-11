@@ -54,10 +54,6 @@ void CSphere::Create(const std::string &directory, const std::map<std::string, T
 			glm::vec2 t = glm::vec2((float)slices / (float) slicesIn, (float)stacks / (float) stacksIn);
 			glm::vec3 n = v;
             
-            m_vbo.AddVertexData(&v, sizeof(glm::vec3));
-            m_vbo.AddVertexData(&t, sizeof(glm::vec2));
-            m_vbo.AddVertexData(&n, sizeof(glm::vec3));
-            
             vertices.push_back(v);
             uvs.push_back(t);
             normals.push_back(n);
@@ -66,6 +62,45 @@ void CSphere::Create(const std::string &directory, const std::map<std::string, T
             //cout << "stacks: " << stacks << ", slices: " << slices << endl;
 		}
 	}
+    
+    for (long unsigned i = 0; i < vertexCount; i+=2) {
+        // triangle
+        glm::vec3 v0 = vertices[i+0];
+        glm::vec3 v1 = vertices[i+1 % vertexCount];
+        
+        // triangle UVs
+        glm::vec2 & uv0 = uvs[i+0];
+        glm::vec2 & uv1 = uvs[i+1 % vertexCount];
+        
+        // triangle Normals
+        glm::vec3 & norm0 = normals[i+0];
+        glm::vec3 & norm1 = normals[i+1 % vertexCount];
+        
+        // calculate tangent/bitangent vectors of both triangles
+        glm::vec3 tangent, bitangent;
+        
+        float coef = 1.0f / (uv0.x * uv1.y - uv1.x * uv0.y);
+        tangent.x = coef * ((v0.x * uv1.y) + (v1.x * -uv0.y));
+        tangent.y = coef * ((v0.y * uv1.y) + (v1.y * -uv0.y));
+        tangent.z = coef * ((v0.z * uv1.y) + (v1.z * -uv0.y));
+        tangent = glm::normalize(tangent);
+        bitangent = glm::normalize(glm::cross(norm0, tangent));
+        
+        m_vbo.AddVertexData(&v0, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&uv0, sizeof(glm::vec2));
+        m_vbo.AddVertexData(&norm0, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&tangent, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&bitangent, sizeof(glm::vec3));
+        
+        bitangent = glm::normalize(glm::cross(norm1, tangent));
+        
+        m_vbo.AddVertexData(&v1, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&uv1, sizeof(glm::vec2));
+        m_vbo.AddVertexData(&norm1, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&tangent, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&bitangent, sizeof(glm::vec3));
+    }
+    
     
 	// Compute indices and store in VBO
 	m_numTriangles = 0;
@@ -95,8 +130,8 @@ void CSphere::Create(const std::string &directory, const std::map<std::string, T
 
     // https://stackoverflow.com/questions/22296510/what-does-stride-mean-in-opengles
     // https://www.opengl.org/discussion_boards/showthread.php/156620-glVertexPointer-Stride
-    // 2 vector3 plus 1 vector2
-	GLsizei stride = (2 * sizeof(glm::vec3))+sizeof(glm::vec2);
+    // 4 vector3 plus 1 vector2
+	GLsizei stride = (4 * sizeof(glm::vec3))+sizeof(glm::vec2);
 
 	// Vertex positions
 	glEnableVertexAttribArray(0);
@@ -107,14 +142,13 @@ void CSphere::Create(const std::string &directory, const std::map<std::string, T
 	// Normal vectors
 	glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)));
-    /*
+    
     // Tangents
     glEnableVertexAttribArray(3);
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)+sizeof(glm::vec3)));
     // Bitangents
     glEnableVertexAttribArray(4);
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, stride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)+sizeof(glm::vec3)+sizeof(glm::vec3)));
-    */
     
 }
 

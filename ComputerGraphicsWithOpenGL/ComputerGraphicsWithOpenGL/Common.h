@@ -79,15 +79,15 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#define SCREEN_WIDTH 1240
-#define SCREEN_HEIGHT 760
+#define SCREEN_WIDTH 1440
+#define SCREEN_HEIGHT 820
 #define FPS 60
 
 // Settings
 #define FOV 45.0
 #define ZNEAR 0.1
 #define ZFAR 4000.0
-#define CUBEMAPTEXTUREUNIT 10 //cube map texture of the skyBox is at 10 texture unit
+//#define CUBEMAPTEXTUREUNIT 10 //cube map texture of the skyBox is at 10 texture unit
 
 // Default camera values
 #define YAW -90.0f

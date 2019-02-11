@@ -8,6 +8,7 @@ uniform struct Matrices
     mat4 viewMatrix;
     mat3 normalMatrix;
     mat4 inverseViewMatrix;
+    mat4 viewMatrixWithoutTranslation;
 } matrices;
 
 // Layout of vertex attributes in VBO
@@ -26,8 +27,7 @@ void main()
     vTextureDirection = inPosition;
     
     // Transform the vertex spatial position using
-    vec4 glPosition = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
-    //vec4 glPosition = projection * matrices.viewMatrixWithoutTranslation * position;
+    vec4 glPosition = matrices.projMatrix * matrices.viewMatrixWithoutTranslation * position;
     gl_Position = glPosition.xyww;
     
 }

@@ -26,6 +26,8 @@ Game::Game()
     
     // materials
     m_materialShininess = 30.0f;
+    m_uvTiling = 1.4f;
+    m_magnitude = 0.3f;
     
     //textures settings
     m_textures.reserve(50);
@@ -79,7 +81,7 @@ Game::Game()
     // skybox
     m_pSkybox = nullptr;
     m_mapSize = 3000.0f;
-    m_skyboxNumber = 10;
+    m_skyboxNumber = 0;
     m_changeSkybox = false;
     
     // terrain
@@ -103,6 +105,8 @@ Game::Game()
     
     //cube object
     m_pCube = nullptr;
+    m_pParallaxCube = nullptr;
+    m_pChromaticAberrationCube = nullptr;
     m_cubePosition = glm::vec3(20.0f,120.0f, -50.0f);
     
     // woodenBox
@@ -122,11 +126,11 @@ Game::Game()
     
     //torus object
     m_pTorus = nullptr;
-    m_torusPosition = glm::vec3(-160.0f,30.0f,150.0f);
+    m_torusPosition = glm::vec3(-160.0f,530.0f,150.0f);
     
     //torusknot object
     m_pTorusKnot = nullptr;
-    m_torusKnotPosition = glm::vec3(130.0f,160.0f,250.0f);
+    m_torusKnotPosition = glm::vec3(130.0f, 560.0f, 250.0f);
     
     // metalballs
     m_pMetaballs = nullptr;
@@ -172,6 +176,8 @@ Game::~Game()
     delete m_pFlashlight;
     delete m_pSphere;
     delete m_pCube;
+    delete m_pParallaxCube;
+    delete m_pChromaticAberrationCube;
     delete m_pWoodenBox;
     delete m_pNanosuit;
     delete m_pTorus;
@@ -209,6 +215,8 @@ void Game::Initialise()
     m_pFlashlight = new CModel;
     m_pSphere = new CSphere;
     m_pCube = new CCube(1.0f);
+    m_pParallaxCube = new CCube(1.0f);
+    m_pChromaticAberrationCube = new CCube(1.0f);
     m_pWoodenBox = new CCube(1.0f);
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
@@ -223,7 +231,7 @@ void Game::LoadResources(const std::string &path)
     
     // Create the skybox
     // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
-    m_pSkybox->Create(m_mapSize, path, m_skyboxNumber);
+    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, m_skyboxNumber);
     
     // Create the planar terrain
     m_pPlanarTerrain->Create(path+"/textures/terrain/", { {"grassfloor.jpg", TextureType::AMBIENT} },
@@ -271,6 +279,18 @@ void Game::LoadResources(const std::string &path)
         { "Standard_red_pxr128_bmp.tif", TextureType::SPECULAR}
     } );
     
+    m_pParallaxCube->Create(path+"/textures/pixarLibrary/brick/", {
+        { "bricks_diffuse.jpg", TextureType::DIFFUSE},
+        { "bricks_normal.jpg", TextureType::NORMAL},
+        { "bricks_disp.jpg", TextureType::DISPLACEMENT },
+        { "bricks_height_map.png", TextureType::HEIGHT }
+    } );
+    
+    m_pChromaticAberrationCube->Create(path+"/textures/", {
+        { "clean-gray-paper.png", TextureType::DIFFUSE},
+        { "moon_surface.jpg", TextureType::GLOSSINESS}
+    } );
+    
     m_pWoodenBox->Create(path+"/textures/woodenBox/",
                          { 
                              { "woodenBoxDiffuse.png", TextureType::DIFFUSE},       // diffuseMap 1
@@ -287,9 +307,17 @@ void Game::LoadResources(const std::string &path)
                           { "chipped-paint-ao.png",   TextureType::AO}                          // aoMap 4
                       }, 50, 50);
   
-    m_pTorus->Create(path+"/textures/3912Tex/", { {"3912-diffuse.jpg", TextureType::DIFFUSE} });
+    m_pTorus->Create(path+"/textures/pixarLibrary/metal/", {
+        {"Alloy_diamond_plate_pxr128.tif", TextureType::DIFFUSE},
+        {"Alloy_diamond_plate_pxr128_normal.tif", TextureType::NORMAL},
+        {"Alloy_diamond_plate_pxr128_bmp.tif", TextureType::SPECULAR}
+    });
     
-    m_pTorusKnot->Create(path+"/textures/pixarLibrary/metal/", { {"Round_mesh_pxr128.tif", TextureType::DIFFUSE} },
+    m_pTorusKnot->Create(path+"/textures/pixarLibrary/metal/", {
+        {"Round_mesh_pxr128.tif", TextureType::DIFFUSE},
+        {"Round_mesh_pxr128_normal.tif", TextureType::NORMAL},
+        {"Round_mesh_pxr128_bmp.tif", TextureType::SPECULAR}
+    },
                          1024,         // in: Number of steps in the torus knot
                          32,           // in: Number of facets
                          20.0f,         // in: Scale of the knot

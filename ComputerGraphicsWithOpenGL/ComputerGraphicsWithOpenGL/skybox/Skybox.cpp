@@ -16,7 +16,7 @@ CSkybox::~CSkybox()
 }
 
 // Create a skybox of a given size with six textures
-void CSkybox::Create(const float &size, const std::string &path, const GLuint &skyboxNumber)
+void CSkybox::Create(const GLfloat &size, const std::string &path, const TextureType &type, const GLuint &skyboxNumber)
 {
     /*
          A skybox is a (large) cube that encompasses the entire scene and contains 6 images of a surrounding environment, giving the player the illusion that the environment he's in is actually much larger than it actually is. Some examples of skyboxes used in videogames are images of mountains, of clouds or of a starry night sky. 
@@ -48,7 +48,8 @@ void CSkybox::Create(const float &size, const std::string &path, const GLuint &s
     
      */
     
-    std::vector<std::string> names = {
+    /// http://www.custommapmakers.org/skyboxes.php
+    m_skyboxes = {
         "colorbasement",
         "commonroom",
         "diningroom",
@@ -65,17 +66,19 @@ void CSkybox::Create(const float &size, const std::string &path, const GLuint &s
         "sahara",
         "yokohamanight",
         "yokohamaday",
+        "fog"
     };
     
-    unsigned int ind = skyboxNumber % names.size();
+    unsigned int ind = skyboxNumber % m_skyboxes.size();
     
-    m_cubemapTexture.Create(
-                            path+"/skyboxes/"+names[ind]+"/flipped/_rt.jpg", //right
-                            path+"/skyboxes/"+names[ind]+"/flipped/_lf.jpg", //left
-                            path+"/skyboxes/"+names[ind]+"/flipped/_up.jpg", //up
-                            path+"/skyboxes/"+names[ind]+"/flipped/_dn.jpg", //down
-                            path+"/skyboxes/"+names[ind]+"/flipped/_bk.jpg", //back
-                            path+"/skyboxes/"+names[ind]+"/flipped/_ft.jpg"); //front
+    m_cubemapTexture.Create({
+                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_rt.jpg", //right
+                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_lf.jpg", //left
+                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_up.jpg", //up
+                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_dn.jpg", //down
+                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_bk.jpg", //back
+                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_ft.jpg",  //front
+                            }, type);
 	
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -148,26 +151,29 @@ void CSkybox::Transform(const glm::vec3 & position, const glm::vec3 & rotation, 
     transform.Scale(scale);
 }
 
+// Render the skybox
 void CSkybox::Render(const GLboolean &useTexture) {
     
-}
-
-// Render the skybox
-void CSkybox::Render(const int &textureUnit)
-{
     glDepthMask(GL_FALSE);
-	glBindVertexArray(m_vao);
-	m_cubemapTexture.Bind(textureUnit);
-	for (int i = 0; i < 6; i++) {
-		//m_textures[i].Bind();
-		glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);
-	}
+    glBindVertexArray(m_vao);
     
-    glDepthMask(GL_TRUE); 
+    GLint textureUnit = static_cast<GLint>(m_cubemapTexture.GetType());
+    m_cubemapTexture.Bind(textureUnit);
+    
+    for (int i = 0; i < 6; i++) {
+        //m_textures[i].Bind();
+        glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);
+    }
+    
+    glDepthMask(GL_TRUE);
 }
 
-void CSkybox::BindSkybox(const int &textureUnit){
+void CSkybox::BindSkyboxTo(const GLint &textureUnit){
     m_cubemapTexture.Bind(textureUnit);	
+}
+
+GLuint CSkybox::GetNumberOfSkyboxes() {
+    return m_skyboxes.size();
 }
 
 // Release the storage assocaited with the skybox

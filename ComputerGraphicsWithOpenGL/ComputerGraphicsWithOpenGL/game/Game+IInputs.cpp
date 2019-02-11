@@ -170,19 +170,25 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_Z:
                 break;
             case GLFW_KEY_X:
+                m_magnitude -= 0.1f;
                 break;
             case GLFW_KEY_C:
+                m_magnitude += 0.1f;
                 break;
             case GLFW_KEY_V:
+                m_uvTiling -= 0.1f;
                 break;
             case GLFW_KEY_B:
+                m_uvTiling += 0.1f;
                 break;
             case GLFW_KEY_N:
+                m_parallaxHeightScale -= 0.1f;
                 break;
             case GLFW_KEY_M:
+                m_parallaxHeightScale += 0.1f;
                 break;
             case GLFW_KEY_COMMA:
-                m_skyboxNumber = (m_skyboxNumber + 1) % 14;
+                m_skyboxNumber = (m_skyboxNumber + 1) % m_pSkybox->GetNumberOfSkyboxes();
                 m_changeSkybox = true;
                 break;
             case GLFW_KEY_PERIOD:
@@ -199,6 +205,7 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
                 m_isMouseCursorVisible = !m_isMouseCursorVisible;
                 break;
             case GLFW_KEY_SEMICOLON:
+                m_useRefraction = !m_useRefraction;
                 break;
             default:
                 break;

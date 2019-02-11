@@ -19,11 +19,27 @@ uniform struct Material
     float shininess;
 } material;
 
-in vec3 vTextureDirection; // direction vector representing a 3D texture coordinate
+in VS_OUT
+{
+    vec2 vTexCoord;    // Texture coordinate
+    vec3 vLocalPosition;
+    vec3 vLocalNormal;
+    vec3 vWorldPosition;
+    vec3 vWorldNormal;
+    vec3 vWorldTangent;
+    vec4 vEyePosition;
+} fs_in;
 
-out vec4 vOutputColour;         //formely  gl_FragColor
+uniform bool bUseTexture;
+
+out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
 void main()
 {
-    vOutputColour = texture(material.cubeMap, vTextureDirection);
+
+    if (bUseTexture){
+        vOutputColour = texture(material.diffuseMap, fs_in.vTexCoord);
+    }else{
+        vOutputColour = vec4(material.color, 1.0f);
+    }
 }

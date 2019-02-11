@@ -26,6 +26,7 @@ enum class TextureType {
     GLOSSINESS,
     OPACITY,
     REFLECTION,
+    CUBEMAP,
     UNKNOWN
 };
 

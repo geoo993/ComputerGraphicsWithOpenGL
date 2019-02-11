@@ -46,8 +46,6 @@ struct IMaterials {
     GLfloat m_materialShininess;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec3 &color, const GLfloat &shininess) = 0;
-    virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                       const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) = 0;
 };
 
 struct ITextures {
@@ -59,6 +57,24 @@ struct ITextures {
 struct IShaders {
     std::vector <CShaderProgram *> *m_pShaderPrograms;
     virtual void LoadShaderPrograms(const std::string &path) = 0;
+};
+
+struct IShaderUniform {
+    GLboolean m_useRefraction;
+    GLfloat m_parallaxHeightScale, m_uvTiling, m_magnitude;
+    virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                                       const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) = 0;
+    virtual void SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) = 0;
+    virtual void SetParallaxMapUniform(CShaderProgram *pShaderProgram, const GLfloat &heightScale) = 0;
+    virtual void SetBumpMapUniform(CShaderProgram *pShaderProgram, const GLfloat &uvTiling) = 0;
+    virtual void SetExplosionUniform(CShaderProgram *pShaderProgram,
+                                     const GLboolean &explode, const GLboolean &animate,
+                                     const GLfloat &time, const GLfloat &magnitude) = 0;
+    virtual void SetPorcupineRenderingUniform(CShaderProgram *pShaderProgram,
+                                              const glm::vec3 &vertexNormalColor, const glm::vec3 &faceNormalColor,
+                                              const GLfloat &magnitude) = 0;
+    virtual void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) = 0;
+    virtual void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) = 0;
 };
 
 struct ILights
@@ -110,12 +126,11 @@ struct IRenderer
 {
     virtual void Render() = 0;
     virtual void RenderScene() = 0;
-    virtual void RenderSkyBox(CShaderProgram *pShaderProgram, const int &cubeMapTextureUnit) = 0;
 };
 
 struct IRenderObject
 {
-    virtual void RenderSkyBox(CShaderProgram *pShaderProgram, const int &cubeMapTextureUnit) = 0;
+    virtual void RenderSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) = 0;
     virtual void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                 const GLfloat & scale, const GLboolean &useTexture) = 0;
@@ -125,6 +140,10 @@ struct IRenderObject
                                const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture) = 0;
+    virtual void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                                    const GLfloat & scale, const GLboolean &useTexture) = 0;
+    virtual void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                                               const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
                                  const GLfloat & angle, const GLboolean &useTexture) = 0;
     virtual void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,

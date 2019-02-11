@@ -54,6 +54,10 @@ void Game::DisplayFrameRate(CShaderProgram *fontProgram, const GLuint &framesPer
             m_pFtFont->Render(fontProgram, 20, height - 320, 20, "Light Smooth SpotLight: %s", Extensions::BoolToString(m_useSmoothSpot));
             m_pFtFont->Render(fontProgram, 20, height - 340, 20, "Light Use Blinn-Phong: %s", Extensions::BoolToString(m_useBlinn));
             m_pFtFont->Render(fontProgram, 20, height - 360, 20, "Use Texture: %s", Extensions::BoolToString(m_woodenBoxesUseTexture));
+            m_pFtFont->Render(fontProgram, 20, height - 380, 20, "Use Refraction: %s", Extensions::BoolToString(m_useRefraction));
+            m_pFtFont->Render(fontProgram, 20, height - 400, 20, "Parallax Height Scale: %f", m_parallaxHeightScale);
+            m_pFtFont->Render(fontProgram, 20, height - 420, 20, "UV Tiling: %f", m_uvTiling);
+            m_pFtFont->Render(fontProgram, 20, height - 440, 20, "Magnitude: %f", m_magnitude);
         }
         
     }

@@ -363,20 +363,36 @@ glm::mat4* CCamera::GetOrthographicProjectionMatrix()
 }
 
 // Get the camera view matrix
-glm::mat4 CCamera::GetViewMatrix()
+glm::mat4 CCamera::GetViewMatrix() const
 {
     return this->m_viewMatrix;
 }
 
-glm::mat4 CCamera::GetViewProjection() const { 
-    return this->m_perspectiveProjectionMatrix * this->m_viewMatrix; 
+glm::mat4 CCamera::GetViewWithoutTranslation() const {
+    /*
+     The current view matrix however transforms all the skybox's positions by rotating, scaling and translating them,
+     so if the player moves, the cubemap moves as well! We want to remove the translation part
+     of the view matrix so movement doesn't affect the skybox's position vectors.
+     
+     we could remove the translation section of transformation matrices by taking the upper-left 3x3 matrix of the 4x4 matrix, effectively removing the translation components. We can achieve this by simply converting the view matrix to a 3x3 matrix (removing translation) and converting it back to a 4x4 matrix:
+     
+     glm::mat4 view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+     
+     This removes any translation, but keeps all rotation transformations so the user can still look around the scene.
+     */
+    return glm::mat4(glm::mat3(this->m_viewMatrix));
+}
+
+glm::mat4 CCamera::GetViewProjection() const {
+    return this->m_perspectiveProjectionMatrix * this->m_viewMatrix;
 }
 
 // The normal matrix is used to transform normals to eye coordinates -- part of lighting calculations
 glm::mat3 CCamera::ComputeNormalMatrix(const glm::mat4 &modelMatrix)
 {
-	return glm::transpose(glm::inverse(glm::mat3(modelMatrix)));
+    return glm::transpose(glm::inverse(glm::mat3(modelMatrix)));
 }
+
 
 
 // http://roy-t.nl/2010/03/04/getting-the-left-forward-and-back-vectors-from-a-view-matrix-directly.html

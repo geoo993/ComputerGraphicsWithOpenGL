@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Texture.h"
-#include "vertexBufferObject.h"
+//#include "vertexBufferObject.h"
+#include "Common.h"
+#include "TextureType.h"
 
 class CCubemap
 {
@@ -9,15 +10,17 @@ public:
     CCubemap();
     ~CCubemap();
     
-	void Create(std::string sPositiveX, std::string sNegativeX, std::string sPositiveY, std::string sNegativeY, std::string sPositiveZ, std::string sNegativeZ);
-    bool LoadTexture(std::string filename, BYTE **bmpBytes, int &iWidth, int &iHeight);
-    void Bind(int iTextureUnit = 0);
+	//void Create(std::string sPositiveX, std::string sNegativeX, std::string sPositiveY,
+    //            std::string sNegativeY, std::string sPositiveZ, std::string sNegativeZ, const TextureType &type);
+    void Create(const std::vector<std::string> &cubemapFaces, const TextureType &type);
+    GLboolean LoadTexture(std::string filename, BYTE **bmpBytes, GLint &iWidth, GLint &iHeight);
+    void Bind(GLint iTextureUnit = 0);
     void Release();
-
+    TextureType GetType() const;
+    
 private:
-	uint m_uiVAO;
-	CVertexBufferObject m_vboRenderData;
-	GLuint m_uiTexture;
-	GLuint m_uiSampler; // Sampler name
-
+	GLuint m_uiVAO;
+	GLuint m_uiTexture, m_uiSampler;
+    std::vector<std::string> m_faces;
+    TextureType m_type;
 };

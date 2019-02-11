@@ -89,21 +89,47 @@ void CPlane::Create(const std::string &directory, const std::map<std::string, Te
     glm::vec3 planeNormal = glm::vec3(0.0f, 1.0f, 0.0f);
     
     // Put the vertex attributes in the VBO
-    for (unsigned int i = 0; i < planeVertices.size(); i++) {
-        glm::vec2 textCoords(0.0f);
-        textCoords.x = ((planeVertices[i].x+halfWidth)/m_width)*fTextureRepeat;
-        textCoords.y = ((planeVertices[i].z+halfHeight)/m_height)*fTextureRepeat;
+    for (unsigned int i = 0; i < m_totalVertices; i+=2) {
         
-        m_vbo.AddData(&planeVertices[i], sizeof(glm::vec3));
-        m_vbo.AddData(&textCoords, sizeof(glm::vec2));
+        // triangle
+        glm::vec3 v0 = planeVertices[i+0];
+        glm::vec3 v1 = planeVertices[i+1 % m_totalVertices];
+        
+        // triangle UVs
+        glm::vec2 uv0 = glm::vec2(((planeVertices[i+0].x+halfWidth)/m_width)*fTextureRepeat,
+                                    ((planeVertices[i+0].z+halfHeight)/m_height)*fTextureRepeat);
+        glm::vec2 uv1 = glm::vec2(((planeVertices[i+1 % m_totalVertices].x+halfWidth)/m_width)*fTextureRepeat,
+                                    ((planeVertices[i+1 % m_totalVertices].z+halfHeight)/m_height)*fTextureRepeat);
+        
+        glm::vec3 tangent, bitangent;
+        
+        float coef = 1.0f / (uv0.x * uv1.y - uv1.x * uv0.y);
+        tangent.x = coef * ((v0.x * uv1.y) + (v1.x * -uv0.y));
+        tangent.y = coef * ((v0.y * uv1.y) + (v1.y * -uv0.y));
+        tangent.z = coef * ((v0.z * uv1.y) + (v1.z * -uv0.y));
+        tangent = glm::normalize(tangent);
+        bitangent = glm::normalize(glm::cross(planeNormal, tangent));
+        
+        m_vbo.AddData(&v0, sizeof(glm::vec3));
+        m_vbo.AddData(&uv0, sizeof(glm::vec2));
         m_vbo.AddData(&planeNormal, sizeof(glm::vec3));
+        m_vbo.AddData(&tangent, sizeof(glm::vec3));
+        m_vbo.AddData(&bitangent, sizeof(glm::vec3));
+        
+        bitangent = glm::normalize(glm::cross(planeNormal, tangent));
+        
+        m_vbo.AddData(&v1, sizeof(glm::vec3));
+        m_vbo.AddData(&uv1, sizeof(glm::vec2));
+        m_vbo.AddData(&planeNormal, sizeof(glm::vec3));
+        m_vbo.AddData(&tangent, sizeof(glm::vec3));
+        m_vbo.AddData(&bitangent, sizeof(glm::vec3));
     }
     
     // Upload the VBO to the GPU
     m_vbo.UploadDataToGPU(GL_STATIC_DRAW);
     
     // Set the vertex attribute locations
-    GLsizei istride = 2*sizeof(glm::vec3)+sizeof(glm::vec2);
+    GLsizei istride = 4*sizeof(glm::vec3)+sizeof(glm::vec2);
     
     // Vertex positions
     glEnableVertexAttribArray(0);
@@ -114,6 +140,14 @@ void CPlane::Create(const std::string &directory, const std::map<std::string, Te
     // Normal vectors
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, istride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)));
+    
+    // Tangents
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, istride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)+sizeof(glm::vec3)));
+    
+    // Bitangents
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, istride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)+sizeof(glm::vec3)+sizeof(glm::vec3)));
     
 }
 

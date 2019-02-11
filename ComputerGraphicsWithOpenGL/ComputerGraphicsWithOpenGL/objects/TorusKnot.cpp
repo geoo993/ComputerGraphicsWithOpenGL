@@ -303,15 +303,43 @@ void CTorusKnot:: Create(const std::string &directory,
         
     }
     
-    for(long unsigned int i = 0; i < m_numVertices; i++)
-    {
-        glm::vec3 v = positions[i]; // vertex
-        glm::vec2 uv = texCoords[i]; // texture
-        glm::vec3 n = normals[i];  // normal
+    // http://fabiensanglard.net/bumpMapping/index.php
+    //for(long unsigned int i = 0; i < m_numVertices; i++)
+    for (long unsigned i = 0; i < m_numVertices; i+=2) {
+        // triangle
+        glm::vec3 v0 = positions[i+0];
+        glm::vec3 v1 = positions[i+1 % m_numVertices];
         
-        m_vbo.AddVertexData(&v, sizeof(glm::vec3));
-        m_vbo.AddVertexData(&uv, sizeof(glm::vec2));
-        m_vbo.AddVertexData(&n, sizeof(glm::vec3));
+        // triangle UVs
+        glm::vec2 & uv0 = texCoords[i+0];
+        glm::vec2 & uv1 = texCoords[i+1 % m_numVertices];
+        
+        // triangle Normals
+        glm::vec3 & norm0 = normals[i+0];
+        glm::vec3 & norm1 = normals[i+1 % m_numVertices];
+        
+        glm::vec3 tangent, bitangent;
+        
+        float coef = 1.0f / (uv0.x * uv1.y - uv1.x * uv0.y);
+        tangent.x = coef * ((v0.x * uv1.y) + (v1.x * -uv0.y));
+        tangent.y = coef * ((v0.y * uv1.y) + (v1.y * -uv0.y));
+        tangent.z = coef * ((v0.z * uv1.y) + (v1.z * -uv0.y));
+        tangent = glm::normalize(tangent);
+        bitangent = glm::normalize(glm::cross(norm0, tangent));
+        
+        m_vbo.AddVertexData(&v0, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&uv0, sizeof(glm::vec2));
+        m_vbo.AddVertexData(&norm0, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&tangent, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&bitangent, sizeof(glm::vec3));
+        
+        bitangent = glm::normalize(glm::cross(norm1, tangent));
+        
+        m_vbo.AddVertexData(&v1, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&uv1, sizeof(glm::vec2));
+        m_vbo.AddVertexData(&norm1, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&tangent, sizeof(glm::vec3));
+        m_vbo.AddVertexData(&bitangent, sizeof(glm::vec3));
     }
     
     for(unsigned int i = 0; i < m_numIndices; i++)
@@ -322,8 +350,8 @@ void CTorusKnot:: Create(const std::string &directory,
     
     m_vbo.UploadDataToGPU(GL_STATIC_DRAW);
     
-    // 2 vector3 plus 1 vector2
-    GLsizei stride = 2*sizeof(glm::vec3)+sizeof(glm::vec2);
+    // 4 vector3 plus 1 vector2
+    GLsizei stride = 4*sizeof(glm::vec3)+sizeof(glm::vec2);
     
     // Vertex positions
     glEnableVertexAttribArray(0);
@@ -334,7 +362,7 @@ void CTorusKnot:: Create(const std::string &directory,
     // Normal vectors
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)));
-    /*
+    
     // Tangents
     glEnableVertexAttribArray(3);
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)+sizeof(glm::vec3)));
@@ -342,7 +370,8 @@ void CTorusKnot:: Create(const std::string &directory,
     // Bitangents
     glEnableVertexAttribArray(4);
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, stride, (void*)(sizeof(glm::vec3)+sizeof(glm::vec2)+sizeof(glm::vec3)+sizeof(glm::vec3)));
-*/
+    
+
 }
 
 void CTorusKnot::Transform(const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale) {

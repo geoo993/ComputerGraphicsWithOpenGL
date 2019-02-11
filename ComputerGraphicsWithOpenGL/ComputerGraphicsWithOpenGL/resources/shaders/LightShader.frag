@@ -13,6 +13,7 @@ uniform struct Camera
     vec3 front;
 } camera;
 
+// Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
 {
     sampler2D ambientMap;           // 0.   ambient map (albedo map)
@@ -26,11 +27,12 @@ uniform struct Material
     sampler2D glossinessMap;        // 8.   glossiness map
     sampler2D opacityMap;           // 9.   opacity map
     sampler2D reflectionMap;        // 10.  reflection map
-    
+    samplerCube cubeMap;            // 11.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
 } material;
 
+// Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
 {
     vec3 color;
@@ -82,6 +84,7 @@ in VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
+    vec3 vWorldTangent;
     vec4 vEyePosition;
 } fs_in;
 

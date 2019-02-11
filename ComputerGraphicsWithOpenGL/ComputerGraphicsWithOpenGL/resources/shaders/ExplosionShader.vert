@@ -1,4 +1,4 @@
-#version 410 core
+#version 400 core
 
 // Structure for matrices
 uniform struct Matrices
@@ -19,34 +19,35 @@ layout (location = 4) in vec3 inBiTangent;
 
 out VS_OUT
 {
-    vec2 vTexCoord;    // Texture coordinate
-    vec3 vLocalPosition;
-    vec3 vLocalNormal;
-    vec3 vWorldPosition;
-    vec3 vWorldNormal;
-    vec3 vWorldTangent;
-    vec4 vEyePosition;
+    vec2 vTexCoordPass;    // Texture coordinate
+    vec3 vLocalPositionPass;
+    vec3 vLocalNormalPass;
+    vec3 vWorldPositionPass;
+    vec3 vWorldNormalPass;
+    vec3 vWorldTangentPass;
+    vec4 vEyePositionPass;
 } vs_out;
 
-void main() {
-    
+
+// This is the entry point into the vertex shader
+void main()
+{
     vec4 position = vec4(inPosition, 1.0f);
     vec4 normal = vec4(inNormal, 1.0f);
     
     // Pass through the texture coordinate
-    vs_out.vTexCoord = inCoord;
+    vs_out.vTexCoordPass = inCoord;
     
     // Get the vertex normal and vertex position in eye coordinates
     //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
-    vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
-    vs_out.vWorldTangent = matrices.normalMatrix * inTangent;
-    vs_out.vLocalNormal = inNormal;
+    vs_out.vWorldNormalPass = matrices.normalMatrix * inNormal;
+    vs_out.vWorldTangentPass = matrices.normalMatrix * inTangent;
+    vs_out.vLocalNormalPass = inNormal;
     
-    vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;
-    vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
-    vs_out.vLocalPosition = inPosition;
-   
+    vs_out.vWorldPositionPass = vec3(matrices.modelMatrix * position);
+    vs_out.vLocalPositionPass = inPosition;
+    vs_out.vEyePositionPass = matrices.projMatrix * matrices.viewMatrix * position;
+    
     // Transform the vertex spatial position using
     gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
 }
-

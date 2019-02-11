@@ -1,4 +1,4 @@
-#version 410 core
+#version 400 core
 
 // Structure for matrices
 uniform struct Matrices
@@ -28,8 +28,10 @@ out VS_OUT
     vec4 vEyePosition;
 } vs_out;
 
-void main() {
-    
+
+// This is the entry point into the vertex shader
+void main()
+{
     vec4 position = vec4(inPosition, 1.0f);
     vec4 normal = vec4(inNormal, 1.0f);
     
@@ -45,8 +47,7 @@ void main() {
     vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;
     vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
     vs_out.vLocalPosition = inPosition;
-   
+    
     // Transform the vertex spatial position using
     gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
 }
-

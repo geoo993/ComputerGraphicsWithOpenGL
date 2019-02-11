@@ -107,6 +107,7 @@ uniform struct Camera
     vec3 front;
 } camera;
 
+// Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
 {
     sampler2D ambientMap;           // 0.   ambient map (albedo map)
@@ -120,10 +121,9 @@ uniform struct Material
     sampler2D glossinessMap;        // 8.   glossiness map
     sampler2D opacityMap;           // 9.   opacity map
     sampler2D reflectionMap;        // 10.  reflection map
-    
+    samplerCube cubeMap;            // 11.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
-    
     // for more info look at https://marmoset.co/posts/physically-based-rendering-and-you-can-too/
     vec3  albedo;           // Albedo is the base color input, commonly known as a diffuse map.
     // all values below are between 0 and 1
@@ -133,6 +133,7 @@ uniform struct Material
     float ao;               // Ambient occlusion(AO) represents large scale occluded light and is generally baked from a 3d model.
 } material;
 
+// Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
 {
     vec3 color;

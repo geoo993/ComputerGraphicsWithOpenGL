@@ -27,7 +27,8 @@ private:
     std::vector<CTexture> m_textures;
     
     std::string m_directory;
-    GLfloat m_width, m_height, m_totalVertices;
+    GLfloat m_width, m_height;
+    GLint m_totalVertices;
 };
 
 

@@ -33,8 +33,8 @@ public:
     glm::mat4 GetViewProjection() const;
 	glm::mat4* GetPerspectiveProjectionMatrix();	// Gets the camera perspective projection matrix
 	glm::mat4* GetOrthographicProjectionMatrix();	// Gets the camera orthographic projection matrix
-	glm::mat4 GetViewMatrix();						// Gets the camera view matrix - note this is not stored in the class but returned using
-
+	glm::mat4 GetViewMatrix() const;				// Gets the camera view matrix - note this is not stored in the class but returned using
+    glm::mat4 GetViewWithoutTranslation() const;    // Get view and removing translation properties from view matrix
     glm::vec3 GetLeft();                               // Gets the camera left vector
     glm::vec3 GetRight();                              // Gets the camera right vector
     glm::vec3 GetUp();                                 // Gets the camera up vector

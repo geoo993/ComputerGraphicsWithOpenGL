@@ -8,8 +8,7 @@ CCubemap::~CCubemap()
     Release();
 }
 
-
-bool CCubemap::LoadTexture(std::string filename, BYTE **bmpBytes, int &iWidth, int &iHeight)
+GLboolean CCubemap::LoadTexture(std::string filename, BYTE **bmpBytes, GLint &iWidth, GLint &iHeight)
 {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	FIBITMAP* dib(0);
@@ -31,20 +30,21 @@ bool CCubemap::LoadTexture(std::string filename, BYTE **bmpBytes, int &iWidth, i
 		return false;
 	}
 
-	iWidth = FreeImage_GetWidth(dib);
-	iHeight = FreeImage_GetWidth(dib);
-	int bpp = FreeImage_GetBPP(dib);
+    BYTE* bDataPointer = FreeImage_GetBits(dib); // Retrieve the image data
 
-
-	BYTE* bDataPointer = FreeImage_GetBits(dib); // Retrieve the image data
-
-
-	// If somehow one of these failed (they shouldn't), return failure
-	if(bDataPointer == NULL || FreeImage_GetWidth(dib) == 0 || FreeImage_GetHeight(dib) == 0) 
-		return false;
+    // If somehow one of these failed (they shouldn't), return failure
+    if(bDataPointer == NULL || FreeImage_GetWidth(dib) == 0 || FreeImage_GetHeight(dib) == 0) {
+        return false;
+    }
+    
+    iWidth = FreeImage_GetWidth(dib);
+    iHeight = FreeImage_GetWidth(dib);
+    int bpp = FreeImage_GetBPP(dib);
+    
 	int test = FreeImage_GetDIBSize(dib);
 	*bmpBytes = new BYTE [iWidth*iHeight*bpp/8];
-	memcpy(*bmpBytes, bDataPointer, iWidth*iHeight*bpp/8);
+    
+	memcpy(*bmpBytes, bDataPointer, iWidth * iHeight * bpp /8);
 	
 	/*
 	GLenum format;
@@ -59,64 +59,58 @@ bool CCubemap::LoadTexture(std::string filename, BYTE **bmpBytes, int &iWidth, i
 }
 
 // Binds a texture for rendering
-void CCubemap::Bind(int iTextureUnit)
+void CCubemap::Bind(GLint iTextureUnit)
 {
 	glActiveTexture(GL_TEXTURE0+iTextureUnit);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_uiTexture);
 	glBindSampler(iTextureUnit, m_uiSampler);
 }
 
+// loads a cubemap texture from 6 individual texture faces
+// order:
+// +X (right)
+// -X (left)
+// +Y (top)
+// -Y (bottom)
+// +Z (front)
+// -Z (back)
+// -------------------------------------------------------
+void CCubemap::Create(const std::vector<std::string> &cubemapFaces, const TextureType &type) {
 
-// Create the plane, including its geometry, texture mapping, normal, and colour
-void CCubemap::Create(std::string sPositiveX, std::string sNegativeX, std::string sPositiveY, std::string sNegativeY, std::string sPositiveZ, std::string sNegativeZ)
-{
-	int iWidth, iHeight;
-
-	// Generate an OpenGL texture ID for this texture
-	glGenTextures(1, &m_uiTexture);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, m_uiTexture);
-
-	// Load the six sides
-	BYTE *pbImagePosX = nullptr;
-    BYTE *pbImageNegX = nullptr;
-    BYTE *pbImagePosY = nullptr;
-    BYTE *pbImageNegY = nullptr;
-    BYTE *pbImagePosZ = nullptr;
-    BYTE *pbImageNegZ = nullptr;
-
-	LoadTexture(sPositiveX, &pbImagePosX, iWidth, iHeight);
-	LoadTexture(sNegativeX, &pbImageNegX, iWidth, iHeight);
-	LoadTexture(sPositiveY, &pbImagePosY, iWidth, iHeight);
-	LoadTexture(sNegativeY, &pbImageNegY, iWidth, iHeight);
-	LoadTexture(sPositiveZ, &pbImagePosZ, iWidth, iHeight);
-	LoadTexture(sNegativeZ, &pbImageNegZ, iWidth, iHeight);
-
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, iWidth, iHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, pbImagePosX);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, iWidth, iHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, pbImageNegX);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, iWidth, iHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, pbImagePosY);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, iWidth, iHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, pbImageNegY);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, iWidth, iHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, pbImagePosZ);
-	glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, iWidth, iHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, pbImageNegZ);
-
+    m_faces = cubemapFaces;
+    m_type = type;
     
-	if (pbImagePosX != NULL) delete[] pbImagePosX;
-	if (pbImageNegX != NULL) delete[] pbImageNegX;
-	if (pbImagePosY != NULL) delete[] pbImagePosY;
-	if (pbImageNegY != NULL) delete[] pbImageNegY;
-	if (pbImagePosZ != NULL) delete[] pbImagePosZ;
-	if (pbImageNegZ != NULL) delete[] pbImageNegZ;
+    // Generate an OpenGL texture ID for this texture
+    glGenTextures(1, &m_uiTexture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_uiTexture);
+    
+    GLint iWidth, iHeight;
+    BYTE *data = nullptr;
+    for (GLuint i = 0; i < cubemapFaces.size(); i++)
+    {
+        std::string face = cubemapFaces[i];
+        LoadTexture(face, &data, iWidth, iHeight);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, iWidth, iHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+    
+        if (data != NULL) delete[] data;
+    }
 
-	glGenSamplers(1, &m_uiSampler);
-	glSamplerParameteri(m_uiSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glSamplerParameteri(m_uiSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glGenSamplers(1, &m_uiSampler);
+    glSamplerParameteri(m_uiSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glSamplerParameteri(m_uiSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-	glSamplerParameteri(m_uiSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glSamplerParameteri(m_uiSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glSamplerParameteri(m_uiSampler, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glSamplerParameteri(m_uiSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glSamplerParameteri(m_uiSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glSamplerParameteri(m_uiSampler, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+    
 }
+
+TextureType CCubemap::GetType() const {
+    return m_type;
+}
+
 
 // Release resources
 void CCubemap::Release()

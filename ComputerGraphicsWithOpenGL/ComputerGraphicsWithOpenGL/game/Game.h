@@ -43,7 +43,8 @@ class CTorus;
 class CTorusKnot;
 class CMetaballs;
 
-class Game: IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IInput {
+class Game: IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
+ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IInput {
 private:
     
     // Three main methods used in the game.  Initialise runs once, while Update and Render run repeatedly in the game loop.
@@ -83,6 +84,8 @@ private:
     
     //cube object
     CCube * m_pCube;
+    CCube * m_pChromaticAberrationCube;
+    CCube * m_pParallaxCube;
     glm::vec3 m_cubePosition;
     
     // woodenBox
@@ -131,14 +134,27 @@ protected:
     // materials
     void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                             const glm::vec3 &color = glm::vec3(1.0f), const GLfloat &shininess = 32.0f) override;
-    void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                               const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) override;
     // texture
     void LoadTextures(const std::string &path) override;
     CTexture AddTexture(const std::string &textureFile, const int &textureUnit, const bool &gammaCorrection = false) override;
     
     // shaders
     void LoadShaderPrograms(const std::string &path) override;
+    
+    // shader uniform
+    void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                               const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) override;
+    void SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) override;
+    void SetParallaxMapUniform(CShaderProgram *pShaderProgram, const GLfloat &heightScale) override;
+    void SetBumpMapUniform(CShaderProgram *pShaderProgram, const GLfloat &uvTiling) override;
+    void SetExplosionUniform(CShaderProgram *pShaderProgram,
+                             const GLboolean &explode, const GLboolean &animate,
+                             const GLfloat &time, const GLfloat &magnitude) override;
+    void SetPorcupineRenderingUniform(CShaderProgram *pShaderProgram,
+                                      const glm::vec3 &vertexNormalColor, const glm::vec3 &faceNormalColor,
+                                      const GLfloat &magnitude) override;
+    void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) override;
+    void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) override;
     
     // lights
     void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
@@ -156,7 +172,7 @@ protected:
     void RenderScene() override;
     
     // render object
-    void RenderSkyBox(CShaderProgram *pShaderProgram, const int &cubeMapTextureUnit) override;
+    void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
     void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                         const GLfloat & scale, const GLboolean &useTexture) override;
@@ -166,6 +182,10 @@ protected:
                         const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                     const GLfloat & scale, const GLboolean &useTexture) override;
+    void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                            const GLfloat & scale, const GLboolean &useTexture);
+    void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                                       const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
                          const GLfloat & angle, const GLboolean &useTexture) override;
     void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,

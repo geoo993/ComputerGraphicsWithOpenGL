@@ -110,7 +110,6 @@ void Mesh::Render(CShaderProgram *pShaderProgram, const GLboolean &useTexture) {
             GLint textureUnit = static_cast<GLint>(m_textures[i]->GetType());
             m_textures[i]->BindTexture2D(textureUnit);
         }
-        
     }
 
     // draw mesh

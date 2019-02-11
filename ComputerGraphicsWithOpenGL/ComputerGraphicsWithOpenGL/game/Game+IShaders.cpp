@@ -27,6 +27,24 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("LightShader.frag");
     sShaderFileNames.push_back("NormalMappingShader.vert");//6
     sShaderFileNames.push_back("NormalMappingShader.frag");
+    sShaderFileNames.push_back("BumpMappingShader.vert");//7
+    sShaderFileNames.push_back("BumpMappingShader.frag");
+    sShaderFileNames.push_back("ParallaxNormalMappingShader.vert");//8
+    sShaderFileNames.push_back("ParallaxNormalMappingShader.frag");
+    sShaderFileNames.push_back("EnvironmentMappingShader.vert");//9
+    sShaderFileNames.push_back("EnvironmentMappingShader.frag");
+    sShaderFileNames.push_back("ChromaticAberrationShader.vert");//10
+    sShaderFileNames.push_back("ChromaticAberrationShader.frag");
+    sShaderFileNames.push_back("ExplosionShader.vert");//11
+    sShaderFileNames.push_back("ExplosionShader.geom");
+    sShaderFileNames.push_back("ExplosionShader.frag");
+    sShaderFileNames.push_back("PorcupineRenderingShader.vert");//12
+    sShaderFileNames.push_back("PorcupineRenderingShader.geom");
+    sShaderFileNames.push_back("PorcupineRenderingShader.frag");
+    sShaderFileNames.push_back("WireFrameShader.vert");//13
+    sShaderFileNames.push_back("WireFrameShader.geom");
+    sShaderFileNames.push_back("WireFrameShader.frag");
+    
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -98,7 +116,66 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pNormalMapProgram->AddShaderToProgram(&shShaders[13]);
     pNormalMapProgram->LinkProgram();
     m_pShaderPrograms->push_back(pNormalMapProgram);
+    
+    // Create the Bump mapping shader program
+    CShaderProgram *pBumpMapProgram = new CShaderProgram;
+    pBumpMapProgram->CreateProgram();
+    pBumpMapProgram->AddShaderToProgram(&shShaders[14]);
+    pBumpMapProgram->AddShaderToProgram(&shShaders[15]);
+    pBumpMapProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pBumpMapProgram);
+    
+    // Create the Parallax Normal mapping shader program
+    CShaderProgram *pParallaxNormalMappingProgram = new CShaderProgram;
+    pParallaxNormalMappingProgram->CreateProgram();
+    pParallaxNormalMappingProgram->AddShaderToProgram(&shShaders[16]);
+    pParallaxNormalMappingProgram->AddShaderToProgram(&shShaders[17]);
+    pParallaxNormalMappingProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pParallaxNormalMappingProgram);
  
+    // Create the Environment mapping shader program
+    CShaderProgram *pEnvironmentMapProgram = new CShaderProgram;
+    pEnvironmentMapProgram->CreateProgram();
+    pEnvironmentMapProgram->AddShaderToProgram(&shShaders[18]);
+    pEnvironmentMapProgram->AddShaderToProgram(&shShaders[19]);
+    pEnvironmentMapProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pEnvironmentMapProgram);
+    
+    // Create the Chromatic Aberration mapping shader program
+    CShaderProgram *pChromaticAberrationMapProgram = new CShaderProgram;
+    pChromaticAberrationMapProgram->CreateProgram();
+    pChromaticAberrationMapProgram->AddShaderToProgram(&shShaders[20]);
+    pChromaticAberrationMapProgram->AddShaderToProgram(&shShaders[21]);
+    pChromaticAberrationMapProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pChromaticAberrationMapProgram);
+    
+    // Create the Explosion shader program
+    CShaderProgram *pExplosionShader = new CShaderProgram;
+    pExplosionShader->CreateProgram();
+    pExplosionShader->AddShaderToProgram(&shShaders[22]);
+    pExplosionShader->AddShaderToProgram(&shShaders[23]);
+    pExplosionShader->AddShaderToProgram(&shShaders[24]);
+    pExplosionShader->LinkProgram();
+    m_pShaderPrograms->push_back(pExplosionShader);
+    
+    // Create the Porcupine Rendering shader program
+    CShaderProgram *pPorcupineRenderingShader = new CShaderProgram;
+    pPorcupineRenderingShader->CreateProgram();
+    pPorcupineRenderingShader->AddShaderToProgram(&shShaders[25]);
+    pPorcupineRenderingShader->AddShaderToProgram(&shShaders[26]);
+    pPorcupineRenderingShader->AddShaderToProgram(&shShaders[27]);
+    pPorcupineRenderingShader->LinkProgram();
+    m_pShaderPrograms->push_back(pPorcupineRenderingShader);
+    
+    // Create the Wireframe shader program
+    CShaderProgram *pWireFrameShader = new CShaderProgram;
+    pWireFrameShader->CreateProgram();
+    pWireFrameShader->AddShaderToProgram(&shShaders[28]);
+    pWireFrameShader->AddShaderToProgram(&shShaders[29]);
+    pWireFrameShader->AddShaderToProgram(&shShaders[30]);
+    pWireFrameShader->LinkProgram();
+    m_pShaderPrograms->push_back(pWireFrameShader);
+    
 }
 
 

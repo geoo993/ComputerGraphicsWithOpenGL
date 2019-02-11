@@ -1,4 +1,4 @@
-#version 410 core
+#version 400 core
 
 // Structure for matrices
 uniform struct Matrices
@@ -25,11 +25,14 @@ out VS_OUT
     vec3 vWorldPosition;
     vec3 vWorldNormal;
     vec3 vWorldTangent;
+    vec3 vWorldBiTangent;
     vec4 vEyePosition;
 } vs_out;
 
-void main() {
-    
+
+// This is the entry point into the vertex shader
+void main()
+{
     vec4 position = vec4(inPosition, 1.0f);
     vec4 normal = vec4(inNormal, 1.0f);
     
@@ -37,16 +40,15 @@ void main() {
     vs_out.vTexCoord = inCoord;
     
     // Get the vertex normal and vertex position in eye coordinates
-    //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
-    vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
-    vs_out.vWorldTangent = matrices.normalMatrix * inTangent;
+    vs_out.vWorldNormal = mat3(matrices.modelMatrix) * inNormal;
+    vs_out.vWorldTangent = mat3(matrices.modelMatrix) * inTangent;
+    vs_out.vWorldBiTangent = mat3(matrices.modelMatrix) * inBiTangent;
     vs_out.vLocalNormal = inNormal;
     
     vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;
     vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
     vs_out.vLocalPosition = inPosition;
-   
+    
     // Transform the vertex spatial position using
     gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
 }
-

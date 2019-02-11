@@ -73,10 +73,13 @@ Game::Game()
     };
     
     // Spot Light
-    m_spotColor = glm::vec3(1.0f, 1.0f, 1.0f);;
+    m_spotColor = glm::vec3(0.3f, 0.5f, 1.0f);;
     m_spotIntensity = 1500.4f;
     m_spotCutOff = 12.5f;
     m_spotOuterCutOff = 18.0f;
+    
+    // screens
+    m_pQuad = nullptr;
     
     // skybox
     m_pSkybox = nullptr;
@@ -101,7 +104,7 @@ Game::Game()
     
     //sphere object
     m_pSphere = nullptr;
-    m_spherePosition = glm::vec3(130.0f,50.0f,50.0f);
+    m_spherePosition = glm::vec3(130.0f,350.0f,-450.0f);
     
     //cube object
     m_pCube = nullptr;
@@ -126,7 +129,7 @@ Game::Game()
     
     //torus object
     m_pTorus = nullptr;
-    m_torusPosition = glm::vec3(-160.0f,530.0f,150.0f);
+    m_torusPosition = glm::vec3(-160.0f,530.0f,-450.0f);
     
     //torusknot object
     m_pTorusKnot = nullptr;
@@ -183,6 +186,7 @@ Game::~Game()
     delete m_pTorus;
     delete m_pTorusKnot;
     delete m_pMetaballs;
+    delete m_pQuad;
     
     if (m_pShaderPrograms != nullptr) {
         for (unsigned int i = 0; i < m_pShaderPrograms->size(); i++)
@@ -202,6 +206,7 @@ void Game::Initialise()
     m_pShaderPrograms = new std::vector <CShaderProgram *>;
     m_pFtFont = new CFreeTypeFont;
     m_pAudio = new CAudio;
+    m_pQuad = new CPlane;
     m_pSkybox = new CSkybox;
     m_pPlanarTerrain = new CPlane;
     m_pHeightmapTerrain = new CHeightMapTerrain;
@@ -228,6 +233,10 @@ void Game::LoadResources(const std::string &path)
    
     // font
     m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32);
+    
+    // screens
+    m_pQuad->Create(path+"/textures/pixarLibrary/fabric/", { {"Wild_flowers_pxr128.tif", TextureType::DIFFUSE} },
+                             400, 400, 50.0f, 50);
     
     // Create the skybox
     // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
@@ -304,7 +313,7 @@ void Game::LoadResources(const std::string &path)
                           { "chipped-paint-metal-metal.png",  TextureType::DIFFUSE },           // diffuse map (metallic map)
                           { "chipped-paint-metal-rough2.png",   TextureType::SPECULAR},         // specular map (roughness map)
                           { "chipped-paint-metal-normal-dx.png", TextureType::NORMAL},          // normalMap 3
-                          { "chipped-paint-ao.png",   TextureType::AO}                          // aoMap 4
+                          { "chipped-paint-ao.png",   TextureType::AO }                          // aoMap 4
                       }, 50, 50);
   
     m_pTorus->Create(path+"/textures/pixarLibrary/metal/", {

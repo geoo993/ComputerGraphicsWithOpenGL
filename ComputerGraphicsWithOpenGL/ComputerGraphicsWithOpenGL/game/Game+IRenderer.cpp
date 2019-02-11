@@ -68,7 +68,6 @@ void Game::RenderScene(){
         }
     }
     //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
-    //RenderTorus(pBumpMappingProgram, m_torusPosition, 20.0f, true);
     
     // Add Physically Based Rendering Lights
     RenderLight(pPBRProgram, m_pCamera);
@@ -129,18 +128,34 @@ void Game::RenderScene(){
     RenderNanosuit(pExplosionProgram,  glm::vec3(1000.0f, 500.0f, -1000.0f), 20.0f, m_woodenBoxesUseTexture);
     
     /// Porcupine Rendering Program
-    CShaderProgram *pPorcupineRenderingPrograms = (*m_pShaderPrograms)[12];
-    SetMaterialUniform(pPorcupineRenderingPrograms, "material");
-    SetPorcupineRenderingUniform(pPorcupineRenderingPrograms, glm::vec3(1.0f, 1.0f, 0.0f),
+    CShaderProgram *pPorcupineRenderingProgram = (*m_pShaderPrograms)[12];
+    SetMaterialUniform(pPorcupineRenderingProgram, "material");
+    SetPorcupineRenderingUniform(pPorcupineRenderingProgram, glm::vec3(1.0f, 1.0f, 0.0f),
                                  glm::vec3(1.0f, 0.0f, 0.0f), m_magnitude);
-    RenderNanosuit(pPorcupineRenderingPrograms,  glm::vec3(1000.0f, 500.0f, -500.0f), 20.0f, false);
+    RenderNanosuit(pPorcupineRenderingProgram,  glm::vec3(1000.0f, 500.0f, -500.0f), 20.0f, false);
     
     /// Wireframe Rendering Program
-    CShaderProgram *pWireframePrograms = (*m_pShaderPrograms)[13];
-    SetMaterialUniform(pWireframePrograms, "material", m_woodenBoxesColor);
-    SetWireframeUniform(pWireframePrograms, true, m_magnitude);
-    SetChromaticAberrationUniform(pWireframePrograms, glm::vec2(0.3f, 1.5f));
-    RenderNanosuit(pWireframePrograms,  glm::vec3(1000.0f, 500.0f, 0.0f), 20.0f, m_woodenBoxesUseTexture);
+    CShaderProgram *pWireframeProgram = (*m_pShaderPrograms)[13];
+    SetMaterialUniform(pWireframeProgram, "material", m_woodenBoxesColor);
+    SetWireframeUniform(pWireframeProgram, true, m_magnitude);
+    SetChromaticAberrationUniform(pWireframeProgram, glm::vec2(0.3f, 1.5f));
+    RenderNanosuit(pWireframeProgram,  glm::vec3(1000.0f, 500.0f, 0.0f), 20.0f, m_woodenBoxesUseTexture);
+    
+    
+    /// Toon / Cell Program
+    CShaderProgram *pToonProgram = (*m_pShaderPrograms)[14];
+    SetCameraUniform(pToonProgram, "camera", m_pCamera);
+    SetLightUniform(pToonProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+    SetMaterialUniform(pToonProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess);
+    RenderTorus(pToonProgram, m_torusPosition, 20.0f, false);
+    RenderSphere(pToonProgram, m_spherePosition, 30.0f, false);
+    
+    // Add Toon Shading Lights
+    RenderLight(pToonProgram, m_pCamera);
+    
+    /// Image Progcessing Shader Program
+    //CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+    //RenderQuad(pImageProcessingProgram, glm::vec3(1000, 300, 400), 1.0f, true);
 }
 
 // Render scene method runs

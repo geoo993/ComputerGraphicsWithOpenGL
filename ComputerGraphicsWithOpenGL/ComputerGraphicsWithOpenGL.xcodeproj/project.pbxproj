@@ -683,6 +683,10 @@
 		C7C8F4AB21FFC92900AB865A /* TerrainShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F42C21FFA74300AB865A /* TerrainShader.vert */; };
 		C7C8F4AC21FFC92900AB865A /* SkyBoxShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F42B21FFA74300AB865A /* SkyBoxShader.frag */; };
 		C7C8F4AD21FFC92900AB865A /* SkyBoxShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F42821FFA74200AB865A /* SkyBoxShader.vert */; };
+		C7CEE2D32211E2AB00895F5D /* ToonShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2CF2211E2AA00895F5D /* ToonShader.frag */; };
+		C7CEE2D42211E2AB00895F5D /* ToonShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2D02211E2AA00895F5D /* ToonShader.vert */; };
+		C7CEE2D82211E33F00895F5D /* ImageProcessingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2D62211E33E00895F5D /* ImageProcessingShader.frag */; };
+		C7CEE2D92211E33F00895F5D /* ImageProcessingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2D72211E33F00895F5D /* ImageProcessingShader.vert */; };
 		C7EDB0D422064878007C7D3A /* Game+ILights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EDB0D322064878007C7D3A /* Game+ILights.cpp */; };
 		C7EDB0D922064BCE007C7D3A /* LampShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D522064BCE007C7D3A /* LampShader.vert */; };
 		C7EDB0DA22064BCE007C7D3A /* LightShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D622064BCE007C7D3A /* LightShader.frag */; };
@@ -1571,6 +1575,10 @@
 		C7C8F42B21FFA74300AB865A /* SkyBoxShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SkyBoxShader.frag; sourceTree = "<group>"; };
 		C7C8F42C21FFA74300AB865A /* TerrainShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TerrainShader.vert; sourceTree = "<group>"; };
 		C7C8F42D21FFA74300AB865A /* TerrainShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = TerrainShader.frag; sourceTree = "<group>"; };
+		C7CEE2CF2211E2AA00895F5D /* ToonShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToonShader.frag; sourceTree = "<group>"; };
+		C7CEE2D02211E2AA00895F5D /* ToonShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToonShader.vert; sourceTree = "<group>"; };
+		C7CEE2D62211E33E00895F5D /* ImageProcessingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ImageProcessingShader.frag; sourceTree = "<group>"; };
+		C7CEE2D72211E33F00895F5D /* ImageProcessingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ImageProcessingShader.vert; sourceTree = "<group>"; };
 		C7EDB0D322064878007C7D3A /* Game+ILights.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+ILights.cpp"; sourceTree = "<group>"; };
 		C7EDB0D522064BCE007C7D3A /* LampShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LampShader.vert; sourceTree = "<group>"; };
 		C7EDB0D622064BCE007C7D3A /* LightShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightShader.frag; sourceTree = "<group>"; };
@@ -2481,6 +2489,8 @@
 				C7EED104221105350079F5C0 /* ExplosionShader.vert */,
 				C7C8F42A21FFA74300AB865A /* HudShader.frag */,
 				C7C8F42921FFA74300AB865A /* HudShader.vert */,
+				C7CEE2D62211E33E00895F5D /* ImageProcessingShader.frag */,
+				C7CEE2D72211E33F00895F5D /* ImageProcessingShader.vert */,
 				C7EDB0D722064BCE007C7D3A /* LampShader.frag */,
 				C7EDB0D522064BCE007C7D3A /* LampShader.vert */,
 				C7EDB0D622064BCE007C7D3A /* LightShader.frag */,
@@ -2498,6 +2508,8 @@
 				C7C8F42821FFA74200AB865A /* SkyBoxShader.vert */,
 				C7C8F42D21FFA74300AB865A /* TerrainShader.frag */,
 				C7C8F42C21FFA74300AB865A /* TerrainShader.vert */,
+				C7CEE2CF2211E2AA00895F5D /* ToonShader.frag */,
+				C7CEE2D02211E2AA00895F5D /* ToonShader.vert */,
 				C7EED105221105360079F5C0 /* WireFrameShader.frag */,
 				C7EED0FE221105330079F5C0 /* WireFrameShader.geom */,
 				C7EED0FF221105330079F5C0 /* WireFrameShader.vert */,
@@ -3367,6 +3379,7 @@
 				C7B759902204E32C00E54C30 /* Rock_in_mortar_pxr128.tif in Resources */,
 				C7B75A892204E32D00E54C30 /* White_lace_pxr128_bmp.tif in Resources */,
 				C7FB5764220C7294006F2D91 /* arm_showroom_spec.png in Resources */,
+				C7CEE2D92211E33F00895F5D /* ImageProcessingShader.vert in Resources */,
 				C7B759B52204E32C00E54C30 /* Round_mesh_pxr128.tif in Resources */,
 				C7B75A5A2204E32D00E54C30 /* Gray_granite_pxr128_bmp.tif in Resources */,
 				C7C8F44721FFBA1D00AB865A /* grassfloor.jpg in Resources */,
@@ -3611,6 +3624,8 @@
 				C7B7599B2204E32C00E54C30 /* Rattan_pxr128_bmp.tif in Resources */,
 				C7EDB0DC22064BCE007C7D3A /* LightShader.vert in Resources */,
 				C7C8F49B21FFBA9000AB865A /* _up.jpg in Resources */,
+				C7CEE2D32211E2AB00895F5D /* ToonShader.frag in Resources */,
+				C7CEE2D82211E33F00895F5D /* ImageProcessingShader.frag in Resources */,
 				C7B75A482204E32D00E54C30 /* Blue_shingle_pxr128_normal.tif in Resources */,
 				C7767413220A22B500BA7062 /* horn_Base_Color.png in Resources */,
 				C7EED10B221105360079F5C0 /* PorcupineRenderingShader.vert in Resources */,
@@ -3875,6 +3890,7 @@
 				C7B759772204E32C00E54C30 /* Silver_paper_cilps_pxr128_bmp.tif in Resources */,
 				C77673B82209F69500BA7062 /* chipped-paint-metal-normal-dx.png in Resources */,
 				C7C8F48621FFBA7C00AB865A /* _rt.jpg in Resources */,
+				C7CEE2D42211E2AB00895F5D /* ToonShader.vert in Resources */,
 				C7B759BE2204E32C00E54C30 /* Steel_grating_pxr128_normal.tif in Resources */,
 				C7B759972204E32C00E54C30 /* Stucco_pxr128_normal.tif in Resources */,
 				C7B75A8E2204E32D00E54C30 /* Spots_pxr128_normal.tif in Resources */,

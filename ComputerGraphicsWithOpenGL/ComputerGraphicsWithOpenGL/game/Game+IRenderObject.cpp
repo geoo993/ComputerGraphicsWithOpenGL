@@ -8,6 +8,21 @@
 
 #include "Game.h"
 
+void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                const GLfloat & scale, const GLboolean &useTexture) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseTexture", useTexture);
+    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
+    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    
+    m_pQuad->Transform(position, glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(scale));
+    
+    glm::mat4 model = m_pQuad->Model();
+    pShaderProgram->SetUniform("matrices.modelMatrix", model);
+    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
+    m_pQuad->Render();
+    
+}
 void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
     // start by deleting current skybox and create new one
     if (m_changeSkybox == true) {
@@ -102,7 +117,7 @@ void Game::RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & posit
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     
-    m_pGrenade->Transform(translation, glm::vec3(0.0f,200.0f, 0.0f), glm::vec3(scale));
+    m_pGrenade->Transform(translation, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(scale));
     
     glm::mat4 model = m_pGrenade->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -122,7 +137,7 @@ void Game::RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & posi
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     
-    m_pNanosuit->Transform(translation, glm::vec3(0.0f,200.0f, 0.0f), glm::vec3(scale));
+    m_pNanosuit->Transform(translation, glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(scale));
     
     glm::mat4 model = m_pNanosuit->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);

@@ -44,6 +44,10 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("WireFrameShader.vert");//13
     sShaderFileNames.push_back("WireFrameShader.geom");
     sShaderFileNames.push_back("WireFrameShader.frag");
+    sShaderFileNames.push_back("ToonShader.vert");//14
+    sShaderFileNames.push_back("ToonShader.frag");
+    sShaderFileNames.push_back("ImageProcessingShader.vert");// 15
+    sShaderFileNames.push_back("ImageProcessingShader.frag");
     
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
@@ -175,6 +179,22 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pWireFrameShader->AddShaderToProgram(&shShaders[30]);
     pWireFrameShader->LinkProgram();
     m_pShaderPrograms->push_back(pWireFrameShader);
+    
+    // Create the Toon shader program
+    CShaderProgram *pToonShader = new CShaderProgram;
+    pToonShader->CreateProgram();
+    pToonShader->AddShaderToProgram(&shShaders[31]);
+    pToonShader->AddShaderToProgram(&shShaders[32]);
+    pToonShader->LinkProgram();
+    m_pShaderPrograms->push_back(pToonShader);
+    
+    // Create the Image Processing shader program
+    CShaderProgram *pImageProcessingShader = new CShaderProgram;
+    pImageProcessingShader->CreateProgram();
+    pImageProcessingShader->AddShaderToProgram(&shShaders[33]);
+    pImageProcessingShader->AddShaderToProgram(&shShaders[34]);
+    pImageProcessingShader->LinkProgram();
+    m_pShaderPrograms->push_back(pImageProcessingShader);
     
 }
 

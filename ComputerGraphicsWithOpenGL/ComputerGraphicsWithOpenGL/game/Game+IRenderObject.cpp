@@ -15,7 +15,7 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     
-    m_pQuad->Transform(position, glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(scale));
+    m_pQuad->Transform(position, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(scale));
     
     glm::mat4 model = m_pQuad->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);

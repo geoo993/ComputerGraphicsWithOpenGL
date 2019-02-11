@@ -206,7 +206,7 @@ void Game::Initialise()
     m_pShaderPrograms = new std::vector <CShaderProgram *>;
     m_pFtFont = new CFreeTypeFont;
     m_pAudio = new CAudio;
-    m_pQuad = new CPlane;
+    m_pQuad = new CQuad;
     m_pSkybox = new CSkybox;
     m_pPlanarTerrain = new CPlane;
     m_pHeightmapTerrain = new CHeightMapTerrain;
@@ -235,8 +235,7 @@ void Game::LoadResources(const std::string &path)
     m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32);
     
     // screens
-    m_pQuad->Create(path+"/textures/pixarLibrary/fabric/", { {"Wild_flowers_pxr128.tif", TextureType::DIFFUSE} },
-                             400, 400, 50.0f, 50);
+    m_pQuad->Create(path+"/textures/pixarLibrary/fabric/", { {"Wild_flowers_pxr128.tif", TextureType::DIFFUSE}});
     
     // Create the skybox
     // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9

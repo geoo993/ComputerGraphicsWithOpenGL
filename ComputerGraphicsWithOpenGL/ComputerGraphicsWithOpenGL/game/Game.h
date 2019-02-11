@@ -28,6 +28,7 @@
 #include "Torus.h"
 #include "TorusKnot.h"
 #include "Metaballs.h"
+#include "Quad.h"
 
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp,
@@ -42,6 +43,7 @@ class CSphere;
 class CTorus;
 class CTorusKnot;
 class CMetaballs;
+class CQuad;
 
 class Game: IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
 ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IInput {
@@ -59,7 +61,7 @@ private:
     CGameManager m_gameManager;
    
     // screens
-    CPlane * m_pQuad;
+    CQuad * m_pQuad;
     
     // skybox
     CSkybox *m_pSkybox;
@@ -158,6 +160,7 @@ protected:
                                       const GLfloat &magnitude) override;
     void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) override;
     void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) override;
+    void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) override;
     
     // lights
     void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,

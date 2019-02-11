@@ -687,6 +687,7 @@
 		C7CEE2D42211E2AB00895F5D /* ToonShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2D02211E2AA00895F5D /* ToonShader.vert */; };
 		C7CEE2D82211E33F00895F5D /* ImageProcessingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2D62211E33E00895F5D /* ImageProcessingShader.frag */; };
 		C7CEE2D92211E33F00895F5D /* ImageProcessingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2D72211E33F00895F5D /* ImageProcessingShader.vert */; };
+		C7CEE2DC221209CF00895F5D /* Quad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7CEE2DA221209CF00895F5D /* Quad.cpp */; };
 		C7EDB0D422064878007C7D3A /* Game+ILights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EDB0D322064878007C7D3A /* Game+ILights.cpp */; };
 		C7EDB0D922064BCE007C7D3A /* LampShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D522064BCE007C7D3A /* LampShader.vert */; };
 		C7EDB0DA22064BCE007C7D3A /* LightShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D622064BCE007C7D3A /* LightShader.frag */; };
@@ -1579,6 +1580,8 @@
 		C7CEE2D02211E2AA00895F5D /* ToonShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToonShader.vert; sourceTree = "<group>"; };
 		C7CEE2D62211E33E00895F5D /* ImageProcessingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ImageProcessingShader.frag; sourceTree = "<group>"; };
 		C7CEE2D72211E33F00895F5D /* ImageProcessingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ImageProcessingShader.vert; sourceTree = "<group>"; };
+		C7CEE2DA221209CF00895F5D /* Quad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quad.cpp; sourceTree = "<group>"; };
+		C7CEE2DB221209CF00895F5D /* Quad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quad.h; sourceTree = "<group>"; };
 		C7EDB0D322064878007C7D3A /* Game+ILights.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+ILights.cpp"; sourceTree = "<group>"; };
 		C7EDB0D522064BCE007C7D3A /* LampShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LampShader.vert; sourceTree = "<group>"; };
 		C7EDB0D622064BCE007C7D3A /* LightShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightShader.frag; sourceTree = "<group>"; };
@@ -2585,6 +2588,8 @@
 				C7B754652204CE1400E54C30 /* Metaballs.h */,
 				C7C8F31C21FF8B4400AB865A /* Plane.cpp */,
 				C7C8F31D21FF8B4400AB865A /* Plane.h */,
+				C7CEE2DA221209CF00895F5D /* Quad.cpp */,
+				C7CEE2DB221209CF00895F5D /* Quad.h */,
 				C71379882203CEDE00E9A0F2 /* Sphere.cpp */,
 				C71379892203CEDE00E9A0F2 /* Sphere.h */,
 				C713798C2203CEDF00E9A0F2 /* Torus.cpp */,
@@ -4001,6 +4006,7 @@
 				C7B932E721FE8E4A00979C04 /* Game.cpp in Sources */,
 				C7C8F2FF21FF6FFF00AB865A /* Shaders.cpp in Sources */,
 				C7C8F30721FF700F00AB865A /* Vector.cpp in Sources */,
+				C7CEE2DC221209CF00895F5D /* Quad.cpp in Sources */,
 				C71379412203218B00E9A0F2 /* Lighting.cpp in Sources */,
 				C7C8F31E21FF8B4400AB865A /* Plane.cpp in Sources */,
 				C7C8F2E621FF6E8800AB865A /* VertexBufferObject.cpp in Sources */,

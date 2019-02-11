@@ -75,6 +75,7 @@ struct IShaderUniform {
                                               const GLfloat &magnitude) = 0;
     virtual void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) = 0;
     virtual void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) = 0;
+    virtual void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) = 0;
 };
 
 struct ILights

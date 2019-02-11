@@ -64,3 +64,8 @@ void Game::SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const g
     pShaderProgram->SetUniform("fresnelValues", fresnelValues);
     pShaderProgram->SetUniform("IoR_Values", glm::vec3(0.4f, 0.8f, 1.3f));
 }
+
+void Game::SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseScreenQuad", bUseScreenQuad);
+}

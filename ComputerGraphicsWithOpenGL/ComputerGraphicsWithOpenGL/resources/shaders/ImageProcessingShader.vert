@@ -6,56 +6,57 @@ uniform struct Matrices
     mat4 projMatrix;
     mat4 modelMatrix;
     mat4 viewMatrix;
-    mat4 modelViewMatrix;
     mat3 normalMatrix;
     
 } matrices;
-
-uniform bool useScreenQuad;
-uniform float FXAA_SUBPIX_SHIFT = 1.0f/4.0f;
 
 // Layout of vertex attributes in VBO
 layout (location = 0) in vec3 inPosition;
 layout (location = 1) in vec2 inCoord;
 layout (location = 2) in vec3 inNormal;
+layout (location = 3) in vec3 inTangent;
+layout (location = 4) in vec3 inBiTangent;
 
-// Vertex colour output to fragment shader -- using Gouraud (interpolated) shading
-out vec2 vTexCoord;	// Texture coordinate
-out vec3 vWorldPosition;
-out vec3 vLocalNormal;
-out vec3 posPos;
+out VS_OUT
+{
+    vec2 vTexCoord;    // Texture coordinate
+    vec3 vLocalPosition;
+    vec3 vLocalNormal;
+    vec3 vWorldPosition;
+    vec3 vWorldNormal;
+    vec4 vEyePosition;
+} vs_out;
 
+uniform bool bUseScreenQuad;
 
 // This is the entry point into the vertex shader
 void main()
-{	
+{
     
-    if (useScreenQuad == true){
+    vec4 position = vec4(inPosition, 1.0f);
+    
+    
+    // Get the vertex normal and vertex position in eye coordinates
+    //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
+    vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
+    vs_out.vLocalNormal = inNormal;
+    
+    vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;
+    vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
+    vs_out.vLocalPosition = inPosition;
+    
+    if (bUseScreenQuad == true){
+        // Pass through the texture coordinate
+        vs_out.vTexCoord = inCoord;
         
-        vec4 position = vec4(inPosition, 1.0f);
+        gl_Position = vec4(inPosition, 1.0f);
+    } else {
+        
+        // Pass through the texture coordinate
+        vs_out.vTexCoord = inCoord;
         
         // Transform the vertex spatial position using
-        //gl_Position = matrices.projMatrix * view * model * position;
-        gl_Position = matrices.projMatrix * matrices.modelViewMatrix * position;
-      
-        // Pass through the texture coordinate
-        vTexCoord = inCoord;
-    
-        vWorldPosition = inPosition; 
-        
-        vLocalNormal = inNormal;
-        
-    }else {
-        
-        gl_Position = vec4(inPosition.x, -inPosition.z, -1.0f, 1.0f);
-        
-        // Pass through the texture coordinate
-        vTexCoord = vec2(inCoord.x, 1-inCoord.y);
-        
-        vWorldPosition = vec3(inPosition.x, -inPosition.z, -1.0f); 
-        
-        vLocalNormal = inNormal;
-        
+        gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
     }
     
 } 

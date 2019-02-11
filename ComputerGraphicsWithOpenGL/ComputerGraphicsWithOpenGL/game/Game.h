@@ -58,6 +58,9 @@ private:
     CGameWindow m_gameWindow;
     CGameManager m_gameManager;
    
+    // screens
+    CPlane * m_pQuad;
+    
     // skybox
     CSkybox *m_pSkybox;
     GLfloat m_mapSize;
@@ -172,6 +175,8 @@ protected:
     void RenderScene() override;
     
     // render object
+    void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                    const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
     void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,

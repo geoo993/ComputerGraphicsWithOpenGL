@@ -130,6 +130,8 @@ struct IRenderer
 
 struct IRenderObject
 {
+    virtual void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                            const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) = 0;
     virtual void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,

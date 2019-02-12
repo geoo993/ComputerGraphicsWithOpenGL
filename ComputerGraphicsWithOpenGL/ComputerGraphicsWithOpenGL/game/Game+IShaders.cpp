@@ -48,7 +48,16 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("ToonShader.frag");
     sShaderFileNames.push_back("ImageProcessingShader.vert");// 15
     sShaderFileNames.push_back("ImageProcessingShader.frag");
-    
+    sShaderFileNames.push_back("ColorInversionShader.vert");// 16
+    sShaderFileNames.push_back("ColorInversionShader.frag");
+    sShaderFileNames.push_back("GrayScaleShader.vert");// 17
+    sShaderFileNames.push_back("GrayScaleShader.frag");
+    sShaderFileNames.push_back("KernelShader.vert");// 18
+    sShaderFileNames.push_back("KernelShader.frag");
+    sShaderFileNames.push_back("KernelBlurShader.vert");// 19
+    sShaderFileNames.push_back("KernelBlurShader.frag");
+    sShaderFileNames.push_back("EdgeDetectionShader.vert");// 20
+    sShaderFileNames.push_back("EdgeDetectionShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -196,6 +205,45 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pImageProcessingShader->LinkProgram();
     m_pShaderPrograms->push_back(pImageProcessingShader);
     
+    // Create the Color Inversion shader program
+    CShaderProgram *pColorInversionShader = new CShaderProgram;
+    pColorInversionShader->CreateProgram();
+    pColorInversionShader->AddShaderToProgram(&shShaders[35]);
+    pColorInversionShader->AddShaderToProgram(&shShaders[36]);
+    pColorInversionShader->LinkProgram();
+    m_pShaderPrograms->push_back(pColorInversionShader);
+    
+    // Create the Gray Scale shader program
+    CShaderProgram *pGrayScaleShader = new CShaderProgram;
+    pGrayScaleShader->CreateProgram();
+    pGrayScaleShader->AddShaderToProgram(&shShaders[37]);
+    pGrayScaleShader->AddShaderToProgram(&shShaders[38]);
+    pGrayScaleShader->LinkProgram();
+    m_pShaderPrograms->push_back(pGrayScaleShader);
+    
+    // Create the Kernel Shader shader program
+    CShaderProgram *pKernelShader = new CShaderProgram;
+    pKernelShader->CreateProgram();
+    pKernelShader->AddShaderToProgram(&shShaders[39]);
+    pKernelShader->AddShaderToProgram(&shShaders[40]);
+    pKernelShader->LinkProgram();
+    m_pShaderPrograms->push_back(pKernelShader);
+    
+    // Create the Kernel Blur Shader shader program
+    CShaderProgram *pKernelBlurShader = new CShaderProgram;
+    pKernelBlurShader->CreateProgram();
+    pKernelBlurShader->AddShaderToProgram(&shShaders[41]);
+    pKernelBlurShader->AddShaderToProgram(&shShaders[42]);
+    pKernelBlurShader->LinkProgram();
+    m_pShaderPrograms->push_back(pKernelBlurShader);
+    
+    // Create the Edge Detection Shader shader program
+    CShaderProgram *pEdgeDetectionShader = new CShaderProgram;
+    pEdgeDetectionShader->CreateProgram();
+    pEdgeDetectionShader->AddShaderToProgram(&shShaders[43]);
+    pEdgeDetectionShader->AddShaderToProgram(&shShaders[44]);
+    pEdgeDetectionShader->LinkProgram();
+    m_pShaderPrograms->push_back(pEdgeDetectionShader);
 }
 
 

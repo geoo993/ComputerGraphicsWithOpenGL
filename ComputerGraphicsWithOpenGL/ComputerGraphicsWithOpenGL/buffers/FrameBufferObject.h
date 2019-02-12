@@ -1,8 +1,7 @@
 #pragma once
 
 #include "FrameBufferType.h"
-#include "Texture.h"
-#include "Shaders.h"
+#include "Common.h"
 
 class CFrameBufferObject
 {
@@ -20,7 +19,13 @@ public:
     void BindPingPong(const GLuint &index, bool bSetFullViewport = true);
 
     // Bind the texture (usually on a 2nd or later pass in a multi-pass rendering technique)
-    void BindTexture(GLuint iTextureUnit, const FrameBufferType &fboType = FrameBufferType::Default);
+    void BindTexture(GLuint iTextureUnit);
+    
+    // Binding the Multi Sampling framebuffer color texture so it is active
+    void BindMultiSamplingTexture(GLuint iTextureUnit);
+    
+    // Binding the HDR framebuffer color texture so it is active
+    void BindHDRTexture(GLuint iTextureUnit);
 
     // Binding the framebuffer normal texture so it is active
     void BindNormalTexture(GLuint iTextureUnit);

@@ -10,7 +10,7 @@
 
 void Game::RenderScene(){
     
-    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad post processing)
     glEnable(GL_STENCIL_TEST);
     
     // uncomment if stencil buffer is not used
@@ -153,44 +153,4 @@ void Game::RenderScene(){
     // Add Toon Shading Lights
     RenderLight(pToonProgram, m_pCamera);
     
-    
-    
-    
-    
-    // now bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
-    // clear all relevant buffers
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    
-    /// Image Progcessing Shader Program
-    CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
-    SetMaterialUniform(pImageProcessingProgram, "material", m_woodenBoxesColor);
-    SetImageProcessingUniform(pImageProcessingProgram, true);
-    RenderQuad(pImageProcessingProgram, glm::vec3(1000, 200, 400), 1.0f, m_woodenBoxesUseTexture);
-}
-
-// Render scene method runs
-void Game::Render()
-{
-    
-    RenderScene();
-    
-    // It is useful to switch back to the default framebuffer for this to easily see your results.
-    // Unbind to render to our default framebuffer or switching back to the default buffer at 0.
-    // To make sure all rendering operations will have a visual impact on the main window we need to make the default framebuffer active again by binding to 0:
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
-    m_gameWindow.SetViewport();
-    
-    // Post Processing Effects
-    RenderPPFX( m_currentPPFXMode );
-    
-    // Draw the 2D graphics after the 3D graphics
-    RenderHUD();
-    
-    // Swap buffers right after rendering all, this is to show the current rendered image
-    m_gameWindow.SwapBuffers();
 }

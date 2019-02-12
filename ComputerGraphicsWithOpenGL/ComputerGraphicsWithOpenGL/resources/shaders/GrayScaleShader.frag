@@ -1,5 +1,4 @@
 #version 400 core
-// https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -30,9 +29,22 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-out vec4 vOutputColour;        // The output colour formely  gl_FragColor
+out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
 void main()
 {
-    vOutputColour = texture(material.ambientMap, fs_in.vTexCoord);
+ 
+    /*   https://learnopengl.com/#!Advanced-OpenGL/Framebuffers
+         Grayscale
+         Another interesting effect is to remove all colors from the scene except the white, gray and black colors effectively grayscaling the entire image. An easy way to do this is simply by taking all the color components and averaging their results:
+     
+     */
+    
+    vec4 result = texture(material.ambientMap, fs_in.vTexCoord);
+    //float average = (result.r + result.g + result.b) / 3.0f;
+    float average = 0.2126f * result.r + 0.7152f * result.g + 0.0722f * result.b;
+    vOutputColour = vec4(average, average, average, 1.0f);
+    
+
+    
 }

@@ -1,5 +1,4 @@
 #version 400 core
-// https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -30,9 +29,16 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-out vec4 vOutputColour;        // The output colour formely  gl_FragColor
+out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
 void main()
 {
-    vOutputColour = texture(material.ambientMap, fs_in.vTexCoord);
+    
+    /*  https://learnopengl.com/#!Advanced-OpenGL/Framebuffers
+     Inversion
+     We have access to each of the colors of the render output so it's not so hard to return the inverse of these colors in the fragment shader. We're taking the color of the screen texture and inverse it by subtracting it from 1.0:
+     
+     */
+    
+    vOutputColour = vec4(vec3(1.0f - texture(material.ambientMap, fs_in.vTexCoord)), 1.0f);
 }

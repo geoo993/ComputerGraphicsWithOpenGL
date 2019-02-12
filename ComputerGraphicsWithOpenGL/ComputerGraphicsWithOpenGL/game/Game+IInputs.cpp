@@ -167,7 +167,13 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_GRAVE_ACCENT:
                 m_useBlinn = !m_useBlinn;
                 break;
-            case GLFW_KEY_Z:
+            case GLFW_KEY_Z: {
+                    m_changePPFXMode = true;
+                    GLint currentIndex = static_cast<GLint>(m_currentPPFXMode);
+                    GLint numberOfEffects = static_cast<GLint>(PostProcessingEffectMode::NumberOfPPFX);
+                    GLint nextIndex = (currentIndex + 1) % numberOfEffects;
+                    m_currentPPFXMode = static_cast<PostProcessingEffectMode>(nextIndex);
+                }
                 break;
             case GLFW_KEY_X:
                 m_magnitude -= 0.1f;

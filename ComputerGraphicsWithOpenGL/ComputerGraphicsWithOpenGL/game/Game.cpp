@@ -140,6 +140,7 @@ Game::Game()
     m_metalballsPosition = glm::vec3(500.0f,500.0f,0.0f);
     
     // post processing
+    m_pFBO1 = nullptr;
     m_currentPPFXMode = PostProcessingEffectMode::DefaultFrameBuffer;
     
     // hud
@@ -187,6 +188,7 @@ Game::~Game()
     delete m_pTorusKnot;
     delete m_pMetaballs;
     delete m_pQuad;
+    delete m_pFBO1;
     
     if (m_pShaderPrograms != nullptr) {
         for (unsigned int i = 0; i < m_pShaderPrograms->size(); i++)
@@ -226,6 +228,7 @@ void Game::Initialise()
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
     m_pMetaballs = new CMetaballs;
+    m_pFBO1 = new CFrameBufferObject;
 }
 
 void Game::LoadResources(const std::string &path)
@@ -356,6 +359,40 @@ void Game::Update()
     
     UpdateAudio();
 }
+
+
+// Render scene method runs
+void Game::Render()
+{
+    
+    ActivateFBO(FrameBufferType::Default);
+    
+    RenderScene();
+    
+    // It is useful to switch back to the default framebuffer for this to easily see your results.
+    // Unbind to render to our default framebuffer or switching back to the default buffer at 0.
+    // To make sure all rendering operations will have a visual impact on the main window we need to make the default framebuffer active again by binding to 0:
+    // essentially, we just bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    m_gameWindow.SetViewport();
+    
+    // clear all relevant buffers, set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
+    m_gameWindow.ClearBuffers();
+    
+    // disable depth test so screen-space quad isn't discarded due to depth test.
+    glDisable(GL_DEPTH_TEST);
+    
+    // Post Processing Effects
+    RenderPPFX( m_currentPPFXMode );
+    
+    // Draw the 2D graphics after the 3D graphics
+    RenderHUD();
+    
+    // Swap buffers right after rendering all, this is to show the current rendered image
+    m_gameWindow.SwapBuffers();
+}
+
 
 // The game loop runs repeatedly until game over
 void Game::GameLoop()

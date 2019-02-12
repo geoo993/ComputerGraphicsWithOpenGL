@@ -178,8 +178,8 @@ protected:
     void RenderScene() override;
     
     // render object
-    void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                    const GLfloat & scale, const GLboolean &useTexture) override;
+    void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),
+                    const GLfloat & scale = 1.0f, const GLboolean &useTexture = true) override;
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
     void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
@@ -207,6 +207,7 @@ protected:
     
     // post processing
     void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) override;
+    void ActivateFBO(const FrameBufferType &type) override;
     void RenderPPFXScene(const PostProcessingEffectMode &mode) override;
     void RenderToScreen(CShaderProgram *pShaderProgram, const bool & useQuad) override;
     void RenderPPFX(const PostProcessingEffectMode &mode) override;

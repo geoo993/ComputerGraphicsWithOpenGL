@@ -15,6 +15,7 @@
 #include "Audio.h"
 #include "PostProcessingEffectMode.h"
 #include "Lighting.h"
+#include "FrameBufferObject.h"
 
 struct IGameTimer
 {
@@ -34,8 +35,7 @@ struct IAudio {
     virtual void UpdateAudio() = 0;
 };
 
-struct ICamera
-{
+struct ICamera {
     CCamera *m_pCamera;
     virtual void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) = 0;
     virtual void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) = 0;
@@ -161,7 +161,11 @@ struct IRenderObject
 
 struct IPostProcessing {
     PostProcessingEffectMode m_currentPPFXMode;
+    CFrameBufferObject *currentFBO, *m_pFBO1;
+    GLboolean m_changePPFXMode;
+    GLuint m_PPFXOption;
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
+    virtual void ActivateFBO(const FrameBufferType &type) = 0;
     virtual void RenderPPFXScene(const PostProcessingEffectMode &mode) = 0;
     virtual void RenderToScreen(CShaderProgram *pShaderProgram, const bool & useQuad) = 0;
     virtual void RenderPPFX(const PostProcessingEffectMode &mode) = 0;

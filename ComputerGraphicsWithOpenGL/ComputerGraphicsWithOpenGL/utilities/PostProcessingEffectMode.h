@@ -18,6 +18,7 @@ enum class PostProcessingEffectMode {
     ColorInversion,
     GrayScale,
     Kernel,
+    KernelBlur,
     EdgeDetection,
     ScreenWave,
     Swirl,

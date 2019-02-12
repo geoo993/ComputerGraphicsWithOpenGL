@@ -32,10 +32,10 @@ void Game::DisplayFrameRate(CShaderProgram *fontProgram, const GLuint &framesPer
 
     int width = m_gameWindow.GetWidth();
     int height = m_gameWindow.GetHeight();
-    
     if (framesPerSecond > 0) {
         if (enableHud) {
             m_pFtFont->Render(fontProgram, width - 100, height - 20, 20, "FPS: %d", framesPerSecond);
+            m_pFtFont->Render(fontProgram, (width / 2) - 100, height - 20, 20, "PPFX: %s", PostProcessingEffectToString(m_currentPPFXMode));
             m_pFtFont->Render(fontProgram, 20, height - 20, 20, "Mat Shininess: %f", m_materialShininess);
             m_pFtFont->Render(fontProgram, 20, height - 40, 20, "DirLight Intensity: %f", m_dirIntensity);
             m_pFtFont->Render(fontProgram, 20, height - 60, 20, "PointLight Intensity: %f", m_pointIntensity);

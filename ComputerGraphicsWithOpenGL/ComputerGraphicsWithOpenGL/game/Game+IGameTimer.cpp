@@ -8,7 +8,7 @@
 
 #include "Game.h"
 
-void Game::CalculateGameTime() {
+void Game::UpdateGameTimer() {
     
     // Increase the elapsed time and frame counter
     m_elapsedTime += m_deltaTime;

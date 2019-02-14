@@ -46,7 +46,7 @@ private:
     CVertexBufferObjectIndexed m_vbo;
     
     std::map<std::string, TextureType> m_textureNames;
-    std::vector<CTexture> m_textures;
+    std::vector<CTexture*> m_textures;
     
     std::string m_directory;
 };

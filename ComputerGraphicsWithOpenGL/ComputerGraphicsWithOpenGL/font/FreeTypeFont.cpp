@@ -119,10 +119,7 @@ void CFreeTypeFont::Print(CShaderProgram* program, std::string text, int x, int 
 		return;
 
 	glBindVertexArray(m_vao);
-	program->SetUniform("textSampler", 0);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    
 	int iCurX = x, iCurY = y;
 	if (pixelSize == -1)
 		pixelSize = m_loadedPixelSize;
@@ -148,7 +145,6 @@ void CFreeTypeFont::Print(CShaderProgram* program, std::string text, int x, int 
 
 		iCurX += (m_advX[iIndex] - m_bearingX[iIndex])*pixelSize / m_loadedPixelSize;
 	}
-	glDisable(GL_BLEND);
 }
 
 

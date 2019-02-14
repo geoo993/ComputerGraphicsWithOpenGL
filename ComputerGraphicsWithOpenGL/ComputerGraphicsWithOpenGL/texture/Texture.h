@@ -14,6 +14,7 @@ public:
     GLuint CreateSimpleTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
                             GLint textureUnitAt = 0, const GLvoid * data = nullptr);
 	void BindTexture2D(GLint textureUnit = 0) const;
+    void BindTexture2DToTextureType() const;
     void BindTexture3D(GLint textureUnit = 0);
     void BindTextureCubeMap(GLint textureUnit = 0);
 

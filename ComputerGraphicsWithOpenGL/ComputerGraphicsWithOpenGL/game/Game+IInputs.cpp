@@ -9,7 +9,7 @@
 #include "Game.h"
 
 
-void Game::MouseControls(const int &button, const int &action){
+void Game::UpdateMouseControls(const int &button, const int &action){
     
     // https://stackoverflow.com/questions/37194845/using-glfw-to-capture-mouse-dragging-c
     // https://stackoverflow.com/questions/45130391/opengl-get-cursor-coordinate-on-mouse-click-in-c
@@ -51,7 +51,7 @@ void Game::MouseControls(const int &button, const int &action){
     
 }
 
-void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
+void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
     
     if (keyAction == GLFW_RELEASE){
         keyPressed = -1;
@@ -116,6 +116,9 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_Q:
                 m_useSmoothSpot = !m_useSmoothSpot;
                 break;
+            case GLFW_KEY_W:
+                m_useBlinn = !m_useBlinn;
+                break;
             case GLFW_KEY_E:
                 m_ambient -= 0.2f;
                 break;
@@ -146,6 +149,16 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_RIGHT_BRACKET:
                 m_spotOuterCutOff += 0.2f;
                 break;
+            case GLFW_KEY_A:
+                m_coverage -= 0.1f;
+                m_coverage = glm::clamp(m_coverage, 0.0f, 1.0f);
+                break;
+            case GLFW_KEY_S:
+                m_coverage += 0.1f;
+                m_coverage = glm::clamp(m_coverage, 0.0f, 1.0f);
+                break;
+            case GLFW_KEY_D:
+                break;
             case GLFW_KEY_F:
                 m_constant -= 0.2f;
                 break;
@@ -164,8 +177,22 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
             case GLFW_KEY_L:
                 m_exponent += 0.2f;
                 break;
-            case GLFW_KEY_GRAVE_ACCENT:
-                m_useBlinn = !m_useBlinn;
+            case GLFW_KEY_SEMICOLON:
+                m_useRefraction = !m_useRefraction;
+                break;
+            case GLFW_KEY_BACKSLASH:
+                m_mouseMouseMoveClickSwitch = !m_mouseMouseMoveClickSwitch;
+                break;
+            case GLFW_KEY_APOSTROPHE:
+                m_isMouseCursorVisible = !m_isMouseCursorVisible;
+                break;
+            case GLFW_KEY_GRAVE_ACCENT: {
+                    m_changePPFXMode = true;
+                    GLint currentIndex = static_cast<GLint>(m_currentPPFXMode);
+                    GLint numberOfEffects = static_cast<GLint>(PostProcessingEffectMode::NumberOfPPFX);
+                    GLint nextIndex = (currentIndex - 1) % numberOfEffects;
+                    m_currentPPFXMode = static_cast<PostProcessingEffectMode>(nextIndex);
+                }
                 break;
             case GLFW_KEY_Z: {
                     m_changePPFXMode = true;
@@ -203,15 +230,6 @@ void Game::KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
                 break;
             case GLFW_KEY_SLASH:
                 m_enableHud = !m_enableHud;
-                break;
-            case GLFW_KEY_BACKSLASH:
-                m_mouseMouseMoveClickSwitch = !m_mouseMouseMoveClickSwitch;
-                break;
-            case GLFW_KEY_APOSTROPHE:
-                m_isMouseCursorVisible = !m_isMouseCursorVisible;
-                break;
-            case GLFW_KEY_SEMICOLON:
-                m_useRefraction = !m_useRefraction;
                 break;
             default:
                 break;

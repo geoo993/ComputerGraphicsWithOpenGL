@@ -58,6 +58,63 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("KernelBlurShader.frag");
     sShaderFileNames.push_back("EdgeDetectionShader.vert");// 20
     sShaderFileNames.push_back("EdgeDetectionShader.frag");
+    sShaderFileNames.push_back("SobelEdgeDetectionShader.vert");// 21
+    sShaderFileNames.push_back("SobelEdgeDetectionShader.frag");
+    sShaderFileNames.push_back("FreiChenEdgeDetectionShader.vert");// 22
+    sShaderFileNames.push_back("FreiChenEdgeDetectionShader.frag");
+    sShaderFileNames.push_back("ScreenWaveShader.vert");// 23
+    sShaderFileNames.push_back("ScreenWaveShader.frag");
+    sShaderFileNames.push_back("SwirlShader.vert");// 24
+    sShaderFileNames.push_back("SwirlShader.frag");
+    sShaderFileNames.push_back("NightVisionLensShader.vert");// 25
+    sShaderFileNames.push_back("NightVisionLensShader.frag");
+    sShaderFileNames.push_back("LensCircleShader.vert");// 26
+    sShaderFileNames.push_back("LensCircleShader.frag");
+    sShaderFileNames.push_back("PosterizationShader.vert");// 27
+    sShaderFileNames.push_back("PosterizationShader.frag");
+    sShaderFileNames.push_back("DreamVisionShader.vert");// 28
+    sShaderFileNames.push_back("DreamVisionShader.frag");
+    sShaderFileNames.push_back("PixelationShader.vert");// 29
+    sShaderFileNames.push_back("PixelationShader.frag");
+    sShaderFileNames.push_back("FrostedGlassEffectShader.vert");// 30
+    sShaderFileNames.push_back("FrostedGlassEffectShader.frag");
+    sShaderFileNames.push_back("FrostedGlassShader.vert");// 31
+    sShaderFileNames.push_back("FrostedGlassShader.frag");
+    sShaderFileNames.push_back("CrosshatchingShader.vert");// 32
+    sShaderFileNames.push_back("CrosshatchingShader.frag");
+    sShaderFileNames.push_back("PredatorsThermalVisionShader.vert");// 33
+    sShaderFileNames.push_back("PredatorsThermalVisionShader.frag");
+    sShaderFileNames.push_back("ToonifyShader.vert");// 34
+    sShaderFileNames.push_back("ToonifyShader.frag");
+    sShaderFileNames.push_back("ShockwaveShader.vert");// 35
+    sShaderFileNames.push_back("ShockwaveShader.frag");
+    sShaderFileNames.push_back("FishEyeShader.vert");// 36
+    sShaderFileNames.push_back("FishEyeShader.frag");
+    sShaderFileNames.push_back("BarrelDistortionPixelShader.vert");// 37
+    sShaderFileNames.push_back("BarrelDistortionPixelShader.frag");
+    sShaderFileNames.push_back("MultiScreenFishEyeShader.vert");// 38
+    sShaderFileNames.push_back("MultiScreenFishEyeShader.frag");
+    sShaderFileNames.push_back("FishEyeLensShader.vert");// 39
+    sShaderFileNames.push_back("FishEyeLensShader.frag");
+    sShaderFileNames.push_back("FishEyeAntiFishEyeShader.vert");// 40
+    sShaderFileNames.push_back("FishEyeAntiFishEyeShader.frag");
+    sShaderFileNames.push_back("GaussianBlurShader.vert");// 41
+    sShaderFileNames.push_back("GaussianBlurShader.frag");
+    sShaderFileNames.push_back("BlurShader.vert");// 42
+    sShaderFileNames.push_back("BlurShader.frag");
+    sShaderFileNames.push_back("RadialBlurShader.vert");// 43
+    sShaderFileNames.push_back("RadialBlurShader.frag");
+    sShaderFileNames.push_back("MotionBlurShader.vert");// 44
+    sShaderFileNames.push_back("MotionBlurShader.frag");
+    sShaderFileNames.push_back("VignettingShader.vert");// 45
+    sShaderFileNames.push_back("VignettingShader.frag");
+    sShaderFileNames.push_back("BrightPartsShader.vert");// 46
+    sShaderFileNames.push_back("BrightPartsShader.frag");
+    sShaderFileNames.push_back("BloomShader.vert");// 47
+    sShaderFileNames.push_back("BloomShader.frag");
+    sShaderFileNames.push_back("LensFlareShader.vert");// 48
+    sShaderFileNames.push_back("LensFlareShader.frag");
+    
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -244,6 +301,229 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pEdgeDetectionShader->AddShaderToProgram(&shShaders[44]);
     pEdgeDetectionShader->LinkProgram();
     m_pShaderPrograms->push_back(pEdgeDetectionShader);
+    
+    // Create the Sobel Edge Detection Shader shader program
+    CShaderProgram *pSobelEdgeDetectionShader = new CShaderProgram;
+    pSobelEdgeDetectionShader->CreateProgram();
+    pSobelEdgeDetectionShader->AddShaderToProgram(&shShaders[45]);
+    pSobelEdgeDetectionShader->AddShaderToProgram(&shShaders[46]);
+    pSobelEdgeDetectionShader->LinkProgram();
+    m_pShaderPrograms->push_back(pSobelEdgeDetectionShader);
+    
+    // Create the Frei-Chen Edge Detection Shader shader program
+    CShaderProgram *pFreiChenEdgeDetectionShader = new CShaderProgram;
+    pFreiChenEdgeDetectionShader->CreateProgram();
+    pFreiChenEdgeDetectionShader->AddShaderToProgram(&shShaders[47]);
+    pFreiChenEdgeDetectionShader->AddShaderToProgram(&shShaders[48]);
+    pFreiChenEdgeDetectionShader->LinkProgram();
+    m_pShaderPrograms->push_back(pEdgeDetectionShader);
+    
+    // Create the Screen Wave shader program
+    CShaderProgram *pScreenWaveShader = new CShaderProgram;
+    pScreenWaveShader->CreateProgram();
+    pScreenWaveShader->AddShaderToProgram(&shShaders[49]);
+    pScreenWaveShader->AddShaderToProgram(&shShaders[50]);
+    pScreenWaveShader->LinkProgram();
+    m_pShaderPrograms->push_back(pScreenWaveShader);
+    
+    // Create the Swirl shader program
+    CShaderProgram *pSwirlShader = new CShaderProgram;
+    pSwirlShader->CreateProgram();
+    pSwirlShader->AddShaderToProgram(&shShaders[51]);
+    pSwirlShader->AddShaderToProgram(&shShaders[52]);
+    pSwirlShader->LinkProgram();
+    m_pShaderPrograms->push_back(pSwirlShader);
+    
+    // Create the Night Vision Lens program
+    CShaderProgram *pNightVisionLensShader = new CShaderProgram;
+    pNightVisionLensShader->CreateProgram();
+    pNightVisionLensShader->AddShaderToProgram(&shShaders[53]);
+    pNightVisionLensShader->AddShaderToProgram(&shShaders[54]);
+    pNightVisionLensShader->LinkProgram();
+    m_pShaderPrograms->push_back(pNightVisionLensShader);
+    
+    // Create the Lens Circle shader program
+    CShaderProgram *pLensCircleShader = new CShaderProgram;
+    pLensCircleShader->CreateProgram();
+    pLensCircleShader->AddShaderToProgram(&shShaders[55]);
+    pLensCircleShader->AddShaderToProgram(&shShaders[56]);
+    pLensCircleShader->LinkProgram();
+    m_pShaderPrograms->push_back(pLensCircleShader);
+    
+    // Create the Posterization shader program
+    CShaderProgram *pPosterizationShader = new CShaderProgram;
+    pPosterizationShader->CreateProgram();
+    pPosterizationShader->AddShaderToProgram(&shShaders[57]);
+    pPosterizationShader->AddShaderToProgram(&shShaders[58]);
+    pPosterizationShader->LinkProgram();
+    m_pShaderPrograms->push_back(pPosterizationShader);
+    
+    // Create the Dream Vision shader program
+    CShaderProgram *pDreamVisionShader = new CShaderProgram;
+    pDreamVisionShader->CreateProgram();
+    pDreamVisionShader->AddShaderToProgram(&shShaders[59]);
+    pDreamVisionShader->AddShaderToProgram(&shShaders[60]);
+    pDreamVisionShader->LinkProgram();
+    m_pShaderPrograms->push_back(pDreamVisionShader);
+    
+    // Create the Pixelation shader program
+    CShaderProgram *pPixelationShader = new CShaderProgram;
+    pPixelationShader->CreateProgram();
+    pPixelationShader->AddShaderToProgram(&shShaders[61]);
+    pPixelationShader->AddShaderToProgram(&shShaders[62]);
+    pPixelationShader->LinkProgram();
+    m_pShaderPrograms->push_back(pPixelationShader);
+    
+    // Create the Frosted Glass Effect shader program
+    CShaderProgram *pFrostedGlassEffectShader = new CShaderProgram;
+    pFrostedGlassEffectShader->CreateProgram();
+    pFrostedGlassEffectShader->AddShaderToProgram(&shShaders[63]);
+    pFrostedGlassEffectShader->AddShaderToProgram(&shShaders[64]);
+    pFrostedGlassEffectShader->LinkProgram();
+    m_pShaderPrograms->push_back(pFrostedGlassEffectShader);
+    
+    // Create the Frosted Glass shader program
+    CShaderProgram *pFrostedGlassShader = new CShaderProgram;
+    pFrostedGlassShader->CreateProgram();
+    pFrostedGlassShader->AddShaderToProgram(&shShaders[65]);
+    pFrostedGlassShader->AddShaderToProgram(&shShaders[66]);
+    pFrostedGlassShader->LinkProgram();
+    m_pShaderPrograms->push_back(pFrostedGlassShader);
+    
+    // Create the Crosshatching shader program
+    CShaderProgram *pCrosshatchingShader = new CShaderProgram;
+    pCrosshatchingShader->CreateProgram();
+    pCrosshatchingShader->AddShaderToProgram(&shShaders[67]);
+    pCrosshatchingShader->AddShaderToProgram(&shShaders[68]);
+    pCrosshatchingShader->LinkProgram();
+    m_pShaderPrograms->push_back(pCrosshatchingShader);
+    
+    // Create the Predators Thermal Vision shader program
+    CShaderProgram *pPredatorsThermalVisionShader = new CShaderProgram;
+    pPredatorsThermalVisionShader->CreateProgram();
+    pPredatorsThermalVisionShader->AddShaderToProgram(&shShaders[69]);
+    pPredatorsThermalVisionShader->AddShaderToProgram(&shShaders[70]);
+    pPredatorsThermalVisionShader->LinkProgram();
+    m_pShaderPrograms->push_back(pPredatorsThermalVisionShader);
+    
+    // Create the Toonify shader program
+    CShaderProgram *pToonifyShader = new CShaderProgram;
+    pToonifyShader->CreateProgram();
+    pToonifyShader->AddShaderToProgram(&shShaders[71]);
+    pToonifyShader->AddShaderToProgram(&shShaders[72]);
+    pToonifyShader->LinkProgram();
+    m_pShaderPrograms->push_back(pToonifyShader);
+    
+    // Create the Shockwave shader program
+    CShaderProgram *pShockwaveShader = new CShaderProgram;
+    pShockwaveShader->CreateProgram();
+    pShockwaveShader->AddShaderToProgram(&shShaders[73]);
+    pShockwaveShader->AddShaderToProgram(&shShaders[74]);
+    pShockwaveShader->LinkProgram();
+    m_pShaderPrograms->push_back(pShockwaveShader);
+
+    // Create the Fish Eye shader program
+    CShaderProgram *pFishEyeShader = new CShaderProgram;
+    pFishEyeShader->CreateProgram();
+    pFishEyeShader->AddShaderToProgram(&shShaders[75]);
+    pFishEyeShader->AddShaderToProgram(&shShaders[76]);
+    pFishEyeShader->LinkProgram();
+    m_pShaderPrograms->push_back(pFishEyeShader);
+    
+    // Create the Barrel Distortion Pixel shader program
+    CShaderProgram *pBarrelDistortionPixelShader = new CShaderProgram;
+    pBarrelDistortionPixelShader->CreateProgram();
+    pBarrelDistortionPixelShader->AddShaderToProgram(&shShaders[77]);
+    pBarrelDistortionPixelShader->AddShaderToProgram(&shShaders[78]);
+    pBarrelDistortionPixelShader->LinkProgram();
+    m_pShaderPrograms->push_back(pBarrelDistortionPixelShader);
+    
+    // Create the Multi Screen Fish Eye shader program
+    CShaderProgram *pMultiScreenFishEyeShader = new CShaderProgram;
+    pMultiScreenFishEyeShader->CreateProgram();
+    pMultiScreenFishEyeShader->AddShaderToProgram(&shShaders[79]);
+    pMultiScreenFishEyeShader->AddShaderToProgram(&shShaders[80]);
+    pMultiScreenFishEyeShader->LinkProgram();
+    m_pShaderPrograms->push_back(pMultiScreenFishEyeShader);
+    
+    // Create the Fish Eye Lens shader program
+    CShaderProgram *pFishEyeLensShader = new CShaderProgram;
+    pFishEyeLensShader->CreateProgram();
+    pFishEyeLensShader->AddShaderToProgram(&shShaders[81]);
+    pFishEyeLensShader->AddShaderToProgram(&shShaders[82]);
+    pFishEyeLensShader->LinkProgram();
+    m_pShaderPrograms->push_back(pFishEyeLensShader);
+    
+    // Create the Multi Screen Fish Eye shader program
+    CShaderProgram *pFishEyeAntiFishEyeShader = new CShaderProgram;
+    pFishEyeAntiFishEyeShader->CreateProgram();
+    pFishEyeAntiFishEyeShader->AddShaderToProgram(&shShaders[83]);
+    pFishEyeAntiFishEyeShader->AddShaderToProgram(&shShaders[84]);
+    pFishEyeAntiFishEyeShader->LinkProgram();
+    m_pShaderPrograms->push_back(pFishEyeAntiFishEyeShader);
+    
+    // Create the Gaussian Blur shader program
+    CShaderProgram *pGaussianBlurShader = new CShaderProgram;
+    pGaussianBlurShader->CreateProgram();
+    pGaussianBlurShader->AddShaderToProgram(&shShaders[85]);
+    pGaussianBlurShader->AddShaderToProgram(&shShaders[86]);
+    pGaussianBlurShader->LinkProgram();
+    m_pShaderPrograms->push_back(pGaussianBlurShader);
+    
+    // Create the Blur shader program
+    CShaderProgram *pBlurShader = new CShaderProgram;
+    pBlurShader->CreateProgram();
+    pBlurShader->AddShaderToProgram(&shShaders[87]);
+    pBlurShader->AddShaderToProgram(&shShaders[88]);
+    pBlurShader->LinkProgram();
+    m_pShaderPrograms->push_back(pBlurShader);
+    
+    // Create the Radial Blur shader program
+    CShaderProgram *pRadialBlurShader = new CShaderProgram;
+    pRadialBlurShader->CreateProgram();
+    pRadialBlurShader->AddShaderToProgram(&shShaders[89]);
+    pRadialBlurShader->AddShaderToProgram(&shShaders[90]);
+    pRadialBlurShader->LinkProgram();
+    m_pShaderPrograms->push_back(pRadialBlurShader);
+    
+    // Create the Motion Blur shader program
+    CShaderProgram *pMotionBlurShader = new CShaderProgram;
+    pMotionBlurShader->CreateProgram();
+    pMotionBlurShader->AddShaderToProgram(&shShaders[91]);
+    pMotionBlurShader->AddShaderToProgram(&shShaders[92]);
+    pMotionBlurShader->LinkProgram();
+    m_pShaderPrograms->push_back(pMotionBlurShader);
+    
+    // Create the Vignetting shader program
+    CShaderProgram *pVignettingShader = new CShaderProgram;
+    pVignettingShader->CreateProgram();
+    pVignettingShader->AddShaderToProgram(&shShaders[93]);
+    pVignettingShader->AddShaderToProgram(&shShaders[94]);
+    pVignettingShader->LinkProgram();
+    m_pShaderPrograms->push_back(pVignettingShader);
+    
+    // Create the Bright Parts shader program
+    CShaderProgram *pBrightPartsShader = new CShaderProgram;
+    pBrightPartsShader->CreateProgram();
+    pBrightPartsShader->AddShaderToProgram(&shShaders[95]);
+    pBrightPartsShader->AddShaderToProgram(&shShaders[96]);
+    pBrightPartsShader->LinkProgram();
+    m_pShaderPrograms->push_back(pBrightPartsShader);
+    
+    // Create the Bloom shader program
+    CShaderProgram *pBloomShader = new CShaderProgram;
+    pBloomShader->CreateProgram();
+    pBloomShader->AddShaderToProgram(&shShaders[97]);
+    pBloomShader->AddShaderToProgram(&shShaders[98]);
+    pBloomShader->LinkProgram();
+    m_pShaderPrograms->push_back(pBloomShader);
+    
+    CShaderProgram *pLensFlareShader = new CShaderProgram;
+    pLensFlareShader->CreateProgram();
+    pLensFlareShader->AddShaderToProgram(&shShaders[99]);
+    pLensFlareShader->AddShaderToProgram(&shShaders[100]);
+    pLensFlareShader->LinkProgram();
+    m_pShaderPrograms->push_back(pLensFlareShader);
 }
 
 

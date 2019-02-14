@@ -139,10 +139,6 @@ Game::Game()
     m_pMetaballs = nullptr;
     m_metalballsPosition = glm::vec3(500.0f,500.0f,0.0f);
     
-    // post processing
-    m_pFBO1 = nullptr;
-    m_currentPPFXMode = PostProcessingEffectMode::DefaultFrameBuffer;
-    
     // hud
     m_enableHud = true;
     m_pFtFont = nullptr;
@@ -152,8 +148,7 @@ Game::Game()
     m_enableMouseMovement = true;
     m_isMouseCursorVisible = true;
     m_mouseMouseMoveClickSwitch = false;
-    m_mouseX = 0.0;
-    m_mouseY = 0.0;
+    m_mouseX, m_mouseY = 0.0;
     m_keyPressTime = 0.0;
     m_lastKeyPressTime = 0.0f;
     m_lastKeyPress = -1;
@@ -188,7 +183,13 @@ Game::~Game()
     delete m_pTorusKnot;
     delete m_pMetaballs;
     delete m_pQuad;
-    delete m_pFBO1;
+    
+    for (GLuint i = 0; i < m_pFBOs.size(); i++) {
+        // delete current buffers
+        m_pFBOs[i]->Release();
+        delete m_pFBOs[i];
+    }
+    m_pFBOs.clear();
     
     if (m_pShaderPrograms != nullptr) {
         for (unsigned int i = 0; i < m_pShaderPrograms->size(); i++)
@@ -228,7 +229,6 @@ void Game::Initialise()
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
     m_pMetaballs = new CMetaballs;
-    m_pFBO1 = new CFrameBufferObject;
 }
 
 void Game::LoadResources(const std::string &path)
@@ -348,18 +348,10 @@ void Game::LoadResources(const std::string &path)
     
 }
 
-// Update method runs repeatedly with the Render method
-void Game::Update()
-{
-   
-    UpdateCamera(m_deltaTime, keyPressedCode, m_enableMouseMovement);
+void Game::PreRendering() {
     
-    MouseControls(mouseButton, mouseAction);
-    KeyBoardControls(keyPressedCode, keyReleasedCode, keyPressedAction);
-    
-    UpdateAudio();
+    Update();
 }
-
 
 // Render scene method runs
 void Game::Render()
@@ -393,15 +385,32 @@ void Game::Render()
     m_gameWindow.SwapBuffers();
 }
 
+void Game::PostRendering() {
+    UpdateCameraEndFrame(m_deltaTime);
+}
+
+// Update method runs repeatedly with the Render method
+void Game::Update()
+{
+    UpdateGameTimer();
+    
+    UpdateCamera(m_deltaTime, keyPressedCode, m_enableMouseMovement);
+    
+    UpdateMouseControls(mouseButton, mouseAction);
+    UpdateKeyBoardControls(keyPressedCode, keyReleasedCode, keyPressedAction);
+    
+    UpdateAudio();
+}
+
 
 // The game loop runs repeatedly until game over
 void Game::GameLoop()
 {
     // Variable timer
     m_pGameTimer->Start();
-    CalculateGameTime();
-    Update();
+    PreRendering();
     Render();
+    PostRendering();
     m_deltaTime = m_pGameTimer->Elapsed();
 }
 

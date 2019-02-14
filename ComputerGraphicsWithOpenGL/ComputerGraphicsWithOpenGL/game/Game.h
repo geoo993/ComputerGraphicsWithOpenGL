@@ -124,29 +124,30 @@ public:
    
 protected:
     
-    // game timer
-    void CalculateGameTime() override;
+    /// Game timer
+    void UpdateGameTimer() override;
     
-    // audio
+    /// Audio
     void InitialiseAudio(const std::string &path) override;
     void UpdateAudio() override;
     
-    // camera
+    /// Camera
     void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) override;
     void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) override;
     void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) override;
+    void UpdateCameraEndFrame(const GLdouble & deltaTime) override;
     
-    // materials
+    /// Materials
     void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                             const glm::vec3 &color = glm::vec3(1.0f), const GLfloat &shininess = 32.0f) override;
-    // texture
+    /// Textures
     void LoadTextures(const std::string &path) override;
-    CTexture AddTexture(const std::string &textureFile, const int &textureUnit, const bool &gammaCorrection = false) override;
+    CTexture * AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection = false) override;
     
-    // shaders
+    /// Shaders
     void LoadShaderPrograms(const std::string &path) override;
     
-    // shader uniform
+    /// Shader uniform
     void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) override;
     void SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) override;
@@ -160,9 +161,42 @@ protected:
                                       const GLfloat &magnitude) override;
     void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) override;
     void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) override;
-    void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) override;
     
-    // lights
+    /// Post Processing Unifom
+    void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) override;
+    void SetColorInversionUniform(CShaderProgram *pShaderProgram) override;
+    void SetGrayScaleUniform(CShaderProgram *pShaderProgram) override;
+    void SetKernelUniform(CShaderProgram *pShaderProgram) override;
+    void SetKernelBlurUniform(CShaderProgram *pShaderProgram) override;
+    void SetEdgeDetectionUniform(CShaderProgram *pShaderProgram) override;
+    void SetScreenWaveUniform(CShaderProgram *pShaderProgram) override;
+    void SetSwirlUniform(CShaderProgram *pShaderProgram) override;
+    void SetNightVisionUniform(CShaderProgram *pShaderProgram) override;
+    void SetLensCircleUniform(CShaderProgram *pShaderProgram) override;
+    void SetPosterizationUniform(CShaderProgram *pShaderProgram) override;
+    void SetDreamVisionUniform(CShaderProgram *pShaderProgram) override;
+    void SetPixelationUniform(CShaderProgram *pShaderProgram) override;
+    void SetFrostedGlassEffectUniform(CShaderProgram *pShaderProgram) override;
+    void SetFrostedGlassUniform(CShaderProgram *pShaderProgram) override;
+    void SetCrosshatchingUniform(CShaderProgram *pShaderProgram) override;
+    void SetPredatorsThermalVisionUniform(CShaderProgram *pShaderProgram) override;
+    void SetToonifyUniform(CShaderProgram *pShaderProgram) override;
+    void SetShockwaveUniform(CShaderProgram *pShaderProgram) override;
+    void SetFishEyeUniform(CShaderProgram *pShaderProgram) override;
+    void SetBarrelDistortionUniform(CShaderProgram *pShaderProgram) override;
+    void SetMultiScreenFishEyeUniform(CShaderProgram *pShaderProgram) override;
+    void SetFishEyeLensUniform(CShaderProgram *pShaderProgram) override;
+    void SetFishEyeAntiFishEyeUniform(CShaderProgram *pShaderProgram) override;
+    void SetGaussianBlurUniform(CShaderProgram *pShaderProgram, const GLboolean &horizontal) override;
+    void SetBlurUniform(CShaderProgram *pShaderProgram) override;
+    void SetRadialBlurUniform(CShaderProgram *pShaderProgram) override;
+    void SetMotionBlurUniform(CShaderProgram *pShaderProgram) override;
+    void SetVignettingUniform(CShaderProgram *pShaderProgram) override;
+    void SetBrightPartsUniform(CShaderProgram *pShaderProgram) override;
+    void SetBloomUniform(CShaderProgram *pShaderProgram) override;
+    void SetLensFlareUniform(CShaderProgram *pShaderProgram) override;
+    
+    /// Lights
     void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
                          const GLboolean &useSpot, const GLboolean &useSmoothSpot, const GLboolean& useBlinn) override;
     void SetBaseLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const BaseLight & baseLight) override;
@@ -171,13 +205,15 @@ protected:
     void SetPointLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const PointLight& pointLight) override;
     void SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const SpotLight& spotLight, CCamera *camera) override;
     void RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) override;
-    void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale, const glm::vec3 & color) override;
+    void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale) override;
     
-    // renderer
+    /// Renderer
+    void PreRendering() override;
     void Render() override;
+    void PostRendering() override;
     void RenderScene() override;
     
-    // render object
+    /// Render object
     void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),
                     const GLfloat & scale = 1.0f, const GLboolean &useTexture = true) override;
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
@@ -205,21 +241,22 @@ protected:
     void RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                           const GLfloat & scale, const GLboolean &useTexture) override;
     
-    // post processing
+    /// Post processing
     void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) override;
+    void LoadFrameBuffers(const GLuint &width, const GLuint &height) override;
     void ActivateFBO(const FrameBufferType &type) override;
     void RenderPPFXScene(const PostProcessingEffectMode &mode) override;
     void RenderToScreen(CShaderProgram *pShaderProgram, const bool & useQuad) override;
     void RenderPPFX(const PostProcessingEffectMode &mode) override;
     const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) override;
     
-    // HUD
+    /// HUD
     void RenderHUD() override;
     void DisplayFrameRate(CShaderProgram *fontProgram, const GLuint &framesPerSecond, const bool &enableHud) override;
     
-    // inputs
-    void KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction) override;
-    void MouseControls(const int &button, const int &action) override;
+    /// Inputs
+    void UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction) override;
+    void UpdateMouseControls(const int &button, const int &action) override;
     
 };
 

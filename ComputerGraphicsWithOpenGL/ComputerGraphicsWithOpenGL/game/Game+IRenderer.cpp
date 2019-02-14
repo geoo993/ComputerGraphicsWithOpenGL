@@ -22,14 +22,15 @@ void Game::RenderScene(){
     RenderSkyBox(pSkyBoxProgram);
     
     /// Render terrain
-    //CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[2];
-    //SetMaterialUniform(pTerrainProgram, "material");
-    //RenderTerrain(pTerrainProgram, true, true);
+    CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[2];
+    SetMaterialUniform(pTerrainProgram, "material");
+    RenderTerrain(pTerrainProgram, false, true);
     
     /// Render Lamps
     CShaderProgram *pLampProgram = (*m_pShaderPrograms)[4];
     for (unsigned int i = 0; i < m_pointLightPositions.size(); i++) {
-        RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f, m_pointLightColors[i]);
+        SetMaterialUniform(pLampProgram, "material", m_pointLightColors[i]);
+        RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f);
     }
     
     /// Render Lights

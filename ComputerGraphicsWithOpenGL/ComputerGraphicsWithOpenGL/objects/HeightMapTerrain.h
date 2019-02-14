@@ -30,7 +30,7 @@ private:
 	GLfloat m_terrainSizeX, m_terrainSizeZ;
 	glm::vec3 m_origin;
     std::map<std::string, TextureType> m_textureFileNames;
-    std::vector<CTexture> m_textures;
+    std::vector<CTexture*> m_textures;
     
 	FIBITMAP* m_dib;
 

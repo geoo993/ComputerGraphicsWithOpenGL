@@ -23,7 +23,7 @@ struct IGameTimer
     GLfloat m_timeInSeconds, m_timeInMilliSeconds, m_timePerSecond;
     GLdouble m_deltaTime, m_elapsedTime;
     GLint m_framesPerSecond, m_frameCount;
-    virtual void CalculateGameTime() = 0;
+    virtual void UpdateGameTimer() = 0;
 };
 
 struct IAudio {
@@ -40,6 +40,7 @@ struct ICamera {
     virtual void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) = 0;
     virtual void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) = 0;
     virtual void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) = 0;
+    virtual void UpdateCameraEndFrame(const GLdouble & deltaTime) = 0;
 };
 
 struct IMaterials {
@@ -49,9 +50,9 @@ struct IMaterials {
 };
 
 struct ITextures {
-    std::vector<CTexture> m_textures;
+    std::vector<CTexture*> m_textures;
     virtual void LoadTextures(const std::string &path) = 0;
-    virtual CTexture AddTexture(const std::string &textureFile, const int &textureUnit, const bool &gammaCorrection) = 0;
+    virtual CTexture *AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection) = 0;
 };
 
 struct IShaders {
@@ -75,7 +76,41 @@ struct IShaderUniform {
                                               const GLfloat &magnitude) = 0;
     virtual void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) = 0;
     virtual void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) = 0;
+    
+    
+    ///Post Processing Uniform
     virtual void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) = 0;
+    virtual void SetColorInversionUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetGrayScaleUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetKernelUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetKernelBlurUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetEdgeDetectionUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetScreenWaveUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetSwirlUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetNightVisionUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetLensCircleUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetPosterizationUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetDreamVisionUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetPixelationUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetFrostedGlassEffectUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetFrostedGlassUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetCrosshatchingUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetPredatorsThermalVisionUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetToonifyUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetShockwaveUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetFishEyeUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetBarrelDistortionUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetMultiScreenFishEyeUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetFishEyeLensUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetFishEyeAntiFishEyeUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetGaussianBlurUniform(CShaderProgram *pShaderProgram, const GLboolean &horizontal) = 0;
+    virtual void SetBlurUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetRadialBlurUniform(CShaderProgram *pShaderProgram) =0;
+    virtual void SetMotionBlurUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetVignettingUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetBrightPartsUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetBloomUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetLensFlareUniform(CShaderProgram *pShaderProgram) = 0;
 };
 
 struct ILights
@@ -120,12 +155,14 @@ struct ILights
     virtual void SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const SpotLight& spotLight,
                                      CCamera *camera) = 0;
     virtual void RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) = 0;
-    virtual void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale, const glm::vec3 & color) = 0;
+    virtual void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale) = 0;
 };
 
 struct IRenderer
 {
+    virtual void PreRendering() = 0;
     virtual void Render() = 0;
+    virtual void PostRendering() = 0;
     virtual void RenderScene() = 0;
 };
 
@@ -161,10 +198,13 @@ struct IRenderObject
 
 struct IPostProcessing {
     PostProcessingEffectMode m_currentPPFXMode;
-    CFrameBufferObject *currentFBO, *m_pFBO1;
+    CFrameBufferObject *currentFBO;
+    std::vector<CFrameBufferObject*> m_pFBOs;
     GLboolean m_changePPFXMode;
     GLuint m_PPFXOption;
+    GLfloat m_coverage, m_shockWaveTime;
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
+    virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;
     virtual void ActivateFBO(const FrameBufferType &type) = 0;
     virtual void RenderPPFXScene(const PostProcessingEffectMode &mode) = 0;
     virtual void RenderToScreen(CShaderProgram *pShaderProgram, const bool & useQuad) = 0;
@@ -193,8 +233,8 @@ struct IInput
     GLdouble m_lastKeyPressTime;
     GLint m_lastKeyPress;
     GLboolean m_isKeyPressRestriction;
-    virtual void KeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction) = 0;
-    virtual void MouseControls(const int &button, const int &action) = 0;
+    virtual void UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction) = 0;
+    virtual void UpdateMouseControls(const int &button, const int &action) = 0;
 };
 
 #endif /* Interfaces_h */

@@ -35,6 +35,8 @@ void main()
     
     vec4 position = vec4(inPosition, 1.0f);
     
+    // Pass through the texture coordinate
+    vs_out.vTexCoord = inCoord;
     
     // Get the vertex normal and vertex position in eye coordinates
     //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
@@ -45,19 +47,8 @@ void main()
     vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
     vs_out.vLocalPosition = inPosition;
     
-    if (bUseScreenQuad == true){
-        // Pass through the texture coordinate
-        vs_out.vTexCoord = inCoord;
-        
-        gl_Position = vec4(inPosition, 1.0f);
-    } else {
-        
-        // Pass through the texture coordinate
-        vs_out.vTexCoord = inCoord;
-        
-        // Transform the vertex spatial position using
-        gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
-    }
+    // Transform the vertex spatial position using
+    gl_Position = bUseScreenQuad ? position : matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
     
 }
 

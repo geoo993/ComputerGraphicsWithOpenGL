@@ -2,6 +2,7 @@
 // https://stackoverflow.com/questions/29451567/how-to-move-in-the-direction-of-the-camera-opengl-c
 // https://gamedev.stackexchange.com/questions/136236/opengl-camera-movement-with-mouse-buttons
 // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-6-keyboard-and-mouse/
+// https://www.3dgep.com/understanding-the-view-matrix/
 
 // Constructor for camera -- initialise with some default values
 CCamera::CCamera()
@@ -266,7 +267,6 @@ void  CCamera::SetVelocity(int deltaTime) {
 // Update the camera to respond to mouse motion for rotations and keyboard for translation
 void CCamera::Update(GLFWwindow *window, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse)
 {
-    m_previousPosition = m_position;
 	glm::vec3 vector = glm::cross(m_view - m_position, m_up);
 	m_strafeVector = glm::normalize(vector);
 
@@ -277,6 +277,18 @@ void CCamera::Update(GLFWwindow *window, const double &dt, const int &key, const
     
     // Update the velocity of the camera
     SetVelocity(dt);
+    
+}
+
+// update ot the end of current frame
+void CCamera::UpdateEndFrame(GLFWwindow *window, const double &dt) {
+    m_previousPosition = m_position;
+    
+    // set the previous model->view->matrix of the camera
+    glm::mat4 model = GetModelMatrix();
+    glm::mat4 projMatrix = *GetPerspectiveProjectionMatrix();
+    glm::mat4 view = GetViewMatrix();
+    m_prevMVP = projMatrix * view * model;
 }
 
 // Update the camera to respond to key presses for translation
@@ -286,27 +298,30 @@ void CCamera::TranslateByKeyboard(const double &dt, const int &keyPressed)
     if (keyPressed != -1){
         
         // FORWARD
-        if (keyPressed == GLFW_KEY_UP || keyPressed == GLFW_KEY_W ) {
+        if (keyPressed == GLFW_KEY_UP)// || keyPressed == GLFW_KEY_W )
+        {
             Advance(m_movementSpeed * dt);
         }
         
         // BACKWARD
-        if (keyPressed == GLFW_KEY_DOWN || keyPressed == GLFW_KEY_S ) {
+        if (keyPressed == GLFW_KEY_DOWN)// || keyPressed == GLFW_KEY_S )
+        {
             Advance(-m_movementSpeed * dt);
         }
         
         // LEFT
-        if (keyPressed == GLFW_KEY_LEFT || keyPressed == GLFW_KEY_A ) {
+        if (keyPressed == GLFW_KEY_LEFT)// || keyPressed == GLFW_KEY_A )
+        {
             Strafe(-m_movementSpeed * dt);
         }
         
         //RIGHT
-        if (keyPressed == GLFW_KEY_RIGHT || keyPressed == GLFW_KEY_D ) {
+        if (keyPressed == GLFW_KEY_RIGHT)// || keyPressed == GLFW_KEY_D )
+        {
             Strafe(m_movementSpeed * dt);
         }
     }
-    
-    
+
 }
 
 // Set the camera perspective projection matrix to produce a view frustum with a specific field of view, aspect ratio, 
@@ -368,6 +383,13 @@ glm::mat4 CCamera::GetViewMatrix() const
     return this->m_viewMatrix;
 }
 
+glm::mat4 CCamera::GetModelMatrix() const {
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, m_position);
+    model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+    return model;
+}
+
 glm::mat4 CCamera::GetViewWithoutTranslation() const {
     /*
      The current view matrix however transforms all the skybox's positions by rotating, scaling and translating them,
@@ -392,7 +414,6 @@ glm::mat3 CCamera::ComputeNormalMatrix(const glm::mat4 &modelMatrix)
 {
     return glm::transpose(glm::inverse(glm::mat3(modelMatrix)));
 }
-
 
 
 // http://roy-t.nl/2010/03/04/getting-the-left-forward-and-back-vectors-from-a-view-matrix-directly.html
@@ -442,6 +463,21 @@ glm::vec3 CCamera::GetVelocity()
     return m_velocity;
 }
 
+// return  the camera previous frame model view projection matrix
+glm::mat4 CCamera::GetPreviousMVP() const {
+    return m_prevMVP;
+}
+
+// return the inverse model->view->projection of the camera
+glm::mat4 CCamera::GetInverseMVP() {
+    glm::mat4 model = GetModelMatrix();
+    glm::mat4 projMatrix = *GetPerspectiveProjectionMatrix();
+    glm::mat4 view = GetViewMatrix();
+    
+    return glm::inverse(projMatrix * view * model);
+}
+
 void CCamera::Release() {
     
 }
+

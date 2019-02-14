@@ -8,11 +8,25 @@
 
 #include "Game.h"
 
-/// render to post processing effect frame buffer
+/// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
     m_currentPPFXMode = PostProcessingEffectMode::DefaultFrameBuffer;
-    m_pFBO1->CreateFramebuffer(width, height);
+    m_coverage = 1.0f;
+    
+    m_pFBOs.push_back(new CFrameBufferObject);
+    m_pFBOs.push_back(new CFrameBufferObject);
+    m_pFBOs.push_back(new CFrameBufferObject);
+    
+    LoadFrameBuffers(width, height);
+}
+
+/// create frame buffers
+void Game::LoadFrameBuffers(const GLuint &width , const GLuint &height) {
+
+    m_pFBOs[0]->CreateFramebuffer(width, height, FrameBufferType::Default);
+    m_pFBOs[1]->CreateFramebuffer(width, height, FrameBufferType::HighDynamicRangeMultipleRenderTargets);
+    m_pFBOs[2]->CreateFramebuffer(width, height, FrameBufferType::PingPongRendering);
 }
 
 /// actvate frame buffer and stop rendering to the default framebuffer
@@ -24,37 +38,39 @@ void Game::ActivateFBO(const FrameBufferType &type) {
         const GLint width = m_gameWindow.GetWidth();
         const GLint height = m_gameWindow.GetHeight();
         
-        // delete current buffers
-        m_pFBO1->Release();
+        for (GLuint i = 0; i < m_pFBOs.size(); i++) {
+            m_pFBOs[i]->Release();
+        }
+        
         currentFBO->Release();
         
-        //create frame buffer
-        m_pFBO1->CreateFramebuffer(width, height);
+        LoadFrameBuffers(width, height);
         
         m_changePPFXMode = false;
     }
     
     switch(type) {
         case FrameBufferType::Default:
-            currentFBO = m_pFBO1;
-        break;
+            currentFBO = m_pFBOs[0];
+            // //bind to framebuffer and draw scene as we normally would to color texture
+            //binding the fbo as render target stops rendering to the default framebuffer and you'll see that your screen turns black because the scene is no longer rendered to the default framebuffer. all rendering operations will store their result in the attachments of the newly created framebuffer.
+            currentFBO->Bind();
+            break;
         case FrameBufferType::MultiSampling: break;
         case FrameBufferType::DirectionalShadowMapping: break;
         case FrameBufferType::PointShadowMapping: break;
         case FrameBufferType::HighDynamicRangeMapping: break;
-        case FrameBufferType::HighDynamicRangeMultipleRenderTargets: break;
-        case FrameBufferType::PingPongRendering: break;
+        case FrameBufferType::HighDynamicRangeMultipleRenderTargets:
+            currentFBO = m_pFBOs[1];
+            break;
+        case FrameBufferType::PingPongRendering:
+            currentFBO = m_pFBOs[2];
         case FrameBufferType::DeferredRendering: break;
         case FrameBufferType::SSAORendering: break;
         case FrameBufferType::SSAOProcessing: break;
         case FrameBufferType::SSAOBlur: break;
         default: break;
     }
-    
-    // //bind to framebuffer and draw scene as we normally would to color texture
-    //binding the fbo as render target stops rendering to the default framebuffer and you'll see that your screen turns black because the scene is no longer rendered to the default framebuffer. all rendering operations will store their result in the attachments of the newly created framebuffer.
-    currentFBO->Bind();
-    
 
 }
 
@@ -71,28 +87,234 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
         case PostProcessingEffectMode::ColorInversion: {
             
             CShaderProgram *pColorInversionProgram = (*m_pShaderPrograms)[16];
+            SetColorInversionUniform(pColorInversionProgram);
             RenderToScreen(pColorInversionProgram, true);
             return;
         }
         case PostProcessingEffectMode::GrayScale: {
             
             CShaderProgram *pGrayScaleProgram = (*m_pShaderPrograms)[17];
+            SetGrayScaleUniform(pGrayScaleProgram);
             RenderToScreen(pGrayScaleProgram, true);
             return;
         }
         case PostProcessingEffectMode::Kernel: {
             CShaderProgram *pKernelProgram = (*m_pShaderPrograms)[18];
+            SetKernelUniform(pKernelProgram);
             RenderToScreen(pKernelProgram, true);
             return;
         }
         case PostProcessingEffectMode::KernelBlur: {
             CShaderProgram *pKernelBlurProgram = (*m_pShaderPrograms)[19];
+            SetKernelBlurUniform(pKernelBlurProgram);
             RenderToScreen(pKernelBlurProgram, true);
             return;
         }
         case PostProcessingEffectMode::EdgeDetection: {
             CShaderProgram *pEdgeDetectionProgram = (*m_pShaderPrograms)[20];
+            SetEdgeDetectionUniform(pEdgeDetectionProgram);
             RenderToScreen(pEdgeDetectionProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::SobelEdgeDetection: {
+            CShaderProgram *pSobelEdgeDetectionProgram = (*m_pShaderPrograms)[21];
+            SetEdgeDetectionUniform(pSobelEdgeDetectionProgram);
+            RenderToScreen(pSobelEdgeDetectionProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::FreiChenEdgeDetection: {
+            CShaderProgram *pFreiChenEdgeDetectionProgram = (*m_pShaderPrograms)[22];
+            SetEdgeDetectionUniform(pFreiChenEdgeDetectionProgram);
+            RenderToScreen(pFreiChenEdgeDetectionProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::ScreenWave: {
+            CShaderProgram *pScreenWaveProgram = (*m_pShaderPrograms)[23];
+            SetScreenWaveUniform(pScreenWaveProgram);
+            RenderToScreen(pScreenWaveProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::Swirl: {
+            CShaderProgram *pSwirlProgram = (*m_pShaderPrograms)[24];
+            SetSwirlUniform(pSwirlProgram);
+            RenderToScreen(pSwirlProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::NightVision: {
+            CShaderProgram *pNightVisionProgram = (*m_pShaderPrograms)[25];
+            SetNightVisionUniform(pNightVisionProgram);
+            RenderToScreen(pNightVisionProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::LensCircle: {
+            CShaderProgram *pLensCircleProgram = (*m_pShaderPrograms)[26];
+            SetLensCircleUniform(pLensCircleProgram);
+            RenderToScreen(pLensCircleProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::Posterization: {
+            CShaderProgram *pPosterizationProgram = (*m_pShaderPrograms)[27];
+            SetPosterizationUniform(pPosterizationProgram);
+            RenderToScreen(pPosterizationProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::DreamVision: {
+            CShaderProgram *pDreamVisionProgram = (*m_pShaderPrograms)[28];
+            SetDreamVisionUniform(pDreamVisionProgram);
+            RenderToScreen(pDreamVisionProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::Pixelation: {
+            CShaderProgram *pPixelationProgram = (*m_pShaderPrograms)[29];
+            SetPixelationUniform(pPixelationProgram);
+            RenderToScreen(pPixelationProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::FrostedGlassEffect: {
+            CShaderProgram *pFrostedGlassProgram = (*m_pShaderPrograms)[30];
+            SetFrostedGlassEffectUniform(pFrostedGlassProgram);
+            RenderToScreen(pFrostedGlassProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::FrostedGlass: {
+            CShaderProgram *pFrostedGlassExtraProgram = (*m_pShaderPrograms)[31];
+            SetFrostedGlassUniform(pFrostedGlassExtraProgram);
+            RenderToScreen(pFrostedGlassExtraProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::Crosshatching: {
+            CShaderProgram *pCrosshatchingProgram = (*m_pShaderPrograms)[32];
+            SetCrosshatchingUniform(pCrosshatchingProgram);
+            RenderToScreen(pCrosshatchingProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::PredatorsThermalVision: {
+            CShaderProgram *pPredatorsThermalVisionProgram = (*m_pShaderPrograms)[33];
+            SetPredatorsThermalVisionUniform(pPredatorsThermalVisionProgram);
+            RenderToScreen(pPredatorsThermalVisionProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::Toonify: {
+            CShaderProgram *pToonifyProgram = (*m_pShaderPrograms)[34];
+            SetToonifyUniform(pToonifyProgram);
+            RenderToScreen(pToonifyProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::Shockwave: {
+            CShaderProgram *pShockwaveProgram = (*m_pShaderPrograms)[35];
+            SetShockwaveUniform(pShockwaveProgram);
+            RenderToScreen(pShockwaveProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::FishEye: {
+            CShaderProgram *pFishEyeProgram = (*m_pShaderPrograms)[36];
+            SetFishEyeUniform(pFishEyeProgram);
+            RenderToScreen(pFishEyeProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::BarrelDistortion: {
+            CShaderProgram *pBarrelDistortionProgram = (*m_pShaderPrograms)[37];
+            SetBarrelDistortionUniform(pBarrelDistortionProgram);
+            RenderToScreen(pBarrelDistortionProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::MultiScreenFishEye: {
+            CShaderProgram *pMultiScreenFishEyeProgram = (*m_pShaderPrograms)[38];
+            SetMultiScreenFishEyeUniform(pMultiScreenFishEyeProgram);
+            RenderToScreen(pMultiScreenFishEyeProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::FishEyeLens: {
+            CShaderProgram *pFishEyeLensProgram = (*m_pShaderPrograms)[39];
+            SetFishEyeLensUniform(pFishEyeLensProgram);
+            RenderToScreen(pFishEyeLensProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::FishEyeAntiFishEye: {
+            CShaderProgram *pFishEyeAntiFishEyeProgram = (*m_pShaderPrograms)[40];
+            SetFishEyeAntiFishEyeUniform(pFishEyeAntiFishEyeProgram);
+            RenderToScreen(pFishEyeAntiFishEyeProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::GaussianBlur: {
+            CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
+            pGaussianBlurProgram->UseProgram();
+            
+             bool horizontal = true, first_iteration = true;
+             int amount = 2;
+             for (GLuint i = 0; i < amount; i++)
+             {
+                 if (!first_iteration) {
+                     m_pFBOs[2]->BindPingPong(horizontal);
+                 }
+                 
+                 SetGaussianBlurUniform(pGaussianBlurProgram, true);
+                 //RenderToScreen(pGaussianBlurProgram, true);
+                 SetMaterialUniform(pGaussianBlurProgram, "material", glm::vec3(1.0f, 1.0f, 0.0f));
+                 SetImageProcessingUniform(pGaussianBlurProgram, true);
+                 
+                 if (first_iteration) {
+                     m_pFBOs[0]->BindTexture(0);
+                 } else {
+                     m_pFBOs[2]->BindPingPongTexture(!horizontal, 0);
+                 }
+             
+                 RenderQuad(pGaussianBlurProgram);
+                 
+                 horizontal = !horizontal;
+                 if (first_iteration) first_iteration = false;
+             }
+            //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            return;
+        }
+        case PostProcessingEffectMode::Blur: {
+            CShaderProgram *pBlurProgram = (*m_pShaderPrograms)[42];
+            SetBlurUniform(pBlurProgram);
+            RenderToScreen(pBlurProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::RadialBlur: {
+            CShaderProgram *pRadialBlurProgram = (*m_pShaderPrograms)[43];
+            SetRadialBlurUniform(pRadialBlurProgram);
+            RenderToScreen(pRadialBlurProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::MotionBlur: {
+            CShaderProgram *pMotionBlurProgram = (*m_pShaderPrograms)[44];
+            SetMotionBlurUniform(pMotionBlurProgram);
+            RenderToScreen(pMotionBlurProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::Vignetting: {
+            CShaderProgram *pVignettingProgram = (*m_pShaderPrograms)[45];
+            SetVignettingUniform(pVignettingProgram);
+            RenderToScreen(pVignettingProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::BrightParts: {
+            CShaderProgram *pBrightPartsProgram = (*m_pShaderPrograms)[46];
+            SetBrightPartsUniform(pBrightPartsProgram);
+            RenderToScreen(pBrightPartsProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::Bloom: {
+            CShaderProgram *pBloomProgram = (*m_pShaderPrograms)[47];
+            SetBloomUniform(pBloomProgram);
+            RenderToScreen(pBloomProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::LensFlare: {
+            CShaderProgram *pLensFlareProgram = (*m_pShaderPrograms)[48];
+            SetLensFlareUniform(pLensFlareProgram);
+            RenderToScreen(pLensFlareProgram, true);
+            return;
+        }
+        case PostProcessingEffectMode::FXAA: {
+            
+            return;
+        }
+        case PostProcessingEffectMode::SSAO: {
+            
             return;
         }
         default: return;
@@ -106,7 +328,7 @@ void Game::RenderToScreen(CShaderProgram *pShaderProgram, const bool & useQuad) 
     
     currentFBO->BindTexture(0);
     
-    SetMaterialUniform(pShaderProgram, "material");
+    SetMaterialUniform(pShaderProgram, "material", glm::vec3(1.0f, 1.0f, 0.0f));
     SetImageProcessingUniform(pShaderProgram, true);
     RenderQuad(pShaderProgram);
 }
@@ -135,6 +357,12 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::EdgeDetection:
             RenderPPFXScene(PostProcessingEffectMode::EdgeDetection);
             break;
+        case PostProcessingEffectMode::SobelEdgeDetection:
+            RenderPPFXScene(PostProcessingEffectMode::SobelEdgeDetection);
+            break;
+        case PostProcessingEffectMode::FreiChenEdgeDetection:
+            RenderPPFXScene(PostProcessingEffectMode::FreiChenEdgeDetection);
+            break;
         case PostProcessingEffectMode::ScreenWave:
             RenderPPFXScene(PostProcessingEffectMode::ScreenWave);
             break;
@@ -156,11 +384,11 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::Pixelation:
             RenderPPFXScene(PostProcessingEffectMode::Pixelation);
             break;
+        case PostProcessingEffectMode::FrostedGlassEffect:
+            RenderPPFXScene(PostProcessingEffectMode::FrostedGlassEffect);
+            break;
         case PostProcessingEffectMode::FrostedGlass:
             RenderPPFXScene(PostProcessingEffectMode::FrostedGlass);
-            break;
-        case PostProcessingEffectMode::FrostedGlassExtra:
-            RenderPPFXScene(PostProcessingEffectMode::FrostedGlassExtra);
             break;
         case PostProcessingEffectMode::Crosshatching:
             RenderPPFXScene(PostProcessingEffectMode::Crosshatching);
@@ -190,8 +418,6 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
             RenderPPFXScene(PostProcessingEffectMode::FishEyeAntiFishEye);
             break;
         case PostProcessingEffectMode::GaussianBlur:
-            //RenderScene(PostProcessingEffectMode::GaussianBlur);
-            //m_horizontal = !m_horizontal;
             RenderPPFXScene(PostProcessingEffectMode::GaussianBlur);
             break;
         case PostProcessingEffectMode::Blur:
@@ -243,6 +469,10 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         return "Kernel Blur";
         case PostProcessingEffectMode::EdgeDetection:
         return "Edge Detection";
+        case PostProcessingEffectMode::SobelEdgeDetection:
+            return "Sobel Edge Detection";
+        case PostProcessingEffectMode::FreiChenEdgeDetection:
+            return "Frei-Chen Edge Detection";
         case PostProcessingEffectMode::ScreenWave:
         return "Screen Wave";
         case PostProcessingEffectMode::Swirl:
@@ -257,10 +487,10 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         return "Dream Vision";
         case PostProcessingEffectMode::Pixelation:
         return "Pixelation";
+        case PostProcessingEffectMode::FrostedGlassEffect:
+        return "Frosted Glass Effect";
         case PostProcessingEffectMode::FrostedGlass:
         return "Frosted Glass";
-        case PostProcessingEffectMode::FrostedGlassExtra:
-        return "Frosted Glass Extra";
         case PostProcessingEffectMode::Crosshatching:
         return "Crosshatching";
         case PostProcessingEffectMode::PredatorsThermalVision:

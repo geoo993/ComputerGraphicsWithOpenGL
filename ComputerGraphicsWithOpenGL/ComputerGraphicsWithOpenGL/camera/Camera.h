@@ -33,8 +33,9 @@ public:
     glm::mat4 GetViewProjection() const;
 	glm::mat4* GetPerspectiveProjectionMatrix();	// Gets the camera perspective projection matrix
 	glm::mat4* GetOrthographicProjectionMatrix();	// Gets the camera orthographic projection matrix
-	glm::mat4 GetViewMatrix() const;				// Gets the camera view matrix - note this is not stored in the class but returned using
-    glm::mat4 GetViewWithoutTranslation() const;    // Get view and removing translation properties from view matrix
+	glm::mat4 GetViewMatrix() const;				    // Gets the camera view matrix - note this is not stored in the class but returned using
+    glm::mat4 GetModelMatrix() const;                   // Gets the camera model matrix
+    glm::mat4 GetViewWithoutTranslation() const;        // Get view and removing translation properties from view matrix
     glm::vec3 GetLeft();                               // Gets the camera left vector
     glm::vec3 GetRight();                              // Gets the camera right vector
     glm::vec3 GetUp();                                 // Gets the camera up vector
@@ -42,6 +43,8 @@ public:
     glm::vec3 GetForward();                            // Gets the camera forward vector
     glm::vec3 GetBackward();                           // Gets the camera backward vector
     glm::vec3 GetVelocity();                           // Gets the camera velocity vector
+    glm::mat4 GetPreviousMVP() const;                  // Gets the camera previous frame model view projection matrix
+    glm::mat4 GetInverseMVP();                         // Gets the inverse of the current camera model view projection matrix
     
     // re-computer all the vector 
     void UpdateCameraVectors( );
@@ -70,21 +73,24 @@ public:
 	// Advance the camera (move it forward or backward)
 	void Advance(double direction);
     
-    // Set the camera velocity
-    void SetVelocity(int deltaTime);
     
-	// Update the camera
+    // Update the camera
     void Update(GLFWwindow *window, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse);
-
-	// Set the projection matrices
+    void UpdateEndFrame(GLFWwindow *window, const double &dt);
+    
+    // Set the projection matrices
     void SetPerspectiveProjectionMatrix(const GLfloat &fieldOfView, const GLfloat &aspectRatio, const GLfloat &nearClippingPlane, const GLfloat &farClippingPlane);
     void SetOrthographicProjectionMatrix(const GLfloat &width, const GLfloat height, const GLfloat &zNear, const GLfloat &zFar);
     void SetOrthographicProjectionMatrix(float value , float zNear, float zFar);
     void SetOrthographicProjectionMatrix(int width, int height);
     
-	glm::mat3 ComputeNormalMatrix(const glm::mat4 &modelMatrix);
+    // Set the camera velocity
+    void SetVelocity(int deltaTime);
+    
+    glm::mat3 ComputeNormalMatrix(const glm::mat4 &modelMatrix);
     
     void Release();
+    
 private:
 
     //view and projection matrix
@@ -127,4 +133,6 @@ private:
     // Mouse 
     GLboolean m_firstMouse = true;
     
+    // Matrices
+    glm::mat4 m_prevMVP;            // previous model->view->projection of the camera
 };

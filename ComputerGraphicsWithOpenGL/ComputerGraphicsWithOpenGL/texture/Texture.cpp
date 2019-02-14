@@ -126,8 +126,9 @@ GLuint CTexture::CreateTexture(std::string path, GLboolean generateMipMaps, GLin
     BYTE* pData = FreeImage_GetBits(dib); // Retrieve the image data
     
     // If somehow one of these failed (they shouldn't), return failure
-    if (pData == nullptr || FreeImage_GetWidth(dib) == 0 || FreeImage_GetHeight(dib) == 0)
+    if (pData == nullptr || FreeImage_GetWidth(dib) == 0 || FreeImage_GetHeight(dib) == 0) {
         return -1;
+    }
     
     GLint width = FreeImage_GetWidth(dib); 
     GLint height = FreeImage_GetHeight(dib);
@@ -173,7 +174,6 @@ GLuint CTexture::CreateTexture(std::string path, GLboolean generateMipMaps, GLin
     else{
         internalFormat = dataFormat;
     }
-    
     
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, pData);
     
@@ -230,6 +230,14 @@ void CTexture::BindTexture2D(GLint iTextureUnit) const
 	glBindTexture(GL_TEXTURE_2D, m_textureID);
 	glBindSampler(iTextureUnit, m_samplerObjectID);
     
+}
+
+void CTexture::BindTexture2DToTextureType() const
+{
+    GLint iTextureUnit = static_cast<GLint>(m_type);
+    glActiveTexture(GL_TEXTURE0+iTextureUnit);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
+    glBindSampler(iTextureUnit, m_samplerObjectID);
 }
 
 // Binds a texture for rendering

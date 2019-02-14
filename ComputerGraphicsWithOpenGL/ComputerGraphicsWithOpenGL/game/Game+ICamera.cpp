@@ -39,3 +39,7 @@ void Game::UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, c
     // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
     m_pCamera->Update(m_gameWindow.GetWindow(), deltaTime, keyPressed, true, mouseMove);
 }
+
+void Game::UpdateCameraEndFrame(const GLdouble & deltaTime) {
+    m_pCamera->UpdateEndFrame(m_gameWindow.GetWindow(), deltaTime);
+}

@@ -11,7 +11,15 @@ uniform struct Matrices
 layout (location = 0) in vec2 inPosition;
 layout (location = 1) in vec2 inCoord;
 
-out vec2 vTexCoord;
+out VS_OUT
+{
+    vec2 vTexCoord;    // Texture coordinate
+    vec3 vLocalPosition;
+    vec3 vLocalNormal;
+    vec3 vWorldPosition;
+    vec3 vWorldNormal;
+    vec4 vEyePosition;
+} vs_out;
 
 void main()
 {
@@ -19,5 +27,5 @@ void main()
 	gl_Position = matrices.projMatrix * matrices.modelViewMatrix * vec4(inPosition, 0.0f, 1.0f);
 
 	// Pass through the texture coord
-	vTexCoord = inCoord;
+	vs_out.vTexCoord = inCoord;
 }

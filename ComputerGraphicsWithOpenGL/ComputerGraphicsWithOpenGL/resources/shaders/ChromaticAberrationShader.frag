@@ -1,4 +1,4 @@
-#version 400 core
+#version 410 core
 
 // http://www.geeks3d.com/20101008/shader-library-chromatic-aberration-demo-glsl/
 
@@ -22,7 +22,10 @@ uniform struct Material
     sampler2D glossinessMap;        // 8.   glossiness map
     sampler2D opacityMap;           // 9.   opacity map
     sampler2D reflectionMap;        // 10.  reflection map
-    samplerCube cubeMap;            // 11.  sky box or environment mapping cube map
+    sampler2D depthMap;             // 11.  depth map
+    sampler2D noiseMap;             // 12.  noise map
+    sampler2D maskMap;              // 13.  mask map
+    samplerCube cubeMap;            // 14.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
 } material;

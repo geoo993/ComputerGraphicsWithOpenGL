@@ -17,9 +17,8 @@ void Game::RenderHUD(){
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     fontProgram->UseProgram();
+    SetMaterialUniform(fontProgram, "material", glm::vec3(1.0f, 1.0f, 1.0f));
     fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
-    fontProgram->SetUniform("textColor", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    
     DisplayFrameRate(fontProgram, m_framesPerSecond, m_enableHud);
     
     glDisable(GL_BLEND);
@@ -58,6 +57,7 @@ void Game::DisplayFrameRate(CShaderProgram *fontProgram, const GLuint &framesPer
             m_pFtFont->Render(fontProgram, 20, height - 400, 20, "Parallax Height Scale: %f", m_parallaxHeightScale);
             m_pFtFont->Render(fontProgram, 20, height - 420, 20, "UV Tiling: %f", m_uvTiling);
             m_pFtFont->Render(fontProgram, 20, height - 440, 20, "Magnitude: %f", m_magnitude);
+            m_pFtFont->Render(fontProgram, 20, height - 460, 20, "PPFX Coverage: %f", m_coverage);
         }
         
     }

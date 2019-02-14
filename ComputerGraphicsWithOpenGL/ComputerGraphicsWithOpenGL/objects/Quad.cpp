@@ -30,12 +30,12 @@ void CQuad::Create(const std::string &directory, const std::map<std::string, Tex
         auto i = std::distance(textureNames.begin(), it);
         
         // access element as *it
-        m_textures.push_back(*new CTexture);
-        m_textures[i].Load(m_directory+it->first, it->second, true);
-        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        m_textures.push_back(new CTexture);
+        m_textures[i]->Load(m_directory+it->first, it->second, true);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         
         // any code including continue, break, return
     }
@@ -169,8 +169,7 @@ void CQuad::Render(const GLboolean &useTexture)
     glBindVertexArray(m_vao);
     if (useTexture){
         for (GLuint i = 0; i < m_textures.size(); ++i){
-            GLint n = static_cast<GLint>(m_textures[i].GetType());
-            m_textures[i].BindTexture2D(n);
+            m_textures[i]->BindTexture2DToTextureType();
         }
     }
     
@@ -181,7 +180,8 @@ void CQuad::Render(const GLboolean &useTexture)
 void CQuad::Release()
 {
     for (GLuint i = 0; i < m_textures.size(); ++i){
-        m_textures[i].Release();
+        m_textures[i]->Release();
+        delete m_textures[i];
     }
     m_textures.clear();
     

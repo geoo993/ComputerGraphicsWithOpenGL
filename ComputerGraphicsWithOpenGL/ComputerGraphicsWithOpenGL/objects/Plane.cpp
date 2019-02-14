@@ -30,16 +30,16 @@ void CPlane::Create(const std::string &directory, const std::map<std::string, Te
         auto i = std::distance(textureNames.begin(), it);
         
         // access element as *it
-        m_textures.push_back(*new CTexture);
-        m_textures[i].Load(m_directory+it->first, it->second, true);
-        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-        m_textures[i].SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        m_textures.push_back(new CTexture);
+        m_textures[i]->Load(m_directory+it->first, it->second, true);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
         
         GLfloat aniso;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso);
-        m_textures[i].SetSamplerObjectParameterf(GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso);
+        m_textures[i]->SetSamplerObjectParameterf(GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso);
         // any code including continue, break, return
     }
     
@@ -167,8 +167,7 @@ void CPlane::Render(const GLboolean &useTexture)
 	glBindVertexArray(m_vao);
     if (useTexture){
         for (GLuint i = 0; i < m_textures.size(); ++i){
-            GLint n = static_cast<GLint>(m_textures[i].GetType());
-            m_textures[i].BindTexture2D(n);
+            m_textures[i]->BindTexture2DToTextureType();
         }
     }
     
@@ -179,7 +178,8 @@ void CPlane::Render(const GLboolean &useTexture)
 void CPlane::Release()
 {
     for (GLuint i = 0; i < m_textures.size(); ++i){
-        m_textures[i].Release();
+        m_textures[i]->Release();
+        delete m_textures[i];
     }
     m_textures.clear();
     

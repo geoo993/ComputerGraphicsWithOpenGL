@@ -14,7 +14,10 @@ uniform struct Material
     sampler2D glossinessMap;        // 8.   glossiness map
     sampler2D opacityMap;           // 9.   opacity map
     sampler2D reflectionMap;        // 10.  reflection map
-    samplerCube cubeMap;            // 11.  sky box or environment mapping cube map
+    sampler2D depthMap;             // 11.  depth map
+    sampler2D noiseMap;             // 12.  noise map
+    sampler2D maskMap;              // 13.  mask map
+    samplerCube cubeMap;            // 14.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
 } material;
@@ -29,6 +32,8 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
+uniform float coverage;        // between (0.0f and 1.0f)
+
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
 void main()
@@ -39,6 +44,24 @@ void main()
      We have access to each of the colors of the render output so it's not so hard to return the inverse of these colors in the fragment shader. We're taking the color of the screen texture and inverse it by subtracting it from 1.0:
      
      */
+    vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = vec4(material.color, 1.0f);
     
-    vOutputColour = vec4(vec3(1.0f - texture(material.ambientMap, fs_in.vTexCoord)), 1.0f);
+    if (uv.x < (  coverage  ) )
+    {
+        tc = vec4(vec3(1.0f - texture(material.ambientMap, fs_in.vTexCoord)), 1.0f);
+    }
+    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    }
+    else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
+    }
+    
+    vOutputColour = tc;
+    
 }

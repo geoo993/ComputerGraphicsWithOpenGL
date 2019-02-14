@@ -14,10 +14,14 @@ uniform struct Material
     sampler2D glossinessMap;        // 8.   glossiness map
     sampler2D opacityMap;           // 9.   opacity map
     sampler2D reflectionMap;        // 10.  reflection map
-    samplerCube cubeMap;            // 11.  sky box or environment mapping cube map
+    sampler2D depthMap;             // 11.  depth map
+    sampler2D noiseMap;             // 12.  noise map
+    sampler2D maskMap;              // 13.  mask map
+    samplerCube cubeMap;            // 14.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
 } material;
+
 
 in VS_OUT
 {
@@ -28,6 +32,8 @@ in VS_OUT
     vec3 vWorldNormal;
     vec4 vEyePosition;
 } fs_in;
+
+uniform float coverage;        // between (0.0f and 1.0f)
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
@@ -40,11 +46,30 @@ void main()
      
      */
     
-    vec4 result = texture(material.ambientMap, fs_in.vTexCoord);
-    //float average = (result.r + result.g + result.b) / 3.0f;
-    float average = 0.2126f * result.r + 0.7152f * result.g + 0.0722f * result.b;
-    vOutputColour = vec4(average, average, average, 1.0f);
-    
 
+    vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = vec4(material.color, 1.0f);
+    
+    if (uv.x < (  coverage  ) )
+    {
+        
+        vec4 color = texture(material.ambientMap, uv);
+        //float average = (color.r + color.g + color.b) / 3.0f;
+        float average = 0.2126f * color.r + 0.7152f * color.g + 0.0722f * color.b;
+        tc = vec4(average, average, average, 1.0f);
+    }
+    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    }
+    else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
+    }
+    
+    vOutputColour = tc;
+    
     
 }

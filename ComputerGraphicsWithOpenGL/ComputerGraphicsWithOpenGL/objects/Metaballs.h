@@ -99,7 +99,7 @@ protected:
     CVertexBufferObjectIndexed m_vbo;
     
     std::map<std::string, TextureType>m_textureFiles;
-    std::vector<CTexture> m_textures;
+    std::vector<CTexture*> m_textures;
     
 };
 

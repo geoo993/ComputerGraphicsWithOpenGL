@@ -102,7 +102,7 @@ void Game::RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) {
     
 }
 
-void Game::RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale, const glm::vec3 & color) {
+void Game::RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale) {
     glm::vec3 pos = position;
     if (m_pHeightmapTerrain->IsHeightMapRendered()) {
         pos = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
@@ -111,7 +111,6 @@ void Game::RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position,
     m_pLamp->Transform(pos, glm::vec3(0.0f), glm::vec3(scale));
     
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("color", color);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     

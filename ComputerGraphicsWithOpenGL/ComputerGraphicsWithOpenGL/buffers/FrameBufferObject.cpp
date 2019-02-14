@@ -301,11 +301,6 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             // tell OpenGL which color attachments we'll use (of this framebuffer) for rendering
             unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
             glDrawBuffers(2, attachments);
-            // finally check if framebuffer is complete
-            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-                std::cout << "Framebuffer not complete!" << std::endl;
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            
             
             // Check completeness
             bool MRTframebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
@@ -732,12 +727,12 @@ void CFrameBufferObject::Bind(bool bSetFullViewport)
 void CFrameBufferObject::BindPingPong(const GLuint &index, bool bSetFullViewport){
     
     glBindFramebuffer(GL_FRAMEBUFFER, m_uiPingpongFramebuffers[index]);
-    if(bSetFullViewport)glViewport(0, 0, m_iWidth, m_iHeight);
-    
-    glm::vec4 clearColour = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-    float one = 1.0f;
-    glClearBufferfv(GL_COLOR, 0, &clearColour.r);
-    glClearBufferfv(GL_DEPTH, 0, &one);
+//    if(bSetFullViewport)glViewport(0, 0, m_iWidth, m_iHeight);
+//    
+//    glm::vec4 clearColour = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+//    float one = 1.0f;
+//    glClearBufferfv(GL_COLOR, 0, &clearColour.r);
+//    glClearBufferfv(GL_DEPTH, 0, &one);
 }
 
 
@@ -803,7 +798,6 @@ void CFrameBufferObject::BindPingPongTexture(const GLuint &index, GLuint iTextur
 // Binding the Multiple Render Targets framebuffer texture so it is active
 void CFrameBufferObject::BindMRTTexture(const GLuint &index, GLuint iTextureUnit)
 {
-    
     glActiveTexture(GL_TEXTURE0+iTextureUnit);
     
     glBindTexture(GL_TEXTURE_2D, m_uiHdrColorTextures[index]);

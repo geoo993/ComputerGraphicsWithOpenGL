@@ -19,7 +19,7 @@ enum class PostProcessingEffectMode {
     GrayScale,
     Kernel,
     KernelBlur,
-    EdgeDetection,
+    //EdgeDetection,
     SobelEdgeDetection,
     FreiChenEdgeDetection,
     ScreenWave,

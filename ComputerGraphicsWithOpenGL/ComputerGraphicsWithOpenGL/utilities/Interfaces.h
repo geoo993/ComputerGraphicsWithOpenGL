@@ -219,7 +219,8 @@ struct IPostProcessing {
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;
     virtual void ActivateFBO(const PostProcessingEffectMode &mode) = 0;
     virtual void RenderPPFXScene(const PostProcessingEffectMode &mode) = 0;
-    virtual void RenderToScreen(CShaderProgram *pShaderProgram, const PostProcessingEffectMode &mode, const bool & useQuad) = 0;
+    virtual void RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType,
+                                const GLuint &bufferIndex, const TextureType &textureType) = 0;
     virtual void RenderPPFX(const PostProcessingEffectMode &mode) = 0;
     virtual const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) = 0;
     virtual FrameBufferType GetFBOtype(const PostProcessingEffectMode &mode) = 0;

@@ -187,7 +187,9 @@ vec4 CalcSpotLight(SpotLight spotLight, vec3 tangent, vec3 bitangent, vec3 norma
     return color;
 }
 
-out vec4 vOutputColour;        // The output colour formely  gl_FragColor
+//When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
+layout (location = 0) out vec4 vOutputColour; // The output colour formely  gl_FragColor
+layout (location = 1) out vec4 vBrightColor;
 
 void main()
 {
@@ -221,4 +223,11 @@ void main()
     }
     
     vOutputColour = result;
+    
+    // Retrieve bright parts
+    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
+    if(brightness > 1.0f)
+        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
+    else
+        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 }

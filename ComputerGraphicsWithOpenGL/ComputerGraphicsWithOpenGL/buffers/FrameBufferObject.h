@@ -33,10 +33,10 @@ public:
     // Binding the framebuffer Albedo specular texture so it is active
     void BindAlbedoTexture(GLuint iTextureUnit);
    
-    // Binding the Multiple Render Targets framebuffer texture so it is active
-    void BindMRTTexture(const GLuint &index, GLuint iTextureUnit);
+    // Binding the HDR Render Targets framebuffer texture so it is active
+    void BindHDRTexture(const GLuint &index, GLuint iTextureUnit);
     
-    // Binding the framebuffer ping pong texture so it is active
+    // Binding the ping pong framebuffer texture so it is active
     void BindPingPongTexture(const GLuint &index, GLuint iTextureUnit);
     
     // Bind the depth (usually on a 2nd or later pass in a multi-pass rendering technique)

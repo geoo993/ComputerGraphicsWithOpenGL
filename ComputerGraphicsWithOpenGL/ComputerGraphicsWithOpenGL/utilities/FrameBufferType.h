@@ -16,8 +16,8 @@ enum class FrameBufferType {
     MultiSampling,
     DirectionalShadowMapping,
     PointShadowMapping,
-    HighDynamicRangeMapping,
-    HighDynamicRangeMultipleRenderTargets, //(MRT)
+    HighDynamicRangeLighting,
+    HighDynamicRangeRendering,
     PingPongRendering,
     DeferredRendering,
     SSAORendering,

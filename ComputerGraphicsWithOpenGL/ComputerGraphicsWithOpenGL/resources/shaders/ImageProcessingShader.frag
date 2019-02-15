@@ -37,5 +37,5 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
-    vOutputColour = texture(material.ambientMap, fs_in.vTexCoord);
+    vOutputColour = texture(material.depthMap, fs_in.vTexCoord);
 }

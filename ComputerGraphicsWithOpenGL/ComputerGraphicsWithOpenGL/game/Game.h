@@ -248,7 +248,8 @@ protected:
     void LoadFrameBuffers(const GLuint &width, const GLuint &height) override;
     void ActivateFBO(const PostProcessingEffectMode &mode) override;
     void RenderPPFXScene(const PostProcessingEffectMode &mode) override;
-    void RenderToScreen(CShaderProgram *pShaderProgram, const PostProcessingEffectMode &mode, const bool & useQuad) override;
+    void RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType = FrameBufferType::Default,
+                        const GLuint &bufferIndex = 0, const TextureType &textureType = TextureType::AMBIENT) override;
     void RenderPPFX(const PostProcessingEffectMode &mode) override;
     const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) override;
     FrameBufferType GetFBOtype(const PostProcessingEffectMode &mode) override;

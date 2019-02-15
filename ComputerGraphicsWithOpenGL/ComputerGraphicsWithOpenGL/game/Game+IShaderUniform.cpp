@@ -274,6 +274,7 @@ void Game::SetFishEyeAntiFishEyeUniform(CShaderProgram *pShaderProgram){
 void Game::SetGaussianBlurUniform(CShaderProgram *pShaderProgram, const GLboolean &horizontal){
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("bHorizontal", horizontal);
+    pShaderProgram->SetUniform("intensity", 1.0f);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
@@ -329,11 +330,15 @@ void Game::SetVignettingUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetBrightPartsUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bSmoothGradient", true);
+    pShaderProgram->SetUniform("intensity", 1.0f);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
 void Game::SetBloomUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("exposure", 1.0f);
+    pShaderProgram->SetUniform("gamma", 0.9f);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 

@@ -122,6 +122,7 @@ struct IShaderUniform {
     virtual void SetVignettingUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetBrightPartsUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetBloomUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetHRDToneMappingUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetLensFlareUniform(CShaderProgram *pShaderProgram) = 0;
 };
 
@@ -131,6 +132,8 @@ struct ILights
     GLfloat m_ambient;
     GLfloat m_diffuse;
     GLfloat m_specular;
+    GLfloat m_exposure;
+    GLfloat m_gama;
     GLboolean m_useBlinn;
     
     // Attenuation

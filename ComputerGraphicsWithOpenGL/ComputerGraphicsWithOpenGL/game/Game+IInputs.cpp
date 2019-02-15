@@ -75,8 +75,6 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
         
         switch (keyPressed)
         {
-            case GLFW_KEY_SPACE :
-                break;
             case GLFW_KEY_1 :   
                 m_materialShininess -= 5.0f;
                 break;
@@ -158,6 +156,8 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
                 m_coverage = glm::clamp(m_coverage, 0.0f, 1.0f);
                 break;
             case GLFW_KEY_D:
+                m_exposure += 0.1f;
+                if (m_exposure > 1.000001f) m_exposure = 0.0f;
                 break;
             case GLFW_KEY_F:
                 m_constant -= 0.2f;
@@ -181,7 +181,8 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
                 m_useRefraction = !m_useRefraction;
                 break;
             case GLFW_KEY_BACKSLASH:
-                m_mouseMouseMoveClickSwitch = !m_mouseMouseMoveClickSwitch;
+                m_gama += 0.2f;
+                if (m_gama > 5.0f) m_gama = 0.0f;
                 break;
             case GLFW_KEY_APOSTROPHE:
                 m_isMouseCursorVisible = !m_isMouseCursorVisible;
@@ -230,6 +231,8 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
                 break;
             case GLFW_KEY_SLASH:
                 m_enableHud = !m_enableHud;
+            case GLFW_KEY_SPACE:
+                m_mouseMouseMoveClickSwitch = !m_mouseMouseMoveClickSwitch;
                 break;
             default:
                 break;

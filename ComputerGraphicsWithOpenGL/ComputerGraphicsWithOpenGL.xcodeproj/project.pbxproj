@@ -33,6 +33,8 @@
 		C713798E2203CEDF00E9A0F2 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71379852203CEDE00E9A0F2 /* Cube.cpp */; };
 		C713798F2203CEDF00E9A0F2 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71379882203CEDE00E9A0F2 /* Sphere.cpp */; };
 		C71379912203CEDF00E9A0F2 /* Torus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C713798C2203CEDF00E9A0F2 /* Torus.cpp */; };
+		C7332977221775D400BFE37B /* ToneMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7332975221775D300BFE37B /* ToneMappingShader.vert */; };
+		C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7332976221775D400BFE37B /* ToneMappingShader.frag */; };
 		C75C971F220DD69F00420DF6 /* EnvironmentMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C75C971D220DD69E00420DF6 /* EnvironmentMappingShader.vert */; };
 		C75C9720220DD69F00420DF6 /* EnvironmentMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C75C971E220DD69E00420DF6 /* EnvironmentMappingShader.frag */; };
 		C75C972F220E01A200420DF6 /* thefog_ft.tga in Resources */ = {isa = PBXBuildFile; fileRef = C75C9722220E01A200420DF6 /* thefog_ft.tga */; };
@@ -979,6 +981,8 @@
 		C71379892203CEDE00E9A0F2 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
 		C713798A2203CEDE00E9A0F2 /* Torus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Torus.h; sourceTree = "<group>"; };
 		C713798C2203CEDF00E9A0F2 /* Torus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Torus.cpp; sourceTree = "<group>"; };
+		C7332975221775D300BFE37B /* ToneMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.vert; sourceTree = "<group>"; };
+		C7332976221775D400BFE37B /* ToneMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.frag; sourceTree = "<group>"; };
 		C75C971D220DD69E00420DF6 /* EnvironmentMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EnvironmentMappingShader.vert; sourceTree = "<group>"; };
 		C75C971E220DD69E00420DF6 /* EnvironmentMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EnvironmentMappingShader.frag; sourceTree = "<group>"; };
 		C75C9722220E01A200420DF6 /* thefog_ft.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = thefog_ft.tga; sourceTree = "<group>"; };
@@ -3132,6 +3136,8 @@
 		C7C8F2C921FF5F3C00AB865A /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				C7332976221775D400BFE37B /* ToneMappingShader.frag */,
+				C7332975221775D300BFE37B /* ToneMappingShader.vert */,
 				C78F395D2215C81A006163EC /* LightSpaceShader.frag */,
 				C78F395C2215C819006163EC /* LightSpaceShader.vert */,
 				C779E17622159F5100AF11E9 /* DepthMappingShader.frag */,
@@ -4058,6 +4064,7 @@
 				C7B4D3D022146E2900BCE130 /* haystack-height.png in Resources */,
 				C7C8F47021FFBA6000AB865A /* _lf.jpg in Resources */,
 				C7C8F4AB21FFC92900AB865A /* TerrainShader.vert in Resources */,
+				C7332977221775D400BFE37B /* ToneMappingShader.vert in Resources */,
 				C7C8F44C21FFBA2A00AB865A /* _lf.jpg in Resources */,
 				C7B759B82204E32C00E54C30 /* Steel_grating_pxr128.tif in Resources */,
 				C7B4D3D922146E2900BCE130 /* oakfloor2-roughness.png in Resources */,
@@ -4677,6 +4684,7 @@
 				C7B75A962204E32D00E54C30 /* Woven_flower_pxr128_bmp.tif in Resources */,
 				C7C8F49A21FFBA9000AB865A /* _lf.jpg in Resources */,
 				C7B759C12204E32C00E54C30 /* Beach_sand_pxr128_normal.tif in Resources */,
+				C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */,
 				C7EEC50522136AF700909E4C /* BrightPartsShader.vert in Resources */,
 				C7B75A072204E32C00E54C30 /* Whitewashed_wood_pxr128.tif in Resources */,
 				C7EEC51122136AF700909E4C /* GaussianBlurShader.vert in Resources */,

@@ -31,14 +31,16 @@ void Game::UpdateGameTimer() {
     }
     
     /*
-     std::cout << std::endl;
-     std::cout << "deltatime: " <<m_deltaTime << std::endl;
-     std::cout << "elapsedTime: " << m_elapsedTime<< std::endl;
-     std::cout << "time: " << m_timeInSeconds << std::endl;
-     std::cout << "glfw getTime: " << glfwGetTime() << std::endl;
+    std::cout << std::endl;
+    std::cout << "deltatime: " << m_deltaTime << std::endl;
+    std::cout << "elapsedTime: " << m_elapsedTime<< std::endl;
+    std::cout << "time per second: " << m_timePerSecond << std::endl;
+    std::cout << "time in seconds: " << m_timeInSeconds << std::endl;
+    std::cout << "glfw getTime: " << glfwGetTime() << std::endl;
+    std::cout << "frames per second: " << m_framesPerSecond << std::endl;
      
-     float time = (float)m_elapsedTime / 1000.0f * 2.0f * 3.14159f * 0.75f;
-     std::cout << "timeFromElapsed: " << time << std::endl;
-     */
+    float time = (float)m_elapsedTime / 1000.0f * 2.0f * 3.14159f * 0.75f;
+    std::cout << "timeFromElapsed: " << time << std::endl;
+    */
     
 }

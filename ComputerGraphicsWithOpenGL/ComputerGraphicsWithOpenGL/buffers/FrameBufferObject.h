@@ -40,7 +40,7 @@ public:
     void BindPingPongTexture(const GLuint &index, GLuint iTextureUnit);
     
     // Bind the depth (usually on a 2nd or later pass in a multi-pass rendering technique)
-    void BindDepth(GLuint iTextureUnit);
+    void BindDepthTexture(GLuint iTextureUnit);
     
     // Bind the depth cubemap
     void BindDepthCubeMap(GLuint iTextureUnit);

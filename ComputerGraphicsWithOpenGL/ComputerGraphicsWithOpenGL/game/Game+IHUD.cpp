@@ -11,26 +11,28 @@
 void Game::RenderHUD(){
     
     CShaderProgram *fontProgram = (*m_pShaderPrograms)[0];
+    GLint width = m_gameWindow->GetWidth();
+    GLint height = m_gameWindow->GetHeight();
+    glm::mat4 orthoMatrix =  glm::ortho(0.0f, GLfloat(width), 0.0f, GLfloat(height));
     
     // Use the font shader program and render the text
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     fontProgram->UseProgram();
+    fontProgram->SetUniform("matrices.projMatrix", orthoMatrix);
     SetMaterialUniform(fontProgram, "material", glm::vec3(1.0f, 1.0f, 1.0f));
-    fontProgram->SetUniform("matrices.projMatrix", m_pCamera->GetOrthographicProjectionMatrix());
-    DisplayFrameRate(fontProgram, m_framesPerSecond, m_enableHud);
+    DisplayFrameRate(fontProgram, width, height, m_framesPerSecond, m_enableHud);
     
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     
 }
 
-void Game::DisplayFrameRate(CShaderProgram *fontProgram, const GLuint &framesPerSecond,  const bool &enableHud)
+void Game::DisplayFrameRate(CShaderProgram *fontProgram, const GLint &width, const GLint &height,
+                            const GLuint &framesPerSecond,  const bool &enableHud)
 {
 
-    int width = m_gameWindow.GetWidth();
-    int height = m_gameWindow.GetHeight();
     if (framesPerSecond > 0) {
         if (enableHud) {
             m_pFtFont->Render(fontProgram, width - 100, height - 20, 20, "FPS: %d", framesPerSecond);

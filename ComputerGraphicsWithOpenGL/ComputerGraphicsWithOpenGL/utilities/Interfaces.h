@@ -9,6 +9,8 @@
 #ifndef Interfaces_h
 #define Interfaces_h
 
+#include "GameWindow.h"
+#include "GameManager.h"
 #include "Camera.h"
 #include "HighResolutionTimer.h"
 #include "FreeTypeFont.h"
@@ -16,6 +18,15 @@
 #include "PostProcessingEffectMode.h"
 #include "Lighting.h"
 #include "FrameBufferObject.h"
+
+struct IGameWindow
+{
+    
+    CGameWindow *m_gameWindow;
+    CGameManager *m_gameManager;
+    virtual void InitialiseGameWindow(const std::string &name, const std::string &filepath,
+                                      const GLuint &width, const GLuint &height) = 0;
+};
 
 struct IGameTimer
 {
@@ -107,6 +118,7 @@ struct IShaderUniform {
     virtual void SetBlurUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetRadialBlurUniform(CShaderProgram *pShaderProgram) =0;
     virtual void SetMotionBlurUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetDepthMappingUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetVignettingUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetBrightPartsUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetBloomUniform(CShaderProgram *pShaderProgram) = 0;
@@ -163,7 +175,7 @@ struct IRenderer
     virtual void PreRendering() = 0;
     virtual void Render() = 0;
     virtual void PostRendering() = 0;
-    virtual void RenderScene() = 0;
+    virtual void RenderScene(const GLboolean &toLightSpace) = 0;
 };
 
 struct IRenderObject
@@ -205,11 +217,12 @@ struct IPostProcessing {
     GLfloat m_coverage, m_shockWaveTime;
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;
-    virtual void ActivateFBO(const FrameBufferType &type) = 0;
+    virtual void ActivateFBO(const PostProcessingEffectMode &mode) = 0;
     virtual void RenderPPFXScene(const PostProcessingEffectMode &mode) = 0;
-    virtual void RenderToScreen(CShaderProgram *pShaderProgram, const bool & useQuad) = 0;
+    virtual void RenderToScreen(CShaderProgram *pShaderProgram, const PostProcessingEffectMode &mode, const bool & useQuad) = 0;
     virtual void RenderPPFX(const PostProcessingEffectMode &mode) = 0;
     virtual const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) = 0;
+    virtual FrameBufferType GetFBOtype(const PostProcessingEffectMode &mode) = 0;
 };
 
 struct IHud
@@ -217,7 +230,8 @@ struct IHud
     GLboolean m_enableHud;
     CFreeTypeFont *m_pFtFont;
     virtual void RenderHUD() = 0;
-    virtual void DisplayFrameRate(CShaderProgram *fontProgram, const GLuint &framesPerSecond, const bool &enableHud) = 0;
+    virtual void DisplayFrameRate(CShaderProgram *fontProgram, const GLint &width, const GLint &height,
+                                  const GLuint &framesPerSecond, const bool &enableHud) = 0;
 };
 
 struct IInput

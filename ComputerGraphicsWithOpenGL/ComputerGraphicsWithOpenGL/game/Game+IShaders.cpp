@@ -114,7 +114,10 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("BloomShader.frag");
     sShaderFileNames.push_back("LensFlareShader.vert");// 48
     sShaderFileNames.push_back("LensFlareShader.frag");
-    
+    sShaderFileNames.push_back("DepthMappingShader.vert");// 49
+    sShaderFileNames.push_back("DepthMappingShader.frag");
+    sShaderFileNames.push_back("LightSpaceShader.vert");// 50
+    sShaderFileNames.push_back("LightSpaceShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -518,12 +521,30 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pBloomShader->LinkProgram();
     m_pShaderPrograms->push_back(pBloomShader);
     
+    // Create the lens Flare shader program
     CShaderProgram *pLensFlareShader = new CShaderProgram;
     pLensFlareShader->CreateProgram();
     pLensFlareShader->AddShaderToProgram(&shShaders[99]);
     pLensFlareShader->AddShaderToProgram(&shShaders[100]);
     pLensFlareShader->LinkProgram();
     m_pShaderPrograms->push_back(pLensFlareShader);
+    
+    // Create the Depth Mapping shader program
+    CShaderProgram *pDepthMappingShader = new CShaderProgram;
+    pDepthMappingShader->CreateProgram();
+    pDepthMappingShader->AddShaderToProgram(&shShaders[101]);
+    pDepthMappingShader->AddShaderToProgram(&shShaders[102]);
+    pDepthMappingShader->LinkProgram();
+    m_pShaderPrograms->push_back(pDepthMappingShader);
+    
+    // Create the Light Space shader program
+    CShaderProgram *pLightSpaceShader = new CShaderProgram;
+    pLightSpaceShader->CreateProgram();
+    pLightSpaceShader->AddShaderToProgram(&shShaders[103]);
+    pLightSpaceShader->AddShaderToProgram(&shShaders[104]);
+    pLightSpaceShader->LinkProgram();
+    m_pShaderPrograms->push_back(pLightSpaceShader);
+    
 }
 
 

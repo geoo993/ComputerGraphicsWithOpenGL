@@ -1,7 +1,6 @@
 #version 400 core
 
-// http://john-chapman-graphics.blogspot.co.uk/2013/01/what-is-motion-blur-motion-pictures-are.html
-// http://john-chapman-graphics.blogspot.com/2013/01/per-object-motion-blur.html
+// http://glampert.com/2014/01-26/visualizing-the-depth-buffer/
 // https://www.geeks3d.com/20091216/geexlab-how-to-visualize-the-depth-buffer-in-glsl/
 // https://stackoverflow.com/questions/26406120/viewing-depth-buffer-in-opengl
 // https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
@@ -38,59 +37,38 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-/*
-uniform sampler2D sampler0; // used to access the rendered image from pass 1
-uniform sampler2D emptySampler0; // and empty sampler used to access the depth buffer
- */
-uniform mat4 invMVP;
-uniform mat4 prevMVP;
-uniform float currentFPS;
-uniform float targetFPS;
+uniform bool bLinearized;
+uniform float near_plane, far_plane;
 uniform float coverage;        // between (0.0f and 1.0f)
 
+// required when using a perspective projection matrix
+float LinearizeDepth(float depth)
+{
+    float z = depth * 2.0f - 1.0f; // Back to NDC 
+    return (2.0f * near_plane * far_plane) / (far_plane + near_plane - z * (far_plane - near_plane));    
+}
 
-out vec4 vOutputColour;        // The output colour formely  gl_FragColor
+out vec4 vOutputColour;    
 
 void main()
 {
-
+    /*
+     Sometimes it can be quite useful to visualize the depth buffer of a rendered frame.
+     Several rendering techniques such as shadow mapping and depth pre-pass rely on the depth buffer.
+     It is always handy to visualize it in real time to make sure it is being written as expected.
+     
+     */
+    
     vec2 uv = fs_in.vTexCoord.xy;
     vec4 tc = vec4(material.color, 1.0f);
     
     if (uv.x < (  coverage  ) )
     {
-        // Unproject the point to 3D using the current modelview and projection matrix
-        float p_depth = texture(material.depthMap, uv).r;
-        vec2 p_ndc = uv * 2.0f - 1.0f;
-        vec4 current = invMVP * vec4(p_ndc, p_depth, 1.0f);
-        current = current / current.w;
+        float depthValue = texture(material.depthMap, uv).r;
+        float linearizedDepth = LinearizeDepth(depthValue);
+        //vOutputColour = vec4(vec3(LinearizeDepth(depthValue) / far_plane), 1.0f); // perspective
         
-        // Project the point using the previous frame's modelview and projection matrix
-        vec4 previous = prevMVP * current;
-        previous.xyz /= previous.w; // normalised device coordinates
-        previous.xy = previous.xy * 0.5f + vec2(0.5f); // texture coordinates
-        
-        //scale the blur according to frame rate
-        float blurScale = float(currentFPS) / targetFPS;
-        
-        // Construct the blur vector (scaled for extra blur)
-        vec2 blurVec = (previous.xy - uv) * blurScale;;
-        
-        // perform blur:
-        vec4 result = texture(material.ambientMap, uv);
-        
-        int nSamples = 11;
-        for (int i = 1; i < nSamples; i++) {
-            // get offset in range [-0.5, 0.5]:
-            vec2 offset = blurVec * (float(i) / float(nSamples - 1) - 0.5f);
-            
-            // sample & add to result:
-            result += texture(material.ambientMap, uv + offset);
-        }
-        
-        result /= float(nSamples);
-        tc = result;
-
+        tc = vec4(vec3(bLinearized ? linearizedDepth : depthValue), 1.0f); // orthographic
     }
     else if ( uv.x  >=  (  coverage  +   0.003f) )
     {

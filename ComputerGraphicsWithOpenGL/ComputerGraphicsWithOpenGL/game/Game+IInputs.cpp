@@ -46,8 +46,8 @@ void Game::UpdateMouseControls(const int &button, const int &action){
         // do your drag here
     }
     
-    glfwGetCursorPos(m_gameWindow.GetWindow(), &m_mouseX, &m_mouseY);
-    m_gameWindow.SetCursorVisible(m_isMouseCursorVisible);
+    glfwGetCursorPos(m_gameWindow->GetWindow(), &m_mouseX, &m_mouseY);
+    m_gameWindow->SetCursorVisible(m_isMouseCursorVisible);
     
 }
 

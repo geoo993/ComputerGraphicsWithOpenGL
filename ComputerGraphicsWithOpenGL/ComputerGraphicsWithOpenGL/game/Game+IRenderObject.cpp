@@ -27,7 +27,7 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
     // start by deleting current skybox and create new one
     if (m_changeSkybox == true) {
         m_pSkybox->Release();
-        m_pSkybox->Create(m_mapSize, m_gameManager.GetResourcePath(), TextureType::CUBEMAP, m_skyboxNumber);
+        m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, m_skyboxNumber);
         //cout << "Changing skybox to " << m_skyboxNumber << endl;
         m_changeSkybox = false;
     }
@@ -40,6 +40,8 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
     glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
     pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     m_pSkybox->Transform(m_pCamera->GetPosition());
     glm::mat4 skyBoxModel = m_pSkybox->Model();
@@ -61,6 +63,8 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHei
     // Set the projection matrix
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -116,6 +120,8 @@ void Game::RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & posit
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     m_pGrenade->Transform(translation, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(scale));
     
@@ -136,6 +142,8 @@ void Game::RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & posi
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     m_pNanosuit->Transform(translation, glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(scale));
     
@@ -159,6 +167,8 @@ void Game::RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
     pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     glm::mat4 model = m_pCube->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -181,6 +191,8 @@ void Game::RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & 
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
     pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     glm::mat4 model = m_pParallaxCube->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -203,6 +215,8 @@ void Game::RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const g
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
     pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     glm::mat4 model = m_pChromaticAberrationCube->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -222,6 +236,8 @@ void Game::RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &posi
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     glm::mat4 model = m_pWoodenBox->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -244,6 +260,8 @@ void Game::RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & positi
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
         
     glm::mat4 model = m_pSphere->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -266,6 +284,8 @@ void Game::RenderTorus(CShaderProgram *pShaderProgram, const glm::vec3 & positio
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     glm::mat4 model = m_pTorus->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -285,6 +305,8 @@ void Game::RenderTorusKnot(CShaderProgram *pShaderProgram, const glm::vec3 & pos
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     glm::mat4 model = m_pTorusKnot->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -301,6 +323,8 @@ void Game::RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & po
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
     pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     // Render the metaballs
     m_pMetaballs->Transform(position, glm::vec3(0.0f), glm::vec3(scale));

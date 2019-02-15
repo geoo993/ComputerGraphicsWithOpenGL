@@ -44,6 +44,7 @@ enum class PostProcessingEffectMode {
     Blur,
     RadialBlur,
     MotionBlur,
+    DepthMapping,
     Vignetting,
     BrightParts,
     Bloom,

@@ -49,6 +49,47 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
     */
     
     switch(fboType) {
+        case FrameBufferType::DepthMapping: {
+            
+            // configure depth map FBO
+            // -----------------------
+            glGenFramebuffers(1, &m_uiFramebuffer);
+            
+            // attach depth texture as FBO's depth buffer
+            glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
+            
+            // create depth texture
+            // Depth texture for Shadow Mapping https://learnopengl.com/#!Advanced-Lighting/Shadows/Shadow-Mapping
+            // we create a 2D texture that we'll use as the framebuffer's depth buffer:
+            glGenTextures(1, &m_uiDepthTexture);
+            glBindTexture(GL_TEXTURE_2D, m_uiDepthTexture);
+            
+            //We give the texture a width and height of 1024: this is the resolution of the depth map.
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_iWidth, m_iHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+            
+            glGenSamplers(1, &m_uiSampler);
+            SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+            
+            // With the generated depth texture we can attach it as the framebuffer's depth buffer.
+            glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_uiDepthTexture, 0);
+            
+            // We only need the depth information when rendering the scene from the light's perspective so there is no need for a color buffer. A framebuffer object however is not complete without a color buffer so we need to explicitly tell OpenGL we're not going to render any color data. We do this by setting both the read and draw buffer to GL_NONE with glDrawBuffer and glReadbuffer.
+            glDrawBuffer(GL_NONE);
+            glReadBuffer(GL_NONE);
+            
+            // Check completeness
+            bool depthMapFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+            if( depthMapFramebufferComplete == false ){
+                std::cout << "ERROR::FRAMEBUFFER:: Depth Mapping Framebuffer is not complete!" << std::endl;
+            }
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            return depthMapFramebufferComplete;
+        }
         case FrameBufferType::MultiSampling: {
             
             glGenFramebuffers(1, &m_uiFramebuffer);
@@ -714,25 +755,25 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
 void CFrameBufferObject::Bind(bool bSetFullViewport)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
+    
     if(bSetFullViewport)glViewport(0, 0, m_iWidth, m_iHeight);
 
     glm::vec4 clearColour = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
     float one = 1.0f;
     glClearBufferfv(GL_COLOR, 0, &clearColour.r);
     glClearBufferfv(GL_DEPTH, 0, &one);
-
 }
 
 // Bind the Ping Pong FBO for rendering to texture
 void CFrameBufferObject::BindPingPong(const GLuint &index, bool bSetFullViewport){
     
     glBindFramebuffer(GL_FRAMEBUFFER, m_uiPingpongFramebuffers[index]);
-//    if(bSetFullViewport)glViewport(0, 0, m_iWidth, m_iHeight);
-//    
-//    glm::vec4 clearColour = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-//    float one = 1.0f;
-//    glClearBufferfv(GL_COLOR, 0, &clearColour.r);
-//    glClearBufferfv(GL_DEPTH, 0, &one);
+    if(bSetFullViewport)glViewport(0, 0, m_iWidth, m_iHeight);
+    
+    glm::vec4 clearColour = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+    float one = 1.0f;
+    glClearBufferfv(GL_COLOR, 0, &clearColour.r);
+    glClearBufferfv(GL_DEPTH, 0, &one);
 }
 
 
@@ -807,7 +848,7 @@ void CFrameBufferObject::BindMRTTexture(const GLuint &index, GLuint iTextureUnit
 }
 
 // Binding the depth framebuffer texture so it is active
-void CFrameBufferObject::BindDepth(GLuint iTextureUnit)
+void CFrameBufferObject::BindDepthTexture(GLuint iTextureUnit)
 {
 	glActiveTexture(GL_TEXTURE0 + iTextureUnit);
 	glBindTexture(GL_TEXTURE_2D, m_uiDepthTexture);

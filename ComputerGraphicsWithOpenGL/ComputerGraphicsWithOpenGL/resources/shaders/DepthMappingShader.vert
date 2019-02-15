@@ -38,15 +38,6 @@ void main()
     // Pass through the texture coordinate
     vs_out.vTexCoord = inCoord;
     
-    // Get the vertex normal and vertex position in eye coordinates
-    //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
-    vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
-    vs_out.vLocalNormal = inNormal;
-    
-    vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;
-    vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
-    vs_out.vLocalPosition = inPosition;
-    
     // Transform the vertex spatial position using
     gl_Position = bUseScreenQuad ? position : matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
     

@@ -5,6 +5,10 @@
 // Constructor
 Game::Game()
 {
+    // game window
+    m_gameWindow = nullptr;
+    m_gameManager = nullptr;
+    
     // game timer
     m_pGameTimer = nullptr;
     m_timeInSeconds = 0.0f;
@@ -198,12 +202,18 @@ Game::~Game()
     delete m_pShaderPrograms;
     
     delete m_pGameTimer;
+    
+    delete m_gameManager;
+    
+    delete m_gameWindow;
 }
 
 // Initialisation:  This method only runs once at startup
 void Game::Initialise()
 {
     /// Create objects
+    m_gameWindow = new CGameWindow;
+    m_gameManager = new CGameManager;
     m_pGameTimer = new CHighResolutionTimer;
     m_pCamera = new CCamera;
     m_pShaderPrograms = new std::vector <CShaderProgram *>;
@@ -356,10 +366,11 @@ void Game::PreRendering() {
 // Render scene method runs
 void Game::Render()
 {
+  
+    ActivateFBO(m_currentPPFXMode);
     
-    ActivateFBO(FrameBufferType::Default);
-    
-    RenderScene();
+    RenderScene(m_currentPPFXMode == PostProcessingEffectMode::MotionBlur || m_currentPPFXMode == PostProcessingEffectMode::DepthMapping);
+  
     
     // It is useful to switch back to the default framebuffer for this to easily see your results.
     // Unbind to render to our default framebuffer or switching back to the default buffer at 0.
@@ -367,10 +378,10 @@ void Game::Render()
     // essentially, we just bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
-    m_gameWindow.SetViewport();
+    m_gameWindow->SetViewport();
     
     // clear all relevant buffers, set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
-    m_gameWindow.ClearBuffers();
+    m_gameWindow->ClearBuffers();
     
     // disable depth test so screen-space quad isn't discarded due to depth test.
     glDisable(GL_DEPTH_TEST);
@@ -378,15 +389,18 @@ void Game::Render()
     // Post Processing Effects
     RenderPPFX( m_currentPPFXMode );
     
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
     // Draw the 2D graphics after the 3D graphics
     RenderHUD();
     
     // Swap buffers right after rendering all, this is to show the current rendered image
-    m_gameWindow.SwapBuffers();
+    m_gameWindow->SwapBuffers();
 }
 
 void Game::PostRendering() {
     UpdateCameraEndFrame(m_deltaTime);
+    
 }
 
 // Update method runs repeatedly with the Render method
@@ -445,41 +459,38 @@ static void OnKeyDown_callback( GLFWwindow* window, int key, int scancode, int a
 
 void Game::Execute(const std::string &filepath, const GLuint &width, const GLuint &height)
 {
-    
-    m_gameWindow.CreateWindow("OpenGL Window", width, height);
-    m_gameManager.SetResourcePath(filepath);
-    
+
     Initialise();
+    InitialiseGameWindow("OpenGL Window", filepath, width, height);
     InitialiseFrameBuffers(width, height);
-    InitialiseCamera(width, height, glm::vec3(100.0f, 430.0f, 300.0f));
+    InitialiseCamera(width, height, glm::vec3(0.0f, 300.0f, -100.0f));
     InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
     LoadResources(filepath);
     LoadTextures(filepath);
     
-    m_gameManager.SetLoaded(true); // everything has loaded
+    m_gameManager->SetLoaded(true); // everything has loaded
     
-    m_gameWindow.SetInputs(OnKeyDown_callback, OnMouseDown_callback);
+    m_gameWindow->SetInputs(OnKeyDown_callback, OnMouseDown_callback);
     
-    m_gameWindow.PreRendering();
+    m_gameWindow->PreRendering();
     
-    m_gameManager.SetActive(true); // game is now going to be active, or activate application
+    m_gameManager->SetActive(true); // game is now going to be active, or activate application
     
-    while ( !m_gameWindow.ShouldClose() ){
+    while ( !m_gameWindow->ShouldClose() ){
+        m_gameWindow->ClearBuffers();
         
-        m_gameWindow.ClearBuffers();
-        
-        if (m_gameManager.IsActive()) {
+        if (m_gameManager->IsActive()) {
             GameLoop();
         }else{
             std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Do not consume processor power if application isn't active
         }
         
-        m_gameWindow.PostRendering();
+        m_gameWindow->PostRendering();
     }
     
-    m_gameWindow.DestroyWindow();
+    m_gameWindow->DestroyWindow();
     
     return;
 }

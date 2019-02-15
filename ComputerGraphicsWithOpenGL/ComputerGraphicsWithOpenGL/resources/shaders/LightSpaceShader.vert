@@ -8,6 +8,8 @@ uniform struct Matrices
     mat4 viewMatrix;
     mat3 normalMatrix;
     
+    // we use a different projection and view matrix to render the scene from the light's point of view.
+    mat4 lightSpaceMatrix;
 } matrices;
 
 // Layout of vertex attributes in VBO
@@ -27,28 +29,13 @@ out VS_OUT
     vec4 vEyePosition;
 } vs_out;
 
-uniform bool bUseScreenQuad;
-
 // This is the entry point into the vertex shader
 void main()
 {
     
     vec4 position = vec4(inPosition, 1.0f);
-    
-    // Pass through the texture coordinate
-    vs_out.vTexCoord = inCoord;
-    
-    // Get the vertex normal and vertex position in eye coordinates
-    //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
-    vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
-    vs_out.vLocalNormal = inNormal;
-    
-    vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;
-    vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
-    vs_out.vLocalPosition = inPosition;
-    
+
     // Transform the vertex spatial position using
-    gl_Position = bUseScreenQuad ? position : matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
+    gl_Position = matrices.lightSpaceMatrix * matrices.modelMatrix * position;
     
 }
-

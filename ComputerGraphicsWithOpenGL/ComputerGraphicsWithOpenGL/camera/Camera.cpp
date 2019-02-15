@@ -20,8 +20,10 @@ CCamera::CCamera()
     m_mouseSensitivity = (GLfloat)SENSITIVTY;
     m_screenWidth = (GLfloat)SCREEN_WIDTH;
     m_screenHeight = (GLfloat)SCREEN_HEIGHT;
+    m_zNear = (GLfloat)ZNEAR;
+    m_zFar = (GLfloat)ZFAR;
     SetPerspectiveProjectionMatrix(m_fieldOfView, (m_screenWidth/m_screenHeight), ZNEAR, ZFAR);
-    SetOrthographicProjectionMatrix(m_screenWidth, m_screenHeight );
+    SetOrthographicProjectionMatrix(m_screenWidth, m_screenHeight, ZNEAR, ZFAR);
 }
 CCamera::~CCamera()
 {
@@ -45,8 +47,10 @@ void CCamera::Create(
     this->m_front = glm::vec3(0.0f, 0.0f, -1.0f);
     this->m_up = glm::vec3(0.0f, 1.0f, 0.0f);
     this->m_fieldOfView = fieldOfView;
+    this->m_zNear = zNear;
+    this->m_zFar = zFar;
     this->SetPerspectiveProjectionMatrix(fieldOfView, (width/height), zNear, zFar);
-    this->SetOrthographicProjectionMatrix(width, height);
+    this->SetOrthographicProjectionMatrix(width, height, zNear, zFar);
     this->m_pitch = pitch;
     this->m_yaw = yaw;
     this->m_movementSpeed = (GLfloat)SPEED;
@@ -329,17 +333,23 @@ void CCamera::TranslateByKeyboard(const double &dt, const int &keyPressed)
 
 void CCamera::SetPerspectiveProjectionMatrix(const GLfloat &fieldOfView, const GLfloat &aspectRatio, const GLfloat &nearClippingPlane, const GLfloat &farClippingPlane){
     this->m_fieldOfView = fieldOfView;
+    this->m_zNear = nearClippingPlane;
+    this->m_zFar = farClippingPlane;
     this->m_perspectiveProjectionMatrix = glm::perspective(fieldOfView, aspectRatio, nearClippingPlane, farClippingPlane);
 }
 
 // The the camera orthographic projection matrix to match the width and height passed in
 void CCamera::SetOrthographicProjectionMatrix(const GLfloat &width, const GLfloat height, const GLfloat &zNear, const GLfloat &zFar){
+    this->m_zNear = zNear;
+    this->m_zFar = zFar;
     this->m_orthographicProjectionMatrix = glm::ortho(0.0f, width, 0.0f, height, zNear, zFar);
 }
 
 void CCamera::SetOrthographicProjectionMatrix(float value , float zNear, float zFar)
 {
-    m_orthographicProjectionMatrix = glm::ortho(-value, value, -value, value, zNear, zFar);
+    this->m_zNear = zNear;
+    this->m_zFar = zFar;
+    this->m_orthographicProjectionMatrix = glm::ortho(-value, value, -value, value, zNear, zFar);
 }
 
 void CCamera::SetOrthographicProjectionMatrix(int width, int height)
@@ -461,6 +471,16 @@ glm::vec3 CCamera::GetBackward()
 glm::vec3 CCamera::GetVelocity()
 {
     return m_velocity;
+}
+
+// Return the far clipping plane
+GLfloat CCamera::GetFarPlane() {
+    return m_zFar;
+}
+
+// Return the near clipping plane
+GLfloat CCamera::GetNearPlane() {
+    return m_zNear;
 }
 
 // return  the camera previous frame model view projection matrix

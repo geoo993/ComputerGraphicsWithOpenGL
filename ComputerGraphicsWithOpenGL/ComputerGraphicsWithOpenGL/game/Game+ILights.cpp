@@ -113,6 +113,8 @@ void Game::RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position,
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     glm::mat4 model = m_pLamp->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);

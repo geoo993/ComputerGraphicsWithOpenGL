@@ -15,8 +15,6 @@
 
 // Setup includes
 #include "Extensions.h"
-#include "GameWindow.h"
-#include "GameManager.h"
 #include "MatrixStack.h"
 #include "Interfaces.h"
 #include "CModel.h"
@@ -45,7 +43,7 @@ class CTorusKnot;
 class CMetaballs;
 class CQuad;
 
-class Game: IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
+class Game: IGameWindow, IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
 ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IInput {
 private:
     
@@ -57,9 +55,7 @@ private:
     
 // properties
 private:
-    CGameWindow m_gameWindow;
-    CGameManager m_gameManager;
-   
+    
     // screens
     CQuad * m_pQuad;
     
@@ -123,6 +119,11 @@ public:
     void Execute(const std::string &filepath, const GLuint &width, const GLuint &height);
    
 protected:
+    
+    /// Game window
+    void InitialiseGameWindow(const std::string &name, const std::string &filepath,
+                              const GLuint &width,
+                              const GLuint &height) override;
     
     /// Game timer
     void UpdateGameTimer() override;
@@ -191,6 +192,7 @@ protected:
     void SetBlurUniform(CShaderProgram *pShaderProgram) override;
     void SetRadialBlurUniform(CShaderProgram *pShaderProgram) override;
     void SetMotionBlurUniform(CShaderProgram *pShaderProgram) override;
+    void SetDepthMappingUniform(CShaderProgram *pShaderProgram) override;
     void SetVignettingUniform(CShaderProgram *pShaderProgram) override;
     void SetBrightPartsUniform(CShaderProgram *pShaderProgram) override;
     void SetBloomUniform(CShaderProgram *pShaderProgram) override;
@@ -211,7 +213,7 @@ protected:
     void PreRendering() override;
     void Render() override;
     void PostRendering() override;
-    void RenderScene() override;
+    void RenderScene(const GLboolean &toLightSpace = false) override;
     
     /// Render object
     void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),
@@ -244,15 +246,17 @@ protected:
     /// Post processing
     void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) override;
     void LoadFrameBuffers(const GLuint &width, const GLuint &height) override;
-    void ActivateFBO(const FrameBufferType &type) override;
+    void ActivateFBO(const PostProcessingEffectMode &mode) override;
     void RenderPPFXScene(const PostProcessingEffectMode &mode) override;
-    void RenderToScreen(CShaderProgram *pShaderProgram, const bool & useQuad) override;
+    void RenderToScreen(CShaderProgram *pShaderProgram, const PostProcessingEffectMode &mode, const bool & useQuad) override;
     void RenderPPFX(const PostProcessingEffectMode &mode) override;
     const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) override;
+    FrameBufferType GetFBOtype(const PostProcessingEffectMode &mode) override;
     
     /// HUD
     void RenderHUD() override;
-    void DisplayFrameRate(CShaderProgram *fontProgram, const GLuint &framesPerSecond, const bool &enableHud) override;
+    void DisplayFrameRate(CShaderProgram *fontProgram, const GLint &width, const GLint &height,
+                          const GLuint &framesPerSecond, const bool &enableHud) override;
     
     /// Inputs
     void UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction) override;

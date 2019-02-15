@@ -31,11 +31,13 @@ public:
     glm::vec3 GetView() const;                        // Gets the position of the camera view point
     glm::vec3 GetStrafeVector() const;                // Gets the camera strafe vector
     glm::mat4 GetViewProjection() const;
-	glm::mat4* GetPerspectiveProjectionMatrix();	// Gets the camera perspective projection matrix
-	glm::mat4* GetOrthographicProjectionMatrix();	// Gets the camera orthographic projection matrix
+	glm::mat4* GetPerspectiveProjectionMatrix();	    // Gets the camera perspective projection matrix
+	glm::mat4* GetOrthographicProjectionMatrix();	    // Gets the camera orthographic projection matrix
 	glm::mat4 GetViewMatrix() const;				    // Gets the camera view matrix - note this is not stored in the class but returned using
     glm::mat4 GetModelMatrix() const;                   // Gets the camera model matrix
     glm::mat4 GetViewWithoutTranslation() const;        // Get view and removing translation properties from view matrix
+    GLfloat GetFarPlane();                              // Gets far clipping plane
+    GLfloat GetNearPlane();                             // Gets near clipping plane
     glm::vec3 GetLeft();                               // Gets the camera left vector
     glm::vec3 GetRight();                              // Gets the camera right vector
     glm::vec3 GetUp();                                 // Gets the camera up vector
@@ -115,7 +117,9 @@ private:
     glm::vec3 m_worldUp;;            // The worlds up vector, the original position of the world
     
     // Eular Angles
-    GLfloat m_fieldOfView;           // The view from the camera 
+    GLfloat m_fieldOfView;           // The view from the camera
+    GLfloat m_zNear;                // The afr clipping plane
+    GLfloat m_zFar;                   // The near clipping plane
     GLfloat m_yaw;
     GLfloat m_pitch;
     GLfloat m_horizontalAngle;       // horizontal angle : toward -Z

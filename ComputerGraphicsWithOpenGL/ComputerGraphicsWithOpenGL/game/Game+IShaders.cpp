@@ -118,6 +118,9 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("DepthMappingShader.frag");
     sShaderFileNames.push_back("LightSpaceShader.vert");// 50
     sShaderFileNames.push_back("LightSpaceShader.frag");
+    sShaderFileNames.push_back("ToneMappingShader.vert");// 51
+    sShaderFileNames.push_back("ToneMappingShader.frag");
+    
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -545,6 +548,13 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pLightSpaceShader->LinkProgram();
     m_pShaderPrograms->push_back(pLightSpaceShader);
     
+    // Create the Tone Mapping shader program
+    CShaderProgram *pToneMappingShader = new CShaderProgram;
+    pToneMappingShader->CreateProgram();
+    pToneMappingShader->AddShaderToProgram(&shShaders[105]);
+    pToneMappingShader->AddShaderToProgram(&shShaders[106]);
+    pToneMappingShader->LinkProgram();
+    m_pShaderPrograms->push_back(pToneMappingShader);
 }
 
 

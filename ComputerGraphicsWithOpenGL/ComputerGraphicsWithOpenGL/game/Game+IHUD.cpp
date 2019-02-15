@@ -54,12 +54,14 @@ void Game::DisplayFrameRate(CShaderProgram *fontProgram, const GLint &width, con
             m_pFtFont->Render(fontProgram, 20, height - 300, 20, "Light Att Exponent: %f", m_exponent);
             m_pFtFont->Render(fontProgram, 20, height - 320, 20, "Light Smooth SpotLight: %s", Extensions::BoolToString(m_useSmoothSpot));
             m_pFtFont->Render(fontProgram, 20, height - 340, 20, "Light Use Blinn-Phong: %s", Extensions::BoolToString(m_useBlinn));
-            m_pFtFont->Render(fontProgram, 20, height - 360, 20, "Use Texture: %s", Extensions::BoolToString(m_woodenBoxesUseTexture));
-            m_pFtFont->Render(fontProgram, 20, height - 380, 20, "Use Refraction: %s", Extensions::BoolToString(m_useRefraction));
-            m_pFtFont->Render(fontProgram, 20, height - 400, 20, "Parallax Height Scale: %f", m_parallaxHeightScale);
-            m_pFtFont->Render(fontProgram, 20, height - 420, 20, "UV Tiling: %f", m_uvTiling);
-            m_pFtFont->Render(fontProgram, 20, height - 440, 20, "Magnitude: %f", m_magnitude);
-            m_pFtFont->Render(fontProgram, 20, height - 460, 20, "PPFX Coverage: %f", m_coverage);
+            m_pFtFont->Render(fontProgram, 20, height - 360, 20, "Light Exposure: %f", m_exposure);
+            m_pFtFont->Render(fontProgram, 20, height - 380, 20, "Light Gama: %f", m_gama);
+            m_pFtFont->Render(fontProgram, 20, height - 400, 20, "Use Texture: %s", Extensions::BoolToString(m_woodenBoxesUseTexture));
+            m_pFtFont->Render(fontProgram, 20, height - 420, 20, "Use Refraction: %s", Extensions::BoolToString(m_useRefraction));
+            m_pFtFont->Render(fontProgram, 20, height - 440, 20, "Parallax Height Scale: %f", m_parallaxHeightScale);
+            m_pFtFont->Render(fontProgram, 20, height - 460, 20, "UV Tiling: %f", m_uvTiling);
+            m_pFtFont->Render(fontProgram, 20, height - 480, 20, "Magnitude: %f", m_magnitude);
+            m_pFtFont->Render(fontProgram, 20, height - 500, 20, "PPFX Coverage: %f", m_coverage);
         }
         
     }

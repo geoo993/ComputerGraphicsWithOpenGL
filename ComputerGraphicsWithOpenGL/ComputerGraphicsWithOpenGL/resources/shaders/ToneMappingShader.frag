@@ -1,7 +1,7 @@
 #version 400 core
 
-////https://www.youtube.com/watch?v=LyoSSoYyfVU
-///https://learnopengl.com/Advanced-Lighting/Bloom
+////https://learnopengl.com/code_viewer_gh.php?code=src/5.advanced_lighting/6.hdr/hdr.cpp
+///https://learnopengl.com/Advanced-Lighting/HDR
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -37,28 +37,32 @@ in VS_OUT
 
 uniform float coverage;        // between (0.0f and 1.0f)
 uniform float exposure, gamma;
+uniform bool bHDR;
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
 void main()
 {
-
-    vec4 hdrColor = texture(material.ambientMap, fs_in.vTexCoord);
-    vec4 blurColor = texture(material.depthMap, fs_in.vTexCoord);
     
     vec2 uv = fs_in.vTexCoord.xy;
+    vec4 hdrColor = texture(material.ambientMap, uv);
     vec4 tc = vec4(material.color, 1.0f);
     
     if (uv.x <  coverage )
     {
-        hdrColor += blurColor; // additive blending
-        // tone mapping
-        vec3 result = vec3(1.0f) - exp(-hdrColor.rgb * exposure);
-        // also gamma correct while we're at it
-        result = pow(result, vec3(1.0f / gamma));
-        tc = vec4(result, 1.0f);
-        
-       //tc = hdrColor + blurColor * exposure;
+        if(bHDR)
+        {
+            // reinhard
+            // vec3 result = hdrColor / (hdrColor + vec3(1.0f));
+            // exposure
+            vec3 result = vec3(1.0f) - exp(-hdrColor.rgb * exposure);
+            // also gamma correct while we're at it
+            result = pow(result, vec3(1.0f / gamma));
+            tc = vec4(result, 1.0f);
+        } else {
+            vec3 result = pow(hdrColor.rgb, vec3(1.0f / gamma));
+            tc = vec4(result, 1.0f);
+        }
     } else if (uv.x >= ( coverage + 0.003f) )
     {
         tc = texture(material.ambientMap, uv);

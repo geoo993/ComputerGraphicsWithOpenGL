@@ -48,6 +48,7 @@ enum class PostProcessingEffectMode {
     Vignetting,
     BrightParts,
     Bloom,
+    HDRToneMapping,
     LensFlare,
     FXAA,
     SSAO,

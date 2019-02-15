@@ -196,6 +196,7 @@ protected:
     void SetVignettingUniform(CShaderProgram *pShaderProgram) override;
     void SetBrightPartsUniform(CShaderProgram *pShaderProgram) override;
     void SetBloomUniform(CShaderProgram *pShaderProgram) override;
+    void SetHRDToneMappingUniform(CShaderProgram *pShaderProgram) override;
     void SetLensFlareUniform(CShaderProgram *pShaderProgram) override;
     
     /// Lights

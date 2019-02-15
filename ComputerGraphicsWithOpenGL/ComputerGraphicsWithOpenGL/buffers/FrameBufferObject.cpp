@@ -253,8 +253,10 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glGenTextures(1, &m_uiHdrColorTexture);
             glBindTexture(GL_TEXTURE_2D, m_uiHdrColorTexture);
             
+            /*
+             When the internal format of a framebuffer's colorbuffer is specified as GL_RGB16F, GL_RGBA16F, GL_RGB32F or GL_RGBA32F the framebuffer is known as a floating point framebuffer that can store floating point values outside the default range of 0.0 and 1.0. This is perfect for rendering in high dynamic range!
+             */
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_iWidth, m_iHeight, 0, GL_BGRA, GL_FLOAT, nullptr);
-            glBindTexture(GL_TEXTURE_2D, 0);
             
             glGenerateMipmap(GL_TEXTURE_2D);
             
@@ -264,7 +266,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            
+            glBindTexture(GL_TEXTURE_2D, 0);
             
             // create depth buffer (renderbuffer)
             glGenRenderbuffers(1, &m_uiRboDepth);
@@ -272,7 +274,6 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_iWidth, m_iHeight);
             
             // attach and bind buffers
-            glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
             glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_uiHdrColorTexture, 0);
             //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_uiHdrColorTexture, 0);
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_uiRboDepth);
@@ -316,6 +317,9 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             for (unsigned int i = 0; i < 2; i++)
             {
                 glBindTexture(GL_TEXTURE_2D, m_uiHdrColorTextures[i]);
+                /*
+                 When the internal format of a framebuffer's colorbuffer is specified as GL_RGB16F, GL_RGBA16F, GL_RGB32F or GL_RGBA32F the framebuffer is known as a floating point framebuffer that can store floating point values outside the default range of 0.0 and 1.0. This is perfect for rendering in high dynamic range!
+                 */
                 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_iWidth, m_iHeight, 0, GL_RGB, GL_FLOAT, nullptr);
                 
                 glGenerateMipmap(GL_TEXTURE_2D);
@@ -326,7 +330,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
                 SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                 SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);// we clamp to the edge as the blur filter would otherwise sample repeated texture values!
                 SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-                //glBindTexture(GL_TEXTURE_2D, 0);
+                glBindTexture(GL_TEXTURE_2D, 0);
                
                 // attach texture to framebuffer
                 glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, m_uiHdrColorTextures[i], 0);

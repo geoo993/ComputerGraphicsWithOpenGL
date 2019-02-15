@@ -11,14 +11,14 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::Bloom;
+    m_currentPPFXMode = PostProcessingEffectMode::HDRToneMapping;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
-    
+    m_pFBOs.push_back(new CFrameBufferObject);
     LoadFrameBuffers(width, height);
 }
 
@@ -29,6 +29,7 @@ void Game::LoadFrameBuffers(const GLuint &width , const GLuint &height) {
     m_pFBOs[1]->CreateFramebuffer(width, height, FrameBufferType::HighDynamicRangeRendering);
     m_pFBOs[2]->CreateFramebuffer(width, height, FrameBufferType::PingPongRendering);
     m_pFBOs[3]->CreateFramebuffer(width, height, FrameBufferType::DepthMapping);
+    m_pFBOs[4]->CreateFramebuffer(width, height, FrameBufferType::HighDynamicRangeLighting);
 }
 
 /// actvate frame buffer and stop rendering to the default framebuffer
@@ -67,7 +68,10 @@ void Game::ActivateFBO(const PostProcessingEffectMode &mode) {
         case FrameBufferType::MultiSampling: break;
         case FrameBufferType::DirectionalShadowMapping: break;
         case FrameBufferType::PointShadowMapping: break;
-        case FrameBufferType::HighDynamicRangeLighting: break;
+        case FrameBufferType::HighDynamicRangeLighting:
+            currentFBO = m_pFBOs[4];
+            currentFBO->Bind(true);
+            break;
         case FrameBufferType::HighDynamicRangeRendering:
             currentFBO = m_pFBOs[1];
             currentFBO->Bind(true);
@@ -400,6 +404,12 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             RenderToScreen(pBloomProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
             return;
         }
+        case PostProcessingEffectMode::HDRToneMapping: {
+            CShaderProgram *pHDRToneMappingProgram = (*m_pShaderPrograms)[51];
+            SetHRDToneMappingUniform(pHDRToneMappingProgram);
+            RenderToScreen(pHDRToneMappingProgram, FrameBufferType::HighDynamicRangeLighting, 0, TextureType::AMBIENT);
+            return;
+        }
         case PostProcessingEffectMode::LensFlare: {
             CShaderProgram *pLensFlareProgram = (*m_pShaderPrograms)[48];
             SetLensFlareUniform(pLensFlareProgram);
@@ -434,7 +444,9 @@ void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType 
         case FrameBufferType::MultiSampling: break;
         case FrameBufferType::DirectionalShadowMapping: break;
         case FrameBufferType::PointShadowMapping: break;
-        case FrameBufferType::HighDynamicRangeLighting: break;
+        case FrameBufferType::HighDynamicRangeLighting:
+            currentFBO->BindHDRTexture(static_cast<GLint>(textureType));
+            break;
         case FrameBufferType::HighDynamicRangeRendering:
             currentFBO->BindHDRTexture(bufferIndex, static_cast<GLint>(textureType));
             break;
@@ -559,6 +571,9 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::Bloom:
             RenderPPFXScene(PostProcessingEffectMode::Bloom);
             break;
+        case PostProcessingEffectMode::HDRToneMapping:
+            RenderPPFXScene(PostProcessingEffectMode::HDRToneMapping);
+            break;
         case PostProcessingEffectMode::LensFlare:
             RenderPPFXScene(PostProcessingEffectMode::LensFlare);
             break;
@@ -644,6 +659,8 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         return "Bright Parts";
         case PostProcessingEffectMode::Bloom:
         return "Bloom";
+        case PostProcessingEffectMode::HDRToneMapping:
+            return "HDR Tone Mapping";
         case PostProcessingEffectMode::LensFlare:
         return "Lens Flare";
         case PostProcessingEffectMode::FXAA:
@@ -725,6 +742,8 @@ FrameBufferType Game::GetFBOtype(const PostProcessingEffectMode &mode){
         return FrameBufferType::HighDynamicRangeRendering;
         case PostProcessingEffectMode::Bloom:
         return FrameBufferType::HighDynamicRangeRendering;
+        case PostProcessingEffectMode::HDRToneMapping:
+        return FrameBufferType::HighDynamicRangeLighting;
         case PostProcessingEffectMode::LensFlare:
         return FrameBufferType::Default;
         case PostProcessingEffectMode::FXAA:

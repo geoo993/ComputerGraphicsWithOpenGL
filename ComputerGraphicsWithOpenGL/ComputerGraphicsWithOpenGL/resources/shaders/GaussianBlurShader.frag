@@ -1,5 +1,13 @@
 #version 400 core
 
+/*
+ Bloom effect based on:
+ https://learnopengl.com/#!Advanced-Lighting/Bloom
+ http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
+ 25/03/2017
+ */
+
+
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
 {
@@ -33,13 +41,8 @@ in VS_OUT
 } fs_in;
 
 uniform bool bHorizontal;
+uniform float intensity;
 uniform float coverage;        // between (0.0f and 1.0f)
-/*
-Bloom effect based on:
-https://learnopengl.com/#!Advanced-Lighting/Bloom
-25/03/2017
-*/
-
 float weight[5] = float[] (0.2270270270f, 0.1945945946f, 0.1216216216f, 0.0540540541f, 0.0162162162f);
 
 /*
@@ -64,22 +67,39 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main() {
     
-    vec2 tex_offset = 1.0f / textureSize(material.ambientMap, 0); // gets size of single texel
-    vec3 result = texture(material.ambientMap, fs_in.vTexCoord).rgb * weight[0]; // current fragment's contribution
-    float intensity = 1.1f;
-    if(bHorizontal) {
-        for(int i = 1; i < 5; ++i) {
-          result += texture(material.ambientMap, fs_in.vTexCoord + vec2(tex_offset.x * i, 0.0f)).rgb * weight[i]*intensity;
-          result += texture(material.ambientMap, fs_in.vTexCoord - vec2(tex_offset.x * i, 0.0f)).rgb * weight[i]*intensity;
+    
+    
+    vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = vec4(material.color, 1.0f);
+    
+    if (uv.x <  coverage )
+    {
+        vec2 tex_offset = 1.0f / textureSize(material.depthMap, 0); // gets size of single texel
+        vec3 result = texture(material.depthMap, uv).rgb * weight[0]; // current fragment's contribution
+        if(bHorizontal) {
+            for(int i = 1; i < 5; ++i) {
+                result += texture(material.depthMap, uv + vec2(tex_offset.x * i, 0.0f)).rgb * weight[i]*intensity;
+                result += texture(material.depthMap, uv - vec2(tex_offset.x * i, 0.0f)).rgb * weight[i]*intensity;
+            }
+        } else {
+            for(int i = 1; i < 5; ++i) {
+                result += texture(material.depthMap, uv + vec2(0.0f, tex_offset.y * i)).rgb * weight[i]*intensity;
+                result += texture(material.depthMap, uv - vec2(0.0f, tex_offset.y * i)).rgb * weight[i]*intensity;
+            }
         }
+        
+        tc = vec4(result, 1.0f);
+    } else if (uv.x >= ( coverage + 0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
     } else {
-        for(int i = 1; i < 5; ++i) {
-          result += texture(material.ambientMap, fs_in.vTexCoord + vec2(0.0f, tex_offset.y * i)).rgb * weight[i]*intensity;
-          result += texture(material.ambientMap, fs_in.vTexCoord - vec2(0.0f, tex_offset.y * i)).rgb * weight[i]*intensity;
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
         }
     }
     
-    vOutputColour = vec4(result, 1.0f);
+    vOutputColour = tc;
     
 }
 

@@ -56,7 +56,7 @@ Game::Game()
     m_directionalLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f),
     
     // Point Light
-    m_pointIntensity = 1500.5f;
+    m_pointIntensity = 2500.5f;
     m_pointLightPositionsIndex = 0;
     m_pointLightPositions = {
         glm::vec3(  100.0f,  400.0f,  50.0f      ),
@@ -78,9 +78,9 @@ Game::Game()
     
     // Spot Light
     m_spotColor = glm::vec3(0.3f, 0.5f, 1.0f);;
-    m_spotIntensity = 1500.4f;
-    m_spotCutOff = 12.5f;
-    m_spotOuterCutOff = 18.0f;
+    m_spotIntensity = 2500.4f;
+    m_spotCutOff = 22.5f;
+    m_spotOuterCutOff = 28.0f;
     
     // screens
     m_pQuad = nullptr;
@@ -367,11 +367,104 @@ void Game::PreRendering() {
 void Game::Render()
 {
   
+//    // render
+//    // ------
+//    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+//
+//    m_pFBOs[1]->Bind(true);
+//
+//    RenderScene(false);
+    
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //m_gameWindow->SetViewport();
+//    m_gameWindow->ClearBuffers();
+//
+//    glDisable(GL_DEPTH_TEST);
+    /*
+    CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
+    pGaussianBlurProgram->UseProgram();
+    
+    bool horizontal = true, first_iteration = true;
+    int amount = 10; // 0 is false aand 1 is true
+    for (GLuint i = 0; i < amount; i++)
+    {
+        m_pFBOs[2]->BindPingPong(horizontal, true); /// prepare ping pong frame buffer
+        
+        if (first_iteration) {
+            m_pFBOs[1]->BindHDRTexture(1, static_cast<GLint>(TextureType::DEPTH)); // add first texture to ping pong frame buffer, to depth texture unit
+        } else {
+            m_pFBOs[2]->BindPingPongTexture(!horizontal, static_cast<GLint>(TextureType::DEPTH)); // bind textures to depth texture unit
+        }
+        
+        // blur textures that are in the depthMap texture unit
+        SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
+        SetMaterialUniform(pGaussianBlurProgram, "material", glm::vec3(1.0f, 1.0f, 0.0f));
+        SetImageProcessingUniform(pGaussianBlurProgram, true);
+        RenderQuad(pGaussianBlurProgram);
+        
+        //RenderToScreen(pGaussianBlurProgram, true);
+        
+        horizontal = !horizontal;
+        if (first_iteration) first_iteration = false;
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    m_gameWindow->SetViewport();
+    
+    CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+    m_pFBOs[1]->BindHDRTexture(0, static_cast<GLint>(TextureType::AMBIENT)); // bind the earlier (scene rendering) rendering from the hrd frame buffer
+    
+    m_pFBOs[2]->BindPingPongTexture(!horizontal, static_cast<GLint>(TextureType::DEPTH));
+    SetMaterialUniform(pImageProcessingProgram, "material", glm::vec3(1.0f, 1.0f, 0.0f));
+    SetImageProcessingUniform(pImageProcessingProgram, true);
+    RenderQuad(pImageProcessingProgram);
+    */
+    
+    /*
+    CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
+    pGaussianBlurProgram->UseProgram();
+    
+    bool horizontal = true, first_iteration = true;
+    int amount = 10; // 0 is false aand 1 is true
+    for (GLuint i = 0; i < amount; i++)
+    {
+        m_pFBOs[2]->BindPingPong(horizontal, true); /// prepare ping pong frame buffer
+        
+        if (first_iteration) {
+            m_pFBOs[1]->BindHDRTexture(0, static_cast<GLint>(TextureType::DEPTH)); // add first texture to ping pong frame buffer, to depth texture unit
+        } else {
+            m_pFBOs[2]->BindPingPongTexture(!horizontal, static_cast<GLint>(TextureType::DEPTH)); // bind textures to depth texture unit
+        }
+        
+        // blur textures that are in the depthMap texture unit
+        SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
+        SetMaterialUniform(pGaussianBlurProgram, "material", glm::vec3(1.0f, 1.0f, 0.0f));
+        SetImageProcessingUniform(pGaussianBlurProgram, true);
+        RenderQuad(pGaussianBlurProgram);
+        
+        //RenderToScreen(pGaussianBlurProgram, true);
+        
+        horizontal = !horizontal;
+        if (first_iteration) first_iteration = false;
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    m_gameWindow->SetViewport();
+    
+    m_pFBOs[2]->BindPingPongTexture(horizontal, static_cast<GLint>(TextureType::DEPTH));
+    SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
+    SetMaterialUniform(pGaussianBlurProgram, "material", glm::vec3(1.0f, 1.0f, 0.0f));
+    SetImageProcessingUniform(pGaussianBlurProgram, true);
+    RenderQuad(pGaussianBlurProgram);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+   
+     */
+    
+    
     ActivateFBO(m_currentPPFXMode);
     
     RenderScene(m_currentPPFXMode == PostProcessingEffectMode::MotionBlur || m_currentPPFXMode == PostProcessingEffectMode::DepthMapping);
   
-    
     // It is useful to switch back to the default framebuffer for this to easily see your results.
     // Unbind to render to our default framebuffer or switching back to the default buffer at 0.
     // To make sure all rendering operations will have a visual impact on the main window we need to make the default framebuffer active again by binding to 0:

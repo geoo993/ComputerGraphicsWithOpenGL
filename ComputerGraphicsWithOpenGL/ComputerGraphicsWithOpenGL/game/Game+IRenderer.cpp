@@ -21,7 +21,6 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
     
     
-    
     /// Render skybox
     CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? 50 : 1];
     SetMaterialUniform(pSkyBoxProgram, "material");
@@ -130,7 +129,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f));
     RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_woodenBoxesUseTexture);
     
-    
+    /*
     /// Explosion Program
     CShaderProgram *pExplosionProgram = (*m_pShaderPrograms)[toLightSpace ? 50 : 11];
     SetMaterialUniform(pExplosionProgram, "material", m_woodenBoxesColor);
@@ -150,7 +149,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetWireframeUniform(pWireframeProgram, true, m_magnitude);
     SetChromaticAberrationUniform(pWireframeProgram, glm::vec2(0.3f, 1.5f));
     RenderNanosuit(pWireframeProgram,  glm::vec3(1000.0f, 500.0f, 0.0f), 20.0f, m_woodenBoxesUseTexture);
-    
+    */
     
     /// Toon / Cell Program
     CShaderProgram *pToonProgram = (*m_pShaderPrograms)[toLightSpace ? 50 : 14];

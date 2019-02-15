@@ -22,9 +22,18 @@ uniform struct Material
     float shininess;
 } material;
 
-out vec4 vOutputColour;        // The output colour
+//When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
+layout (location = 0) out vec4 vOutputColour; // The output colour formely  gl_FragColor
+layout (location = 1) out vec4 vBrightColor;
 
 void main() {
     
     vOutputColour = vec4(material.color, 1.0f);
+    
+    // Retrieve bright parts
+    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
+    if(brightness > 1.0f)
+        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
+    else
+        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 }

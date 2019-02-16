@@ -98,7 +98,7 @@ the linear RGB specular color values can be the following:
  
  */
 
-#define NUMBER_OF_POINT_LIGHTS 6
+#define NUMBER_OF_POINT_LIGHTS 7
 #define PI 3.14159265359
 
 uniform struct Camera
@@ -124,9 +124,11 @@ uniform struct Material
     sampler2D depthMap;             // 11.  depth map
     sampler2D noiseMap;             // 12.  noise map
     sampler2D maskMap;              // 13.  mask map
-    samplerCube cubeMap;            // 14.  sky box or environment mapping cube map
+    sampler2D lensMap;              // 14.  lens map
+    samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
+
     // for more info look at https://marmoset.co/posts/physically-based-rendering-and-you-can-too/
     vec3  albedo;           // Albedo is the base color input, commonly known as a diffuse map.
     // all values below are between 0 and 1

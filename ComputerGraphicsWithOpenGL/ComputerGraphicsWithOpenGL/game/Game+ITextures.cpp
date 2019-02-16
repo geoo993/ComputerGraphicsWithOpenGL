@@ -11,9 +11,13 @@
 void Game::LoadTextures(const std::string &path)
 {
      // start adding texture from in texture units from 20
-     m_textures.push_back(AddTexture(path+"/textures/noise_texture_gray.png", TextureType::NOISE));     // NoiseTex
-     m_textures.push_back(AddTexture(path+"/textures/night_vision_binoculars_mask.png", TextureType::MASK)); // MaskTex
-     m_textures.push_back(AddTexture(path+"/textures/perlin_noise_texture.png", TextureType::NOISE)); // NoiseTex
+    m_textures.push_back(AddTexture(path+"/textures/noise_texture_gray.png", TextureType::NOISE));     // NoiseTex
+    m_textures.push_back(AddTexture(path+"/textures/night_vision_binoculars_mask.png", TextureType::MASK)); // MaskTex
+    m_textures.push_back(AddTexture(path+"/textures/perlin_noise_texture.png", TextureType::NOISE)); // NoiseTex
+    m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensColor.jpg", TextureType::MASK)); // Lens Flare
+    m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensTexture.jpg", TextureType::LENS)); // Lens Flare
+    m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensDirt.png", TextureType::NOISE)); // Lens Flare
+    m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensStarburst.png", TextureType::GLOSSINESS)); // Lens Flare
 }
 
 CTexture * Game::AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection) {

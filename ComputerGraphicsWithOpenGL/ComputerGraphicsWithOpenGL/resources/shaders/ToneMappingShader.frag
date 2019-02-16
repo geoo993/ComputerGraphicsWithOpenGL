@@ -20,7 +20,8 @@ uniform struct Material
     sampler2D depthMap;             // 11.  depth map
     sampler2D noiseMap;             // 12.  noise map
     sampler2D maskMap;              // 13.  mask map
-    samplerCube cubeMap;            // 14.  sky box or environment mapping cube map
+    sampler2D lensMap;              // 14.  lens map
+    samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
 } material;
@@ -54,7 +55,7 @@ void main()
         {
             // reinhard
             // vec3 result = hdrColor / (hdrColor + vec3(1.0f));
-            // exposure
+            // tone mapping with exposure
             vec3 result = vec3(1.0f) - exp(-hdrColor.rgb * exposure);
             // also gamma correct while we're at it
             result = pow(result, vec3(1.0f / gamma));

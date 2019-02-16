@@ -123,6 +123,7 @@ struct IShaderUniform {
     virtual void SetBrightPartsUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetBloomUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetHRDToneMappingUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetLensFlareGhostUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetLensFlareUniform(CShaderProgram *pShaderProgram) = 0;
 };
 
@@ -134,7 +135,7 @@ struct ILights
     GLfloat m_specular;
     GLfloat m_exposure;
     GLfloat m_gama;
-    GLboolean m_useBlinn;
+    GLboolean m_useBlinn, m_HDR;
     
     // Attenuation
     GLfloat m_constant;

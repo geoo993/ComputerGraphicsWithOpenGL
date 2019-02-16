@@ -337,6 +337,7 @@ void Game::SetBrightPartsUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetBloomUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bHDR", m_HDR);
     pShaderProgram->SetUniform("exposure", m_exposure);
     pShaderProgram->SetUniform("gamma", m_gama);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
@@ -344,13 +345,72 @@ void Game::SetBloomUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetHRDToneMappingUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bHDR", true);
+    pShaderProgram->SetUniform("bHDR", m_HDR);
     pShaderProgram->SetUniform("exposure", m_exposure);
     pShaderProgram->SetUniform("gamma", m_gama);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
-void Game::SetLensFlareUniform(CShaderProgram *pShaderProgram){
+void Game::SetLensFlareGhostUniform(CShaderProgram *pShaderProgram){
+    
+    m_textures[3]->BindTexture2DToTextureType();  //lensColor.jpg
+    m_textures[4]->BindTexture2DToTextureType();  //lensTexture.jpg
+
+    // http://john-chapman-graphics.blogspot.com/2013/02/pseudo-lens-flare.html
     pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUselensTexture", true);
+    pShaderProgram->SetUniform("lensType", 3);
+    pShaderProgram->SetUniform("ghostCount", 5);            // between 4 and 32
+    pShaderProgram->SetUniform("ghostDispersal", 0.39f);     // between 0.0f and  2.0f
+    pShaderProgram->SetUniform("ghostThreshold", 10.0f);     // between 0.0f and 20.0f
+    pShaderProgram->SetUniform("ghostDistortion", 4.3f);    // between 0 and 1
+    pShaderProgram->SetUniform("haloRadius", 0.3f);         // between 0.0f and 2.0f
+    pShaderProgram->SetUniform("haloThickness", 0.1f);      // between 0.0f and 0.5f
+    pShaderProgram->SetUniform("haloThreshold", 9.0f);      // between 0.0f and 20.0f
+    pShaderProgram->SetUniform("haloAspectRatio", 1.0f);    // between 0.0f and 2.0f
+}
+
+void Game::SetLensFlareUniform(CShaderProgram *pShaderProgram){
+    m_textures[5]->BindTexture2DToTextureType();  //lensDirt.jpg
+    m_textures[6]->BindTexture2DToTextureType();  //lensStarburst.jpg
+    
+    // http://john-chapman-graphics.blogspot.com/2013/02/pseudo-lens-flare.html
+    glm::vec3 viewVec = m_pCamera->GetView();
+    float starburstOffset = viewVec.x + viewVec.y + viewVec.z;
+    
+    /*
+     The transformation matrix uLensStarMatrix is based on a value derived from the camera's orientation as follows:
+     */
+    glm::vec4 camx = m_pCamera->GetViewMatrix()[0]; // camera x (left) vector
+    glm::vec4 camz = m_pCamera->GetViewMatrix()[1]; // camera z (forward) vector
+    float camrot = dot(glm::vec3(camx), glm::vec3(0.0f, 0.0f, 1.0f)) + dot(glm::vec3(camz), glm::vec3(0.0f, 1.0f, 0.0f));
+    /*
+    There are other ways of obtaining the camrot value; it just needs to change continuously as the camera rotates.
+    The matrix itself is constructed as follows:
+    */
+    glm::mat3 scaleBias1 = glm::mat3(
+                       2.0f,   0.0f,  -1.0f,
+                       0.0f,   2.0f,  -1.0f,
+                       0.0f,   0.0f,   1.0f
+                       );
+    glm::mat3 rotation = glm::mat3(
+                     cos(camrot), -sin(camrot), 0.0f,
+                     sin(camrot), cos(camrot),  0.0f,
+                     0.0f,        0.0f,         1.0f
+                     );
+    glm::mat3 scaleBias2 = glm::mat3(
+                       0.5f,   0.0f,   0.5f,
+                       0.0f,   0.5f,   0.5f,
+                       0.0f,   0.0f,   1.0f
+                       );
+    
+    glm::mat3 lensStarMatrix = scaleBias2 * rotation * scaleBias1;
+    
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseDirt", m_HDR);
+    pShaderProgram->SetUniform("globalBrightness", 0.05000000074505806f);
+    pShaderProgram->SetUniform("starburstOffset", starburstOffset);
+    pShaderProgram->SetUniform("lensStarMatrix", lensStarMatrix);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+
 }

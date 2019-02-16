@@ -46,6 +46,7 @@ Game::Game()
     m_specular = 0.6f;
     m_exposure = 0.8f;
     m_gama = 1.2f;
+    m_HDR = true;
     
     // Attenuation
     m_constant = 1.0f;
@@ -66,16 +67,18 @@ Game::Game()
         glm::vec3(  -335.7f,  550.2f,  122.0f      ),
         glm::vec3(  102.3f, 663.3f, -44.0f      ),
         glm::vec3(  -104.0f,  612.0f, -200.0f    ),
-        glm::vec3(  300.0f,  620.0f, -233.0f      )
+        glm::vec3(  300.0f,  620.0f, -233.0f      ),
+        glm::vec3(  -600.0f,  750.0f, 130.0f      )
     };
     
     m_pointLightColors = {
-        glm::vec3(  10.0f,  0.0f,  0.9f      ),
+        glm::vec3(  1.0f,  0.1f,  0.9f      ),
         glm::vec3(  0.1f,  0.9f,  0.8f      ),
         glm::vec3(  1.0f,  1.0f,  0.0f      ),
         glm::vec3(  0.1f, 0.9f, 0.0f      ),
         glm::vec3(  0.0f,  0.0f, 1.0f    ),
-        glm::vec3(  1.0f,  0.0f, 0.1f      )
+        glm::vec3(  1.0f,  0.0f, 0.1f      ),
+        glm::vec3(  21.0f,  20.0f, 50.0f      )
     };
     
     // Spot Light
@@ -464,7 +467,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     Initialise();
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
     InitialiseFrameBuffers(width, height);
-    InitialiseCamera(width, height, glm::vec3(0.0f, 300.0f, -100.0f));
+    InitialiseCamera(width, height, glm::vec3(220.0f, 500.0f, -400.0f));
     InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);

@@ -75,6 +75,9 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
         
         switch (keyPressed)
         {
+            case GLFW_KEY_WORLD_1:
+                m_HDR = !m_HDR;
+               break;
             case GLFW_KEY_1 :   
                 m_materialShininess -= 5.0f;
                 break;
@@ -88,10 +91,10 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
                 m_dirIntensity += 0.2f;
                 break;
             case GLFW_KEY_5:
-                m_pointIntensity -= 10.0f;
+                m_pointIntensity -= 50.0f;
                 break;
             case GLFW_KEY_6:
-                m_pointIntensity += 10.0f;
+                m_pointIntensity += 50.0f;
                 break;
             case GLFW_KEY_7:
                 m_spotIntensity -= 10.0f;
@@ -156,36 +159,36 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
                 m_coverage = glm::clamp(m_coverage, 0.0f, 1.0f);
                 break;
             case GLFW_KEY_D:
-                m_exposure += 0.1f;
-                if (m_exposure > 1.000001f) m_exposure = 0.0f;
-                break;
-            case GLFW_KEY_F:
                 m_constant -= 0.2f;
                 break;
-            case GLFW_KEY_G:
+            case GLFW_KEY_F:
                 m_constant += 0.2f;
                 break;
-            case GLFW_KEY_H:
+            case GLFW_KEY_G:
                 m_linear -= 0.2f;
                 break;
-            case GLFW_KEY_J:
+            case GLFW_KEY_H:
                 m_linear += 0.2f;
                 break;
-            case GLFW_KEY_K:
+            case GLFW_KEY_J:
                 m_exponent -= 0.2f;
                 break;
-            case GLFW_KEY_L:
+            case GLFW_KEY_K:
                 m_exponent += 0.2f;
+                break;
+            case GLFW_KEY_L:
+                m_isMouseCursorVisible = !m_isMouseCursorVisible;
                 break;
             case GLFW_KEY_SEMICOLON:
                 m_useRefraction = !m_useRefraction;
                 break;
+            case GLFW_KEY_APOSTROPHE:
+                m_exposure += 0.1f;
+                if (m_exposure > 1.000001f) m_exposure = 0.0f;
+                break;
             case GLFW_KEY_BACKSLASH:
                 m_gama += 0.2f;
                 if (m_gama > 5.0f) m_gama = 0.0f;
-                break;
-            case GLFW_KEY_APOSTROPHE:
-                m_isMouseCursorVisible = !m_isMouseCursorVisible;
                 break;
             case GLFW_KEY_GRAVE_ACCENT: {
                     m_changePPFXMode = true;

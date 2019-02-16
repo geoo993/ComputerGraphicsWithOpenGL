@@ -56,6 +56,11 @@
 		C75C9746220E212F00420DF6 /* bricks_normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C75C9742220E212F00420DF6 /* bricks_normal.jpg */; };
 		C75C9747220E212F00420DF6 /* bricks_diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C75C9743220E212F00420DF6 /* bricks_diffuse.jpg */; };
 		C75C9748220E212F00420DF6 /* bricks_height_map.png in Resources */ = {isa = PBXBuildFile; fileRef = C75C9744220E212F00420DF6 /* bricks_height_map.png */; };
+		C76DAFFB22187727005C354C /* lensTexture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C76DAFF922187727005C354C /* lensTexture.jpg */; };
+		C76DAFFC22187727005C354C /* lensColor.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C76DAFFA22187727005C354C /* lensColor.jpg */; };
+		C76DAFFF22189C51005C354C /* lensDirt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C76DAFFE22189C50005C354C /* lensDirt.jpg */; };
+		C76DB0042218A6DE005C354C /* lensStarburst.png in Resources */ = {isa = PBXBuildFile; fileRef = C76DB0022218A6DE005C354C /* lensStarburst.png */; };
+		C76DB0052218A6DE005C354C /* lensDirt.png in Resources */ = {isa = PBXBuildFile; fileRef = C76DB0032218A6DE005C354C /* lensDirt.png */; };
 		C774664622161EF90099F081 /* Game+IGameWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C774664522161EF90099F081 /* Game+IGameWindow.cpp */; };
 		C77673AE2209F69500BA7062 /* Metal_007_Ambient_Occlusion.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C77673952209F69400BA7062 /* Metal_007_Ambient_Occlusion.jpg */; };
 		C77673AF2209F69500BA7062 /* Metal_007_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = C77673962209F69400BA7062 /* Metal_007_Base_Color.png */; };
@@ -125,9 +130,6 @@
 		C7767423220A22B500BA7062 /* Musket_D180221.obj in Resources */ = {isa = PBXBuildFile; fileRef = C77673FF220A22B500BA7062 /* Musket_D180221.obj */; };
 		C7767436220A53A200BA7062 /* NormalMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7767434220A53A100BA7062 /* NormalMappingShader.frag */; };
 		C7767437220A53A200BA7062 /* NormalMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7767435220A53A200BA7062 /* NormalMappingShader.vert */; };
-		C779E1712215905400AF11E9 /* MaterialInfo.frag in Resources */ = {isa = PBXBuildFile; fileRef = C779E1702215905300AF11E9 /* MaterialInfo.frag */; };
-		C779E1742215917900AF11E9 /* LightInfo.frag in Resources */ = {isa = PBXBuildFile; fileRef = C779E1722215917800AF11E9 /* LightInfo.frag */; };
-		C779E1752215917900AF11E9 /* CameraInfo.frag in Resources */ = {isa = PBXBuildFile; fileRef = C779E1732215917900AF11E9 /* CameraInfo.frag */; };
 		C779E17822159F5300AF11E9 /* DepthMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C779E17622159F5100AF11E9 /* DepthMappingShader.frag */; };
 		C779E17922159F5300AF11E9 /* DepthMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C779E17722159F5200AF11E9 /* DepthMappingShader.vert */; };
 		C785F94A2212D2BD00F1F8FD /* ScreenWaveShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C785F9462212D2BB00F1F8FD /* ScreenWaveShader.frag */; };
@@ -860,12 +862,12 @@
 		C7EDB0DB22064BCE007C7D3A /* LampShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D722064BCE007C7D3A /* LampShader.frag */; };
 		C7EDB0DC22064BCE007C7D3A /* LightShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D822064BCE007C7D3A /* LightShader.vert */; };
 		C7EDB0DE22066DE4007C7D3A /* Game+IMaterials.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EDB0DD22066DE4007C7D3A /* Game+IMaterials.cpp */; };
-		C7EEC50322136AF700909E4C /* LensFlareCompleteShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F122136AEF00909E4C /* LensFlareCompleteShader.vert */; };
+		C7EEC50322136AF700909E4C /* LensFlareShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F122136AEF00909E4C /* LensFlareShader.vert */; };
 		C7EEC50422136AF700909E4C /* RadialBlurShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F222136AEF00909E4C /* RadialBlurShader.frag */; };
 		C7EEC50522136AF700909E4C /* BrightPartsShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F322136AF000909E4C /* BrightPartsShader.vert */; };
 		C7EEC50622136AF700909E4C /* RadialBlurShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F422136AF000909E4C /* RadialBlurShader.vert */; };
-		C7EEC50722136AF700909E4C /* LensFlareShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F522136AF100909E4C /* LensFlareShader.frag */; };
-		C7EEC50822136AF700909E4C /* LensFlareCompleteShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F622136AF100909E4C /* LensFlareCompleteShader.frag */; };
+		C7EEC50722136AF700909E4C /* LensFlareGhostShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F522136AF100909E4C /* LensFlareGhostShader.frag */; };
+		C7EEC50822136AF700909E4C /* LensFlareShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F622136AF100909E4C /* LensFlareShader.frag */; };
 		C7EEC50922136AF700909E4C /* BloomShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F722136AF100909E4C /* BloomShader.vert */; };
 		C7EEC50A22136AF700909E4C /* BrightPartsShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F822136AF200909E4C /* BrightPartsShader.frag */; };
 		C7EEC50B22136AF700909E4C /* BlurShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4F922136AF200909E4C /* BlurShader.vert */; };
@@ -875,7 +877,7 @@
 		C7EEC50F22136AF700909E4C /* GaussianBlurShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4FD22136AF400909E4C /* GaussianBlurShader.frag */; };
 		C7EEC51022136AF700909E4C /* BlurShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4FE22136AF500909E4C /* BlurShader.frag */; };
 		C7EEC51122136AF700909E4C /* GaussianBlurShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC4FF22136AF500909E4C /* GaussianBlurShader.vert */; };
-		C7EEC51222136AF700909E4C /* LensFlareShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC50022136AF600909E4C /* LensFlareShader.vert */; };
+		C7EEC51222136AF700909E4C /* LensFlareGhostShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC50022136AF600909E4C /* LensFlareGhostShader.vert */; };
 		C7EEC51322136AF700909E4C /* VignettingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC50122136AF600909E4C /* VignettingShader.frag */; };
 		C7EEC51422136AF700909E4C /* BloomShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EEC50222136AF700909E4C /* BloomShader.frag */; };
 		C7EED106221105360079F5C0 /* ExplosionShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EED0FD221105330079F5C0 /* ExplosionShader.frag */; };
@@ -1004,6 +1006,11 @@
 		C75C9742220E212F00420DF6 /* bricks_normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bricks_normal.jpg; sourceTree = "<group>"; };
 		C75C9743220E212F00420DF6 /* bricks_diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bricks_diffuse.jpg; sourceTree = "<group>"; };
 		C75C9744220E212F00420DF6 /* bricks_height_map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bricks_height_map.png; sourceTree = "<group>"; };
+		C76DAFF922187727005C354C /* lensTexture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lensTexture.jpg; sourceTree = "<group>"; };
+		C76DAFFA22187727005C354C /* lensColor.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lensColor.jpg; sourceTree = "<group>"; };
+		C76DAFFE22189C50005C354C /* lensDirt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lensDirt.jpg; sourceTree = "<group>"; };
+		C76DB0022218A6DE005C354C /* lensStarburst.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lensStarburst.png; sourceTree = "<group>"; };
+		C76DB0032218A6DE005C354C /* lensDirt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lensDirt.png; sourceTree = "<group>"; };
 		C774664522161EF90099F081 /* Game+IGameWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IGameWindow.cpp"; sourceTree = "<group>"; };
 		C77673952209F69400BA7062 /* Metal_007_Ambient_Occlusion.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_007_Ambient_Occlusion.jpg; sourceTree = "<group>"; };
 		C77673962209F69400BA7062 /* Metal_007_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Metal_007_Base_Color.png; sourceTree = "<group>"; };
@@ -1073,9 +1080,6 @@
 		C77673FF220A22B500BA7062 /* Musket_D180221.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Musket_D180221.obj; sourceTree = "<group>"; };
 		C7767434220A53A100BA7062 /* NormalMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = NormalMappingShader.frag; sourceTree = "<group>"; };
 		C7767435220A53A200BA7062 /* NormalMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = NormalMappingShader.vert; sourceTree = "<group>"; };
-		C779E1702215905300AF11E9 /* MaterialInfo.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = MaterialInfo.frag; sourceTree = "<group>"; };
-		C779E1722215917800AF11E9 /* LightInfo.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightInfo.frag; sourceTree = "<group>"; };
-		C779E1732215917900AF11E9 /* CameraInfo.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CameraInfo.frag; sourceTree = "<group>"; };
 		C779E17622159F5100AF11E9 /* DepthMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DepthMappingShader.frag; sourceTree = "<group>"; };
 		C779E17722159F5200AF11E9 /* DepthMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DepthMappingShader.vert; sourceTree = "<group>"; };
 		C785F9462212D2BB00F1F8FD /* ScreenWaveShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ScreenWaveShader.frag; sourceTree = "<group>"; };
@@ -1938,12 +1942,12 @@
 		C7EDB0D722064BCE007C7D3A /* LampShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LampShader.frag; sourceTree = "<group>"; };
 		C7EDB0D822064BCE007C7D3A /* LightShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightShader.vert; sourceTree = "<group>"; };
 		C7EDB0DD22066DE4007C7D3A /* Game+IMaterials.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IMaterials.cpp"; sourceTree = "<group>"; };
-		C7EEC4F122136AEF00909E4C /* LensFlareCompleteShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LensFlareCompleteShader.vert; sourceTree = "<group>"; };
+		C7EEC4F122136AEF00909E4C /* LensFlareShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LensFlareShader.vert; sourceTree = "<group>"; };
 		C7EEC4F222136AEF00909E4C /* RadialBlurShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = RadialBlurShader.frag; sourceTree = "<group>"; };
 		C7EEC4F322136AF000909E4C /* BrightPartsShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BrightPartsShader.vert; sourceTree = "<group>"; };
 		C7EEC4F422136AF000909E4C /* RadialBlurShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = RadialBlurShader.vert; sourceTree = "<group>"; };
-		C7EEC4F522136AF100909E4C /* LensFlareShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LensFlareShader.frag; sourceTree = "<group>"; };
-		C7EEC4F622136AF100909E4C /* LensFlareCompleteShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LensFlareCompleteShader.frag; sourceTree = "<group>"; };
+		C7EEC4F522136AF100909E4C /* LensFlareGhostShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LensFlareGhostShader.frag; sourceTree = "<group>"; };
+		C7EEC4F622136AF100909E4C /* LensFlareShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LensFlareShader.frag; sourceTree = "<group>"; };
 		C7EEC4F722136AF100909E4C /* BloomShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BloomShader.vert; sourceTree = "<group>"; };
 		C7EEC4F822136AF200909E4C /* BrightPartsShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BrightPartsShader.frag; sourceTree = "<group>"; };
 		C7EEC4F922136AF200909E4C /* BlurShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BlurShader.vert; sourceTree = "<group>"; };
@@ -1953,7 +1957,7 @@
 		C7EEC4FD22136AF400909E4C /* GaussianBlurShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = GaussianBlurShader.frag; sourceTree = "<group>"; };
 		C7EEC4FE22136AF500909E4C /* BlurShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BlurShader.frag; sourceTree = "<group>"; };
 		C7EEC4FF22136AF500909E4C /* GaussianBlurShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = GaussianBlurShader.vert; sourceTree = "<group>"; };
-		C7EEC50022136AF600909E4C /* LensFlareShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LensFlareShader.vert; sourceTree = "<group>"; };
+		C7EEC50022136AF600909E4C /* LensFlareGhostShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LensFlareGhostShader.vert; sourceTree = "<group>"; };
 		C7EEC50122136AF600909E4C /* VignettingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = VignettingShader.frag; sourceTree = "<group>"; };
 		C7EEC50222136AF700909E4C /* BloomShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BloomShader.frag; sourceTree = "<group>"; };
 		C7EED0FD221105330079F5C0 /* ExplosionShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ExplosionShader.frag; sourceTree = "<group>"; };
@@ -2062,6 +2066,18 @@
 				C75C972E220E01A200420DF6 /* _up.jpg */,
 			);
 			path = flipped;
+			sourceTree = "<group>";
+		};
+		C76DAFFD22189C36005C354C /* lensFlare */ = {
+			isa = PBXGroup;
+			children = (
+				C76DB0032218A6DE005C354C /* lensDirt.png */,
+				C76DB0022218A6DE005C354C /* lensStarburst.png */,
+				C76DAFFE22189C50005C354C /* lensDirt.jpg */,
+				C76DAFFA22187727005C354C /* lensColor.jpg */,
+				C76DAFF922187727005C354C /* lensTexture.jpg */,
+			);
+			path = lensFlare;
 			sourceTree = "<group>";
 		};
 		C77673942209F69400BA7062 /* rustedmetal */ = {
@@ -3142,9 +3158,6 @@
 				C78F395C2215C819006163EC /* LightSpaceShader.vert */,
 				C779E17622159F5100AF11E9 /* DepthMappingShader.frag */,
 				C779E17722159F5200AF11E9 /* DepthMappingShader.vert */,
-				C779E1732215917900AF11E9 /* CameraInfo.frag */,
-				C779E1722215917800AF11E9 /* LightInfo.frag */,
-				C779E1702215905300AF11E9 /* MaterialInfo.frag */,
 				C785F98E22134CA100F1F8FD /* BarrelDistortionPixelShader.frag */,
 				C785F99222134CA900F1F8FD /* BarrelDistortionPixelShader.vert */,
 				C7EEC50222136AF700909E4C /* BloomShader.frag */,
@@ -3198,10 +3211,10 @@
 				C7EDB0D522064BCE007C7D3A /* LampShader.vert */,
 				C785F95D2212DA7D00F1F8FD /* LensCircleShader.frag */,
 				C785F95E2212DA7D00F1F8FD /* LensCircleShader.vert */,
-				C7EEC4F622136AF100909E4C /* LensFlareCompleteShader.frag */,
-				C7EEC4F122136AEF00909E4C /* LensFlareCompleteShader.vert */,
-				C7EEC4F522136AF100909E4C /* LensFlareShader.frag */,
-				C7EEC50022136AF600909E4C /* LensFlareShader.vert */,
+				C7EEC4F622136AF100909E4C /* LensFlareShader.frag */,
+				C7EEC4F122136AEF00909E4C /* LensFlareShader.vert */,
+				C7EEC4F522136AF100909E4C /* LensFlareGhostShader.frag */,
+				C7EEC50022136AF600909E4C /* LensFlareGhostShader.vert */,
 				C7EDB0D622064BCE007C7D3A /* LightShader.frag */,
 				C7EDB0D822064BCE007C7D3A /* LightShader.vert */,
 				C7EEC4FC22136AF400909E4C /* MotionBlurShader.frag */,
@@ -3255,6 +3268,7 @@
 		C7C8F2CA21FF5F4D00AB865A /* textures */ = {
 			isa = PBXGroup;
 			children = (
+				C76DAFFD22189C36005C354C /* lensFlare */,
 				C785F97B2212E74000F1F8FD /* night_vision_binoculars_mask.png */,
 				C785F97A2212E73F00F1F8FD /* noise_texture_colored.png */,
 				C785F97C2212E74000F1F8FD /* noise_texture_gray.png */,
@@ -4055,6 +4069,7 @@
 				C7B759C92204E32C00E54C30 /* Fine_gravel_pxr128_bmp.tif in Resources */,
 				C7B4D3D722146E2900BCE130 /* oakfloor2-albedo.png in Resources */,
 				C7CEE2EC2212435600895F5D /* KernelShader.vert in Resources */,
+				C76DB0052218A6DE005C354C /* lensDirt.png in Resources */,
 				C7B759702204E32C00E54C30 /* Figured_yew_wood_pxr128.tif in Resources */,
 				C776741E220A22B500BA7062 /* Musket_D180221_Normal_DirectX.png in Resources */,
 				C7B759312204E32C00E54C30 /* Figured_mahogany_pxr128_normal.tif in Resources */,
@@ -4319,7 +4334,6 @@
 				C7B4D3FC22146E2900BCE130 /* harshbricks-albedo.png in Resources */,
 				C7B75A782204E32D00E54C30 /* White_lace_pxr128_normal.tif in Resources */,
 				C7B75A372204E32C00E54C30 /* Pink-brown_painted_pxr128_normal.tif in Resources */,
-				C779E1752215917900AF11E9 /* CameraInfo.frag in Resources */,
 				C7B759642204E32C00E54C30 /* Marine_plywood_pxr128.tif in Resources */,
 				C7B759392204E32C00E54C30 /* Australian_rosewood_pxr128_normal.tif in Resources */,
 				C7B75A762204E32D00E54C30 /* Jade_cloth_pxr128_bmp.tif in Resources */,
@@ -4380,9 +4394,9 @@
 				C7B4D3A122146E2900BCE130 /* metalgrid-metal.png in Resources */,
 				C7B759472204E32C00E54C30 /* Dark_birdseye_maple_pxr128_bmp.tif in Resources */,
 				C7B759662204E32C00E54C30 /* Figured_yew_wood_pxr128_bmp.tif in Resources */,
+				C76DAFFC22187727005C354C /* lensColor.jpg in Resources */,
 				C785F9682212DA7E00F1F8FD /* CrosshatchingShader.vert in Resources */,
 				C7B759D62204E32C00E54C30 /* Ivy_pxr128.tif in Resources */,
-				C779E1742215917900AF11E9 /* LightInfo.frag in Resources */,
 				C7B75A922204E32D00E54C30 /* Woven_flower_pxr128.tif in Resources */,
 				C7FB576A220C7294006F2D91 /* nanosuit.mtl in Resources */,
 				C7C8F45921FFBA4100AB865A /* _up.jpg in Resources */,
@@ -4397,19 +4411,18 @@
 				C7B75A8F2204E32D00E54C30 /* Flower_pattern_pxr128_normal.tif in Resources */,
 				C75C9720220DD69F00420DF6 /* EnvironmentMappingShader.frag in Resources */,
 				C7B4D3B222146E2900BCE130 /* slipperystonework-albedo.png in Resources */,
-				C779E1712215905400AF11E9 /* MaterialInfo.frag in Resources */,
 				C7B7599C2204E32C00E54C30 /* Black_glazed_tile_pxr128_normal.tif in Resources */,
 				C7FB5775220C7294006F2D91 /* helmet_showroom_refl.png in Resources */,
 				C7B759FA2204E32C00E54C30 /* Vertical_metal_pxr128.tif in Resources */,
 				C7B4D3C622146E2900BCE130 /* aluminium-roughness.png in Resources */,
 				C7B759B22204E32C00E54C30 /* Round_mesh_pxr128_normal.tif in Resources */,
-				C7EEC50722136AF700909E4C /* LensFlareShader.frag in Resources */,
+				C7EEC50722136AF700909E4C /* LensFlareGhostShader.frag in Resources */,
 				C7B759B32204E32C00E54C30 /* Steel_diamond_plate_pxr128_normal.tif in Resources */,
 				C7B75A702204E32D00E54C30 /* Black_granite_pxr128_normal.tif in Resources */,
 				C7B7594F2204E32C00E54C30 /* Burled_olive_ash_pxr128.tif in Resources */,
 				C7C8F4A621FFBA9E00AB865A /* _lf.jpg in Resources */,
 				C7B759E32204E32C00E54C30 /* Big_pebbles_pxr128_normal.tif in Resources */,
-				C7EEC51222136AF700909E4C /* LensFlareShader.vert in Resources */,
+				C7EEC51222136AF700909E4C /* LensFlareGhostShader.vert in Resources */,
 				C77673D4220A1BC200BA7062 /* BaseColor.jpg in Resources */,
 				C7B759C82204E32C00E54C30 /* Pebbles_in_mortar_pxr128.tif in Resources */,
 				C7B759782204E32C00E54C30 /* Nails_pxr128.tif in Resources */,
@@ -4446,6 +4459,7 @@
 				C7B7593C2204E32C00E54C30 /* Figured_birdseye_maple_pxr128_bmp.tif in Resources */,
 				C7B759982204E32C00E54C30 /* Shale_rock_pxr128_normal.tif in Resources */,
 				C7B75A1D2204E32C00E54C30 /* Red-orange_glazed_pxr128_normal.tif in Resources */,
+				C76DB0042218A6DE005C354C /* lensStarburst.png in Resources */,
 				C7B759242204E32C00E54C30 /* American_walnut_pxr128_bmp.tif in Resources */,
 				C7B4D39E22146E2900BCE130 /* metalgrid-roughness.png in Resources */,
 				C7B75A8B2204E32D00E54C30 /* Checked_cotton_pxr128.tif in Resources */,
@@ -4599,7 +4613,7 @@
 				C7B759D02204E32C00E54C30 /* Contractors_rock_pxr128_normal.tif in Resources */,
 				C77673B02209F69500BA7062 /* Metal_007_Metallic.jpg in Resources */,
 				C77673CA220A1BA800BA7062 /* MK2_Roughness.png in Resources */,
-				C7EEC50822136AF700909E4C /* LensFlareCompleteShader.frag in Resources */,
+				C7EEC50822136AF700909E4C /* LensFlareShader.frag in Resources */,
 				C7C8F46821FFBA5A00AB865A /* _rt.jpg in Resources */,
 				C713797B2203A47F00E9A0F2 /* heightmap3.jpg in Resources */,
 				C7B759D12204E32C00E54C30 /* Fine_gravel_pxr128.tif in Resources */,
@@ -4735,7 +4749,7 @@
 				C75C9735220E01A200420DF6 /* _ft.jpg in Resources */,
 				C7B4D3D622146E2900BCE130 /* chipped-paint-normal.png in Resources */,
 				C7B75A3F2204E32C00E54C30 /* Standard_shingle_pxr128.tif in Resources */,
-				C7EEC50322136AF700909E4C /* LensFlareCompleteShader.vert in Resources */,
+				C7EEC50322136AF700909E4C /* LensFlareShader.vert in Resources */,
 				C7B7597B2204E32C00E54C30 /* Nails_pxr128_bmp.tif in Resources */,
 				C7B759582204E32C00E54C30 /* Hackberry_pxr128.tif in Resources */,
 				C70A1F91220EEED100170280 /* ChromaticAberrationShader.frag in Resources */,
@@ -4799,6 +4813,7 @@
 				C7B75A532204E32D00E54C30 /* Black_marble_pxr128_bmp.tif in Resources */,
 				C7B75A822204E32D00E54C30 /* Stripes_pxr128.tif in Resources */,
 				C7B4D3AA22146E2900BCE130 /* iron-albedo.png in Resources */,
+				C76DAFFF22189C51005C354C /* lensDirt.jpg in Resources */,
 				C7C8F49921FFBA9000AB865A /* _bk.jpg in Resources */,
 				C7B7598B2204E32C00E54C30 /* Belgium_block_pxr128.tif in Resources */,
 				C7767402220A22B500BA7062 /* MIPIM_D180606.obj in Resources */,
@@ -4823,6 +4838,7 @@
 				C7B759402204E32C00E54C30 /* Burled_olive_ash_pxr128_bmp.tif in Resources */,
 				C785F987221341CC00F1F8FD /* FreiChenEdgeDetectionShader.vert in Resources */,
 				C7B7596D2204E32C00E54C30 /* Figured_yew_wood_pxr128_normal.tif in Resources */,
+				C76DAFFB22187727005C354C /* lensTexture.jpg in Resources */,
 				C7B759992204E32C00E54C30 /* Rock_in_mortar_pxr128_normal.tif in Resources */,
 				C7C8F49D21FFBA9700AB865A /* _dn.jpg in Resources */,
 				C7767436220A53A200BA7062 /* NormalMappingShader.frag in Resources */,

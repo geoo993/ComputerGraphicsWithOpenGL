@@ -11,9 +11,10 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::HDRToneMapping;
+    m_currentPPFXMode = PostProcessingEffectMode::LensFlare;
     m_coverage = 1.0f;
     
+    m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -30,6 +31,7 @@ void Game::LoadFrameBuffers(const GLuint &width , const GLuint &height) {
     m_pFBOs[2]->CreateFramebuffer(width, height, FrameBufferType::PingPongRendering);
     m_pFBOs[3]->CreateFramebuffer(width, height, FrameBufferType::DepthMapping);
     m_pFBOs[4]->CreateFramebuffer(width, height, FrameBufferType::HighDynamicRangeLighting);
+    m_pFBOs[5]->CreateFramebuffer(width, height, FrameBufferType::Default);
 }
 
 /// actvate frame buffer and stop rendering to the default framebuffer
@@ -59,22 +61,22 @@ void Game::ActivateFBO(const PostProcessingEffectMode &mode) {
             currentFBO = m_pFBOs[0];
             // //bind to framebuffer and draw scene as we normally would to color texture
             //binding the fbo as render target stops rendering to the default framebuffer and you'll see that your screen turns black because the scene is no longer rendered to the default framebuffer. all rendering operations will store their result in the attachments of the newly created framebuffer.
-            currentFBO->Bind(true);
+            currentFBO->Bind(true);     // prepare frame buffer 0
             break;
         case FrameBufferType::DepthMapping:
-            currentFBO = m_pFBOs[3];
-            currentFBO->Bind(true);
+            currentFBO = m_pFBOs[3];    
+            currentFBO->Bind(true);     // prepare frame buffer 3
             break;
         case FrameBufferType::MultiSampling: break;
         case FrameBufferType::DirectionalShadowMapping: break;
         case FrameBufferType::PointShadowMapping: break;
         case FrameBufferType::HighDynamicRangeLighting:
             currentFBO = m_pFBOs[4];
-            currentFBO->Bind(true);
+            currentFBO->Bind(true);     // prepare frame buffer 4
             break;
         case FrameBufferType::HighDynamicRangeRendering:
             currentFBO = m_pFBOs[1];
-            currentFBO->Bind(true);
+            currentFBO->Bind(true);     // prepare frame buffer 1
             break;
         case FrameBufferType::PingPongRendering:break;
         case FrameBufferType::DeferredRendering: break;
@@ -342,7 +344,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 
                 glDisable(GL_DEPTH_TEST);
                 
-                CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[49];
+                CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[50];
                 SetDepthMappingUniform(pDepthMappingProgram);
                 RenderToScreen(pDepthMappingProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
             }
@@ -365,7 +367,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
         }
         case PostProcessingEffectMode::Bloom: {
             
-            // BLUR
+            // BLUR Bright Parts
             CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
             pGaussianBlurProgram->UseProgram();
             
@@ -405,15 +407,76 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::HDRToneMapping: {
-            CShaderProgram *pHDRToneMappingProgram = (*m_pShaderPrograms)[51];
+            CShaderProgram *pHDRToneMappingProgram = (*m_pShaderPrograms)[52];
             SetHRDToneMappingUniform(pHDRToneMappingProgram);
             RenderToScreen(pHDRToneMappingProgram, FrameBufferType::HighDynamicRangeLighting, 0, TextureType::AMBIENT);
             return;
         }
         case PostProcessingEffectMode::LensFlare: {
-            CShaderProgram *pLensFlareProgram = (*m_pShaderPrograms)[48];
+            /*
+             The screen space technique comprises the following 4 steps:
+             
+             1. Downsample the scene image.     // Bright parts
+             2. Blur.                           // Blur image
+             3. Generate lens flare features.   // Lens flare
+             4. Upsample/composite.             // Bring all together
+             
+             There are a couple of important considerations to make regarding the overall rendering pipeline:
+             
+             - Any post process motion blur or depth of field effect must be applied prior to combining the lens flare, so that the lens flare features don't participate in those effects. Technically the lens flare features would exhibit some motion blur, however it's incompatible with post process motion techniques. As a compromise, you could implement the lens flare using an accumulation buffer.
+             - The lens flare should be applied before any tonemapping operation. This makes physical sense, as tonemapping simulates the reaction of the film/CMOS to the incoming light, of which the lens flare is a constituent part
+             */
+            // BLUR Bright Parts
+            CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
+            pGaussianBlurProgram->UseProgram();
+            
+            bool horizontal = true; // 0 is false aand 1 is true
+            bool first_iteration = true;
+            int amount = 10; // number of times we blur
+            for (GLuint i = 0; i < amount; i++)
+            {
+                currentFBO = m_pFBOs[2];
+                currentFBO->BindPingPong(horizontal, true); // prepare ping pong frame buffer
+                
+                SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
+                
+                // blur textures that are in the depthMap texture unit
+                if (first_iteration) {
+                    currentFBO = m_pFBOs[1];
+                    RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 1, TextureType::DEPTH); // providing the bright parts textures at the first iteration
+                } else {
+                    currentFBO = m_pFBOs[2];
+                    RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+                }
+                horizontal = !horizontal;
+                if (first_iteration) first_iteration = false;
+            }
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            m_gameWindow->SetViewport();
+            
+            // Lens Flare Ghost
+            currentFBO = m_pFBOs[5];
+            currentFBO->Bind(true); // prepare frame buffer 5
+            
+            CShaderProgram *pLensFlareGhostProgram = (*m_pShaderPrograms)[48];
+            SetLensFlareGhostUniform(pLensFlareGhostProgram);
+            
+            currentFBO = m_pFBOs[2];
+            RenderToScreen(pLensFlareGhostProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            m_gameWindow->SetViewport();
+            
+            // Lens Flare Composition
+            CShaderProgram *pLensFlareProgram = (*m_pShaderPrograms)[49];
             SetLensFlareUniform(pLensFlareProgram);
-            RenderToScreen(pLensFlareProgram);
+            
+            currentFBO = m_pFBOs[5];
+            currentFBO->BindTexture(static_cast<GLint>(TextureType::LENS));
+            
+            currentFBO = m_pFBOs[1];
+            RenderToScreen(pLensFlareProgram, FrameBufferType::HighDynamicRangeRendering, 0, TextureType::AMBIENT);
             return;
         }
         case PostProcessingEffectMode::FXAA: {
@@ -745,7 +808,7 @@ FrameBufferType Game::GetFBOtype(const PostProcessingEffectMode &mode){
         case PostProcessingEffectMode::HDRToneMapping:
         return FrameBufferType::HighDynamicRangeLighting;
         case PostProcessingEffectMode::LensFlare:
-        return FrameBufferType::Default;
+        return FrameBufferType::HighDynamicRangeRendering;
         case PostProcessingEffectMode::FXAA:
         return FrameBufferType::Default;
         case PostProcessingEffectMode::SSAO:

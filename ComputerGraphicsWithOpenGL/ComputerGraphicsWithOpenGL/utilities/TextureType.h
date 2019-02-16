@@ -29,6 +29,7 @@ enum class TextureType {
     DEPTH,
     NOISE,
     MASK,
+    LENS,
     CUBEMAP,
     UNKNOWN
 };

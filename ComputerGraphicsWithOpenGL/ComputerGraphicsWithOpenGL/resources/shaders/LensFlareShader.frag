@@ -1,83 +1,78 @@
 #version 400 core
+// https://github.com/john-chapman/GfxSamples
 
-//http://john-chapman-graphics.blogspot.co.uk/2013/02/pseudo-lens-flare.html
+// Structure holding material information:  its ambient, diffuse, specular, etc...
+uniform struct Material
+{
+    sampler2D ambientMap;           // 0.   ambient map (albedo map)
+    sampler2D diffuseMap;           // 1.   diffuse map (metallic map)
+    sampler2D specularMap;          // 2.   specular map (roughness map)
+    sampler2D normalMap;            // 3.   normal map
+    sampler2D heightMap;            // 4.   height map
+    sampler2D emissionMap;          // 5.   emission map
+    sampler2D displacementMap;      // 6.   displacment map
+    sampler2D aoMap;                // 7.   ambient oclusion map
+    sampler2D glossinessMap;        // 8.   glossiness map
+    sampler2D opacityMap;           // 9.   opacity map
+    sampler2D reflectionMap;        // 10.  reflection map
+    sampler2D depthMap;             // 11.  depth map
+    sampler2D noiseMap;             // 12.  noise map
+    sampler2D maskMap;              // 13.  mask map
+    sampler2D lensMap;              // 14.  lens map
+    samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
+    vec3 color;
+    float shininess;
+} material;
 
-in vec2 vTexCoord;	//fbo texture	
-in vec3 vWorldPosition;
-in vec3 vLocalNormal;
+in VS_OUT
+{
+    vec2 vTexCoord;    // Texture coordinate
+    vec3 vLocalPosition;
+    vec3 vLocalNormal;
+    vec3 vWorldPosition;
+    vec3 vWorldNormal;
+    vec4 vEyePosition;
+} fs_in;
 
-uniform sampler2D sampler0;
-uniform sampler2D lensSampler;
-uniform bool bUselensTexture;
-uniform int numberOfGhosts; // number of ghost samples
-uniform float ghostDispersal; // dispersion factor, between 0 and 1
-uniform bool useHalo;
-uniform float haloWidth; // dispersion factor, between 0 and 1
-uniform float distortion;
+uniform bool bUseDirt;
+uniform float globalBrightness, starburstOffset;
+uniform mat3 lensStarMatrix; // transforms texcoords
+uniform float coverage;        // between (0.0f and 1.0f)
 
-out vec4 vOutputColour;		// The output colour formely  gl_FragColor
-
-vec4 textureDistorted(
-                      in sampler2D tex,
-                      in vec2 texcoord,
-                      in vec2 direction, // direction of distortion
-                      in vec3 distortion // per-channel distortion factor
-                      ) {
-    
-    return vec4(
-                texture(tex, texcoord + direction * distortion.r).r,
-                texture(tex, texcoord + direction * distortion.g).g,
-                texture(tex, texcoord + direction * distortion.b).b,
-                1.0f
-                );
-}
+out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
     
-    vec2 texcoord = vec2(vTexCoord.x, vTexCoord.y);
+    vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = vec4(material.color, 1.0f);
+    vec4 sceneColor = texture(material.ambientMap, uv);
+    vec4 lensDirt = texture(material.noiseMap, uv);
+    vec4 lensFlare = texture(material.lensMap, uv);
     
-    int nGhosts = clamp(numberOfGhosts,2,6) ; // 2 to 6
-    float dispersal = clamp(ghostDispersal,0.4f,0.6f); //0.4 to 0.6
-    
-    //vec2 texcoord = -vTexCoord + vec2(1.0f);
-    vec2 texelSize = 1.0f / vec2(textureSize(sampler0, 0));
-    vec3 distortion = vec3(-texelSize.x * distortion, 0.0f, texelSize.x * distortion);
-    
-    // ghost vector to image centre:
-    vec2 ghostVector = (vec2(0.5f) - texcoord) * dispersal;
-    
-    vec2 direction = normalize(ghostVector);
-    
-    // sample ghosts:  
-    vec4 result = vec4(0.0f);
-    for (int i = 0; i < nGhosts; ++i) { 
+    if (uv.x < (  coverage  ) )
+    {
         
-        if (useHalo == true){
-            // sample halo:
-            vec2 offset = fract(texcoord + ghostVector );
-            vec2 haloVector = normalize(ghostVector) * haloWidth;
-            float weight = length( vec2(0.5f) - offset) / length( vec2(0.5f) );
-            weight = pow(1.0f - weight, 5.0f);
-            //result += texture(sampler0, texcoord + haloVector) * weight;
-            result += textureDistorted(sampler0, texcoord + haloVector, direction, distortion) * weight;
-        }else {
-        
-            vec2 offset = fract(texcoord + ghostVector * float(i)) ;
-            float weight = length(vec2(0.5f) - (offset)) / length(vec2(0.5f));
-            weight = pow(1.0f - weight, 5.0f);
-            //result += texture(sampler0, offset) * weight;
-            result += textureDistorted(sampler0, offset, direction, distortion) * weight;
+        // add lens dirt, as a further enhancement, we can use a starburst texture in addition to the lens dirt:
+        if (bUseDirt) {
+            
+            vec2 lensStarTexcoord = (lensStarMatrix * vec3(uv, 1.0)).xy;
+            vec4 lensStarburst = texture(material.glossinessMap, lensStarTexcoord);
+            lensFlare *= lensDirt + lensStarburst;
         }
+        tc = sceneColor + lensFlare;
+    }
+    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    {
+        tc = sceneColor;
+    }
+    else {
         
-        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = sceneColor;
+        }
     }
     
-    float lengthResult = length( vec2(0.5f) - texcoord) / length( vec2(0.5f) );
-    if (bUselensTexture)
-        result *= texture( lensSampler, vec2( lengthResult ) );
-    
-    
-    vOutputColour = result;
+    vOutputColour = tc;
     
 }

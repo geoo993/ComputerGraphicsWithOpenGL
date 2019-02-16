@@ -112,13 +112,15 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("BrightPartsShader.frag");
     sShaderFileNames.push_back("BloomShader.vert");// 47
     sShaderFileNames.push_back("BloomShader.frag");
-    sShaderFileNames.push_back("LensFlareShader.vert");// 48
+    sShaderFileNames.push_back("LensFlareGhostShader.vert");// 48
+    sShaderFileNames.push_back("LensFlareGhostShader.frag");
+    sShaderFileNames.push_back("LensFlareShader.vert");// 49
     sShaderFileNames.push_back("LensFlareShader.frag");
-    sShaderFileNames.push_back("DepthMappingShader.vert");// 49
+    sShaderFileNames.push_back("DepthMappingShader.vert");// 50
     sShaderFileNames.push_back("DepthMappingShader.frag");
-    sShaderFileNames.push_back("LightSpaceShader.vert");// 50
+    sShaderFileNames.push_back("LightSpaceShader.vert");// 51
     sShaderFileNames.push_back("LightSpaceShader.frag");
-    sShaderFileNames.push_back("ToneMappingShader.vert");// 51
+    sShaderFileNames.push_back("ToneMappingShader.vert");// 52
     sShaderFileNames.push_back("ToneMappingShader.frag");
     
     
@@ -524,35 +526,44 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pBloomShader->LinkProgram();
     m_pShaderPrograms->push_back(pBloomShader);
     
+    // Create the lens Flare Ghost shader program
+    CShaderProgram *pLensFlareGhostShader = new CShaderProgram;
+    pLensFlareGhostShader->CreateProgram();
+    pLensFlareGhostShader->AddShaderToProgram(&shShaders[99]);
+    pLensFlareGhostShader->AddShaderToProgram(&shShaders[100]);
+    pLensFlareGhostShader->LinkProgram();
+    m_pShaderPrograms->push_back(pLensFlareGhostShader);
+    
     // Create the lens Flare shader program
     CShaderProgram *pLensFlareShader = new CShaderProgram;
     pLensFlareShader->CreateProgram();
-    pLensFlareShader->AddShaderToProgram(&shShaders[99]);
-    pLensFlareShader->AddShaderToProgram(&shShaders[100]);
+    pLensFlareShader->AddShaderToProgram(&shShaders[101]);
+    pLensFlareShader->AddShaderToProgram(&shShaders[102]);
     pLensFlareShader->LinkProgram();
     m_pShaderPrograms->push_back(pLensFlareShader);
+    
     
     // Create the Depth Mapping shader program
     CShaderProgram *pDepthMappingShader = new CShaderProgram;
     pDepthMappingShader->CreateProgram();
-    pDepthMappingShader->AddShaderToProgram(&shShaders[101]);
-    pDepthMappingShader->AddShaderToProgram(&shShaders[102]);
+    pDepthMappingShader->AddShaderToProgram(&shShaders[103]);
+    pDepthMappingShader->AddShaderToProgram(&shShaders[104]);
     pDepthMappingShader->LinkProgram();
     m_pShaderPrograms->push_back(pDepthMappingShader);
     
     // Create the Light Space shader program
     CShaderProgram *pLightSpaceShader = new CShaderProgram;
     pLightSpaceShader->CreateProgram();
-    pLightSpaceShader->AddShaderToProgram(&shShaders[103]);
-    pLightSpaceShader->AddShaderToProgram(&shShaders[104]);
+    pLightSpaceShader->AddShaderToProgram(&shShaders[105]);
+    pLightSpaceShader->AddShaderToProgram(&shShaders[106]);
     pLightSpaceShader->LinkProgram();
     m_pShaderPrograms->push_back(pLightSpaceShader);
     
     // Create the Tone Mapping shader program
     CShaderProgram *pToneMappingShader = new CShaderProgram;
     pToneMappingShader->CreateProgram();
-    pToneMappingShader->AddShaderToProgram(&shShaders[105]);
-    pToneMappingShader->AddShaderToProgram(&shShaders[106]);
+    pToneMappingShader->AddShaderToProgram(&shShaders[107]);
+    pToneMappingShader->AddShaderToProgram(&shShaders[108]);
     pToneMappingShader->LinkProgram();
     m_pShaderPrograms->push_back(pToneMappingShader);
 }

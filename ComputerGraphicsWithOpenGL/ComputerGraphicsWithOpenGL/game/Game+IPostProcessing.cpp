@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::LensFlare;
+    m_currentPPFXMode = PostProcessingEffectMode::Shockwave;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -208,7 +208,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             RenderToScreen(pToonifyProgram);
             return;
         }
-        /////======MUST FIX
         case PostProcessingEffectMode::Shockwave: {
             CShaderProgram *pShockwaveProgram = (*m_pShaderPrograms)[35];
             SetShockwaveUniform(pShockwaveProgram);
@@ -227,8 +226,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             RenderToScreen(pBarrelDistortionProgram);
             return;
         }
-            
-            /////======MUST FIX
         case PostProcessingEffectMode::MultiScreenFishEye: {
             CShaderProgram *pMultiScreenFishEyeProgram = (*m_pShaderPrograms)[38];
             SetMultiScreenFishEyeUniform(pMultiScreenFishEyeProgram);
@@ -525,8 +522,6 @@ void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType 
     SetMaterialUniform(pShaderProgram, "material", glm::vec3(1.0f, 1.0f, 0.0f));
     SetImageProcessingUniform(pShaderProgram, true);
     RenderQuad(pShaderProgram);
-
-    
 }
 
 // Render scene method runs
@@ -657,7 +652,7 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
     // render the result on the default frame buffer using a full screen quad with post proccessing effects
     switch(mode) {
         case PostProcessingEffectMode::DefaultFrameBuffer:
-        return "Default FrameBuffer";
+        return "Default Frame Buffer";
         case PostProcessingEffectMode::ColorInversion:
         return "Color Inversion";
         case PostProcessingEffectMode::GrayScale:

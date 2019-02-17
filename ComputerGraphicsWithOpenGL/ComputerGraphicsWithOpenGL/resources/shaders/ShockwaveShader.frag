@@ -19,8 +19,7 @@ uniform struct Material
     sampler2D depthMap;             // 11.  depth map
     sampler2D noiseMap;             // 12.  noise map
     sampler2D maskMap;              // 13.  mask map
-    sampler2D lensMap;              // 14.  lens map
-    samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
+    samplerCube cubeMap;            // 14.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
 } material;
@@ -38,6 +37,7 @@ in VS_OUT
 uniform vec2 center = vec2(0.5f, 0.5f); // Mouse position (in texture coord space, between [0  1]).
 uniform float time; // shockwave elapsed time in second.
 uniform vec3 shockParams; // vec3(10.0, 0.8, 0.1) shockwave parameters
+uniform float coverage;        // between (0.0f and 1.0f)
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
@@ -50,18 +50,36 @@ void main()
      */
     
     vec2 uv = fs_in.vTexCoord.xy ;
-    vec2 texCoord = uv;
+    vec4 tc = vec4(material.color, 1.0f);
     
-    float dist = distance(uv, center);
-    
-    if ( (dist <= (time + shockParams.z) ) && ( dist >= (time - shockParams.z) ) )
+    if (uv.x < (  coverage  ) )
     {
-        float diff = (dist - time);
-        float powDiff = 1.0f - pow( abs( diff * shockParams.x ), shockParams.y);
-        float diffTime = diff * powDiff;
-        vec2 diffUV = normalize(uv - center);
-        texCoord = uv + (diffUV * diffTime);
+        vec2 texCoord = uv;
+        float dist = distance(uv, center);
+        
+        if ( (dist <= (time + shockParams.z) ) && ( dist >= (time - shockParams.z) ) )
+        {
+            float diff = (dist - time);
+            float powDiff = 1.0f - pow( abs( diff * shockParams.x ), shockParams.y);
+            float diffTime = diff * powDiff;
+            vec2 diffUV = normalize(uv - center);
+            texCoord = uv + (diffUV * diffTime);
+        }
+        
+        tc = texture(material.ambientMap, texCoord);
+    }
+    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    }
+    else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
     }
     
-    vOutputColour = texture(material.ambientMap, texCoord);
+    vOutputColour = tc;
+    
+    
 }

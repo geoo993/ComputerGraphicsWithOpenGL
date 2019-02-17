@@ -20,7 +20,7 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
     glm::mat4 model = m_pQuad->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
     pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    m_pQuad->Render();
+    m_pQuad->Render(true);
     
 }
 void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
@@ -320,6 +320,7 @@ void Game::RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & po
     m_pMetaballs->Update(time);
     
     glm::mat4 model = m_pMetaballs->Model();
+    pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
     pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));

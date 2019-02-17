@@ -18,7 +18,8 @@ CQuad::~CQuad()
     Release();
 }
 
-void CQuad::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames, const GLfloat &size){
+void CQuad::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames,
+                   const GLfloat &width, const GLfloat &height){
     
     m_directory = directory;
     m_textureNames = textureNames;
@@ -54,8 +55,8 @@ void CQuad::Create(const std::string &directory, const std::map<std::string, Tex
     ////Center///
     //
     //C//////////D
-    GLfloat w = size;
-    GLfloat h = size;
+    GLfloat w = width;
+    GLfloat h = height;
     
     std::vector<glm::vec3> quadVertices = {
         glm::vec3(-w, h, 0.0f),//A   top left
@@ -128,7 +129,6 @@ void CQuad::Create(const std::string &directory, const std::map<std::string, Tex
 
     // Upload the VBO to the GPU
     m_vbo.UploadDataToGPU(GL_STATIC_DRAW);
-    
     
     // Set the vertex attribute locations
     GLsizei istride = 4*sizeof(glm::vec3)+sizeof(glm::vec2);

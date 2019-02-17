@@ -35,7 +35,7 @@ uniform float xOffset, yOffset;
 void main()
 {
     
-    vec4 position = vec4(inPosition, 1.0f);
+    vec4 position = vec4(inPosition.x, inPosition.y, 1.0f, 1.0f);
     
     // Pass through the texture coordinate
     vs_out.vTexCoord = inCoord;
@@ -51,9 +51,9 @@ void main()
     
     // Transform the vertex spatial position using
     vec4 glPosition = bUseScreenQuad ? position : matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
-    gl_Position = glPosition;
-    
     vs_out.vPosDevSpace = glPosition / glPosition.z;
-    vs_out.vPosDevSpace = vec4(0.0f, 0.0f, 1.0f, 1.0f) + (vs_out.vPosDevSpace + vec4(1.0f, 1.0f, 0.0f, 0.0f));
+    vs_out.vPosDevSpace = vec4(xOffset, yOffset, 1.0f, 1.0f) + (vs_out.vPosDevSpace + vec4(1.0f, 1.0f, 0.0f, 0.0f));
+    
+    gl_Position = glPosition;
 }
 

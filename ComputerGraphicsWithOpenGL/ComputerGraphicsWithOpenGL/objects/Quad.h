@@ -20,7 +20,7 @@ public:
     CQuad();
     ~CQuad();
     void Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames,
-                const GLfloat &size = 1.0f);
+                const GLfloat &width = 1.0f, const GLfloat &height = 1.0f);
     void Transform(const glm::vec3 & position,
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));

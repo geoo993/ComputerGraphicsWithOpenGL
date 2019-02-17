@@ -33,7 +33,7 @@ uniform bool bUseScreenQuad;
 void main()
 {
     
-    vec4 position = vec4(inPosition, 1.0f);
+    vec4 position = vec4(inPosition.x, inPosition.y, 1.0f, 1.0f);
     
     // Pass through the texture coordinate
     vs_out.vTexCoord = inCoord;

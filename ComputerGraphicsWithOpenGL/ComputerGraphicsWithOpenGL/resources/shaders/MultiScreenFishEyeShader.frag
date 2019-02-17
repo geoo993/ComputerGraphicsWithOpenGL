@@ -50,7 +50,6 @@ void main()
       
      */
     
-    
     vec2 st = fs_in.vTexCoord.xy;
     vec4 tc = vec4(material.color, 1.0f);
     

@@ -203,21 +203,21 @@ void Game::SetToonifyUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
-void Game::SetShockwaveUniform(CShaderProgram *pShaderProgram){
+void Game::SetShockwaveUniform(CShaderProgram *pShaderProgram) {
     
     float mX = (float)(m_mouseX / m_gameWindow->GetWidth());
     float mY = (float)(m_mouseY / m_gameWindow->GetHeight() );
+    glm::vec2 center = glm::vec2(mX, (1.0f - mY) ); // or center screen with glm::vec2(0.5f, 0.5f));
     if (m_mouseButtonDown) {
-        //std::cout << "shockwave time: " << m_shockWaveTime << ", Mouse x: " << mX << " and mouse y: " << mY << std::endl;
         m_shockWaveTime = 0.0f;
     }
-    m_shockWaveTime += 0.001f;//m_deltaTime;
-    
-    glm::vec2 center(mX, (1.0f - mY) ); // or center screen with glm::vec2(0.5f, 0.5f));
-    
+    m_shockWaveTime += m_timePerSecond;
+
+    pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("center", center);
     pShaderProgram->SetUniform("time", m_shockWaveTime);
     pShaderProgram->SetUniform("shockParams", glm::vec3(10.0f, 0.8f, 0.1f ) );
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
 void Game::SetFishEyeUniform(CShaderProgram *pShaderProgram){
@@ -235,8 +235,6 @@ void Game::SetBarrelDistortionUniform(CShaderProgram *pShaderProgram){
 void Game::SetMultiScreenFishEyeUniform(CShaderProgram *pShaderProgram){
     
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("barrelPower", 2.0f);
-    pShaderProgram->SetUniform("wireframe", 0);
     pShaderProgram->SetUniform("xOffset", 0.5f);
     pShaderProgram->SetUniform("yOffset", 0.5f);
     pShaderProgram->SetUniform("lensRadius", 3.5f);

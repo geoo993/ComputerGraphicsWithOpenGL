@@ -32,8 +32,7 @@ uniform bool bUseScreenQuad;
 // This is the entry point into the vertex shader
 void main()
 {
-    
-    vec4 position = vec4(inPosition, 1.0f);
+    vec4 position = vec4(inPosition.x, inPosition.y, 1.0f, 1.0f);
     
     // Pass through the texture coordinate
     vs_out.vTexCoord = inCoord;
@@ -49,6 +48,6 @@ void main()
     
     // Transform the vertex spatial position using
     gl_Position = bUseScreenQuad ? position : matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
-    
+
 }
 

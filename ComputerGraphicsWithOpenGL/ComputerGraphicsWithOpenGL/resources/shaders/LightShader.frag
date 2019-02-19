@@ -11,6 +11,7 @@ uniform struct Camera
 {
     vec3 position;
     vec3 front;
+    bool isMoving;
 } camera;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...

@@ -284,6 +284,8 @@
 		C7B4D40022146E2900BCE130 /* cavefloor-ao.png in Resources */ = {isa = PBXBuildFile; fileRef = C7B4D39A22146E2900BCE130 /* cavefloor-ao.png */; };
 		C7B4D40122146E2900BCE130 /* cavefloor-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C7B4D39B22146E2900BCE130 /* cavefloor-normal.png */; };
 		C7B4D40222146E2900BCE130 /* cavefloor-height.png in Resources */ = {isa = PBXBuildFile; fileRef = C7B4D39C22146E2900BCE130 /* cavefloor-height.png */; };
+		C7B70506221C1106002F5732 /* FastApproximateAntiAliasingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7B70504221C1104002F5732 /* FastApproximateAntiAliasingShader.vert */; };
+		C7B70507221C1106002F5732 /* FastApproximateAntiAliasingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7B70505221C1105002F5732 /* FastApproximateAntiAliasingShader.frag */; };
 		C7B754662204CE1400E54C30 /* MarchingCubes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7B754622204CE1400E54C30 /* MarchingCubes.cpp */; };
 		C7B754672204CE1400E54C30 /* Metaballs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7B754642204CE1400E54C30 /* Metaballs.cpp */; };
 		C7B759232204E32C00E54C30 /* Honduran_mahogany_pxr128.tif in Resources */ = {isa = PBXBuildFile; fileRef = C7B7578C2204E32C00E54C30 /* Honduran_mahogany_pxr128.tif */; };
@@ -1234,6 +1236,8 @@
 		C7B4D39A22146E2900BCE130 /* cavefloor-ao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cavefloor-ao.png"; sourceTree = "<group>"; };
 		C7B4D39B22146E2900BCE130 /* cavefloor-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cavefloor-normal.png"; sourceTree = "<group>"; };
 		C7B4D39C22146E2900BCE130 /* cavefloor-height.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cavefloor-height.png"; sourceTree = "<group>"; };
+		C7B70504221C1104002F5732 /* FastApproximateAntiAliasingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FastApproximateAntiAliasingShader.vert; sourceTree = "<group>"; };
+		C7B70505221C1105002F5732 /* FastApproximateAntiAliasingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FastApproximateAntiAliasingShader.frag; sourceTree = "<group>"; };
 		C7B7544022048CC100E54C30 /* Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Extensions.h; sourceTree = "<group>"; };
 		C7B7544122048DCD00E54C30 /* Colours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colours.h; sourceTree = "<group>"; };
 		C7B754622204CE1400E54C30 /* MarchingCubes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MarchingCubes.cpp; sourceTree = "<group>"; };
@@ -3152,6 +3156,8 @@
 		C7C8F2C921FF5F3C00AB865A /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				C7B70505221C1105002F5732 /* FastApproximateAntiAliasingShader.frag */,
+				C7B70504221C1104002F5732 /* FastApproximateAntiAliasingShader.vert */,
 				C785F98E22134CA100F1F8FD /* BarrelDistortionPixelShader.frag */,
 				C785F99222134CA900F1F8FD /* BarrelDistortionPixelShader.vert */,
 				C7EEC50222136AF700909E4C /* BloomShader.frag */,
@@ -4343,6 +4349,7 @@
 				C785F9782212DA7E00F1F8FD /* FrostedGlassShader.vert in Resources */,
 				C7EED10D221105360079F5C0 /* ExplosionShader.vert in Resources */,
 				C7C8F48E21FFBA8300AB865A /* _lf.jpg in Resources */,
+				C7B70506221C1106002F5732 /* FastApproximateAntiAliasingShader.vert in Resources */,
 				C7B4D3E222146E2900BCE130 /* plastic-roughness.png in Resources */,
 				C7C8F47A21FFBA6F00AB865A /* _rt.jpg in Resources */,
 				C7B759822204E32C00E54C30 /* Golden_snakeskin_pxr128.tif in Resources */,
@@ -4567,6 +4574,7 @@
 				C7C8F49F21FFBA9700AB865A /* _bk.jpg in Resources */,
 				C7B4D3F522146E2900BCE130 /* paint-peeling-albedo.png in Resources */,
 				C7B7595D2204E32C00E54C30 /* Brazilian_rosewood_pxr128.tif in Resources */,
+				C7B70507221C1106002F5732 /* FastApproximateAntiAliasingShader.frag in Resources */,
 				C7B759422204E32C00E54C30 /* White_maple_pxr128.tif in Resources */,
 				C7B7593A2204E32C00E54C30 /* Figured_birdseye_maple_pxr128_normal.tif in Resources */,
 				C77673C22209F69500BA7062 /* rustediron2_basecolor.png in Resources */,

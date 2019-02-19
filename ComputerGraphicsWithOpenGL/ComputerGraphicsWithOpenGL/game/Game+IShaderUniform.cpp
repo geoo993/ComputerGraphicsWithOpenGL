@@ -418,3 +418,11 @@ void Game::SetLensFlareUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 
 }
+
+void Game::SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("spanOffset", m_materialShininess);
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}

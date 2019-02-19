@@ -20,9 +20,9 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
     glm::mat4 model = m_pQuad->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
     pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    m_pQuad->Render(true);
-    
+    m_pQuad->Render(true);    
 }
+
 void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
     // start by deleting current skybox and create new one
     if (m_changeSkybox == true) {

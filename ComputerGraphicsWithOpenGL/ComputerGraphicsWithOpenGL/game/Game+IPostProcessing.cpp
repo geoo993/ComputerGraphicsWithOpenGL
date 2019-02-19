@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::Shockwave;
+    m_currentPPFXMode = PostProcessingEffectMode::MotionBlur;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -245,42 +245,46 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::GaussianBlur: {
-            // BLUR in many iterations
             CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
             pGaussianBlurProgram->UseProgram();
-            
             bool horizontal = true; // 0 is false aand 1 is true
-            bool first_iteration = true;
-            int amount = 9; // number of times we blur
-            for (GLuint i = 0; i < amount; i++)
-            {
-                currentFBO = m_pFBOs[2];
-                currentFBO->BindPingPong(horizontal, true); // prepare ping pong frame buffer
-                
-                SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
-                
-                // blur textures that are in the depthMap texture unit
-                if (first_iteration) {
-                    currentFBO = m_pFBOs[1];
-                    RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 0, TextureType::DEPTH);
-                } else {
-                    currentFBO = m_pFBOs[2];
-                    RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
-                }
-                
-                horizontal = !horizontal;
-                if (first_iteration) first_iteration = false;
-            }
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            m_gameWindow->SetViewport();
-    
-            currentFBO = m_pFBOs[1];
-            currentFBO->BindHDRTexture(0, static_cast<GLint>(TextureType::AMBIENT)); // bind the earlier (scene rendering) rendering from the hrd frame buffer
             
-            // taking the blured texture and showing it after setviewport
-            currentFBO = m_pFBOs[2];
-            SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
-            RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, horizontal, TextureType::DEPTH);
+            // Second Pass - BLUR in many iterations
+            {
+                bool first_iteration = true;
+                int amount = 9; // number of times we blur
+                for (GLuint i = 0; i < amount; i++)
+                {
+                    currentFBO = m_pFBOs[2];
+                    currentFBO->BindPingPong(horizontal, true); // prepare ping pong frame buffer
+                    
+                    SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
+                    
+                    // blur textures that are in the depthMap texture unit
+                    if (first_iteration) {
+                        currentFBO = m_pFBOs[1];
+                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 0, TextureType::DEPTH);
+                    } else {
+                        currentFBO = m_pFBOs[2];
+                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+                    }
+                    
+                    horizontal = !horizontal;
+                    if (first_iteration) first_iteration = false;
+                }
+            }
+            ResetFrameBuffer();
+            
+            // Third Pass - Final Blur to screen
+            {
+                currentFBO = m_pFBOs[1];
+                currentFBO->BindHDRTexture(0, static_cast<GLint>(TextureType::AMBIENT)); // bind the earlier (scene rendering) rendering from the hrd frame buffer
+                
+                // taking the blured texture and showing it after setviewport
+                currentFBO = m_pFBOs[2];
+                SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
+                RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, horizontal, TextureType::DEPTH);
+            }
             return;
         }
         case PostProcessingEffectMode::Blur: {
@@ -295,54 +299,52 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             RenderToScreen(pRadialBlurProgram);
             return;
         }
-        
-        /////======MUST FIX
         case PostProcessingEffectMode::MotionBlur: {
-            // create depth texture
-            currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
-            
-            // Render new frame
+            // Second Pass - Render Scene as usual
             {
-                currentFBO = m_pFBOs[0];
-                currentFBO->Bind();
+                currentFBO = m_pFBOs[3];
+                currentFBO->Bind(true); // prepare depth frame buffer (3)
+                RenderScene(true);
+            }
             
-                RenderScene(false);
+            ResetFrameBuffer();
             
-                glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            
-                m_gameWindow->SetViewport();
-            
-                m_gameWindow->ClearBuffers();
-            
-                glDisable(GL_DEPTH_TEST);
-            
+            // Third Pass - Motion Blur
+            {
                 CShaderProgram *pMotionBlurProgram = (*m_pShaderPrograms)[44];
                 SetMotionBlurUniform(pMotionBlurProgram);
+                SetCameraUniform(pMotionBlurProgram, "camera", m_pCamera);
+                
+                // bind depth texture
+                currentFBO = m_pFBOs[3];
+                currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
+                
+                currentFBO = m_pFBOs[0];
                 RenderToScreen(pMotionBlurProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
             }
             return;
         }
         case PostProcessingEffectMode::DepthMapping: {
-            // create depth texture
-            currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
             
-            // Render new frame
+            // Second Pass - Render Scene as usual
             {
-                currentFBO = m_pFBOs[0];
-                currentFBO->Bind();
-                
-                RenderScene(false);
-                
-                glBindFramebuffer(GL_FRAMEBUFFER, 0);
-                
-                m_gameWindow->SetViewport();
-                
-                m_gameWindow->ClearBuffers();
-                
-                glDisable(GL_DEPTH_TEST);
-                
+                currentFBO = m_pFBOs[3];
+                currentFBO->Bind(true); // prepare depth frame buffer (3)
+                RenderScene(true);
+            }
+            
+            ResetFrameBuffer();
+            
+            // Third Pass - DepthMapping
+            {
                 CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[50];
                 SetDepthMappingUniform(pDepthMappingProgram);
+                
+                // bind depth texture
+                currentFBO = m_pFBOs[3];
+                currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
+                
+                currentFBO = m_pFBOs[0];
                 RenderToScreen(pDepthMappingProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
             }
             return;
@@ -364,43 +366,47 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
         }
         case PostProcessingEffectMode::Bloom: {
             
-            // BLUR Bright Parts
-            CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
-            pGaussianBlurProgram->UseProgram();
-            
             bool horizontal = true; // 0 is false aand 1 is true
-            bool first_iteration = true;
-            int amount = 10; // number of times we blur
-            for (GLuint i = 0; i < amount; i++)
+            // Second Pass - BLUR Bright Parts
             {
-                currentFBO = m_pFBOs[2];
-                currentFBO->BindPingPong(horizontal, true); // prepare ping pong frame buffer
+                CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
+                pGaussianBlurProgram->UseProgram();
                 
-                SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
-                
-                // blur textures that are in the depthMap texture unit
-                if (first_iteration) {
-                    currentFBO = m_pFBOs[1];
-                    RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 1, TextureType::DEPTH); // providing the bright parts textures at the first iteration
-                } else {
+                bool first_iteration = true;
+                int amount = 10; // number of times we blur
+                for (GLuint i = 0; i < amount; i++)
+                {
                     currentFBO = m_pFBOs[2];
-                    RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+                    currentFBO->BindPingPong(horizontal, true); // prepare ping pong frame buffer
+                    
+                    SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
+                    
+                    // blur textures that are in the depthMap texture unit
+                    if (first_iteration) {
+                        currentFBO = m_pFBOs[1];
+                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 1, TextureType::DEPTH); // providing the bright parts textures at the first iteration
+                    } else {
+                        currentFBO = m_pFBOs[2];
+                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+                    }
+                    horizontal = !horizontal;
+                    if (first_iteration) first_iteration = false;
                 }
-                horizontal = !horizontal;
-                if (first_iteration) first_iteration = false;
             }
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            m_gameWindow->SetViewport();
             
-            // BLOOM
-            CShaderProgram *pBloomProgram = (*m_pShaderPrograms)[47];
-            SetBloomUniform(pBloomProgram);
+            ResetFrameBuffer();
             
-            currentFBO = m_pFBOs[1];
-            currentFBO->BindHDRTexture(0, static_cast<GLint>(TextureType::AMBIENT)); // bind the earlier (scene rendering) rendering from the hrd frame buffer
-            
-            currentFBO = m_pFBOs[2];
-            RenderToScreen(pBloomProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+            // Third Pass - BLOOM
+            {
+                CShaderProgram *pBloomProgram = (*m_pShaderPrograms)[47];
+                SetBloomUniform(pBloomProgram);
+                
+                currentFBO = m_pFBOs[1];
+                currentFBO->BindHDRTexture(0, static_cast<GLint>(TextureType::AMBIENT)); // bind the earlier (scene rendering) rendering from the hrd frame buffer
+                
+                currentFBO = m_pFBOs[2];
+                RenderToScreen(pBloomProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+            }
             return;
         }
         case PostProcessingEffectMode::HDRToneMapping: {
@@ -423,57 +429,61 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
              - Any post process motion blur or depth of field effect must be applied prior to combining the lens flare, so that the lens flare features don't participate in those effects. Technically the lens flare features would exhibit some motion blur, however it's incompatible with post process motion techniques. As a compromise, you could implement the lens flare using an accumulation buffer.
              - The lens flare should be applied before any tonemapping operation. This makes physical sense, as tonemapping simulates the reaction of the film/CMOS to the incoming light, of which the lens flare is a constituent part
              */
-            // BLUR Bright Parts
-            CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
-            pGaussianBlurProgram->UseProgram();
-            
             bool horizontal = true; // 0 is false aand 1 is true
-            bool first_iteration = true;
-            int amount = 10; // number of times we blur
-            for (GLuint i = 0; i < amount; i++)
+            // Second Pass - BLUR Bright Parts
             {
-                currentFBO = m_pFBOs[2];
-                currentFBO->BindPingPong(horizontal, true); // prepare ping pong frame buffer
+                CShaderProgram *pGaussianBlurProgram = (*m_pShaderPrograms)[41];
+                pGaussianBlurProgram->UseProgram();
                 
-                SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
-                
-                // blur textures that are in the depthMap texture unit
-                if (first_iteration) {
-                    currentFBO = m_pFBOs[1];
-                    RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 1, TextureType::DEPTH); // providing the bright parts textures at the first iteration
-                } else {
+                bool first_iteration = true;
+                int amount = 10; // number of times we blur
+                for (GLuint i = 0; i < amount; i++)
+                {
                     currentFBO = m_pFBOs[2];
-                    RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+                    currentFBO->BindPingPong(horizontal, true); // prepare ping pong frame buffer
+                    
+                    SetGaussianBlurUniform(pGaussianBlurProgram, horizontal);
+                    
+                    // blur textures that are in the depthMap texture unit
+                    if (first_iteration) {
+                        currentFBO = m_pFBOs[1];
+                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 1, TextureType::DEPTH); // providing the bright parts textures at the first iteration
+                    } else {
+                        currentFBO = m_pFBOs[2];
+                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+                    }
+                    horizontal = !horizontal;
+                    if (first_iteration) first_iteration = false;
                 }
-                horizontal = !horizontal;
-                if (first_iteration) first_iteration = false;
             }
             
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            m_gameWindow->SetViewport();
+            ResetFrameBuffer();
             
-            // Lens Flare Ghost
-            currentFBO = m_pFBOs[5];
-            currentFBO->Bind(true); // prepare frame buffer 5
+            // Third Pass - Flare Ghost
+            {
+                currentFBO = m_pFBOs[5];
+                currentFBO->Bind(true); // prepare default frame buffer (5)
+                
+                CShaderProgram *pLensFlareGhostProgram = (*m_pShaderPrograms)[48];
+                SetLensFlareGhostUniform(pLensFlareGhostProgram);
+                
+                currentFBO = m_pFBOs[2];
+                RenderToScreen(pLensFlareGhostProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
+            }
             
-            CShaderProgram *pLensFlareGhostProgram = (*m_pShaderPrograms)[48];
-            SetLensFlareGhostUniform(pLensFlareGhostProgram);
+            ResetFrameBuffer();
             
-            currentFBO = m_pFBOs[2];
-            RenderToScreen(pLensFlareGhostProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
-            
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            m_gameWindow->SetViewport();
-            
-            // Lens Flare Composition
-            CShaderProgram *pLensFlareProgram = (*m_pShaderPrograms)[49];
-            SetLensFlareUniform(pLensFlareProgram);
-            
-            currentFBO = m_pFBOs[5];
-            currentFBO->BindTexture(static_cast<GLint>(TextureType::LENS));
-            
-            currentFBO = m_pFBOs[1];
-            RenderToScreen(pLensFlareProgram, FrameBufferType::HighDynamicRangeRendering, 0, TextureType::AMBIENT);
+            // Forth Pass - Lens Flare Composition
+            {
+                CShaderProgram *pLensFlareProgram = (*m_pShaderPrograms)[49];
+                SetLensFlareUniform(pLensFlareProgram);
+                
+                currentFBO = m_pFBOs[5];
+                currentFBO->BindTexture(static_cast<GLint>(TextureType::LENS));
+                
+                currentFBO = m_pFBOs[1];
+                RenderToScreen(pLensFlareProgram, FrameBufferType::HighDynamicRangeRendering, 0, TextureType::AMBIENT);
+            }
             return;
         }
         case PostProcessingEffectMode::FXAA: {
@@ -522,6 +532,23 @@ void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType 
     SetMaterialUniform(pShaderProgram, "material", glm::vec3(1.0f, 1.0f, 0.0f));
     SetImageProcessingUniform(pShaderProgram, true);
     RenderQuad(pShaderProgram);
+}
+
+void Game::ResetFrameBuffer() {
+    // It is useful to switch back to the default framebuffer for this to easily see your results.
+    // Unbind to render to our default framebuffer or switching back to the default buffer at 0.
+    // To make sure all rendering operations will have a visual impact on the main window we need to make the default framebuffer active again by binding to 0:
+    // essentially, we just bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    m_gameWindow->SetViewport();
+    
+    // clear all relevant buffers, set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
+    m_gameWindow->ClearBuffers();
+    
+    // disable depth test so screen-space quad isn't discarded due to depth test.
+    glDisable(GL_DEPTH_TEST);
+    
 }
 
 // Render scene method runs
@@ -662,9 +689,9 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         case PostProcessingEffectMode::KernelBlur:
         return "Kernel Blur";
         case PostProcessingEffectMode::SobelEdgeDetection:
-            return "Sobel Edge Detection";
+        return "Sobel Edge Detection";
         case PostProcessingEffectMode::FreiChenEdgeDetection:
-            return "Frei-Chen Edge Detection";
+        return "Frei-Chen Edge Detection";
         case PostProcessingEffectMode::ScreenWave:
         return "Screen Wave";
         case PostProcessingEffectMode::Swirl:
@@ -722,7 +749,7 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         case PostProcessingEffectMode::LensFlare:
         return "Lens Flare";
         case PostProcessingEffectMode::FXAA:
-        return "FXAA";
+        return "Fast Approximate Anti-Aliasing (FXAA)";
         case PostProcessingEffectMode::SSAO:
         return "Screen Space Ambient Occlusion";
         default:
@@ -791,9 +818,9 @@ FrameBufferType Game::GetFBOtype(const PostProcessingEffectMode &mode){
         case PostProcessingEffectMode::RadialBlur:
         return FrameBufferType::Default;
         case PostProcessingEffectMode::MotionBlur:
-        return FrameBufferType::DepthMapping;
+        return FrameBufferType::Default;
         case PostProcessingEffectMode::DepthMapping:
-        return FrameBufferType::DepthMapping;
+        return FrameBufferType::Default;
         case PostProcessingEffectMode::Vignetting:
         return FrameBufferType::Default;
         case PostProcessingEffectMode::BrightParts:

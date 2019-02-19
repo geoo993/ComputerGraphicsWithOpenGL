@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Extensions.h"
 // https://stackoverflow.com/questions/29451567/how-to-move-in-the-direction-of-the-camera-opengl-c
 // https://gamedev.stackexchange.com/questions/136236/opengl-camera-movement-with-mouse-buttons
 // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-6-keyboard-and-mouse/
@@ -13,8 +14,9 @@ CCamera::CCamera()
     m_front = glm::vec3(0.0f, 0.0f, -1.0f);
 	m_up = glm::vec3(0.0f, 1.0f, 0.0f);
     m_worldUp = glm::vec3( 0.0f, 1.0f, 0.0f );
-    m_pitch = PITCH;
-    m_yaw = YAW;
+    m_pitch = 0.0f;
+    m_yaw = 0.0f;
+    m_roll = 0.0f;
     m_fieldOfView = FOV;
     m_movementSpeed = (GLfloat)SPEED;
     m_mouseSensitivity = (GLfloat)SENSITIVTY;
@@ -22,6 +24,7 @@ CCamera::CCamera()
     m_screenHeight = (GLfloat)SCREEN_HEIGHT;
     m_zNear = (GLfloat)ZNEAR;
     m_zFar = (GLfloat)ZFAR;
+    m_viewMatrix, m_modelMatrix = glm::mat4(1.0f);
     SetPerspectiveProjectionMatrix(m_fieldOfView, (m_screenWidth/m_screenHeight), ZNEAR, ZFAR);
     SetOrthographicProjectionMatrix(m_screenWidth, m_screenHeight, ZNEAR, ZFAR);
 }
@@ -33,8 +36,6 @@ CCamera::~CCamera()
 void CCamera::Create(
             const glm::vec3 &position,
             const glm::vec3 &worldUp,
-            const GLfloat &pitch,
-            const GLfloat &yaw,
             const GLfloat &fieldOfView,
             const GLfloat &width,
             const GLfloat &height,
@@ -51,8 +52,9 @@ void CCamera::Create(
     this->m_zFar = zFar;
     this->SetPerspectiveProjectionMatrix(fieldOfView, (width/height), zNear, zFar);
     this->SetOrthographicProjectionMatrix(width, height, zNear, zFar);
-    this->m_pitch = pitch;
-    this->m_yaw = yaw;
+    this->m_pitch = 0.0f;
+    this->m_yaw = 0.0f;
+    this->m_roll = 0.0f;
     this->m_movementSpeed = (GLfloat)SPEED;
     this->m_mouseSensitivity = (GLfloat)SENSITIVTY;
     this->m_screenWidth = width;
@@ -64,13 +66,26 @@ void CCamera::Create(
 // Calculates the front vector from the Camera's (updated) Eular Angles
 void CCamera::UpdateCameraVectors( )
 {
-   
-    // Calculate the new Front vector using direction
-    // Direction : Spherical coordinates to Cartesian coordinates conversion
-    //glm::vec3 direction;
-    //direction.x = cos( glm::radians( this->m_yaw ) ) * cos( glm::radians( this->m_pitch ) );
-    //direction.y = sin( glm::radians( this->m_pitch ) );
-    //direction.z = sin( glm::radians( this->m_yaw ) ) * cos( glm::radians( this->m_pitch ) );
+   /*
+    http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/
+    glm::quat yawAngle = glm::angleAxis(glm::radians(m_yaw), glm::vec3(0, 1, 0)); // also known as Heading: rotation about y axis (aka “yaw”)
+    glm::quat pitchAngle = glm::angleAxis(glm::radians(m_pitch), glm::vec3(1, 0, 0)); // rotation about x axis
+    glm::quat rollAngle = glm::angleAxis(glm::radians(m_roll), glm::vec3(0, 0, 1)); // also known as Bank: rotation about z axis (aka “roll”)
+    
+     //According to euler angle convention, we first do the heading and rotation about the object space y-axis (pitch)
+    //Then we rotate about the object space x-axis (yaw), then we do the object space z-axis (roll)
+    glm::quat q = yawAngle * pitchAngle * rollAngle;
+    glm::mat4 rot = glm::mat4_cast(q); // quat to rotation matrix
+    
+    this->m_front = glm::vec3(rot[0][0], rot[0][1], rot[0][2]);//column 3 of your transform. Possibly m11,m12,m13 of the transform in openGL
+    this->m_back = glm::normalize(m_front) * -1.0f;
+    
+    this->m_up = glm::vec3(rot[1][0], rot[1][1], rot[1][2]);//column 3 of your transform. Possibly m21,m22,m23 of the transform in openGL
+    this->m_down = glm::normalize(m_up) * -1.0f;
+    
+    this->m_right = glm::vec3(rot[2][0], rot[2][1], rot[2][2]);//column 3 of your transform. Possibly m31,m32,m33 of the transform in openGL
+    this->m_left = glm::normalize(m_right) * -1.0f;
+    */
     
     //this->m_front = glm::normalize( direction );
     this->m_back = glm::normalize(m_front) * -1.0f;
@@ -84,73 +99,119 @@ void CCamera::UpdateCameraVectors( )
     this->m_down = glm::normalize(m_up) * -1.0f;
     
     this->m_view = m_position + m_front;
-    this->m_viewMatrix = glm::lookAt(
-                                     m_position, // what position you want the camera to be at when looking at something in World Space
-                                     m_view, // // what position you want the camera to be  looking at in World Space, meaning look at what(using vec3) ?  // meaning the camera view point
-                                     m_up  //which direction is up, you can set to (0,-1,0) to look upside-down
-                                     );
     
-   
-}
+    /*
+    You need a 3 by 3 rotation matrix to rotate your object: R but if you also add translation terms, transformation matrix will be 4 by 4:
+        
+        [R11, R12, R13 tx]
+        [R21, R22, R23 ty]
+        [R31, R32, R33 tz]
+        [0,   0,   0,   1]
+     
+     With those considerations in mind, we set out to solve for the Euler
+     angles from the rotation matrix (Equation (8.14)) directly. For your convenience, the matrix is expanded below:
+  
+     [(cos h cos b + sin h sin p sin b), (sin b cos p), (− sin h cos b + cos h sin p sin b)]
+     [(− cos h sin b + sin h sin p cos b), (cos b cos p), (sin b sin h + cos h sin p cos b)]
+     [(sin h cos p),  (− sin p), (cos h cos p)].
+     We can solve for p immediately from m32:
 
+    */
+    // rotation matrix
+    // https://www.youtube.com/watch?v=zc8b2Jo7mno
+    glm::mat4 rm = glm::mat4(m_right.x,    m_right.y,      -m_right.z,      0.0f,
+                            -m_up.x,       m_up.y,         m_up.z,         0.0f,
+                            m_front.x,    -m_front.y,      m_front.z,      0.0f,
+                            m_position.x, m_position.y,   m_position.z,     1.0f
+    );
+  
+    // https://stackoverflow.com/questions/16663647/3x3-matrix-rotation-in-c
+    // https://learnopengl.com/Getting-started/Transformations
+    // https://www.cprogramming.com/tutorial/3d/rotationMatrices.html
+    // https://www.learnopencv.com/rotation-matrix-to-euler-angles/
+    // https://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix
+    GLfloat sinP = -(rm[2][1]);
+    GLfloat pitch = 0.0f;           // between -90 < p < 90
+    if (sinP <= -1.0f) {
+        pitch = -1.570796f;         // - pi / 2
+    } else if (sinP >= 1.0f) {
+        pitch = 1.570796f;          //  pi / 2
+    } else {
+        pitch = glm::asin(sinP);    // p is pitch for (-sin p) in m32
+    }
+    
+    // heading is atan2(sinH, cosH), or atan2(m13 / cos(p), m33 / cos(p)), or simply atan2(m13, m33)
+    GLfloat heading;            // between -180 < h < 180
+    
+    // bank is atan2(m21, m22),  if cos p = 0, then p = + or - 90
+    GLfloat bank;               // between -180 < b < 180
+    
+    // check fot the gimbal lock case. giving a slight tolerance for numerical imprecision
+    if (fabs(sinP) > 0.99999f) {
+        // we are looking straight up or down.
+        // slam bank to zero and just set heading
+        heading = atan2(-rm[1][2], rm[0][0]);
+        bank = 0.0f;
+    } else {
+        // compute heading from m13 and m33
+        heading = atan2(rm[2][0], rm[2][2]);
+        
+        // compute bank from m21 and m22
+        bank = atan2(rm[0][1], rm[1][1]);
+    }
+    
+    const GLfloat pi2 = 3.14159265358979323846264f * 2; // equivelent to 360 degrees
+    if(heading < 0.0f) heading += pi2;   // make yaw between 0 and 360 degrees
+    if(bank < 0.0f) bank += pi2;         // make roll between 0 and 360 degrees
+    
+    this->m_pitch = glm::degrees(pitch); //Pitch is between [-90 ... 90] degrees
+    this->m_yaw = glm::degrees(heading);
+    this->m_roll = glm::degrees(bank);
+  
+    // I assume the values are already converted to radians.
+    GLfloat cosPitch = glm::cos(pitch);
+    GLfloat sinPitch = glm::sin(pitch);
+    GLfloat cosYaw = glm::cos(heading);
+    GLfloat sinYaw = glm::sin(heading);
+    
+    glm::vec3 xaxis = { cosYaw, 0, -sinYaw };
+    glm::vec3 yaxis = { sinYaw * sinPitch, cosPitch, cosYaw * sinPitch };
+    glm::vec3 zaxis = { sinYaw * cosPitch, -sinPitch, cosPitch * cosYaw };
+    
+    // http://www.songho.ca/opengl/gl_camera.html
+    // https://www.3dgep.com/understanding-the-view-matrix/
+    /*
+     WARNING: NOT WORKING PROPERLY, RESEARCH VIEWMATRIX
+    // Create a 4x4 view matrix from the right, up, forward and eye position vectors
+    this->m_viewMatrix = {
+        glm::vec4(       xaxis.x,            yaxis.x,            zaxis.x,      0.0f ),
+        glm::vec4(       xaxis.y,            yaxis.y,            zaxis.y,      0.0f ),
+        glm::vec4(       xaxis.z,            yaxis.z,            zaxis.z,      0.0f ),
+        glm::vec4( -m_right.x * m_position.x - m_right.y * m_position.y - m_right.z * m_position.z,
+                  -m_up.x * m_position.x - m_up.y * m_position.y - m_up.z * m_position.z,
+                  -m_back.x * m_position.x - m_back.y * m_position.y - m_back.z * m_position.z,
+                  1.0f )
+    };
+    */
+     this->m_viewMatrix = glm::lookAt(
+     m_position, // what position you want the camera to be at when looking at something in World Space
+     m_view, // what target you want the camera to be looking at in World Space, meaning look at what(using vec3) ?  // meaning the camera view point
+     m_up  //which direction is up, probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
+     );
+    
+}
 
 // Set the camera at a specific position, looking at the view point, with a given up vector
 void CCamera::Set(glm::vec3 &position, glm::vec3 &viewpoint, glm::vec3 &upVector)
 {
-	m_position = position;
+    m_position = position;
     m_front = glm::normalize(viewpoint - position); // finding front vector
-	m_up = upVector;
+    m_up = upVector;
     m_worldUp = glm::vec3( 0.0f, 1.0f, 0.0f );
     
     UpdateCameraVectors();
 }
 
-
-// Respond to mouse movement
-void CCamera::SetViewByMouse(const GLfloat &mouseX, const GLfloat &mouseY, const GLboolean &constrainPitch, const bool &enableMouse)
-{
-    if (enableMouse) {
-        GLfloat lastX = SCREEN_WIDTH / 2.0f;
-        GLfloat lastY = SCREEN_HEIGHT / 2.0f;
-        
-        if( m_firstMouse )
-        {
-            lastX = mouseX;
-            lastY = mouseY;
-            m_firstMouse = false;
-        }
-        
-        GLfloat xOffset = mouseX - lastX;
-        GLfloat yOffset = lastY - mouseY;  // Reversed since y-coordinates go from bottom to left
-        
-        lastX = mouseX;
-        lastY = mouseY;
-        
-        xOffset *= this->m_mouseSensitivity;
-        yOffset *= this->m_mouseSensitivity;
-        
-        this->m_pitch += yOffset; // up down
-        this->m_yaw   += xOffset; //left right
-        
-        // Make sure that when pitch is out of bounds, screen doesn't get flipped
-        if ( constrainPitch )
-        {
-            if ( this->m_pitch > 89.0f )
-            {
-                this->m_pitch = 89.0f;
-            }
-            
-            if ( this->m_pitch < -89.0f )
-            {
-                this->m_pitch = -89.0f;
-            }
-        }
-        
-        // Update Front, Right and Up Vectors using the updated Eular angles
-        this->UpdateCameraVectors( );
-    }
-    
-}
 
 // Respond to mouse movement
 void CCamera::SetViewByMouse(GLFWwindow *window, const bool &enableMouse)
@@ -171,10 +232,10 @@ void CCamera::SetViewByMouse(GLFWwindow *window, const bool &enableMouse)
         
         glfwSetCursorPos(window, (double)middle_x, (double)middle_y);
         
-        m_verticalAngle = (float) (middle_x - mouse_x) / 1000.0f;
-        m_horizontalAngle = (float) (middle_y - mouse_y) / 1000.0f;
+        GLfloat verticalAngle = (float) (middle_x - mouse_x) / 1000.0f;
+        GLfloat horizontalAngle = (float) (middle_y - mouse_y) / 1000.0f;
 
-        rotation_x -= m_horizontalAngle;
+        rotation_x -= horizontalAngle;
 
         float maxAngle = 1.56f; // Just a little bit below PI / 2
 
@@ -186,12 +247,10 @@ void CCamera::SetViewByMouse(GLFWwindow *window, const bool &enableMouse)
             glm::vec3 cross = glm::cross(m_view - m_position, m_up);
             glm::vec3 axis = glm::normalize(cross);
 
-            RotateViewPoint(m_horizontalAngle, axis);
+            RotateViewPoint(horizontalAngle, axis);
         }
         
-        glm::vec3 viewPoint = m_worldUp;
-        RotateViewPoint(m_verticalAngle, viewPoint);
-    
+        RotateViewPoint(verticalAngle, m_worldUp);
     }
 }
 
@@ -200,11 +259,10 @@ void CCamera::RotateViewPoint(float fAngle, glm::vec3 &vPoint)
 {
 	glm::vec3 vView = m_view - m_position;// direction vector
 	
-	glm::mat4 R = glm::rotate(glm::mat4(1), fAngle * 180.0f / (float) M_PI, vPoint);
+	glm::mat4 R = glm::rotate(glm::mat4(1), glm::degrees(fAngle), vPoint);
 	glm::vec4 newView = R * glm::vec4(vView, 1);
 
     m_front = glm::normalize(glm::vec3(newView));
-    //m_view = m_position + m_front;
     
     UpdateCameraVectors();
 }
@@ -226,6 +284,7 @@ void CCamera::RotateAroundPoint(const float &distance, const glm::vec3 &viewpoin
 
     Set(position, look, upV);
     
+    m_isMoving = true;
 }
 
 glm::vec3 CCamera::PositionInFrontOfCamera( const GLfloat &distance){
@@ -239,10 +298,7 @@ void CCamera::Strafe(double direction)
 
 	m_position.x = m_position.x + m_strafeVector.x * speed;
 	m_position.z = m_position.z + m_strafeVector.z * speed;
-
-	//m_view.x = m_view.x + m_strafeVector.x * speed;
-	//m_view.z = m_view.z + m_strafeVector.z * speed;
-    
+    m_isMoving = true;
     UpdateCameraVectors();
 }
 
@@ -254,7 +310,7 @@ void CCamera::Advance(double direction)
 	glm::vec3 view = glm::normalize(m_view - m_position);
 	m_position = m_position + view * speed;
 	//m_view = m_view + view * speed;
-    
+    m_isMoving = true;
     UpdateCameraVectors();
 }
 
@@ -269,12 +325,14 @@ void  CCamera::SetVelocity(int deltaTime) {
 
 
 // Update the camera to respond to mouse motion for rotations and keyboard for translation
-void CCamera::Update(GLFWwindow *window, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse)
+void CCamera::Update(GLFWwindow *window, const GLdouble &dt, const GLint &key,
+                     const GLboolean &moveCamera, const GLboolean &enableMouse)
 {
+    m_isMoving = false;
 	glm::vec3 vector = glm::cross(m_view - m_position, m_up);
 	m_strafeVector = glm::normalize(vector);
 
-    if (moveCamera){ 
+    if (moveCamera) {
         SetViewByMouse(window, enableMouse);
         TranslateByKeyboard(dt, key);
     }
@@ -285,14 +343,14 @@ void CCamera::Update(GLFWwindow *window, const double &dt, const int &key, const
 }
 
 // update ot the end of current frame
-void CCamera::UpdateEndFrame(GLFWwindow *window, const double &dt) {
+void CCamera::UpdateEndFrame(GLFWwindow *window, const GLdouble &dt) {
     m_previousPosition = m_position;
     
     // set the previous model->view->matrix of the camera
-    glm::mat4 model = GetModelMatrix();
-    glm::mat4 projMatrix = *GetPerspectiveProjectionMatrix();
+    glm::mat4 model = m_modelMatrix;
     glm::mat4 view = GetViewMatrix();
-    m_prevMVP = projMatrix * view * model;
+    glm::mat4 proj = *GetPerspectiveProjectionMatrix();
+    m_prevMVP = proj * view * model;
 }
 
 // Update the camera to respond to key presses for translation
@@ -387,17 +445,29 @@ glm::mat4* CCamera::GetOrthographicProjectionMatrix()
     return &m_orthographicProjectionMatrix;
 }
 
-// Get the camera view matrix
-glm::mat4 CCamera::GetViewMatrix() const
-{
-    return this->m_viewMatrix;
+void CCamera::SetModelMatrix(const glm::mat4 &model) {
+    this->m_modelMatrix = model;
 }
 
 glm::mat4 CCamera::GetModelMatrix() const {
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, m_position);
+    model = glm::rotate(model, m_yaw, glm::vec3(0.0f, 1.0f, 0.0f)); // also known as Heading: rotation about y axis (aka “yaw”)
+    model = glm::rotate(model, m_pitch, glm::vec3(1.0f, 0.0f, 0.0f)); // rotation about x axis
+    model = glm::rotate(model, m_roll, glm::vec3(0.0f, 0.0f, 1.0f)); // also known as Bank: rotation about z axis (aka “roll”)
     model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
     return model;
+}
+
+// return  the camera previous frame model view projection matrix
+glm::mat4 CCamera::GetPreviousMVP() const {
+    return m_prevMVP;
+}
+
+// Get the camera view matrix
+glm::mat4 CCamera::GetViewMatrix() const
+{
+    return this->m_viewMatrix;
 }
 
 glm::mat4 CCamera::GetViewWithoutTranslation() const {
@@ -483,18 +553,8 @@ GLfloat CCamera::GetNearPlane() {
     return m_zNear;
 }
 
-// return  the camera previous frame model view projection matrix
-glm::mat4 CCamera::GetPreviousMVP() const {
-    return m_prevMVP;
-}
-
-// return the inverse model->view->projection of the camera
-glm::mat4 CCamera::GetInverseMVP() {
-    glm::mat4 model = GetModelMatrix();
-    glm::mat4 projMatrix = *GetPerspectiveProjectionMatrix();
-    glm::mat4 view = GetViewMatrix();
-    
-    return glm::inverse(projMatrix * view * model);
+GLboolean CCamera::IsMoving() const {
+    return m_isMoving;
 }
 
 void CCamera::Release() {

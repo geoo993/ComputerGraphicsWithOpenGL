@@ -92,8 +92,6 @@
 //#define CUBEMAPTEXTUREUNIT 10 //cube map texture of the skyBox is at 10 texture unit
 
 // Default camera values
-#define YAW -90.0f
-#define PITCH 0.1f
 #define SPEED 30.0f
 #define SPEEDRATIO 0.025f
 #define SENSITIVTY 0.15f

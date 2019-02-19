@@ -13,8 +13,6 @@ void Game::InitialiseCamera(const GLuint &width, const GLuint &height, const glm
     // Set the orthographic and perspective projection matrices based on the image size
     m_pCamera->Create(position,                // position
                       glm::vec3(0.0f, 1.0f, 0.0f),       // worldUp
-                      PITCH,                            // pitch
-                      YAW,                              // yaw
                       FOV,                              // fieldOfView
                       (GLfloat)width,                   // width
                       (GLfloat)height,                  // height
@@ -33,6 +31,7 @@ void Game::SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &u
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName+".position", camera->GetPosition());
     pShaderProgram->SetUniform(uniformName+".front", camera->GetForward());
+    pShaderProgram->SetUniform(uniformName+".isMoving", camera->IsMoving());
 }
 
 void Game::UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) {

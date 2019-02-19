@@ -253,6 +253,7 @@ protected:
     void RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType = FrameBufferType::Default,
                         const GLuint &bufferIndex = 0, const TextureType &textureType = TextureType::AMBIENT) override;
     void RenderPPFX(const PostProcessingEffectMode &mode) override;
+    void ResetFrameBuffer() override;
     const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) override;
     FrameBufferType GetFBOtype(const PostProcessingEffectMode &mode) override;
     

@@ -19,8 +19,6 @@ public:
     void Create(
                 const glm::vec3 &position = glm::vec3( 0.0f, 0.0f, -15.0f ),
                 const glm::vec3 &worldUp = glm::vec3( 0.0f, 1.0f, 0.0f ),
-                const GLfloat &pitch = PITCH,
-                const GLfloat &yaw = YAW,
                 const GLfloat &fieldOfView = FOV,
                 const GLfloat &width = (float)SCREEN_WIDTH,
                 const GLfloat &height = (float)SCREEN_HEIGHT,
@@ -46,7 +44,7 @@ public:
     glm::vec3 GetBackward();                           // Gets the camera backward vector
     glm::vec3 GetVelocity();                           // Gets the camera velocity vector
     glm::mat4 GetPreviousMVP() const;                  // Gets the camera previous frame model view projection matrix
-    glm::mat4 GetInverseMVP();                         // Gets the inverse of the current camera model view projection matrix
+    GLboolean IsMoving() const;                         // Gets the camera movement
     
     // re-computer all the vector 
     void UpdateCameraVectors( );
@@ -64,7 +62,6 @@ public:
     
 	// Respond to mouse movement to rotate the camera
 	void SetViewByMouse(GLFWwindow *window, const bool &enableMouse = true);
-    void SetViewByMouse(const GLfloat &mouseX, const GLfloat &mouseY, const GLboolean &constrainPitch = true, const bool &enableMouse = true);
 
     // Respond to keyboard presses on arrow keys to translate the camera
     void TranslateByKeyboard(const double &dt, const int &keyPressed);
@@ -77,15 +74,16 @@ public:
     
     
     // Update the camera
-    void Update(GLFWwindow *window, const double &dt, const int &key, const bool &moveCamera, const bool &enableMouse);
-    void UpdateEndFrame(GLFWwindow *window, const double &dt);
+    void Update(GLFWwindow *window, const GLdouble &dt, const GLint &key,
+                const GLboolean &moveCamera, const GLboolean &enableMouse);
+    void UpdateEndFrame(GLFWwindow *window, const GLdouble &dt);
     
     // Set the projection matrices
     void SetPerspectiveProjectionMatrix(const GLfloat &fieldOfView, const GLfloat &aspectRatio, const GLfloat &nearClippingPlane, const GLfloat &farClippingPlane);
     void SetOrthographicProjectionMatrix(const GLfloat &width, const GLfloat height, const GLfloat &zNear, const GLfloat &zFar);
     void SetOrthographicProjectionMatrix(float value , float zNear, float zFar);
     void SetOrthographicProjectionMatrix(int width, int height);
-    
+    void SetModelMatrix(const glm::mat4 &model);
     // Set the camera velocity
     void SetVelocity(int deltaTime);
     
@@ -98,8 +96,11 @@ private:
     //view and projection matrix
     glm::mat4 m_perspectiveProjectionMatrix;        // Perspective projection matrix
     glm::mat4 m_orthographicProjectionMatrix;        // Orthographic projection matrix
-    glm::mat4 m_viewMatrix;
-   
+    glm::mat4 m_viewMatrix, m_modelMatrix;
+
+    // movement
+    GLboolean m_isMoving;
+    
     // Camera Attributes
     glm::vec3 m_position;            // The position of the camera's centre of projection
     glm::vec3 m_previousPosition;    // The previous position of the camera's centre of projection
@@ -120,10 +121,9 @@ private:
     GLfloat m_fieldOfView;           // The view from the camera
     GLfloat m_zNear;                // The afr clipping plane
     GLfloat m_zFar;                   // The near clipping plane
-    GLfloat m_yaw;
-    GLfloat m_pitch;
-    GLfloat m_horizontalAngle;       // horizontal angle : toward -Z
-    GLfloat m_verticalAngle;         // vertical angle : 0, toward -Y
+    GLfloat m_yaw;                   // also known as Heading: rotation about y axis (aka “yaw”)
+    GLfloat m_pitch;                 // rotation about x axis
+    GLfloat m_roll;                  // also known as Bank: rotation about z axis (aka “roll”)
     glm::vec3 m_velocity;            // The camera's velocity vector
     
     // Camera options

@@ -162,7 +162,6 @@ Game::Game()
     m_lastKeyPressTime = 0.0f;
     m_lastKeyPress = -1;
     m_isKeyPressRestriction = true;
-    
 }
 
 // Destructor
@@ -374,26 +373,12 @@ void Game::Render()
 
     ActivateFBO(m_currentPPFXMode);
     
-    RenderScene(m_currentPPFXMode == PostProcessingEffectMode::MotionBlur || m_currentPPFXMode == PostProcessingEffectMode::DepthMapping);
-  
-    // It is useful to switch back to the default framebuffer for this to easily see your results.
-    // Unbind to render to our default framebuffer or switching back to the default buffer at 0.
-    // To make sure all rendering operations will have a visual impact on the main window we need to make the default framebuffer active again by binding to 0:
-    // essentially, we just bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    RenderScene();
     
-    m_gameWindow->SetViewport();
-    
-    // clear all relevant buffers, set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
-    m_gameWindow->ClearBuffers();
-    
-    // disable depth test so screen-space quad isn't discarded due to depth test.
-    glDisable(GL_DEPTH_TEST);
+    ResetFrameBuffer();
     
     // Post Processing Effects
     RenderPPFX( m_currentPPFXMode );
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
     // Draw the 2D graphics after the 3D graphics
     RenderHUD();

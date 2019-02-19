@@ -292,15 +292,21 @@ void Game::SetRadialBlurUniform(CShaderProgram *pShaderProgram){
 }
 
 void Game::SetMotionBlurUniform(CShaderProgram *pShaderProgram){
+    glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 view = m_pCamera->GetViewMatrix();
+    glm::mat4 modelViewMatrix = view * model;
+    glm::mat4 projMatrix = *(m_pCamera->GetPerspectiveProjectionMatrix());
+    glm::mat4 inverseProj = glm::inverse(projMatrix);
+    glm::mat4 inverseModelView = glm::inverse(modelViewMatrix);
     
+    m_pCamera->SetModelMatrix(model); // set the model matrix so that we can have a previous MVP matrix
     pShaderProgram->UseProgram();
-    //pShaderProgram->SetUniform("emptySampler0", 6);
-    pShaderProgram->SetUniform("invMVP", m_pCamera->GetInverseMVP()); // inverse model>view>projection
+    pShaderProgram->SetUniform("inverseModelView", inverseModelView);
+    pShaderProgram->SetUniform("inverseProjection", inverseProj);
     pShaderProgram->SetUniform("prevMVP", m_pCamera->GetPreviousMVP()); // previous model>view>projection
-    
-    pShaderProgram->SetUniform("currentFPS", (float)m_framesPerSecond);
-    pShaderProgram->SetUniform("targetFPS", 60.0f);
-    
+    pShaderProgram->SetUniform("currentFps", (float)m_framesPerSecond);
+    pShaderProgram->SetUniform("targetFps", 200.0f); // between 200 and 300
+    pShaderProgram->SetUniform("nSamples", 11);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
    
 }

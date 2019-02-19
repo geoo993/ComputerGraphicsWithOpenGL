@@ -199,6 +199,7 @@ protected:
     void SetHRDToneMappingUniform(CShaderProgram *pShaderProgram) override;
     void SetLensFlareGhostUniform(CShaderProgram *pShaderProgram) override;
     void SetLensFlareUniform(CShaderProgram *pShaderProgram) override;
+    void SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram) override;
     
     /// Lights
     void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,

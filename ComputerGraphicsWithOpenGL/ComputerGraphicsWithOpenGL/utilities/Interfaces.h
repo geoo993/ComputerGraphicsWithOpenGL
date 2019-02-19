@@ -125,6 +125,7 @@ struct IShaderUniform {
     virtual void SetHRDToneMappingUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetLensFlareGhostUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetLensFlareUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram) = 0;
 };
 
 struct ILights

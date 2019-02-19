@@ -122,6 +122,8 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("LightSpaceShader.frag");
     sShaderFileNames.push_back("ToneMappingShader.vert");// 52
     sShaderFileNames.push_back("ToneMappingShader.frag");
+    sShaderFileNames.push_back("FastApproximateAntiAliasingShader.vert");// 53
+    sShaderFileNames.push_back("FastApproximateAntiAliasingShader.frag");
     
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
@@ -566,6 +568,15 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pToneMappingShader->AddShaderToProgram(&shShaders[108]);
     pToneMappingShader->LinkProgram();
     m_pShaderPrograms->push_back(pToneMappingShader);
+    
+    // Create the Tone Mapping shader program
+    CShaderProgram *pFastApproximateAntiAliasingShader = new CShaderProgram;
+    pFastApproximateAntiAliasingShader->CreateProgram();
+    pFastApproximateAntiAliasingShader->AddShaderToProgram(&shShaders[109]);
+    pFastApproximateAntiAliasingShader->AddShaderToProgram(&shShaders[110]);
+    pFastApproximateAntiAliasingShader->LinkProgram();
+    m_pShaderPrograms->push_back(pFastApproximateAntiAliasingShader);
+    
 }
 
 

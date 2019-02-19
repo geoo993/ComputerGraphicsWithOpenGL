@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::MotionBlur;
+    m_currentPPFXMode = PostProcessingEffectMode::FXAA;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -487,7 +487,9 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::FXAA: {
-            
+            CShaderProgram *pFastApproximateAntiAliasingProgram = (*m_pShaderPrograms)[53];
+            SetFastApproximateAntiAliasingUniform(pFastApproximateAntiAliasingProgram);
+            RenderToScreen(pFastApproximateAntiAliasingProgram);
             return;
         }
         case PostProcessingEffectMode::SSAO: {

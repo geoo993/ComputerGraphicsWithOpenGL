@@ -124,6 +124,10 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("ToneMappingShader.frag");
     sShaderFileNames.push_back("FastApproximateAntiAliasingShader.vert");// 53
     sShaderFileNames.push_back("FastApproximateAntiAliasingShader.frag");
+    sShaderFileNames.push_back("FireBallShader.vert");// 54
+    sShaderFileNames.push_back("FireBallShader.frag");
+    sShaderFileNames.push_back("DeferredRenderingShader.vert");// 55
+    sShaderFileNames.push_back("DeferredRenderingShader.frag");
     
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
@@ -576,6 +580,22 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pFastApproximateAntiAliasingShader->AddShaderToProgram(&shShaders[110]);
     pFastApproximateAntiAliasingShader->LinkProgram();
     m_pShaderPrograms->push_back(pFastApproximateAntiAliasingShader);
+    
+    // Create the Fire Ball shader program
+    CShaderProgram *pFireBallShader = new CShaderProgram;
+    pFireBallShader->CreateProgram();
+    pFireBallShader->AddShaderToProgram(&shShaders[111]);
+    pFireBallShader->AddShaderToProgram(&shShaders[112]);
+    pFireBallShader->LinkProgram();
+    m_pShaderPrograms->push_back(pFireBallShader);
+    
+    // Create the Deferred Rendering shader program
+    CShaderProgram *pDeferredRenderingProgram = new CShaderProgram;
+    pDeferredRenderingProgram->CreateProgram();
+    pDeferredRenderingProgram->AddShaderToProgram(&shShaders[113]);
+    pDeferredRenderingProgram->AddShaderToProgram(&shShaders[114]);
+    pDeferredRenderingProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pDeferredRenderingProgram);
     
 }
 

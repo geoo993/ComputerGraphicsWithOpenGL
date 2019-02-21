@@ -17,12 +17,8 @@ enum class FrameBufferType {
     DirectionalShadowMapping,
     PointShadowMapping,
     HighDynamicRangeLighting,
-    HighDynamicRangeRendering,
     PingPongRendering,
-    DeferredRendering,
-    SSAORendering,
-    SSAOProcessing,
-    SSAOBlur,
+    GeometryBuffer,
 };
 
 

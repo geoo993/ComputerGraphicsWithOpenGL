@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::FXAA;
+    m_currentPPFXMode = PostProcessingEffectMode::DeferredRendering;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -27,7 +27,7 @@ void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
 void Game::LoadFrameBuffers(const GLuint &width , const GLuint &height) {
 
     m_pFBOs[0]->CreateFramebuffer(width, height, FrameBufferType::Default);
-    m_pFBOs[1]->CreateFramebuffer(width, height, FrameBufferType::HighDynamicRangeRendering);
+    m_pFBOs[1]->CreateFramebuffer(width, height, FrameBufferType::GeometryBuffer);
     m_pFBOs[2]->CreateFramebuffer(width, height, FrameBufferType::PingPongRendering);
     m_pFBOs[3]->CreateFramebuffer(width, height, FrameBufferType::DepthMapping);
     m_pFBOs[4]->CreateFramebuffer(width, height, FrameBufferType::HighDynamicRangeLighting);
@@ -74,15 +74,11 @@ void Game::ActivateFBO(const PostProcessingEffectMode &mode) {
             currentFBO = m_pFBOs[4];
             currentFBO->Bind(true);     // prepare frame buffer 4
             break;
-        case FrameBufferType::HighDynamicRangeRendering:
+        case FrameBufferType::PingPongRendering:break;
+        case FrameBufferType::GeometryBuffer:
             currentFBO = m_pFBOs[1];
             currentFBO->Bind(true);     // prepare frame buffer 1
             break;
-        case FrameBufferType::PingPongRendering:break;
-        case FrameBufferType::DeferredRendering: break;
-        case FrameBufferType::SSAORendering: break;
-        case FrameBufferType::SSAOProcessing: break;
-        case FrameBufferType::SSAOBlur: break;
         default: break;
     }
 
@@ -263,7 +259,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                     // blur textures that are in the depthMap texture unit
                     if (first_iteration) {
                         currentFBO = m_pFBOs[1];
-                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 0, TextureType::DEPTH);
+                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::GeometryBuffer, 0, TextureType::DEPTH);
                     } else {
                         currentFBO = m_pFBOs[2];
                         RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
@@ -361,7 +357,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             
             currentFBO = m_pFBOs[1];
             currentFBO->BindHDRTexture(0, static_cast<GLint>(TextureType::AMBIENT)); // bind the earlier (scene rendering) rendering from the hrd frame buff
-            RenderToScreen(pBrightPartsProgram, FrameBufferType::HighDynamicRangeRendering, 1, TextureType::DEPTH);
+            RenderToScreen(pBrightPartsProgram, FrameBufferType::GeometryBuffer, 1, TextureType::DEPTH);
             return;
         }
         case PostProcessingEffectMode::Bloom: {
@@ -384,7 +380,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                     // blur textures that are in the depthMap texture unit
                     if (first_iteration) {
                         currentFBO = m_pFBOs[1];
-                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 1, TextureType::DEPTH); // providing the bright parts textures at the first iteration
+                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::GeometryBuffer, 1, TextureType::DEPTH); // providing the bright parts textures at the first iteration
                     } else {
                         currentFBO = m_pFBOs[2];
                         RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
@@ -447,7 +443,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                     // blur textures that are in the depthMap texture unit
                     if (first_iteration) {
                         currentFBO = m_pFBOs[1];
-                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::HighDynamicRangeRendering, 1, TextureType::DEPTH); // providing the bright parts textures at the first iteration
+                        RenderToScreen(pGaussianBlurProgram, FrameBufferType::GeometryBuffer, 1, TextureType::DEPTH); // providing the bright parts textures at the first iteration
                     } else {
                         currentFBO = m_pFBOs[2];
                         RenderToScreen(pGaussianBlurProgram, FrameBufferType::PingPongRendering, !horizontal, TextureType::DEPTH);
@@ -482,7 +478,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 currentFBO->BindTexture(static_cast<GLint>(TextureType::LENS));
                 
                 currentFBO = m_pFBOs[1];
-                RenderToScreen(pLensFlareProgram, FrameBufferType::HighDynamicRangeRendering, 0, TextureType::AMBIENT);
+                RenderToScreen(pLensFlareProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT);
             }
             return;
         }
@@ -490,6 +486,43 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             CShaderProgram *pFastApproximateAntiAliasingProgram = (*m_pShaderPrograms)[53];
             SetFastApproximateAntiAliasingUniform(pFastApproximateAntiAliasingProgram);
             RenderToScreen(pFastApproximateAntiAliasingProgram);
+            return;
+        }
+        case PostProcessingEffectMode::DeferredRendering: {
+            // Second Pass - Deferred Rendering
+            {
+                CShaderProgram *pDeferredRenderingProgram= (*m_pShaderPrograms)[55];
+                SetDeferredRenderingUniform(pDeferredRenderingProgram, m_woodenBoxesUseTexture);
+                
+                // Render Lighting Scene
+                SetCameraUniform(pDeferredRenderingProgram, "camera", m_pCamera);
+                SetLightUniform(pDeferredRenderingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+                
+                // Bind Textures
+                currentFBO = m_pFBOs[1];
+                currentFBO->BindPositionTexture(static_cast<GLint>(TextureType::DISPLACEMENT));
+                currentFBO->BindNormalTexture(static_cast<GLint>(TextureType::NORMAL));
+                currentFBO->BindAlbedoTexture(static_cast<GLint>(TextureType::DIFFUSE));
+                
+                RenderToScreen(pDeferredRenderingProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT);
+                
+                // Add Default Lights
+                RenderLight(pDeferredRenderingProgram, m_pCamera);
+            }
+            
+            // Blit to default frame buffer
+            currentFBO->BlitToDepthBuffer(0);
+            ResetFrameBuffer(false);
+            
+            {
+                /// Render Lamps
+                CShaderProgram *pLampProgram = (*m_pShaderPrograms)[4];
+                for (unsigned int i = 0; i < m_pointLightPositions.size(); i++) {
+                    SetMaterialUniform(pLampProgram, "material", m_pointLightColors[i]);
+                    RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f);
+                }
+            }
+            
             return;
         }
         case PostProcessingEffectMode::SSAO: {
@@ -519,24 +552,20 @@ void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType 
         case FrameBufferType::HighDynamicRangeLighting:
             currentFBO->BindHDRTexture(static_cast<GLint>(textureType));
             break;
-        case FrameBufferType::HighDynamicRangeRendering:
-            currentFBO->BindHDRTexture(bufferIndex, static_cast<GLint>(textureType));
-            break;
         case FrameBufferType::PingPongRendering:
             currentFBO->BindPingPongTexture(bufferIndex, static_cast<GLint>(textureType));
             break;
-        case FrameBufferType::DeferredRendering: break;
-        case FrameBufferType::SSAORendering: break;
-        case FrameBufferType::SSAOProcessing: break;
-        case FrameBufferType::SSAOBlur: break;
+        case FrameBufferType::GeometryBuffer:
+            currentFBO->BindHDRTexture(bufferIndex, static_cast<GLint>(textureType));
+            break;
         default: break;
     }
     SetMaterialUniform(pShaderProgram, "material", glm::vec3(1.0f, 1.0f, 0.0f));
     SetImageProcessingUniform(pShaderProgram, true);
-    RenderQuad(pShaderProgram);
+    m_pQuad->Render(false);
 }
 
-void Game::ResetFrameBuffer() {
+void Game::ResetFrameBuffer(const GLboolean &clearBuffers) {
     // It is useful to switch back to the default framebuffer for this to easily see your results.
     // Unbind to render to our default framebuffer or switching back to the default buffer at 0.
     // To make sure all rendering operations will have a visual impact on the main window we need to make the default framebuffer active again by binding to 0:
@@ -546,7 +575,7 @@ void Game::ResetFrameBuffer() {
     m_gameWindow->SetViewport();
     
     // clear all relevant buffers, set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
-    m_gameWindow->ClearBuffers();
+    if (clearBuffers) m_gameWindow->ClearBuffers();
     
     // disable depth test so screen-space quad isn't discarded due to depth test.
     glDisable(GL_DEPTH_TEST);
@@ -667,6 +696,9 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::FXAA:
             RenderPPFXScene(PostProcessingEffectMode::FXAA);
             break;
+        case PostProcessingEffectMode::DeferredRendering:
+            RenderPPFXScene(PostProcessingEffectMode::DeferredRendering);
+            break;
         case PostProcessingEffectMode::SSAO:
             RenderPPFXScene(PostProcessingEffectMode::SSAO);
             break;
@@ -752,6 +784,8 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         return "Lens Flare";
         case PostProcessingEffectMode::FXAA:
         return "Fast Approximate Anti-Aliasing (FXAA)";
+        case PostProcessingEffectMode::DeferredRendering:
+            return "Deferred Rendering";
         case PostProcessingEffectMode::SSAO:
         return "Screen Space Ambient Occlusion";
         default:
@@ -814,7 +848,7 @@ FrameBufferType Game::GetFBOtype(const PostProcessingEffectMode &mode){
         case PostProcessingEffectMode::FishEyeAntiFishEye:
         return FrameBufferType::Default;
         case PostProcessingEffectMode::GaussianBlur:
-        return FrameBufferType::HighDynamicRangeRendering;
+        return FrameBufferType::GeometryBuffer;
         case PostProcessingEffectMode::Blur:
         return FrameBufferType::Default;
         case PostProcessingEffectMode::RadialBlur:
@@ -826,15 +860,17 @@ FrameBufferType Game::GetFBOtype(const PostProcessingEffectMode &mode){
         case PostProcessingEffectMode::Vignetting:
         return FrameBufferType::Default;
         case PostProcessingEffectMode::BrightParts:
-        return FrameBufferType::HighDynamicRangeRendering;
+        return FrameBufferType::GeometryBuffer;
         case PostProcessingEffectMode::Bloom:
-        return FrameBufferType::HighDynamicRangeRendering;
+        return FrameBufferType::GeometryBuffer;
         case PostProcessingEffectMode::HDRToneMapping:
         return FrameBufferType::HighDynamicRangeLighting;
         case PostProcessingEffectMode::LensFlare:
-        return FrameBufferType::HighDynamicRangeRendering;
+        return FrameBufferType::GeometryBuffer;
         case PostProcessingEffectMode::FXAA:
         return FrameBufferType::Default;
+        case PostProcessingEffectMode::DeferredRendering:
+        return FrameBufferType::GeometryBuffer;
         case PostProcessingEffectMode::SSAO:
         return FrameBufferType::Default;
         default:

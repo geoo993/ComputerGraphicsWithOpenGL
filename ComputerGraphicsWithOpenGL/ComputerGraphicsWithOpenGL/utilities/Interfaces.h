@@ -50,7 +50,8 @@ struct ICamera {
     CCamera *m_pCamera;
     virtual void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) = 0;
     virtual void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) = 0;
-    virtual void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) = 0;
+    virtual void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed,
+                              const GLfloat &mouseXoffset, const GLfloat &mouseYoffset, const GLboolean & mouseMove) = 0;
     virtual void UpdateCameraEndFrame(const GLdouble & deltaTime) = 0;
 };
 
@@ -87,7 +88,7 @@ struct IShaderUniform {
                                               const GLfloat &magnitude) = 0;
     virtual void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) = 0;
     virtual void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) = 0;
-    
+    virtual void SetFireBallUniform(CShaderProgram *pShaderProgram) = 0;
     
     ///Post Processing Uniform
     virtual void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) = 0;
@@ -126,6 +127,7 @@ struct IShaderUniform {
     virtual void SetLensFlareGhostUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetLensFlareUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) = 0;
 };
 
 struct ILights
@@ -186,7 +188,7 @@ struct IRenderer
 struct IRenderObject
 {
     virtual void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                            const GLfloat & scale, const GLboolean &useTexture) = 0;
+                            const GLfloat & scale, const GLboolean &useTexture, const GLboolean &bindTexture) = 0;
     virtual void RenderSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) = 0;
     virtual void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
@@ -197,6 +199,8 @@ struct IRenderObject
                                const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture) = 0;
+    virtual void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
+                                   const float & scale, const bool &useTexture, const bool &bindTexture) = 0;
     virtual void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                     const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
@@ -205,6 +209,7 @@ struct IRenderObject
                                  const GLfloat & angle, const GLboolean &useTexture) = 0;
     virtual void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                               const GLfloat & scale, const GLboolean &useTexture) = 0;
+    virtual void RenderFireBallSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale) = 0;
     virtual void RenderTorus(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                              const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderTorusKnot(CShaderProgram *pShaderProgram, const glm::vec3 & position,
@@ -227,7 +232,7 @@ struct IPostProcessing {
     virtual void RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType,
                                 const GLuint &bufferIndex, const TextureType &textureType) = 0;
     virtual void RenderPPFX(const PostProcessingEffectMode &mode) = 0;
-    virtual void ResetFrameBuffer() = 0;
+    virtual void ResetFrameBuffer(const GLboolean &clearBuffers) = 0;
     virtual const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) = 0;
     virtual FrameBufferType GetFBOtype(const PostProcessingEffectMode &mode) = 0;
 };

@@ -21,14 +21,6 @@
 		C713796C2203964000E9A0F2 /* Game+ITextures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C713796B2203964000E9A0F2 /* Game+ITextures.cpp */; };
 		C713796F22039AF400E9A0F2 /* HeightMapTerrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C713796D22039AF400E9A0F2 /* HeightMapTerrain.cpp */; };
 		C713797222039B1E00E9A0F2 /* FaceVertexMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C713797122039B1D00E9A0F2 /* FaceVertexMesh.cpp */; };
-		C713797B2203A47F00E9A0F2 /* heightmap3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C71379732203A47E00E9A0F2 /* heightmap3.jpg */; };
-		C713797C2203A47F00E9A0F2 /* heightmap1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C71379742203A47E00E9A0F2 /* heightmap1.jpg */; };
-		C713797D2203A47F00E9A0F2 /* sand.png in Resources */ = {isa = PBXBuildFile; fileRef = C71379752203A47F00E9A0F2 /* sand.png */; };
-		C713797E2203A47F00E9A0F2 /* heightmap4.bmp in Resources */ = {isa = PBXBuildFile; fileRef = C71379762203A47F00E9A0F2 /* heightmap4.bmp */; };
-		C713797F2203A47F00E9A0F2 /* snow.png in Resources */ = {isa = PBXBuildFile; fileRef = C71379772203A47F00E9A0F2 /* snow.png */; };
-		C71379802203A47F00E9A0F2 /* stone.png in Resources */ = {isa = PBXBuildFile; fileRef = C71379782203A47F00E9A0F2 /* stone.png */; };
-		C71379812203A47F00E9A0F2 /* patchygrass.png in Resources */ = {isa = PBXBuildFile; fileRef = C71379792203A47F00E9A0F2 /* patchygrass.png */; };
-		C71379822203A47F00E9A0F2 /* heightmap2.png in Resources */ = {isa = PBXBuildFile; fileRef = C713797A2203A47F00E9A0F2 /* heightmap2.png */; };
 		C713798D2203CEDF00E9A0F2 /* TorusKnot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71379842203CEDE00E9A0F2 /* TorusKnot.cpp */; };
 		C713798E2203CEDF00E9A0F2 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71379852203CEDE00E9A0F2 /* Cube.cpp */; };
 		C713798F2203CEDF00E9A0F2 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71379882203CEDE00E9A0F2 /* Sphere.cpp */; };
@@ -740,7 +732,6 @@
 		C7C8F44421FFBA1A00AB865A /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F3DD21FFA73600AB865A /* _bk.jpg */; };
 		C7C8F44521FFBA1A00AB865A /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F3DE21FFA73600AB865A /* _lf.jpg */; };
 		C7C8F44621FFBA1A00AB865A /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F3DF21FFA73600AB865A /* _up.jpg */; };
-		C7C8F44721FFBA1D00AB865A /* grassfloor.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F33221FFA71800AB865A /* grassfloor.jpg */; };
 		C7C8F44821FFBA2A00AB865A /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F33A21FFA73500AB865A /* _ft.jpg */; };
 		C7C8F44921FFBA2A00AB865A /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F33B21FFA73500AB865A /* _dn.jpg */; };
 		C7C8F44A21FFBA2A00AB865A /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F33C21FFA73500AB865A /* _rt.jpg */; };
@@ -858,6 +849,59 @@
 		C7CEE2EE2212435600895F5D /* EdgeDetectionShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2E62212435600895F5D /* EdgeDetectionShader.frag */; };
 		C7CEE2EF2212435600895F5D /* EdgeDetectionShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2E72212435600895F5D /* EdgeDetectionShader.vert */; };
 		C7CEE2F02212435600895F5D /* KernelBlurShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2E82212435600895F5D /* KernelBlurShader.frag */; };
+		C7DE38FA221C843D00595556 /* FireBallShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7DE38F6221C843C00595556 /* FireBallShader.vert */; };
+		C7DE38FC221C843D00595556 /* FireBallShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7DE38F8221C843D00595556 /* FireBallShader.frag */; };
+		C7DE38FE221CA1CA00595556 /* explosion.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE38FD221CA1CA00595556 /* explosion.png */; };
+		C7DE3901221CCD1B00595556 /* DeferredRenderingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7DE38FF221CCD1A00595556 /* DeferredRenderingShader.vert */; };
+		C7DE3902221CCD1B00595556 /* DeferredRenderingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3900221CCD1A00595556 /* DeferredRenderingShader.frag */; };
+		C7DE39C0221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE397D221E25D500595556 /* diffuse.jpg */; };
+		C7DE39C1221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE397E221E25D500595556 /* normal.jpg */; };
+		C7DE39C2221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3980221E25D500595556 /* diffuse.jpg */; };
+		C7DE39C3221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3981221E25D500595556 /* normal.jpg */; };
+		C7DE39C4221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3983221E25D500595556 /* diffuse.jpg */; };
+		C7DE39C5221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3984221E25D500595556 /* normal.jpg */; };
+		C7DE39C6221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3986221E25D500595556 /* diffuse.jpg */; };
+		C7DE39C7221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3987221E25D500595556 /* normal.jpg */; };
+		C7DE39C8221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3989221E25D500595556 /* diffuse.jpg */; };
+		C7DE39C9221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE398A221E25D500595556 /* normal.jpg */; };
+		C7DE39CA221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE398C221E25D500595556 /* diffuse.jpg */; };
+		C7DE39CB221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE398D221E25D500595556 /* normal.jpg */; };
+		C7DE39CC221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE398F221E25D500595556 /* diffuse.jpg */; };
+		C7DE39CD221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3990221E25D500595556 /* normal.jpg */; };
+		C7DE39CE221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3992221E25D500595556 /* diffuse.jpg */; };
+		C7DE39CF221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3993221E25D500595556 /* normal.jpg */; };
+		C7DE39D0221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3995221E25D500595556 /* diffuse.jpg */; };
+		C7DE39D1221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3996221E25D500595556 /* normal.jpg */; };
+		C7DE39D2221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3998221E25D500595556 /* diffuse.jpg */; };
+		C7DE39D3221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE3999221E25D500595556 /* normal.jpg */; };
+		C7DE39D4221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE399B221E25D500595556 /* diffuse.jpg */; };
+		C7DE39D5221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE399C221E25D500595556 /* normal.jpg */; };
+		C7DE39D6221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE399E221E25D500595556 /* diffuse.jpg */; };
+		C7DE39D7221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE399F221E25D500595556 /* normal.jpg */; };
+		C7DE39D8221E25D600595556 /* emissive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39A1221E25D500595556 /* emissive.jpg */; };
+		C7DE39D9221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39A2221E25D500595556 /* diffuse.jpg */; };
+		C7DE39DA221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39A3221E25D500595556 /* normal.jpg */; };
+		C7DE39DB221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39A5221E25D600595556 /* diffuse.jpg */; };
+		C7DE39DC221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39A6221E25D600595556 /* normal.jpg */; };
+		C7DE39DD221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39A8221E25D600595556 /* diffuse.jpg */; };
+		C7DE39DE221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39A9221E25D600595556 /* normal.jpg */; };
+		C7DE39DF221E25D600595556 /* diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39AB221E25D600595556 /* diffuse.png */; };
+		C7DE39E0221E25D600595556 /* specular.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39AC221E25D600595556 /* specular.png */; };
+		C7DE39E1221E25D600595556 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39AD221E25D600595556 /* normal.png */; };
+		C7DE39E2221E25D600595556 /* heightmap3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39AF221E25D600595556 /* heightmap3.jpg */; };
+		C7DE39E3221E25D600595556 /* heightmap2.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39B0221E25D600595556 /* heightmap2.png */; };
+		C7DE39E4221E25D600595556 /* heightmap1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39B1221E25D600595556 /* heightmap1.jpg */; };
+		C7DE39E5221E25D600595556 /* snow.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39B2221E25D600595556 /* snow.png */; };
+		C7DE39E6221E25D600595556 /* stone.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39B3221E25D600595556 /* stone.png */; };
+		C7DE39E7221E25D600595556 /* patchygrass.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39B4221E25D600595556 /* patchygrass.png */; };
+		C7DE39E8221E25D600595556 /* heightmap4.bmp in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39B5221E25D600595556 /* heightmap4.bmp */; };
+		C7DE39E9221E25D600595556 /* sand.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39B6221E25D600595556 /* sand.png */; };
+		C7DE39EA221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39B8221E25D600595556 /* diffuse.jpg */; };
+		C7DE39EB221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39B9221E25D600595556 /* normal.jpg */; };
+		C7DE39EC221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39BB221E25D600595556 /* diffuse.jpg */; };
+		C7DE39ED221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39BC221E25D600595556 /* normal.jpg */; };
+		C7DE39EE221E25D600595556 /* diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39BE221E25D600595556 /* diffuse.jpg */; };
+		C7DE39EF221E25D600595556 /* normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39BF221E25D600595556 /* normal.jpg */; };
 		C7EDB0D422064878007C7D3A /* Game+ILights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EDB0D322064878007C7D3A /* Game+ILights.cpp */; };
 		C7EDB0D922064BCE007C7D3A /* LampShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D522064BCE007C7D3A /* LampShader.vert */; };
 		C7EDB0DA22064BCE007C7D3A /* LightShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D622064BCE007C7D3A /* LightShader.frag */; };
@@ -969,14 +1013,6 @@
 		C713796E22039AF400E9A0F2 /* HeightMapTerrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeightMapTerrain.h; sourceTree = "<group>"; };
 		C713797022039B1D00E9A0F2 /* FaceVertexMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceVertexMesh.h; sourceTree = "<group>"; };
 		C713797122039B1D00E9A0F2 /* FaceVertexMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FaceVertexMesh.cpp; sourceTree = "<group>"; };
-		C71379732203A47E00E9A0F2 /* heightmap3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = heightmap3.jpg; sourceTree = "<group>"; };
-		C71379742203A47E00E9A0F2 /* heightmap1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = heightmap1.jpg; sourceTree = "<group>"; };
-		C71379752203A47F00E9A0F2 /* sand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sand.png; sourceTree = "<group>"; };
-		C71379762203A47F00E9A0F2 /* heightmap4.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = heightmap4.bmp; sourceTree = "<group>"; };
-		C71379772203A47F00E9A0F2 /* snow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snow.png; sourceTree = "<group>"; };
-		C71379782203A47F00E9A0F2 /* stone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stone.png; sourceTree = "<group>"; };
-		C71379792203A47F00E9A0F2 /* patchygrass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = patchygrass.png; sourceTree = "<group>"; };
-		C713797A2203A47F00E9A0F2 /* heightmap2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heightmap2.png; sourceTree = "<group>"; };
 		C71379842203CEDE00E9A0F2 /* TorusKnot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TorusKnot.cpp; sourceTree = "<group>"; };
 		C71379852203CEDE00E9A0F2 /* Cube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cube.cpp; sourceTree = "<group>"; };
 		C71379862203CEDE00E9A0F2 /* Cube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cube.h; sourceTree = "<group>"; };
@@ -1707,7 +1743,6 @@
 		C7C8F32F21FFA70900AB865A /* Kai_Engel_-_02_-_Better_Way.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Kai_Engel_-_02_-_Better_Way.mp3"; sourceTree = "<group>"; };
 		C7C8F33021FFA70900AB865A /* Kai_Engel_-_03_-_Brooks.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Kai_Engel_-_03_-_Brooks.mp3"; sourceTree = "<group>"; };
 		C7C8F33121FFA71000AB865A /* Arial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Arial.ttf; sourceTree = "<group>"; };
-		C7C8F33221FFA71800AB865A /* grassfloor.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = grassfloor.jpg; sourceTree = "<group>"; };
 		C7C8F33521FFA73500AB865A /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
 		C7C8F33621FFA73500AB865A /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
 		C7C8F33721FFA73500AB865A /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
@@ -1940,6 +1975,59 @@
 		C7CEE2E62212435600895F5D /* EdgeDetectionShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EdgeDetectionShader.frag; sourceTree = "<group>"; };
 		C7CEE2E72212435600895F5D /* EdgeDetectionShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EdgeDetectionShader.vert; sourceTree = "<group>"; };
 		C7CEE2E82212435600895F5D /* KernelBlurShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = KernelBlurShader.frag; sourceTree = "<group>"; };
+		C7DE38F6221C843C00595556 /* FireBallShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FireBallShader.vert; sourceTree = "<group>"; };
+		C7DE38F8221C843D00595556 /* FireBallShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FireBallShader.frag; sourceTree = "<group>"; };
+		C7DE38FD221CA1CA00595556 /* explosion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explosion.png; sourceTree = "<group>"; };
+		C7DE38FF221CCD1A00595556 /* DeferredRenderingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DeferredRenderingShader.vert; sourceTree = "<group>"; };
+		C7DE3900221CCD1A00595556 /* DeferredRenderingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DeferredRenderingShader.frag; sourceTree = "<group>"; };
+		C7DE397D221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE397E221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE3980221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE3981221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE3983221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE3984221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE3986221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE3987221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE3989221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE398A221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE398C221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE398D221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE398F221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE3990221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE3992221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE3993221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE3995221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE3996221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE3998221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE3999221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE399B221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE399C221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE399E221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE399F221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE39A1221E25D500595556 /* emissive.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = emissive.jpg; sourceTree = "<group>"; };
+		C7DE39A2221E25D500595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE39A3221E25D500595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE39A5221E25D600595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE39A6221E25D600595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE39A8221E25D600595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE39A9221E25D600595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE39AB221E25D600595556 /* diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diffuse.png; sourceTree = "<group>"; };
+		C7DE39AC221E25D600595556 /* specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = specular.png; sourceTree = "<group>"; };
+		C7DE39AD221E25D600595556 /* normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normal.png; sourceTree = "<group>"; };
+		C7DE39AF221E25D600595556 /* heightmap3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = heightmap3.jpg; sourceTree = "<group>"; };
+		C7DE39B0221E25D600595556 /* heightmap2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heightmap2.png; sourceTree = "<group>"; };
+		C7DE39B1221E25D600595556 /* heightmap1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = heightmap1.jpg; sourceTree = "<group>"; };
+		C7DE39B2221E25D600595556 /* snow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snow.png; sourceTree = "<group>"; };
+		C7DE39B3221E25D600595556 /* stone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stone.png; sourceTree = "<group>"; };
+		C7DE39B4221E25D600595556 /* patchygrass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = patchygrass.png; sourceTree = "<group>"; };
+		C7DE39B5221E25D600595556 /* heightmap4.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = heightmap4.bmp; sourceTree = "<group>"; };
+		C7DE39B6221E25D600595556 /* sand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sand.png; sourceTree = "<group>"; };
+		C7DE39B8221E25D600595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE39B9221E25D600595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE39BB221E25D600595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE39BC221E25D600595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
+		C7DE39BE221E25D600595556 /* diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = diffuse.jpg; sourceTree = "<group>"; };
+		C7DE39BF221E25D600595556 /* normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = normal.jpg; sourceTree = "<group>"; };
 		C7EDB0D322064878007C7D3A /* Game+ILights.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+ILights.cpp"; sourceTree = "<group>"; };
 		C7EDB0D522064BCE007C7D3A /* LampShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LampShader.vert; sourceTree = "<group>"; };
 		C7EDB0D622064BCE007C7D3A /* LightShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightShader.frag; sourceTree = "<group>"; };
@@ -3156,6 +3244,10 @@
 		C7C8F2C921FF5F3C00AB865A /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				C7DE3900221CCD1A00595556 /* DeferredRenderingShader.frag */,
+				C7DE38FF221CCD1A00595556 /* DeferredRenderingShader.vert */,
+				C7DE38F8221C843D00595556 /* FireBallShader.frag */,
+				C7DE38F6221C843C00595556 /* FireBallShader.vert */,
 				C7B70505221C1105002F5732 /* FastApproximateAntiAliasingShader.frag */,
 				C7B70504221C1104002F5732 /* FastApproximateAntiAliasingShader.vert */,
 				C785F98E22134CA100F1F8FD /* BarrelDistortionPixelShader.frag */,
@@ -3274,17 +3366,18 @@
 		C7C8F2CA21FF5F4D00AB865A /* textures */ = {
 			isa = PBXGroup;
 			children = (
+				C7EED11022111ECC0079F5C0 /* clean-gray-paper.png */,
+				C7DE38FD221CA1CA00595556 /* explosion.png */,
 				C76DAFFD22189C36005C354C /* lensFlare */,
+				C7EED10F22111ECB0079F5C0 /* moon_surface.jpg */,
 				C785F97B2212E74000F1F8FD /* night_vision_binoculars_mask.png */,
 				C785F97A2212E73F00F1F8FD /* noise_texture_colored.png */,
 				C785F97C2212E74000F1F8FD /* noise_texture_gray.png */,
-				C785F97D2212E74000F1F8FD /* perlin_noise_texture.png */,
-				C7EED11022111ECC0079F5C0 /* clean-gray-paper.png */,
-				C7EED10F22111ECB0079F5C0 /* moon_surface.jpg */,
-				C7FB5781220CE7D6006F2D91 /* woodenBox */,
 				C7A6EE582208EF4A005D5161 /* pbr */,
+				C785F97D2212E74000F1F8FD /* perlin_noise_texture.png */,
 				C7B7578A2204E32C00E54C30 /* pixarLibrary */,
-				C7C8F33321FFA71B00AB865A /* terrain */,
+				C7DE397B221E25D500595556 /* terrain */,
+				C7FB5781220CE7D6006F2D91 /* woodenBox */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -3480,22 +3573,6 @@
 				C7C8F32121FF8B6100AB865A /* Camera.h */,
 			);
 			path = camera;
-			sourceTree = "<group>";
-		};
-		C7C8F33321FFA71B00AB865A /* terrain */ = {
-			isa = PBXGroup;
-			children = (
-				C71379742203A47E00E9A0F2 /* heightmap1.jpg */,
-				C713797A2203A47F00E9A0F2 /* heightmap2.png */,
-				C71379732203A47E00E9A0F2 /* heightmap3.jpg */,
-				C71379762203A47F00E9A0F2 /* heightmap4.bmp */,
-				C71379792203A47F00E9A0F2 /* patchygrass.png */,
-				C71379752203A47F00E9A0F2 /* sand.png */,
-				C71379772203A47F00E9A0F2 /* snow.png */,
-				C71379782203A47F00E9A0F2 /* stone.png */,
-				C7C8F33221FFA71800AB865A /* grassfloor.jpg */,
-			);
-			path = terrain;
 			sourceTree = "<group>";
 		};
 		C7C8F33421FFA73500AB865A /* yokohamaday */ = {
@@ -3963,6 +4040,221 @@
 			path = flipped;
 			sourceTree = "<group>";
 		};
+		C7DE397B221E25D500595556 /* terrain */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE397C221E25D500595556 /* GrassRocks */,
+				C7DE397F221E25D500595556 /* Ground1 */,
+				C7DE3982221E25D500595556 /* Grass2 */,
+				C7DE3985221E25D500595556 /* Grass5 */,
+				C7DE3988221E25D500595556 /* Grass4 */,
+				C7DE398B221E25D500595556 /* Grass3 */,
+				C7DE398E221E25D500595556 /* GrassDeadLeafs2 */,
+				C7DE3991221E25D500595556 /* GroundWeeds */,
+				C7DE3994221E25D500595556 /* GroundRocks2 */,
+				C7DE3997221E25D500595556 /* GroundRocks3 */,
+				C7DE399A221E25D500595556 /* Grass6 */,
+				C7DE399D221E25D500595556 /* Grass1 */,
+				C7DE39A0221E25D500595556 /* Lava */,
+				C7DE39A4221E25D600595556 /* Ground2 */,
+				C7DE39A7221E25D600595556 /* DryGround */,
+				C7DE39AA221E25D600595556 /* Grass7 */,
+				C7DE39AE221E25D600595556 /* HeightMap */,
+				C7DE39B7221E25D600595556 /* GroundRocks1 */,
+				C7DE39BA221E25D600595556 /* GrassDeadLeafs1 */,
+				C7DE39BD221E25D600595556 /* GroundMoss */,
+			);
+			path = terrain;
+			sourceTree = "<group>";
+		};
+		C7DE397C221E25D500595556 /* GrassRocks */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE397D221E25D500595556 /* diffuse.jpg */,
+				C7DE397E221E25D500595556 /* normal.jpg */,
+			);
+			path = GrassRocks;
+			sourceTree = "<group>";
+		};
+		C7DE397F221E25D500595556 /* Ground1 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE3980221E25D500595556 /* diffuse.jpg */,
+				C7DE3981221E25D500595556 /* normal.jpg */,
+			);
+			path = Ground1;
+			sourceTree = "<group>";
+		};
+		C7DE3982221E25D500595556 /* Grass2 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE3983221E25D500595556 /* diffuse.jpg */,
+				C7DE3984221E25D500595556 /* normal.jpg */,
+			);
+			path = Grass2;
+			sourceTree = "<group>";
+		};
+		C7DE3985221E25D500595556 /* Grass5 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE3986221E25D500595556 /* diffuse.jpg */,
+				C7DE3987221E25D500595556 /* normal.jpg */,
+			);
+			path = Grass5;
+			sourceTree = "<group>";
+		};
+		C7DE3988221E25D500595556 /* Grass4 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE3989221E25D500595556 /* diffuse.jpg */,
+				C7DE398A221E25D500595556 /* normal.jpg */,
+			);
+			path = Grass4;
+			sourceTree = "<group>";
+		};
+		C7DE398B221E25D500595556 /* Grass3 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE398C221E25D500595556 /* diffuse.jpg */,
+				C7DE398D221E25D500595556 /* normal.jpg */,
+			);
+			path = Grass3;
+			sourceTree = "<group>";
+		};
+		C7DE398E221E25D500595556 /* GrassDeadLeafs2 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE398F221E25D500595556 /* diffuse.jpg */,
+				C7DE3990221E25D500595556 /* normal.jpg */,
+			);
+			path = GrassDeadLeafs2;
+			sourceTree = "<group>";
+		};
+		C7DE3991221E25D500595556 /* GroundWeeds */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE3992221E25D500595556 /* diffuse.jpg */,
+				C7DE3993221E25D500595556 /* normal.jpg */,
+			);
+			path = GroundWeeds;
+			sourceTree = "<group>";
+		};
+		C7DE3994221E25D500595556 /* GroundRocks2 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE3995221E25D500595556 /* diffuse.jpg */,
+				C7DE3996221E25D500595556 /* normal.jpg */,
+			);
+			path = GroundRocks2;
+			sourceTree = "<group>";
+		};
+		C7DE3997221E25D500595556 /* GroundRocks3 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE3998221E25D500595556 /* diffuse.jpg */,
+				C7DE3999221E25D500595556 /* normal.jpg */,
+			);
+			path = GroundRocks3;
+			sourceTree = "<group>";
+		};
+		C7DE399A221E25D500595556 /* Grass6 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE399B221E25D500595556 /* diffuse.jpg */,
+				C7DE399C221E25D500595556 /* normal.jpg */,
+			);
+			path = Grass6;
+			sourceTree = "<group>";
+		};
+		C7DE399D221E25D500595556 /* Grass1 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE399E221E25D500595556 /* diffuse.jpg */,
+				C7DE399F221E25D500595556 /* normal.jpg */,
+			);
+			path = Grass1;
+			sourceTree = "<group>";
+		};
+		C7DE39A0221E25D500595556 /* Lava */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE39A1221E25D500595556 /* emissive.jpg */,
+				C7DE39A2221E25D500595556 /* diffuse.jpg */,
+				C7DE39A3221E25D500595556 /* normal.jpg */,
+			);
+			path = Lava;
+			sourceTree = "<group>";
+		};
+		C7DE39A4221E25D600595556 /* Ground2 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE39A5221E25D600595556 /* diffuse.jpg */,
+				C7DE39A6221E25D600595556 /* normal.jpg */,
+			);
+			path = Ground2;
+			sourceTree = "<group>";
+		};
+		C7DE39A7221E25D600595556 /* DryGround */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE39A8221E25D600595556 /* diffuse.jpg */,
+				C7DE39A9221E25D600595556 /* normal.jpg */,
+			);
+			path = DryGround;
+			sourceTree = "<group>";
+		};
+		C7DE39AA221E25D600595556 /* Grass7 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE39AB221E25D600595556 /* diffuse.png */,
+				C7DE39AC221E25D600595556 /* specular.png */,
+				C7DE39AD221E25D600595556 /* normal.png */,
+			);
+			path = Grass7;
+			sourceTree = "<group>";
+		};
+		C7DE39AE221E25D600595556 /* HeightMap */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE39AF221E25D600595556 /* heightmap3.jpg */,
+				C7DE39B0221E25D600595556 /* heightmap2.png */,
+				C7DE39B1221E25D600595556 /* heightmap1.jpg */,
+				C7DE39B2221E25D600595556 /* snow.png */,
+				C7DE39B3221E25D600595556 /* stone.png */,
+				C7DE39B4221E25D600595556 /* patchygrass.png */,
+				C7DE39B5221E25D600595556 /* heightmap4.bmp */,
+				C7DE39B6221E25D600595556 /* sand.png */,
+			);
+			path = HeightMap;
+			sourceTree = "<group>";
+		};
+		C7DE39B7221E25D600595556 /* GroundRocks1 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE39B8221E25D600595556 /* diffuse.jpg */,
+				C7DE39B9221E25D600595556 /* normal.jpg */,
+			);
+			path = GroundRocks1;
+			sourceTree = "<group>";
+		};
+		C7DE39BA221E25D600595556 /* GrassDeadLeafs1 */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE39BB221E25D600595556 /* diffuse.jpg */,
+				C7DE39BC221E25D600595556 /* normal.jpg */,
+			);
+			path = GrassDeadLeafs1;
+			sourceTree = "<group>";
+		};
+		C7DE39BD221E25D600595556 /* GroundMoss */ = {
+			isa = PBXGroup;
+			children = (
+				C7DE39BE221E25D600595556 /* diffuse.jpg */,
+				C7DE39BF221E25D600595556 /* normal.jpg */,
+			);
+			path = GroundMoss;
+			sourceTree = "<group>";
+		};
 		C7FB5744220C7294006F2D91 /* nanosuit */ = {
 			isa = PBXGroup;
 			children = (
@@ -4092,6 +4384,7 @@
 				C7B759652204E32C00E54C30 /* Anigre_pxr128_normal.tif in Resources */,
 				C7B759552204E32C00E54C30 /* Figured_lacewood_pxr128.tif in Resources */,
 				C7C8F48921FFBA7C00AB865A /* _up.jpg in Resources */,
+				C7DE39C4221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B75A872204E32D00E54C30 /* Wild_flowers_pxr128.tif in Resources */,
 				C7C8F45221FFBA3A00AB865A /* _lf.jpg in Resources */,
 				C7C8F49821FFBA9000AB865A /* _rt.jpg in Resources */,
@@ -4105,6 +4398,7 @@
 				C7EEC50422136AF700909E4C /* RadialBlurShader.frag in Resources */,
 				C7B75A342204E32C00E54C30 /* Cement_block_pxr128_bmp.tif in Resources */,
 				C7FB5785220CE7D6006F2D91 /* woodenBoxDiffuse.png in Resources */,
+				C7DE39DC221E25D600595556 /* normal.jpg in Resources */,
 				C7B759FD2204E32C00E54C30 /* Horizontal_pxr128.tif in Resources */,
 				C7C8F43221FFBA0400AB865A /* Kai_Engel_-_03_-_Realness.mp3 in Resources */,
 				C7EED107221105360079F5C0 /* WireFrameShader.geom in Resources */,
@@ -4117,6 +4411,7 @@
 				C7B4D3D322146E2900BCE130 /* chipped-paint-ao.png in Resources */,
 				C7B759E12204E32C00E54C30 /* Blue_gravel_pxr128_normal.tif in Resources */,
 				C7B7598A2204E32C00E54C30 /* Pink_tile_pxr128_bmp.tif in Resources */,
+				C7DE39EC221E25D600595556 /* diffuse.jpg in Resources */,
 				C7767412220A22B500BA7062 /* Crossbow_D180227_FR.mtl in Resources */,
 				C7B4D3C122146E2900BCE130 /* bamboo-wood-semigloss-metal.png in Resources */,
 				C77673BF2209F69500BA7062 /* rustediron2_roughness.png in Resources */,
@@ -4127,6 +4422,7 @@
 				C7B4D3FD22146E2900BCE130 /* cavefloor-metal.png in Resources */,
 				C7B4D3CD22146E2900BCE130 /* haystack-metal.png in Resources */,
 				C7C8F48321FFBA7500AB865A /* _up.jpg in Resources */,
+				C7DE39C6221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B7594E2204E32C00E54C30 /* American_cherry_pxr128_normal.tif in Resources */,
 				C7B759C22204E32C00E54C30 /* Peetmoss_pxr128.tif in Resources */,
 				C7C8F48F21FFBA8300AB865A /* _up.jpg in Resources */,
@@ -4141,6 +4437,7 @@
 				C7EEC50E22136AF700909E4C /* MotionBlurShader.frag in Resources */,
 				C7C8F45521FFBA4100AB865A /* _dn.jpg in Resources */,
 				C7CEE2F02212435600895F5D /* KernelBlurShader.frag in Resources */,
+				C7DE39C1221E25D600595556 /* normal.jpg in Resources */,
 				C7B759722204E32C00E54C30 /* Burled_ash_pxr128_bmp.tif in Resources */,
 				C7C8F45121FFBA3A00AB865A /* _bk.jpg in Resources */,
 				C7B75A422204E32C00E54C30 /* Purple_shingle_pxr128_normal.tif in Resources */,
@@ -4166,16 +4463,15 @@
 				C7B759522204E32C00E54C30 /* Burled_walnut_pxr128_bmp.tif in Resources */,
 				C7B759902204E32C00E54C30 /* Rock_in_mortar_pxr128.tif in Resources */,
 				C7B4D3B022146E2900BCE130 /* slipperystonework-ao.png in Resources */,
+				C7DE39E0221E25D600595556 /* specular.png in Resources */,
 				C7B75A892204E32D00E54C30 /* White_lace_pxr128_bmp.tif in Resources */,
 				C785F988221341CC00F1F8FD /* SobelEdgeDetectionShader.vert in Resources */,
 				C7FB5764220C7294006F2D91 /* arm_showroom_spec.png in Resources */,
 				C7CEE2D92211E33F00895F5D /* ImageProcessingShader.vert in Resources */,
 				C7B759B52204E32C00E54C30 /* Round_mesh_pxr128.tif in Resources */,
 				C7B75A5A2204E32D00E54C30 /* Gray_granite_pxr128_bmp.tif in Resources */,
-				C7C8F44721FFBA1D00AB865A /* grassfloor.jpg in Resources */,
 				C7B75A322204E32C00E54C30 /* Gray_deco_block_pxr128_bmp.tif in Resources */,
 				C7EEC50C22136AF700909E4C /* MotionBlurShader.vert in Resources */,
-				C71379802203A47F00E9A0F2 /* stone.png in Resources */,
 				C785F99622134CAE00F1F8FD /* FishEyeLensShader.frag in Resources */,
 				C7FB5778220C7294006F2D91 /* leg_showroom_spec.png in Resources */,
 				C7B75AAA2204E32D00E54C30 /* Gray_swirl_marble_pxr128_normal.tif in Resources */,
@@ -4218,6 +4514,7 @@
 				C7C8F4A421FFBA9E00AB865A /* _rt.jpg in Resources */,
 				C7EEC51022136AF700909E4C /* BlurShader.frag in Resources */,
 				C7C8F49021FFBA8900AB865A /* _ft.jpg in Resources */,
+				C7DE39C7221E25D600595556 /* normal.jpg in Resources */,
 				C7B759A52204E32C00E54C30 /* Macbeth_color_checker_pxr128.tif in Resources */,
 				C7B75A1C2204E32C00E54C30 /* Red-orange_glazed_pxr128.tif in Resources */,
 				C785F94A2212D2BD00F1F8FD /* ScreenWaveShader.frag in Resources */,
@@ -4231,6 +4528,7 @@
 				C7EED11122111ECC0079F5C0 /* moon_surface.jpg in Resources */,
 				C7B75A572204E32D00E54C30 /* Blue_marble_pxr128_bmp.tif in Resources */,
 				C7B4D3DB22146E2900BCE130 /* oldplywood-ao.png in Resources */,
+				C7DE39C9221E25D600595556 /* normal.jpg in Resources */,
 				C7B759432204E32C00E54C30 /* Australian_rosewood_pxr128.tif in Resources */,
 				C7B75A642204E32D00E54C30 /* Gray_granite_pxr128.tif in Resources */,
 				C7B75A932204E32D00E54C30 /* Herringbone_pxr128_bmp.tif in Resources */,
@@ -4261,6 +4559,7 @@
 				C7B4D3B322146E2900BCE130 /* octostone-albedo.png in Resources */,
 				C7B7599F2204E32C00E54C30 /* Black_glazed_tile_pxr128.tif in Resources */,
 				C7B759F92204E32C00E54C30 /* Vertical_metal_pxr128_normal.tif in Resources */,
+				C7DE39EA221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B75A052204E32C00E54C30 /* Poured_cement_pxr128_bmp.tif in Resources */,
 				C7C8F48721FFBA7C00AB865A /* _bk.jpg in Resources */,
 				C7B759FC2204E32C00E54C30 /* Poured_cement_pxr128_normal.tif in Resources */,
@@ -4273,8 +4572,8 @@
 				C7B759C42204E32C00E54C30 /* Dirt_and_gravel_pxr128_bmp.tif in Resources */,
 				C7B4D3D122146E2900BCE130 /* haystack-roughness.png in Resources */,
 				C7767437220A53A200BA7062 /* NormalMappingShader.vert in Resources */,
-				C71379812203A47F00E9A0F2 /* patchygrass.png in Resources */,
 				C7B759DD2204E32C00E54C30 /* Bowling_grass_pxr128.tif in Resources */,
+				C7DE39ED221E25D600595556 /* normal.jpg in Resources */,
 				C7B75A682204E32D00E54C30 /* Buffed_marble_pxr128_bmp.tif in Resources */,
 				C7C8F48021FFBA7500AB865A /* _rt.jpg in Resources */,
 				C7B7597D2204E32C00E54C30 /* Iridescent_ribbon_pxr128_bmp.tif in Resources */,
@@ -4285,6 +4584,7 @@
 				C7B75A722204E32D00E54C30 /* Black_granite_pxr128.tif in Resources */,
 				C7B7595A2204E32C00E54C30 /* Figured_lacewood_pxr128_normal.tif in Resources */,
 				C7B4D3C222146E2900BCE130 /* bamboo-wood-semigloss-albedo.png in Resources */,
+				C7DE39E5221E25D600595556 /* snow.png in Resources */,
 				C7B75A4A2204E32D00E54C30 /* Brown_staggered_pxr128.tif in Resources */,
 				C7C8F46321FFBA5100AB865A /* _bk.jpg in Resources */,
 				C7B75A7C2204E32D00E54C30 /* Jade_cloth_pxr128_normal.tif in Resources */,
@@ -4294,6 +4594,7 @@
 				C7B75A4E2204E32D00E54C30 /* Standard_shingle_pxr128_bmp.tif in Resources */,
 				C7C8F4AC21FFC92900AB865A /* SkyBoxShader.frag in Resources */,
 				C7B759E82204E32C00E54C30 /* Red_gravel_pxr128.tif in Resources */,
+				C7DE39E8221E25D600595556 /* heightmap4.bmp in Resources */,
 				C7B759D32204E32C00E54C30 /* Ivy_pxr128_normal.tif in Resources */,
 				C785F99A22134CAE00F1F8FD /* FishEyeShader.vert in Resources */,
 				C785F97F2212E74000F1F8FD /* night_vision_binoculars_mask.png in Resources */,
@@ -4324,15 +4625,18 @@
 				C7B4D3B422146E2900BCE130 /* octostone-height.png in Resources */,
 				C7B759C32204E32C00E54C30 /* Brown_dirt_pxr128_bmp.tif in Resources */,
 				C7B75A562204E32D00E54C30 /* Gray_marble_pxr128_bmp.tif in Resources */,
+				C7DE39DA221E25D600595556 /* normal.jpg in Resources */,
 				C7B759BC2204E32C00E54C30 /* Round_mesh_pxr128_bmp.tif in Resources */,
 				C7B759762204E32C00E54C30 /* Quartered_teak_pxr128_bmp.tif in Resources */,
 				C7B4D3E722146E2900BCE130 /* wornpaintedwoodsiding-ao.png in Resources */,
+				C7DE39D1221E25D600595556 /* normal.jpg in Resources */,
 				C7B759742204E32C00E54C30 /* Figured_sepele_pxr128.tif in Resources */,
 				C7B7596A2204E32C00E54C30 /* Burled_mappa_pxr128_normal.tif in Resources */,
 				C7B759EC2204E32C00E54C30 /* Board_and_batten_pxr128.tif in Resources */,
 				C7B759F82204E32C00E54C30 /* Board_and_batten_pxr128_bmp.tif in Resources */,
 				C7B759F52204E32C00E54C30 /* Redwood_outdoor_pxr128.tif in Resources */,
 				C7C8F45D21FFBA4900AB865A /* _bk.jpg in Resources */,
+				C7DE39DE221E25D600595556 /* normal.jpg in Resources */,
 				C7C8F49E21FFBA9700AB865A /* _rt.jpg in Resources */,
 				C7C8F46621FFBA5A00AB865A /* _ft.jpg in Resources */,
 				C7B759622204E32C00E54C30 /* Dark_birdseye_maple_pxr128_normal.tif in Resources */,
@@ -4340,6 +4644,7 @@
 				C7B4D3FC22146E2900BCE130 /* harshbricks-albedo.png in Resources */,
 				C7B75A782204E32D00E54C30 /* White_lace_pxr128_normal.tif in Resources */,
 				C7B75A372204E32C00E54C30 /* Pink-brown_painted_pxr128_normal.tif in Resources */,
+				C7DE3901221CCD1B00595556 /* DeferredRenderingShader.vert in Resources */,
 				C7B759642204E32C00E54C30 /* Marine_plywood_pxr128.tif in Resources */,
 				C7B759392204E32C00E54C30 /* Australian_rosewood_pxr128_normal.tif in Resources */,
 				C7B75A762204E32D00E54C30 /* Jade_cloth_pxr128_bmp.tif in Resources */,
@@ -4353,6 +4658,7 @@
 				C7B4D3E222146E2900BCE130 /* plastic-roughness.png in Resources */,
 				C7C8F47A21FFBA6F00AB865A /* _rt.jpg in Resources */,
 				C7B759822204E32C00E54C30 /* Golden_snakeskin_pxr128.tif in Resources */,
+				C7DE39CC221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B75A7E2204E32D00E54C30 /* Herringbone_pxr128_normal.tif in Resources */,
 				C7B75A2A2204E32C00E54C30 /* Red-orange_glazed_pxr128_bmp.tif in Resources */,
 				C7B75A692204E32D00E54C30 /* Buffed_marble_pxr128.tif in Resources */,
@@ -4365,7 +4671,9 @@
 				C7B75A6F2204E32D00E54C30 /* Black_marble_pxr128_normal.tif in Resources */,
 				C7C8F49421FFBA8900AB865A /* _lf.jpg in Resources */,
 				C7B759DE2204E32C00E54C30 /* Peetmoss_pxr128_normal.tif in Resources */,
+				C7DE39DB221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B75A2E2204E32C00E54C30 /* Stone_and_brick_pxr128.tif in Resources */,
+				C7DE39D7221E25D600595556 /* normal.jpg in Resources */,
 				C7B4D3F022146E2900BCE130 /* titanium-albedo.png in Resources */,
 				C7C8F48D21FFBA8300AB865A /* _bk.jpg in Resources */,
 				C7B75A212204E32C00E54C30 /* Blue_glazed_pxr128.tif in Resources */,
@@ -4376,7 +4684,6 @@
 				C7B759352204E32C00E54C30 /* Honduran_mahogany_pxr128_normal.tif in Resources */,
 				C7C8F47821FFBA6F00AB865A /* _ft.jpg in Resources */,
 				C7FB5761220C7294006F2D91 /* body_showroom_ddn.png in Resources */,
-				C713797F2203A47F00E9A0F2 /* snow.png in Resources */,
 				C7B75A5B2204E32D00E54C30 /* Black_granite_pxr128_bmp.tif in Resources */,
 				C785F94B2212D2BD00F1F8FD /* ScreenWaveShader.vert in Resources */,
 				C75C9745220E212F00420DF6 /* bricks_disp.jpg in Resources */,
@@ -4411,8 +4718,9 @@
 				C7B75A152204E32C00E54C30 /* Standard_red_pxr128_bmp.tif in Resources */,
 				C7B75A9D2204E32D00E54C30 /* Haitian_cotton_pxr128_normal.tif in Resources */,
 				C7C8F45821FFBA4100AB865A /* _lf.jpg in Resources */,
-				C713797E2203A47F00E9A0F2 /* heightmap4.bmp in Resources */,
 				C75C973A220E01A200420DF6 /* _up.jpg in Resources */,
+				C7DE39D6221E25D600595556 /* diffuse.jpg in Resources */,
+				C7DE39EE221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B759BA2204E32C00E54C30 /* Wire_screen_pxr128_normal.tif in Resources */,
 				C7B759D92204E32C00E54C30 /* Street_asphalt_pxr128_bmp.tif in Resources */,
 				C7B75A8F2204E32D00E54C30 /* Flower_pattern_pxr128_normal.tif in Resources */,
@@ -4424,6 +4732,7 @@
 				C7B4D3C622146E2900BCE130 /* aluminium-roughness.png in Resources */,
 				C7B759B22204E32C00E54C30 /* Round_mesh_pxr128_normal.tif in Resources */,
 				C7EEC50722136AF700909E4C /* LensFlareGhostShader.frag in Resources */,
+				C7DE39C2221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B759B32204E32C00E54C30 /* Steel_diamond_plate_pxr128_normal.tif in Resources */,
 				C7B75A702204E32D00E54C30 /* Black_granite_pxr128_normal.tif in Resources */,
 				C7B7594F2204E32C00E54C30 /* Burled_olive_ash_pxr128.tif in Resources */,
@@ -4433,6 +4742,7 @@
 				C77673D4220A1BC200BA7062 /* BaseColor.jpg in Resources */,
 				C7B759C82204E32C00E54C30 /* Pebbles_in_mortar_pxr128.tif in Resources */,
 				C7B759782204E32C00E54C30 /* Nails_pxr128.tif in Resources */,
+				C7DE39E4221E25D600595556 /* heightmap1.jpg in Resources */,
 				C7B759372204E32C00E54C30 /* Quartered_sepele_pxr128.tif in Resources */,
 				C7A6EE922208F6BC005D5161 /* MK2.obj in Resources */,
 				C7767416220A22B500BA7062 /* horn_Mixed_AO.png in Resources */,
@@ -4442,10 +4752,13 @@
 				C7B75A172204E32C00E54C30 /* Gray_deco_block_pxr128_normal.tif in Resources */,
 				C785F9662212DA7E00F1F8FD /* NightVisionLensShader.vert in Resources */,
 				C7B75A882204E32D00E54C30 /* Red_velvet_pxr128.tif in Resources */,
+				C7DE39E1221E25D600595556 /* normal.png in Resources */,
 				C77673D5220A1BC200BA7062 /* Normal.jpg in Resources */,
 				C7B75A432204E32C00E54C30 /* Blue_shingle_pxr128.tif in Resources */,
 				C7B75A062204E32C00E54C30 /* Cedar_shake_pxr128.tif in Resources */,
 				C7B7594D2204E32C00E54C30 /* Red_oak_pxr128_bmp.tif in Resources */,
+				C7DE39DD221E25D600595556 /* diffuse.jpg in Resources */,
+				C7DE39CA221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B75A772204E32D00E54C30 /* Blue_cotton_tweed_pxr128.tif in Resources */,
 				C7B7592E2204E32C00E54C30 /* Quartered_teak_pxr128_normal.tif in Resources */,
 				C776740D220A22B500BA7062 /* Crossbow_D180227_Mixed_AO.png in Resources */,
@@ -4466,6 +4779,7 @@
 				C7B7593C2204E32C00E54C30 /* Figured_birdseye_maple_pxr128_bmp.tif in Resources */,
 				C7B759982204E32C00E54C30 /* Shale_rock_pxr128_normal.tif in Resources */,
 				C7B75A1D2204E32C00E54C30 /* Red-orange_glazed_pxr128_normal.tif in Resources */,
+				C7DE39C5221E25D600595556 /* normal.jpg in Resources */,
 				C76DB0042218A6DE005C354C /* lensStarburst.png in Resources */,
 				C7B759242204E32C00E54C30 /* American_walnut_pxr128_bmp.tif in Resources */,
 				C7B4D39E22146E2900BCE130 /* metalgrid-roughness.png in Resources */,
@@ -4484,6 +4798,7 @@
 				C7B75A482204E32D00E54C30 /* Blue_shingle_pxr128_normal.tif in Resources */,
 				C7767413220A22B500BA7062 /* horn_Base_Color.png in Resources */,
 				C7EED10B221105360079F5C0 /* PorcupineRenderingShader.vert in Resources */,
+				C7DE39DF221E25D600595556 /* diffuse.png in Resources */,
 				C785F986221341CC00F1F8FD /* FreiChenEdgeDetectionShader.frag in Resources */,
 				C7C8F45B21FFBA4900AB865A /* _dn.jpg in Resources */,
 				C7B75A352204E32C00E54C30 /* Building_block_pxr128_normal.tif in Resources */,
@@ -4492,6 +4807,7 @@
 				C7B75A0D2204E32C00E54C30 /* Relief_building_block_pxr128_bmp.tif in Resources */,
 				C7A6EE912208F6BC005D5161 /* MK2.FBX in Resources */,
 				C75C9747220E212F00420DF6 /* bricks_diffuse.jpg in Resources */,
+				C7DE38FA221C843D00595556 /* FireBallShader.vert in Resources */,
 				C785F9712212DA7E00F1F8FD /* PredatorsThermalVisionShader.vert in Resources */,
 				C7B75A9C2204E32D00E54C30 /* Red_velvet_pxr128_normal.tif in Resources */,
 				C7C8F44321FFBA1A00AB865A /* _rt.jpg in Resources */,
@@ -4510,6 +4826,7 @@
 				C7B75A802204E32D00E54C30 /* Blue_cotton_tweed_pxr128_normal.jpg in Resources */,
 				C7B759AC2204E32C00E54C30 /* Black_mesh_pxr128_bmp.tif in Resources */,
 				C77673B22209F69500BA7062 /* Metal_007_Roughness.jpg in Resources */,
+				C7DE39D9221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B75A4F2204E32D00E54C30 /* Tar_paper_pxr128.tif in Resources */,
 				C7A6EE9E2208F6BC005D5161 /* SchofieldNo3NickelCO2BBRevolver.obj in Resources */,
 				C7FB5780220CBE2A006F2D91 /* PhysicallyBasedRenderingShader.frag in Resources */,
@@ -4538,6 +4855,7 @@
 				C7B759E62204E32C00E54C30 /* Street_asphalt_pxr128_normal.tif in Resources */,
 				C7B759D72204E32C00E54C30 /* Ivy_pxr128_bmp.tif in Resources */,
 				C7B75AA02204E32D00E54C30 /* Pin_stripe_canvas_pxr128.tif in Resources */,
+				C7DE39D5221E25D600595556 /* normal.jpg in Resources */,
 				C7B75A132204E32C00E54C30 /* Blue_glazed_pxr128_bmp.tif in Resources */,
 				C7EED10A221105360079F5C0 /* PorcupineRenderingShader.frag in Resources */,
 				C7FB5760220C7294006F2D91 /* hand_showroom_refl.png in Resources */,
@@ -4556,11 +4874,13 @@
 				C7B7597F2204E32C00E54C30 /* Nails_pxr128_normal.tif in Resources */,
 				C7B759C62204E32C00E54C30 /* Fine_gray_gravel_pxr128_normal.tif in Resources */,
 				C7C8F44D21FFBA2A00AB865A /* _up.jpg in Resources */,
+				C7DE39D3221E25D600595556 /* normal.jpg in Resources */,
 				C7B759912204E32C00E54C30 /* Railroad_tie_ends_pxr128_bmp.tif in Resources */,
 				C7B75A5D2204E32D00E54C30 /* Pink_marble_pxr128_normal.tif in Resources */,
 				C7B4D3E022146E2900BCE130 /* rustediron-streaks-albedo.png in Resources */,
 				C7C8F46C21FFBA6000AB865A /* _ft.jpg in Resources */,
 				C7B759592204E32C00E54C30 /* Rough_cut_redwood_pxr128.tif in Resources */,
+				C7DE39E2221E25D600595556 /* heightmap3.jpg in Resources */,
 				C776740B220A22B500BA7062 /* Crossbow_D180227.mtl in Resources */,
 				C7B75A542204E32D00E54C30 /* Buffed_marble_pxr128_normal.tif in Resources */,
 				C785F99922134CAE00F1F8FD /* FishEyeAntiFishEyeShader.vert in Resources */,
@@ -4568,6 +4888,7 @@
 				C7767414220A22B500BA7062 /* horn.mtl in Resources */,
 				C7B75A952204E32D00E54C30 /* Checked_cotton_pxr128_normal.tif in Resources */,
 				C7B759BF2204E32C00E54C30 /* Dirt_and_gravel_pxr128_normal.tif in Resources */,
+				C7DE39D2221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B75A0C2204E32C00E54C30 /* Blue_lattice_pxr128_normal.tif in Resources */,
 				C785F96A2212DA7E00F1F8FD /* DreamVisionShader.vert in Resources */,
 				C7B4D3E622146E2900BCE130 /* wornpaintedwoodsiding-metal.png in Resources */,
@@ -4576,12 +4897,14 @@
 				C7B7595D2204E32C00E54C30 /* Brazilian_rosewood_pxr128.tif in Resources */,
 				C7B70507221C1106002F5732 /* FastApproximateAntiAliasingShader.frag in Resources */,
 				C7B759422204E32C00E54C30 /* White_maple_pxr128.tif in Resources */,
+				C7DE39CB221E25D600595556 /* normal.jpg in Resources */,
 				C7B7593A2204E32C00E54C30 /* Figured_birdseye_maple_pxr128_normal.tif in Resources */,
 				C77673C22209F69500BA7062 /* rustediron2_basecolor.png in Resources */,
 				C7B75A812204E32D00E54C30 /* Stripes_pxr128_normal.tif in Resources */,
 				C776741F220A22B500BA7062 /* Musket_D180221_Base_Color.png in Resources */,
 				C7C8F45721FFBA4100AB865A /* _bk.jpg in Resources */,
 				C7FB5765220C7294006F2D91 /* leg_dif.png in Resources */,
+				C7DE39E3221E25D600595556 /* heightmap2.png in Resources */,
 				C7767405220A22B500BA7062 /* MIPIM_D180606_Base_Color.png in Resources */,
 				C7C8F43021FFBA0400AB865A /* Kai_Engel_-_02_-_Better_Way.mp3 in Resources */,
 				C776741D220A22B500BA7062 /* Musket_D180221_Normal.png in Resources */,
@@ -4592,6 +4915,7 @@
 				C7B4D3B722146E2900BCE130 /* octostone-ao.png in Resources */,
 				C7C8F49521FFBA8900AB865A /* _up.jpg in Resources */,
 				C7C8F46A21FFBA5A00AB865A /* _lf.jpg in Resources */,
+				C7DE3902221CCD1B00595556 /* DeferredRenderingShader.frag in Resources */,
 				C7C8F42F21FFB9FF00AB865A /* Arial.ttf in Resources */,
 				C7B75A612204E32D00E54C30 /* Pink_marble_pxr128.tif in Resources */,
 				C7CEE2EA2212435600895F5D /* KernelShader.frag in Resources */,
@@ -4617,13 +4941,13 @@
 				C7EDB0DB22064BCE007C7D3A /* LampShader.frag in Resources */,
 				C7B4D3C822146E2900BCE130 /* aluminium-metal.png in Resources */,
 				C7B4D40022146E2900BCE130 /* cavefloor-ao.png in Resources */,
+				C7DE39E6221E25D600595556 /* stone.png in Resources */,
 				C7B75AA92204E32D00E54C30 /* Jute_cocomat_pxr128_normal.tif in Resources */,
 				C7B759D02204E32C00E54C30 /* Contractors_rock_pxr128_normal.tif in Resources */,
 				C77673B02209F69500BA7062 /* Metal_007_Metallic.jpg in Resources */,
 				C77673CA220A1BA800BA7062 /* MK2_Roughness.png in Resources */,
 				C7EEC50822136AF700909E4C /* LensFlareShader.frag in Resources */,
 				C7C8F46821FFBA5A00AB865A /* _rt.jpg in Resources */,
-				C713797B2203A47F00E9A0F2 /* heightmap3.jpg in Resources */,
 				C7B759D12204E32C00E54C30 /* Fine_gravel_pxr128.tif in Resources */,
 				C7B75A972204E32D00E54C30 /* Haitian_cotton_pxr128_bmp.tif in Resources */,
 				C7B759832204E32C00E54C30 /* Panda_fur_pxr128_normal.tif in Resources */,
@@ -4640,9 +4964,11 @@
 				C7B75A2B2204E32C00E54C30 /* Orange_glazed_pxr128_normal.tif in Resources */,
 				C7B4D3A622146E2900BCE130 /* woodframe-normal.png in Resources */,
 				C7C8F4A521FFBA9E00AB865A /* _bk.jpg in Resources */,
+				C7DE39E9221E25D600595556 /* sand.png in Resources */,
 				C77673CE220A1BA800BA7062 /* MK2_Metallic.png in Resources */,
 				C7FB5766220C7294006F2D91 /* arm_showroom_refl.png in Resources */,
 				C776740E220A22B500BA7062 /* Crossbow_D180227_Normal_DirectX.png in Resources */,
+				C7DE39EB221E25D600595556 /* normal.jpg in Resources */,
 				C7767407220A22B500BA7062 /* MIPIM_D180606_Normal_DirectX.png in Resources */,
 				C7B75A7A2204E32D00E54C30 /* Red_velvet_pxr128_bmp.tif in Resources */,
 				C7B4D39F22146E2900BCE130 /* metalgrid-ao.png in Resources */,
@@ -4668,7 +4994,6 @@
 				C7B4D3C422146E2900BCE130 /* streaked-marble-normal.png in Resources */,
 				C7B4D3AF22146E2900BCE130 /* slipperystonework-normal.png in Resources */,
 				C7B759732204E32C00E54C30 /* Figured_birdseye_maple_pxr128.tif in Resources */,
-				C713797D2203A47F00E9A0F2 /* sand.png in Resources */,
 				C7B75A3B2204E32C00E54C30 /* Gray_shingle_pxr128.tif in Resources */,
 				C7C8F45621FFBA4100AB865A /* _rt.jpg in Resources */,
 				C7FB5771220C7294006F2D91 /* helmet_diff.png in Resources */,
@@ -4688,6 +5013,7 @@
 				C7C8F46421FFBA5100AB865A /* _lf.jpg in Resources */,
 				C77673AE2209F69500BA7062 /* Metal_007_Ambient_Occlusion.jpg in Resources */,
 				C7B75A7D2204E32D00E54C30 /* Wild_flowers_pxr128_bmp.tif in Resources */,
+				C7DE39E7221E25D600595556 /* patchygrass.png in Resources */,
 				C7B4D3CF22146E2900BCE130 /* haystack-normal.png in Resources */,
 				C7EED109221105360079F5C0 /* PorcupineRenderingShader.geom in Resources */,
 				C7B75A7B2204E32D00E54C30 /* White_lace_pxr128.tif in Resources */,
@@ -4699,6 +5025,7 @@
 				C7C8F48B21FFBA8300AB865A /* _dn.jpg in Resources */,
 				C7B7596E2204E32C00E54C30 /* Marine_plywood_pxr128_bmp.tif in Resources */,
 				C7B759752204E32C00E54C30 /* Anigre_pxr128_bmp.tif in Resources */,
+				C7DE39CD221E25D600595556 /* normal.jpg in Resources */,
 				C7B759A12204E32C00E54C30 /* Shale_rock_pxr128.tif in Resources */,
 				C7B75A502204E32D00E54C30 /* Purple_shingle_pxr128.tif in Resources */,
 				C7B7595F2204E32C00E54C30 /* Redwood_tree_bark_pxr128.tif in Resources */,
@@ -4709,6 +5036,8 @@
 				C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */,
 				C7EEC50522136AF700909E4C /* BrightPartsShader.vert in Resources */,
 				C7B75A072204E32C00E54C30 /* Whitewashed_wood_pxr128.tif in Resources */,
+				C7DE39C3221E25D600595556 /* normal.jpg in Resources */,
+				C7DE39C8221E25D600595556 /* diffuse.jpg in Resources */,
 				C7EEC51122136AF700909E4C /* GaussianBlurShader.vert in Resources */,
 				C7B75A3C2204E32C00E54C30 /* Red_shingle_pxr128.tif in Resources */,
 				C7B75A402204E32C00E54C30 /* Brown_shingle_pxr128.tif in Resources */,
@@ -4719,9 +5048,7 @@
 				C7B759952204E32C00E54C30 /* Railroad_tie_ends_pxr128_normal.tif in Resources */,
 				C7B7595B2204E32C00E54C30 /* American_oak_pxr128_normal.tif in Resources */,
 				C7CEE2E0221241BA00895F5D /* ColorInversionShader.frag in Resources */,
-				C71379822203A47F00E9A0F2 /* heightmap2.png in Resources */,
 				C7B7598C2204E32C00E54C30 /* Rock_in_mortar_pxr128_bmp.tif in Resources */,
-				C713797C2203A47F00E9A0F2 /* heightmap1.jpg in Resources */,
 				C7B7593B2204E32C00E54C30 /* Figured_mahogany_pxr128.tif in Resources */,
 				C7B4D3FE22146E2900BCE130 /* cavefloor-albedo.png in Resources */,
 				C7B759A62204E32C00E54C30 /* NTSC_color_bars_pxr128.tif in Resources */,
@@ -4730,6 +5057,8 @@
 				C776741C220A22B500BA7062 /* Musket_D180221_Height.png in Resources */,
 				C7B75A092204E32C00E54C30 /* Blue_lattice_pxr128.tif in Resources */,
 				C7B759672204E32C00E54C30 /* Belizan_mahognay_pxr128.tif in Resources */,
+				C7DE39D8221E25D600595556 /* emissive.jpg in Resources */,
+				C7DE38FC221C843D00595556 /* FireBallShader.frag in Resources */,
 				C7B4D3BB22146E2900BCE130 /* granitesmooth-albedo4.png in Resources */,
 				C7B75A462204E32C00E54C30 /* Purple_shingle_pxr128_bmp.tif in Resources */,
 				C7B75A522204E32D00E54C30 /* Red_granite_pxr128_normal.tif in Resources */,
@@ -4756,6 +5085,7 @@
 				C7C8F4A021FFBA9700AB865A /* _lf.jpg in Resources */,
 				C75C9735220E01A200420DF6 /* _ft.jpg in Resources */,
 				C7B4D3D622146E2900BCE130 /* chipped-paint-normal.png in Resources */,
+				C7DE39CE221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B75A3F2204E32C00E54C30 /* Standard_shingle_pxr128.tif in Resources */,
 				C7EEC50322136AF700909E4C /* LensFlareShader.vert in Resources */,
 				C7B7597B2204E32C00E54C30 /* Nails_pxr128_bmp.tif in Resources */,
@@ -4765,6 +5095,7 @@
 				C7FB5769220C7294006F2D91 /* glass_refl.png in Resources */,
 				C785F9722212DA7E00F1F8FD /* FrostedGlassEffectShader.frag in Resources */,
 				C7B4D3C922146E2900BCE130 /* aluminium-albedo.png in Resources */,
+				C7DE39D4221E25D600595556 /* diffuse.jpg in Resources */,
 				C77673CC220A1BA800BA7062 /* MK2_Normal_DirectX.png in Resources */,
 				C78F395E2215C81C006163EC /* LightSpaceShader.vert in Resources */,
 				C7C8F46721FFBA5A00AB865A /* _dn.jpg in Resources */,
@@ -4799,6 +5130,7 @@
 				C7B75A792204E32D00E54C30 /* Woven_flower_pxr128_normal.tif in Resources */,
 				C7B75A982204E32D00E54C30 /* Pin_stripe_canvas_pxr128_bmp.tif in Resources */,
 				C7B759CF2204E32C00E54C30 /* Dirt_and_gravel_pxr128.tif in Resources */,
+				C7DE39C0221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B759962204E32C00E54C30 /* Small_black_tile_pxr128_normal.tif in Resources */,
 				C7B75A272204E32C00E54C30 /* Gray_deco_block_pxr128.tif in Resources */,
 				C75C9730220E01A200420DF6 /* thefog_rt.tga in Resources */,
@@ -4809,8 +5141,10 @@
 				C7B759772204E32C00E54C30 /* Silver_paper_cilps_pxr128_bmp.tif in Resources */,
 				C77673B82209F69500BA7062 /* chipped-paint-metal-normal-dx.png in Resources */,
 				C7C8F48621FFBA7C00AB865A /* _rt.jpg in Resources */,
+				C7DE39EF221E25D600595556 /* normal.jpg in Resources */,
 				C7CEE2D42211E2AB00895F5D /* ToonShader.vert in Resources */,
 				C7B4D3DC22146E2900BCE130 /* oldplywood-metal.png in Resources */,
+				C7DE39CF221E25D600595556 /* normal.jpg in Resources */,
 				C7B759BE2204E32C00E54C30 /* Steel_grating_pxr128_normal.tif in Resources */,
 				C7B759972204E32C00E54C30 /* Stucco_pxr128_normal.tif in Resources */,
 				C7B75A8E2204E32D00E54C30 /* Spots_pxr128_normal.tif in Resources */,
@@ -4833,6 +5167,7 @@
 				C7767406220A22B500BA7062 /* MIPIM_D180606_Metallic.png in Resources */,
 				C785F9702212DA7E00F1F8FD /* PredatorsThermalVisionShader.frag in Resources */,
 				C7FB576D220C7294006F2D91 /* body_showroom_refl.png in Resources */,
+				C7DE39D0221E25D600595556 /* diffuse.jpg in Resources */,
 				C7FB5777220C7294006F2D91 /* helmet_showroom_spec.png in Resources */,
 				C7B4D3EC22146E2900BCE130 /* charcoal-metal.png in Resources */,
 				C7C8F47F21FFBA7500AB865A /* _dn.jpg in Resources */,
@@ -4845,6 +5180,7 @@
 				C7C8F48521FFBA7C00AB865A /* _dn.jpg in Resources */,
 				C7B759402204E32C00E54C30 /* Burled_olive_ash_pxr128_bmp.tif in Resources */,
 				C785F987221341CC00F1F8FD /* FreiChenEdgeDetectionShader.vert in Resources */,
+				C7DE38FE221CA1CA00595556 /* explosion.png in Resources */,
 				C7B7596D2204E32C00E54C30 /* Figured_yew_wood_pxr128_normal.tif in Resources */,
 				C76DAFFB22187727005C354C /* lensTexture.jpg in Resources */,
 				C7B759992204E32C00E54C30 /* Rock_in_mortar_pxr128_normal.tif in Resources */,

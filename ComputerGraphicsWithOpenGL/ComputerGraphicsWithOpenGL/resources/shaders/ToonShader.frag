@@ -3,7 +3,7 @@
 // http://www.lighthouse3d.com/tutorials/glsl-12-tutorial/toon-shader-version-ii/
 // http://prideout.net/blog/?p=22
 
-#define NUMBER_OF_POINT_LIGHTS 7
+#define NUMBER_OF_POINT_LIGHTS 10
 
 uniform struct Camera
 {
@@ -179,8 +179,11 @@ vec4 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 vertexPosition)
 }
 
 //When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
-layout (location = 0) out vec4 vOutputColour; // The output colour formely  gl_FragColor
+layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
 layout (location = 1) out vec4 vBrightColor;
+layout (location = 2) out vec3 vPosition;
+layout (location = 3) out vec3 vNormal;
+layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
@@ -231,8 +234,18 @@ void main()
 
     // Retrieve bright parts
     float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
-    if(brightness > 1.0f)
+    if(brightness > 1.0f) {
         vBrightColor = vec4(vOutputColour.rgb, 1.0f);
-    else
+    } else {
         vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    }
+    
+    // store the fragment position vector in the first gbuffer texture
+    vPosition = fs_in.vWorldPosition;
+    // also store the per-fragment normals into the gbuffer
+    vNormal = normalize(fs_in.vWorldNormal);
+    // and the diffuse per-fragment color
+    vAlbedoSpec.rgb = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
+    // store specular intensity in gAlbedoSpec's alpha component
+    vAlbedoSpec.a = texture(material.specularMap, fs_in.vTexCoord).r;
 }

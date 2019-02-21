@@ -81,12 +81,14 @@ private:
     
     //sphere object
     CSphere *m_pSphere;
+    CSphere *m_pFireBallSphere;
     glm::vec3 m_spherePosition;
     
     //cube object
     CCube * m_pCube;
     CCube * m_pChromaticAberrationCube;
     CCube * m_pParallaxCube;
+    CCube * m_pInteriorBox;
     glm::vec3 m_cubePosition;
     
     // woodenBox
@@ -135,7 +137,8 @@ protected:
     /// Camera
     void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) override;
     void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) override;
-    void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) override;
+    void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed,
+                      const GLfloat &mouseXoffset, const GLfloat &mouseYoffset, const GLboolean & mouseMove) override;
     void UpdateCameraEndFrame(const GLdouble & deltaTime) override;
     
     /// Materials
@@ -162,6 +165,7 @@ protected:
                                       const GLfloat &magnitude) override;
     void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) override;
     void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) override;
+    void SetFireBallUniform(CShaderProgram *pShaderProgram) override;
     
     /// Post Processing Unifom
     void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) override;
@@ -200,6 +204,7 @@ protected:
     void SetLensFlareGhostUniform(CShaderProgram *pShaderProgram) override;
     void SetLensFlareUniform(CShaderProgram *pShaderProgram) override;
     void SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram) override;
+    void SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) override;
     
     /// Lights
     void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
@@ -220,7 +225,8 @@ protected:
     
     /// Render object
     void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),
-                    const GLfloat & scale = 1.0f, const GLboolean &useTexture = true) override;
+                    const GLfloat & scale = 1.0f, const GLboolean &useTexture = true,
+                    const GLboolean &bindTexture = false) override;
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
     void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
@@ -231,6 +237,8 @@ protected:
                         const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                     const GLfloat & scale, const GLboolean &useTexture) override;
+    void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
+                           const float & scale, const bool &useTexture, const bool &bindTexture) override;
     void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture);
     void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
@@ -239,6 +247,7 @@ protected:
                          const GLfloat & angle, const GLboolean &useTexture) override;
     void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                       const GLfloat & scale, const GLboolean &useTexture) override;
+    void RenderFireBallSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale) override;
     void RenderTorus(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                      const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderTorusKnot(CShaderProgram *pShaderProgram, const glm::vec3 & position,
@@ -254,7 +263,7 @@ protected:
     void RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType = FrameBufferType::Default,
                         const GLuint &bufferIndex = 0, const TextureType &textureType = TextureType::AMBIENT) override;
     void RenderPPFX(const PostProcessingEffectMode &mode) override;
-    void ResetFrameBuffer() override;
+    void ResetFrameBuffer(const GLboolean &clearBuffers = true) override;
     const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) override;
     FrameBufferType GetFBOtype(const PostProcessingEffectMode &mode) override;
     

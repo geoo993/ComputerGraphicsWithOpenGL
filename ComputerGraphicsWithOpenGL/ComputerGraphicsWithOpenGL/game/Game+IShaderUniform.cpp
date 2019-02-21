@@ -66,7 +66,14 @@ void Game::SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const g
     pShaderProgram->SetUniform("IoR_Values", glm::vec3(0.4f, 0.8f, 1.3f));
 }
 
-
+void Game::SetFireBallUniform(CShaderProgram *pShaderProgram){
+    
+    //// https://www.clicktorelease.com/blog/vertex-displacement-noise-3d-webgl-glsl-three-js/
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("time", (float)(m_timeInSeconds * 0.02f));
+    pShaderProgram->SetUniform("frequency", 0.8f);
+    pShaderProgram->SetUniform("explosion", 0.001f);
+}
 
 /// Post Processing Uniforms
 void Game::SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) {
@@ -424,5 +431,11 @@ void Game::SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram)
     pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
     pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("spanOffset", m_materialShininess);
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }

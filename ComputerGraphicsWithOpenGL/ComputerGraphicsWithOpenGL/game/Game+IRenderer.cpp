@@ -28,10 +28,11 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     RenderSkyBox(pSkyBoxProgram);
     
     /// Render terrain
-    CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 2];
-    SetMaterialUniform(pTerrainProgram, "material");
-    RenderTerrain(pTerrainProgram, false, true);
+    //CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 2];
+    //SetMaterialUniform(pTerrainProgram, "material");
+    //RenderTerrain(pTerrainProgram, false, true);
     
+    /*
     ///  Physically Based Rendering
     CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
     SetCameraUniform(pPBRProgram, "camera", m_pCamera);
@@ -41,6 +42,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     GLfloat gap = 100.0f;
     GLuint numRows = 5;
     GLuint numCol = 5;
+    
     glm::vec3 albedo = glm::vec3(0.5f, 0.0f, 0.0f);
     for (GLuint row = 0; row < numRows; row++) {
         GLfloat metallic = (GLfloat)row / (GLfloat)numRows;
@@ -56,15 +58,15 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     
     // Add Physically Based Rendering Lights
     RenderLight(pPBRProgram, m_pCamera);
-    
-    
+    */
+
     /// Render Lamps
     CShaderProgram *pLampProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 4];
     for (unsigned int i = 0; i < m_pointLightPositions.size(); i++) {
         SetMaterialUniform(pLampProgram, "material", m_pointLightColors[i]);
         RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f);
     }
-    
+
     /// Render Lights
     CShaderProgram *pLightProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 5];
     SetCameraUniform(pLightProgram, "camera", m_pCamera);
@@ -77,11 +79,25 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         RenderWoodenBox(pLightProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_woodenBoxesUseTexture);
     }
     
+    GLfloat objGap = 100.0f;
+    GLuint objRows = 5;
+    GLuint objCols = 5;
+    for (GLuint row = 0; row < objRows; row++) {
+        for (GLuint col = 0; col < objCols; col++) {
+            glm::vec3 position = glm::vec3(((GLfloat)row * objGap) - 100.0f, 200.0f, ((GLfloat)col * objGap) - 100.0f);
+            SetMaterialUniform(pLightProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess);
+            RenderNanosuit(pLightProgram, position, 10.0f, m_woodenBoxesUseTexture);
+        }
+    }
+    
+    // RenderTerrain
+    SetMaterialUniform(pLightProgram, "material");
+    RenderTerrain(pLightProgram, false, true);
+    
     // Add Default Lights
     RenderLight(pLightProgram, m_pCamera);
     
-    
-    
+    /*
     /// Normal Mapping
     CShaderProgram *pNormalMappingProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 6];
     SetCameraUniform(pNormalMappingProgram, "camera", m_pCamera);
@@ -129,7 +145,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetCameraUniform(pChromaticAberrationProgram, "camera", m_pCamera);
     SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f));
     RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_woodenBoxesUseTexture);
-    
+    */
     /*
     /// Explosion Program
     CShaderProgram *pExplosionProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 11];
@@ -151,7 +167,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetChromaticAberrationUniform(pWireframeProgram, glm::vec2(0.3f, 1.5f));
     RenderNanosuit(pWireframeProgram,  glm::vec3(1000.0f, 500.0f, 0.0f), 20.0f, m_woodenBoxesUseTexture);
     */
-    
+    /*
     /// Toon / Cell Program
     CShaderProgram *pToonProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 14];
     SetCameraUniform(pToonProgram, "camera", m_pCamera);
@@ -162,5 +178,14 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     
     // Add Toon Shading Lights
     RenderLight(pToonProgram, m_pCamera);
+    
+    /// FireBall Program
+    CShaderProgram *pFireBallProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 54];
+    SetMaterialUniform(pFireBallProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess);
+    SetFireBallUniform(pFireBallProgram);
+    RenderFireBallSphere(pFireBallProgram, glm::vec3(-500.0f, 470.0f, -1000.0f), 50.0f);
+    */
+    
+    //RenderInteriorBox(pFaceCullingShader, glm::vec3(  800.0f,  400.0f,  -1000.0f   ), 100.0f, true, true);
     
 }

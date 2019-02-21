@@ -34,9 +34,10 @@ void Game::SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &u
     pShaderProgram->SetUniform(uniformName+".isMoving", camera->IsMoving());
 }
 
-void Game::UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed, const GLboolean & mouseMove) {
+void Game::UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed,
+                        const GLfloat &mouseXoffset, const GLfloat &mouseYoffset, const GLboolean & mouseMove) {
     // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
-    m_pCamera->Update(m_gameWindow->GetWindow(), deltaTime, keyPressed, true, mouseMove);
+    m_pCamera->Update(m_gameWindow->GetWindow(), deltaTime, keyPressed, mouseXoffset, mouseYoffset, true, mouseMove);
 }
 
 void Game::UpdateCameraEndFrame(const GLdouble & deltaTime) {

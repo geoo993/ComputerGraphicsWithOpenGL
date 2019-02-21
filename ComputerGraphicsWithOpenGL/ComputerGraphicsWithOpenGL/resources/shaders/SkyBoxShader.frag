@@ -25,7 +25,11 @@ uniform struct Material
 
 in vec3 vTextureDirection; // direction vector representing a 3D texture coordinate
 
-out vec4 vOutputColour;         //formely  gl_FragColor
+layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
+layout (location = 1) out vec4 vBrightColor;
+layout (location = 2) out vec3 vPosition;
+layout (location = 3) out vec3 vNormal;
+layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {

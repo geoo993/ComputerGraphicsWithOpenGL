@@ -61,7 +61,7 @@ public:
     glm::vec3 PositionInFrontOfCamera( const GLfloat &distance);
     
 	// Respond to mouse movement to rotate the camera
-	void SetViewByMouse(GLFWwindow *window, const bool &enableMouse = true);
+	void SetViewByMouse(GLFWwindow *window, const GLfloat &mouseXoffset, const GLfloat &mouseYoffset, const bool &enableMouse = true);
 
     // Respond to keyboard presses on arrow keys to translate the camera
     void TranslateByKeyboard(const double &dt, const int &keyPressed);
@@ -75,6 +75,7 @@ public:
     
     // Update the camera
     void Update(GLFWwindow *window, const GLdouble &dt, const GLint &key,
+                const GLfloat &mouseXoffset, const GLfloat &mouseYoffset,
                 const GLboolean &moveCamera, const GLboolean &enableMouse);
     void UpdateEndFrame(GLFWwindow *window, const GLdouble &dt);
     

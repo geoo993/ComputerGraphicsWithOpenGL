@@ -1,5 +1,10 @@
 #version 400 core
 
+//https://www.clicktorelease.com/blog/vertex-displacement-noise-3d-webgl-glsl-three-js/
+//https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
+//https://thebookofshaders.com/11/
+//https://www.clicktorelease.com/code/perlin/chrome.html
+
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
 {
@@ -32,9 +37,14 @@ in VS_OUT
     vec3 vWorldNormal;
     vec3 vWorldTangent;
     vec4 vEyePosition;
+    float vNoise;
 } fs_in;
 
-uniform bool bUseTexture;
+
+//gl_FragCoord is vec3(vTexCoord,1.0) or vTexColour.xyz
+float random( vec3 scale, float seed ){
+    return fract( sin( dot( gl_FragCoord.xyz + seed, scale ) ) * 43758.5453f + seed ) ;
+}
 
 layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
 layout (location = 1) out vec4 vBrightColor;
@@ -44,10 +54,32 @@ layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
-
-    if (bUseTexture){
-        vOutputColour = texture(material.diffuseMap, fs_in.vTexCoord);
-    }else{
-        vOutputColour = vec4(material.color, 1.0f);
+    
+    // get a random offset
+    float r = 0.01f * random( vec3( 12.9898f, 78.233f, 151.7182f ), 0.2f );
+    // lookup vertically in the texture, using noise and offset
+    // to get the right RGB colour
+    vec2 tPos = vec2( 0.0f, 1.3f * fs_in.vNoise + r );
+    vec4 vTexColour = texture(material.noiseMap, tPos );
+    //vec3 vTangentColour = fs_in.vWorldTangent * 0.5f + 0.5f;
+    
+    vOutputColour = vec4( vTexColour.rgb, 1.0f);
+ 
+    // Retrieve bright parts
+    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
+    if(brightness > 1.0f) {
+        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
+    } else {
+        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     }
+    
+    // store the fragment position vector in the first gbuffer texture
+    vPosition = fs_in.vWorldPosition;
+    // also store the per-fragment normals into the gbuffer
+    vNormal = normalize(fs_in.vWorldNormal);
+    // and the diffuse per-fragment color
+    vAlbedoSpec.rgb = texture(material.noiseMap, fs_in.vTexCoord).rgb;
+    // store specular intensity in gAlbedoSpec's alpha component
+    vAlbedoSpec.a = 1.0f;
 }
+

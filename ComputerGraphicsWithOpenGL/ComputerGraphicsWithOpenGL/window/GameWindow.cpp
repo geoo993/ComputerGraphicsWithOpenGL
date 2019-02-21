@@ -213,15 +213,20 @@ bool CGameWindow::InitOpenGL()
 	return bError;
 }
 
-void CGameWindow::SetInputs(const GLFWkeyfun &cbfunKey, const GLFWmousebuttonfun &cbfunMouse){
+void CGameWindow::SetInputs(const GLFWkeyfun &cbfunKey, const GLFWcursorposfun &cbfunMouseMove,
+                            const GLFWmousebuttonfun &cbfunMouseClick, const GLFWscrollfun &cbfunMouseScroll){
     
     //glfwSetWindowSizeCallback(m_window, ReshapeWindow);
     //glfwSetWindowShouldClose(m_window, GLUS_TRUE);
     
     glfwSetKeyCallback(m_window, cbfunKey);
-    //glfwSetCursorPosCallback(m_window, cbfunMove);
-    glfwSetMouseButtonCallback(m_window, cbfunMouse );
+    //glfwSetCursorPosCallback(m_window, cbfunMouseMove);
+    glfwSetMouseButtonCallback(m_window, cbfunMouseClick);
+    glfwSetScrollCallback(m_window, cbfunMouseScroll);
     //glfwSetInputMode(m_window, GLFW_STICKY_KEYS, 1);
+    
+    // tell GLFW to capture our mouse
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
     glfwMakeContextCurrent(m_window);
     

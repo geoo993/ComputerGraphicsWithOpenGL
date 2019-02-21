@@ -214,10 +214,29 @@ void CCamera::Set(glm::vec3 &position, glm::vec3 &viewpoint, glm::vec3 &upVector
 
 
 // Respond to mouse movement
-void CCamera::SetViewByMouse(GLFWwindow *window, const bool &enableMouse)
+void CCamera::SetViewByMouse(GLFWwindow *window, const GLfloat &mouseXoffset, const GLfloat &mouseYoffset, const bool &enableMouse)
 {  
     
     if (enableMouse) {
+        
+        /*
+         //This is if you want to use pitch and yaw as mouse rotation of the camera
+         //WARNING: enable glfwSetCursorPosCallback(m_window, cbfunMouseMove); in GameWindow
+        GLfloat xoffset = mouseXoffset * m_mouseSensitivity;
+        GLfloat yoffset = mouseYoffset * m_mouseSensitivity;
+        Yaw   += xoffset;
+        Pitch += yoffset;
+        
+        // Make sure that when pitch is out of bounds, screen doesn't get flipped
+        if (constrainPitch)
+        {
+            if (Pitch > 89.0f)
+                Pitch = 89.0f;
+            if (Pitch < -89.0f)
+                Pitch = -89.0f;
+        }
+        */
+        
         double middle_x = (int)m_screenWidth >> 1;
         double middle_y = (int)m_screenHeight >> 1;
         
@@ -236,7 +255,6 @@ void CCamera::SetViewByMouse(GLFWwindow *window, const bool &enableMouse)
         GLfloat horizontalAngle = (float) (middle_y - mouse_y) / 1000.0f;
 
         rotation_x -= horizontalAngle;
-
         float maxAngle = 1.56f; // Just a little bit below PI / 2
 
         if (rotation_x > maxAngle) {
@@ -323,9 +341,9 @@ void  CCamera::SetVelocity(int deltaTime) {
     m_velocity = displacement * (speed / distance);                 // calculate the velocity vector
 }
 
-
 // Update the camera to respond to mouse motion for rotations and keyboard for translation
 void CCamera::Update(GLFWwindow *window, const GLdouble &dt, const GLint &key,
+                     const GLfloat &mouseXoffset, const GLfloat &mouseYoffset,
                      const GLboolean &moveCamera, const GLboolean &enableMouse)
 {
     m_isMoving = false;
@@ -333,7 +351,7 @@ void CCamera::Update(GLFWwindow *window, const GLdouble &dt, const GLint &key,
 	m_strafeVector = glm::normalize(vector);
 
     if (moveCamera) {
-        SetViewByMouse(window, enableMouse);
+        SetViewByMouse(window, mouseXoffset, mouseYoffset, enableMouse);
         TranslateByKeyboard(dt, key);
     }
     

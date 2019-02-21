@@ -27,6 +27,9 @@ public:
     // Binding the HDR framebuffer color texture so it is active
     void BindHDRTexture(GLuint iTextureUnit);
 
+    // Binding the framebuffer position texture so it is active
+    void BindPositionTexture(GLuint iTextureUnit);
+    
     // Binding the framebuffer normal texture so it is active
     void BindNormalTexture(GLuint iTextureUnit);
 
@@ -72,6 +75,7 @@ private:
     GLuint m_uiHdrColorTexture;
     GLuint m_uiColourTexture;
     GLuint m_uiColourTextureMultiSampled;
+    GLuint m_uiPositionTexture;
     GLuint m_uiNormalTexture;
     GLuint m_uiAlbedoSpecTexture;
 	GLuint m_uiDepthTexture;

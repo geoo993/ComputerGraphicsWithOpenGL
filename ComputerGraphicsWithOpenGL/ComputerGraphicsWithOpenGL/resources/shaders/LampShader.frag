@@ -23,9 +23,23 @@ uniform struct Material
     float shininess;
 } material;
 
+in VS_OUT
+{
+    vec2 vTexCoord;    // Texture coordinate
+    vec3 vLocalPosition;
+    vec3 vLocalNormal;
+    vec3 vWorldPosition;
+    vec3 vWorldNormal;
+    vec3 vWorldTangent;
+    vec4 vEyePosition;
+} fs_in;
+
 //When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
-layout (location = 0) out vec4 vOutputColour; // The output colour formely  gl_FragColor
+layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
 layout (location = 1) out vec4 vBrightColor;
+layout (location = 2) out vec3 vPosition;
+layout (location = 3) out vec3 vNormal;
+layout (location = 4) out vec4 vAlbedoSpec;
 
 void main() {
     
@@ -33,8 +47,10 @@ void main() {
     
     // Retrieve bright parts
     float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
-    if(brightness > 1.0f)
+    if(brightness > 1.0f) {
         vBrightColor = vec4(vOutputColour.rgb, 1.0f);
-    else
+    } else {
         vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    }
+    
 }

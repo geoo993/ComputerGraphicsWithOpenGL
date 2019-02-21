@@ -25,7 +25,8 @@ public:
     bool Fullscreen() const { return m_fullscreen; }
     float Ratio() { return (float)m_width / m_height;}
     
-    void SetInputs(const GLFWkeyfun &cbfunKey, const GLFWmousebuttonfun &cbfunMouse);
+    void SetInputs(const GLFWkeyfun &cbfunKey, const GLFWcursorposfun &cbfunMouseMove,
+                   const GLFWmousebuttonfun &cbfunMouseClick, const GLFWscrollfun &cbfunMouseScroll);
     void SetCursorVisible( const bool &isVisible );
     void CenterTheWindow();
     void PreRendering();

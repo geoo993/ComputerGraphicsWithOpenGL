@@ -64,7 +64,11 @@ vec3 CalcRefraction(float ratio, vec3 normal, vec3 vertexPosition)
 
 uniform bool bRefraction;
 
-out vec4 vOutputColour;        // The output colour formely  gl_FragColor
+layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
+layout (location = 1) out vec4 vBrightColor;
+layout (location = 2) out vec3 vPosition;
+layout (location = 3) out vec3 vNormal;
+layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
@@ -127,4 +131,20 @@ void main()
     }
     vOutputColour = result;
     
+    // Retrieve bright parts
+    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
+    if(brightness > 1.0f) {
+        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
+    } else {
+        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    }
+
+    // store the fragment position vector in the first gbuffer texture
+    vPosition = fs_in.vWorldPosition;
+    // also store the per-fragment normals into the gbuffer
+    vNormal = normalize(fs_in.vWorldNormal);
+    // and the diffuse per-fragment color
+    vAlbedoSpec.rgb = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
+    // store specular intensity in gAlbedoSpec's alpha component
+    vAlbedoSpec.a = texture(material.specularMap, fs_in.vTexCoord).r;
 }

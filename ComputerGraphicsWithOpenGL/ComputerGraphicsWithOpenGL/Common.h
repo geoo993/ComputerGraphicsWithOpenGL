@@ -107,5 +107,9 @@ static int keyReleasedCode = -1;
 static int keyPressedAction = -1;
 static int mouseButton = -1;
 static int mouseAction = -1;
-
+static float mouseLastX = (float)SCREEN_WIDTH / 2.0f;
+static float mouseLastY = (float)SCREEN_HEIGHT / 2.0f;
+static float mouseXoffset = 0.0f;
+static float mouseYoffset = 0.0f;
+static bool firstMouse = true;
 using namespace std;

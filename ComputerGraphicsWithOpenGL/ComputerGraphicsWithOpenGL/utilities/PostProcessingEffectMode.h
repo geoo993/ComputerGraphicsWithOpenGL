@@ -19,7 +19,6 @@ enum class PostProcessingEffectMode {
     GrayScale,
     Kernel,
     KernelBlur,
-    //EdgeDetection,
     SobelEdgeDetection,
     FreiChenEdgeDetection,
     ScreenWave,
@@ -51,6 +50,7 @@ enum class PostProcessingEffectMode {
     HDRToneMapping,
     LensFlare,
     FXAA,
+    DeferredRendering,
     SSAO,
     
     NumberOfPPFX,

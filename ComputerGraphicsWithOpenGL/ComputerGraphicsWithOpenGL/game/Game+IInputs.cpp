@@ -91,16 +91,16 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
                 m_dirIntensity += 0.2f;
                 break;
             case GLFW_KEY_5:
-                m_pointIntensity -= 50.0f;
+                m_pointIntensity -= 2.0f;
                 break;
             case GLFW_KEY_6:
-                m_pointIntensity += 50.0f;
+                m_pointIntensity += 2.0f;
                 break;
             case GLFW_KEY_7:
-                m_spotIntensity -= 10.0f;
+                m_spotIntensity -= 2.0f;
                 break;
             case GLFW_KEY_8: 
-                m_spotIntensity += 10.0f;
+                m_spotIntensity += 2.0f;
                 break;
             case GLFW_KEY_9:
                 m_woodenBoxesUseTexture = !m_woodenBoxesUseTexture;
@@ -159,22 +159,22 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
                 m_coverage = glm::clamp(m_coverage, 0.0f, 1.0f);
                 break;
             case GLFW_KEY_D:
-                m_constant -= 0.2f;
+                m_constant -= 0.1f;
                 break;
             case GLFW_KEY_F:
-                m_constant += 0.2f;
+                m_constant += 0.1f;
                 break;
             case GLFW_KEY_G:
-                m_linear -= 0.2f;
+                m_linear -= 0.05f;
                 break;
             case GLFW_KEY_H:
-                m_linear += 0.2f;
+                m_linear += 0.05f;
                 break;
             case GLFW_KEY_J:
-                m_exponent -= 0.2f;
+                m_exponent -= 0.05f;
                 break;
             case GLFW_KEY_K:
-                m_exponent += 0.2f;
+                m_exponent += 0.05f;
                 break;
             case GLFW_KEY_L:
                 m_isMouseCursorVisible = !m_isMouseCursorVisible;

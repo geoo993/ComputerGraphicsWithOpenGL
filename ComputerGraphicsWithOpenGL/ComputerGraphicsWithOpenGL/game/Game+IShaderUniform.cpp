@@ -70,10 +70,12 @@ void Game::SetFireBallUniform(CShaderProgram *pShaderProgram){
     
     //// https://www.clicktorelease.com/blog/vertex-displacement-noise-3d-webgl-glsl-three-js/
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("time", (float)(m_timeInSeconds * 0.02f));
+    pShaderProgram->SetUniform("time", (float)(m_timeInSeconds * 0.1f));
     pShaderProgram->SetUniform("frequency", 0.8f);
     pShaderProgram->SetUniform("explosion", 0.001f);
 }
+
+
 
 /// Post Processing Uniforms
 void Game::SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) {
@@ -439,3 +441,33 @@ void Game::SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLb
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
+
+void Game::SetScreenSpaceAmbientOcclusionUniform(CShaderProgram *pShaderProgram) {
+    m_textures[7]->BindTexture2DToTextureType();        // bind SSAO noise texture
+
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("projection", *m_pCamera->GetPerspectiveProjectionMatrix());
+    pShaderProgram->SetUniform("radius", m_ssaoRadius);
+    pShaderProgram->SetUniform("bias", m_ssaoBias);
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("noiseSize", 4.0f);
+    
+    // Send kernel + rotation
+    for (GLuint i = 0; i < m_ssaoKernelSamples; ++i) {
+        pShaderProgram->SetUniform("samples[" + std::to_string(i) + "]", m_ssaoKernel[i]);
+    }
+}
+
+void Game::SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("noiseSize", 4.0f);
+    
+}
+
+void Game::SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseTexture", useTexture);
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+

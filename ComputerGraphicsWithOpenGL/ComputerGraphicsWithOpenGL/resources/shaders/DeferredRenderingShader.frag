@@ -104,8 +104,8 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     ? pow(max(dot(normal, halfDirection), 0.0f), material.shininess)
     : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
     
-    vec4 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord);           // diffuserMap
-    float specularMap = texture(material.diffuseMap, fs_in.vTexCoord).a; // material.specularMap
+    vec4 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord);            // diffuserMap
+    float specularMap = texture(material.diffuseMap, fs_in.vTexCoord).a;        // specularMap
     
     vec4 lightColor = vec4(base.color, 1.0f);
     vec4 materialColor = vec4(material.color, 1.0f);

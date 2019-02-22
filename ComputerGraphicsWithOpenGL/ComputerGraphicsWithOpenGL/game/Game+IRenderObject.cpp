@@ -131,7 +131,7 @@ void Game::RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & posit
     m_pGrenade->Render(pShaderProgram);
 }
 
-void Game::RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+void Game::RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation,
                             const GLfloat & scale, const GLboolean &useTexture) {
     glm::vec3 translation = position;
     if (m_pHeightmapTerrain->IsHeightMapRendered()) {
@@ -145,7 +145,7 @@ void Game::RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & posi
     glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
     pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
-    m_pNanosuit->Transform(translation, glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(scale));
+    m_pNanosuit->Transform(translation, rotation, glm::vec3(scale));
     
     glm::mat4 model = m_pNanosuit->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -188,6 +188,8 @@ void Game::RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &po
     pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
+    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
     glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
     pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     

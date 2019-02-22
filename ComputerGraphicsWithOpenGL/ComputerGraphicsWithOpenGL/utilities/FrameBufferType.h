@@ -13,12 +13,9 @@
 enum class FrameBufferType {
     Default,
     DepthMapping,
-    MultiSampling,
-    DirectionalShadowMapping,
-    PointShadowMapping,
-    HighDynamicRangeLighting,
     PingPongRendering,
     GeometryBuffer,
+    SSAO,
 };
 
 

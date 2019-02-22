@@ -143,10 +143,12 @@ protected:
     
     /// Materials
     void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                            const glm::vec3 &color = glm::vec3(1.0f), const GLfloat &shininess = 32.0f) override;
+                            const glm::vec3 &color = glm::vec3(1.0f), const GLfloat &shininess = 32.0f,
+                            const GLboolean &useAO = false) override;
     /// Textures
     void LoadTextures(const std::string &path) override;
     CTexture * AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection = false) override;
+    CTexture * AddTexture(const GLfloat &width, const GLfloat &height, const TextureType &type, const GLvoid * data) override;
     
     /// Shaders
     void LoadShaderPrograms(const std::string &path) override;
@@ -204,7 +206,10 @@ protected:
     void SetLensFlareGhostUniform(CShaderProgram *pShaderProgram) override;
     void SetLensFlareUniform(CShaderProgram *pShaderProgram) override;
     void SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram) override;
-    void SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) override;
+    void SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture = true) override;
+    void SetScreenSpaceAmbientOcclusionUniform(CShaderProgram *pShaderProgram) override;
+    void SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) override;
+    void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture = true) override;
     
     /// Lights
     void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
@@ -233,7 +238,7 @@ protected:
                         const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                        const GLfloat & scale, const GLboolean &useTexture) override;
-    void RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+    void RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation,
                         const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                     const GLfloat & scale, const GLboolean &useTexture) override;

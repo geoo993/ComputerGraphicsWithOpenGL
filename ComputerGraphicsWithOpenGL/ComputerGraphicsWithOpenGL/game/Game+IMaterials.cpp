@@ -9,7 +9,8 @@
 #include "Game.h"
 
 void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                              const glm::vec3 &color, const GLfloat &shininess) {
+                              const glm::vec3 &color, const GLfloat &shininess,
+                              const GLboolean &useAO) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName+".ambientMap", 0);           // ambient map (albedo map)
     pShaderProgram->SetUniform(uniformName+".diffuseMap", 1);           // diffuse map (metallic map)
@@ -29,4 +30,5 @@ void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string 
     pShaderProgram->SetUniform(uniformName+".cubeMap", 15);             // sky box or environment mapping cube map
     pShaderProgram->SetUniform(uniformName+".color", color);
     pShaderProgram->SetUniform(uniformName+".shininess", shininess);
+    pShaderProgram->SetUniform(uniformName+".bUseAO", useAO);
 }

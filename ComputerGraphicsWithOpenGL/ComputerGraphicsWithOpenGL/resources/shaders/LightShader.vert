@@ -28,25 +28,30 @@ out VS_OUT
     vec4 vEyePosition;
 } vs_out;
 
+uniform bool bReverseNormals;
+
+// This is the entry point into the vertex shader
 void main() {
     
     vec4 position = vec4(inPosition, 1.0f);
-    vec4 normal = vec4(inNormal, 1.0f);
+    vec3 tangent = bReverseNormals ? (-1.0f * inTangent) : inTangent;
+    vec3 normal = bReverseNormals ? (-1.0f * inNormal) : inNormal;
     
     // Pass through the texture coordinate
     vs_out.vTexCoord = inCoord;
     
     // Get the vertex normal and vertex position in eye coordinates
     //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
-    vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
-    vs_out.vWorldTangent = matrices.normalMatrix * inTangent;
-    vs_out.vLocalNormal = inNormal;
+    vs_out.vWorldNormal = matrices.normalMatrix * normal;
+    vs_out.vWorldTangent = matrices.normalMatrix * tangent;
+    vs_out.vLocalNormal = normal;
     
-    vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;
+    vs_out.vEyePosition = matrices.viewMatrix * matrices.modelMatrix * position;
     vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
     vs_out.vLocalPosition = inPosition;
    
     // Transform the vertex spatial position using
     gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
+
 }
 

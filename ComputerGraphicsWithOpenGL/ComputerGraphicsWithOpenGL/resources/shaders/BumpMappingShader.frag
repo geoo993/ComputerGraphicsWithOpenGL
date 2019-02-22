@@ -34,6 +34,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
+    bool bUseAO;
 } material;
 
 // Structure holding light information:  its position, colors, direction etc...
@@ -238,11 +239,9 @@ void main()
     }
     
     // store the fragment position vector in the first gbuffer texture
-    vPosition = fs_in.vWorldPosition;
+    vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
     // also store the per-fragment normals into the gbuffer
     vNormal = normalize(fs_in.vWorldNormal);
     // and the diffuse per-fragment color
-    vAlbedoSpec.rgb = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
-    // store specular intensity in gAlbedoSpec's alpha component
-    vAlbedoSpec.a = texture(material.diffuseMap, fs_in.vTexCoord).a;
+    vAlbedoSpec = material.bUseAO ? vec4(0.95f, 0.95f, 0.95f, 1.0f) : texture(material.diffuseMap, fs_in.vTexCoord);
 }

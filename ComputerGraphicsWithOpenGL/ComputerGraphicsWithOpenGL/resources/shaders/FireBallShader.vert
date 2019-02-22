@@ -39,6 +39,7 @@ out VS_OUT
 uniform float time;
 uniform float frequency;
 uniform float explosion;
+uniform bool bReverseNormals;
 
 vec3 mod289(vec3 x)
 {
@@ -217,14 +218,14 @@ float turbulence( vec3 p ) {
     }
     
     return t;
-    
 }
 
-
 // This is the entry point into the vertex shader
-void main()
-{	
-
+void main() {
+    
+    vec3 tangent = bReverseNormals ? (-1.0f * inTangent) : inTangent;
+    vec3 normal = bReverseNormals ? (-1.0f * inNormal) : inNormal;
+    
     vs_out.vNoise = 10.0f *  -0.10f * turbulence( 0.5f * inNormal + time);
     
     // get a turbulent 3d noise using the normal, normal to high freq
@@ -236,7 +237,7 @@ void main()
     float displacement = - frequency * vs_out.vNoise + b;
     
     // move the position along the normal and transform it
-    vec3 newPosition = inPosition + inNormal * displacement;
+    vec3 newPosition = inPosition + normal * displacement;
     
     vec4 position = vec4(newPosition, 1.0f);
     
@@ -245,11 +246,11 @@ void main()
     
     // Get the vertex normal and vertex position in eye coordinates
     //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
-    vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
-    vs_out.vWorldTangent = matrices.normalMatrix * inTangent;
-    vs_out.vLocalNormal = inNormal;
+    vs_out.vWorldNormal = matrices.normalMatrix * normal;
+    vs_out.vWorldTangent = matrices.normalMatrix * tangent;
+    vs_out.vLocalNormal = normal;
     
-    vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;
+    vs_out.vEyePosition = matrices.viewMatrix * matrices.modelMatrix * position;
     vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
     vs_out.vLocalPosition = inPosition;
     

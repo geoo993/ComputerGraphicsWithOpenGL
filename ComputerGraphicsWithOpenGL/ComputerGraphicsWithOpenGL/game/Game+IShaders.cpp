@@ -128,7 +128,12 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("FireBallShader.frag");
     sShaderFileNames.push_back("DeferredRenderingShader.vert");// 55
     sShaderFileNames.push_back("DeferredRenderingShader.frag");
-    
+    sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionShader.vert");// 56
+    sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionShader.frag");
+    sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionBlurShader.vert");// 57
+    sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionBlurShader.frag");
+    sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionLightingShader.vert");// 58
+    sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionLightingShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -596,6 +601,30 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pDeferredRenderingProgram->AddShaderToProgram(&shShaders[114]);
     pDeferredRenderingProgram->LinkProgram();
     m_pShaderPrograms->push_back(pDeferredRenderingProgram);
+ 
+    // Create the Screen Space Ambient Occlusion shader program
+    CShaderProgram *pScreenSpaceAmbientOcclusionProgram = new CShaderProgram;
+    pScreenSpaceAmbientOcclusionProgram->CreateProgram();
+    pScreenSpaceAmbientOcclusionProgram->AddShaderToProgram(&shShaders[115]);
+    pScreenSpaceAmbientOcclusionProgram->AddShaderToProgram(&shShaders[116]);
+    pScreenSpaceAmbientOcclusionProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pScreenSpaceAmbientOcclusionProgram);
+    
+    // Create the Screen Space Ambient Occlusion Blur shader program
+    CShaderProgram *pScreenSpaceAmbientOcclusionBlurProgram = new CShaderProgram;
+    pScreenSpaceAmbientOcclusionBlurProgram->CreateProgram();
+    pScreenSpaceAmbientOcclusionBlurProgram->AddShaderToProgram(&shShaders[117]);
+    pScreenSpaceAmbientOcclusionBlurProgram->AddShaderToProgram(&shShaders[118]);
+    pScreenSpaceAmbientOcclusionBlurProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pScreenSpaceAmbientOcclusionBlurProgram);
+    
+    // Create the Screen Space Ambient Occlusion Lighting shader program
+    CShaderProgram *pScreenSpaceAmbientOcclusionLightingProgram = new CShaderProgram;
+    pScreenSpaceAmbientOcclusionLightingProgram->CreateProgram();
+    pScreenSpaceAmbientOcclusionLightingProgram->AddShaderToProgram(&shShaders[119]);
+    pScreenSpaceAmbientOcclusionLightingProgram->AddShaderToProgram(&shShaders[120]);
+    pScreenSpaceAmbientOcclusionLightingProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pScreenSpaceAmbientOcclusionLightingProgram);
     
 }
 

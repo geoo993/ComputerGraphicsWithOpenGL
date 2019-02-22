@@ -18,6 +18,8 @@ void Game::LoadTextures(const std::string &path)
     m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensTexture.jpg", TextureType::LENS)); // Lens Flare
     m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensDirt.png", TextureType::NOISE)); // Lens Flare
     m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensStarburst.png", TextureType::GLOSSINESS)); // Lens Flare
+    m_textures.push_back(AddTexture(4, 4, TextureType::NOISE, &m_ssaoNoise[0])); // SSAO Noise
+    
 }
 
 CTexture * Game::AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection) {
@@ -32,6 +34,11 @@ CTexture * Game::AddTexture(const std::string &textureFile, const TextureType &t
     texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
     texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
     
-    
+    return texture;
+}
+
+CTexture * Game::AddTexture(const GLfloat &width, const GLfloat &height, const TextureType &type, const GLvoid * data) {
+    CTexture *texture = new CTexture;
+    texture->CreateTexture(width, width, true, type, data);
     return texture;
 }

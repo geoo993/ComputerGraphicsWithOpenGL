@@ -188,11 +188,17 @@ GLuint CTexture::CreateTexture(std::string path, GLboolean generateMipMaps, GLin
     return m_textureID;
 }
 
-GLuint CTexture::CreateSimpleTexture(GLint width, GLint height, GLboolean generateMipMaps, GLint textureUnitAt, const GLvoid * data){
+GLuint CTexture::CreateTexture(GLint width, GLint height, GLboolean generateMipMaps, const TextureType &type, const GLvoid * data){
+    
+    m_path = "";
+    m_type = type;
+    m_mipMapsGenerated = generateMipMaps;
+    m_width = width;
+    m_height = height;
+    m_bpp = 0;
     
     // Generate an OpenGL texture ID for this texture
     //GLuint texture;
-    m_textureID = textureUnitAt;
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
     
@@ -204,9 +210,6 @@ GLuint CTexture::CreateSimpleTexture(GLint width, GLint height, GLboolean genera
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     
     if(generateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
-    
-    //GLuint m_samplerObject;
-    m_samplerObjectID = textureUnitAt;
     glGenSamplers(1, &m_samplerObjectID);
     
     return m_textureID;

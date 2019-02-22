@@ -58,13 +58,15 @@ struct ICamera {
 struct IMaterials {
     GLfloat m_materialShininess;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                    const glm::vec3 &color, const GLfloat &shininess) = 0;
+                                    const glm::vec3 &color, const GLfloat &shininess,
+                                    const GLboolean &useAO) = 0;
 };
 
 struct ITextures {
     std::vector<CTexture*> m_textures;
     virtual void LoadTextures(const std::string &path) = 0;
     virtual CTexture *AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection) = 0;
+    virtual CTexture *AddTexture(const GLfloat &width, const GLfloat &height, const TextureType &type, const GLvoid * data) = 0;
 };
 
 struct IShaders {
@@ -128,6 +130,9 @@ struct IShaderUniform {
     virtual void SetLensFlareUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) = 0;
+    virtual void SetScreenSpaceAmbientOcclusionUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) = 0;
 };
 
 struct ILights
@@ -195,7 +200,7 @@ struct IRenderObject
                                 const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+    virtual void RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation,
                                const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture) = 0;
@@ -225,6 +230,12 @@ struct IPostProcessing {
     GLboolean m_changePPFXMode;
     GLuint m_PPFXOption;
     GLfloat m_coverage, m_shockWaveTime;
+    
+    // ssao
+    std::vector<glm::vec3> m_ssaoKernel;
+    std::vector<glm::vec3> m_ssaoNoise;
+    GLuint m_ssaoKernelSamples, m_ssaoNoiseSamples;
+    GLfloat m_ssaoBias, m_ssaoRadius;
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;
     virtual void ActivateFBO(const PostProcessingEffectMode &mode) = 0;

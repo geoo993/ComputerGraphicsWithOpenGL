@@ -21,12 +21,6 @@ public:
     // Bind the texture (usually on a 2nd or later pass in a multi-pass rendering technique)
     void BindTexture(GLuint iTextureUnit);
     
-    // Binding the Multi Sampling framebuffer color texture so it is active
-    void BindMultiSamplingTexture(GLuint iTextureUnit);
-    
-    // Binding the HDR framebuffer color texture so it is active
-    void BindHDRTexture(GLuint iTextureUnit);
-
     // Binding the framebuffer position texture so it is active
     void BindPositionTexture(GLuint iTextureUnit);
     
@@ -72,9 +66,7 @@ private:
 
 	GLuint m_iWidth, m_iHeight;
 	GLuint m_uiFramebuffer;
-    GLuint m_uiHdrColorTexture;
     GLuint m_uiColourTexture;
-    GLuint m_uiColourTextureMultiSampled;
     GLuint m_uiPositionTexture;
     GLuint m_uiNormalTexture;
     GLuint m_uiAlbedoSpecTexture;

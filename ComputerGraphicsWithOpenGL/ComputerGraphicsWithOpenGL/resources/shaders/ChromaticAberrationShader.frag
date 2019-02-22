@@ -144,7 +144,5 @@ void main()
     // also store the per-fragment normals into the gbuffer
     vNormal = normalize(fs_in.vWorldNormal);
     // and the diffuse per-fragment color
-    vAlbedoSpec.rgb = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
-    // store specular intensity in gAlbedoSpec's alpha component
-    vAlbedoSpec.a = texture(material.diffuseMap, fs_in.vTexCoord).a;
+    vAlbedoSpec = texture(material.glossinessMap, fs_in.vTexCoord);
 }

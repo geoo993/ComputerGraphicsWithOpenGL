@@ -1,5 +1,7 @@
 #version 400 core
 
+// https://learnopengl.com/#!Advanced-Lighting/SSAO
+
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
 {
@@ -21,7 +23,6 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
-    bool bUseAO;
 } material;
 
 in VS_OUT
@@ -31,41 +32,27 @@ in VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
-    vec3 vWorldTangent;
     vec4 vEyePosition;
 } fs_in;
 
-uniform bool bUseTexture;
+uniform float noiseSize;
 
-layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
-layout (location = 1) out vec4 vBrightColor;
-layout (location = 2) out vec3 vPosition;
-layout (location = 3) out vec3 vNormal;
-layout (location = 4) out vec4 vAlbedoSpec;
+out float vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
-
-    if (bUseTexture){
-        vOutputColour = texture(material.diffuseMap, fs_in.vTexCoord);
-    }else{
-        vOutputColour = vec4(material.color, 1.0f);
-    }
+    vec2 uv = fs_in.vTexCoord.xy;
+    vec2 texelSize = 1.0f / vec2(textureSize(material.aoMap, 0));
+    float result = 0.0f;
     
-    // Retrieve bright parts
-    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
-    if(brightness > 1.0f) {
-        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
-    } else {
-        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    for (int x = -2; x < 2; ++x) 
+    {
+        for (int y = -2; y < 2; ++y) 
+        {
+            vec2 offset = vec2(float(x), float(y)) * texelSize;
+            result += texture(material.aoMap, uv + offset).r;
+        }
     }
-    
-    // store the fragment position vector in the first gbuffer texture
-    vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
-    // also store the per-fragment normals into the gbuffer
-    vNormal = normalize(fs_in.vWorldNormal);
-    // and the diffuse per-fragment color
-    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, fs_in.vTexCoord).rgb;
-    // store specular intensity in gAlbedoSpec's alpha component
-    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, fs_in.vTexCoord).r;
+    vOutputColour = result / (noiseSize * noiseSize);
+     
 }

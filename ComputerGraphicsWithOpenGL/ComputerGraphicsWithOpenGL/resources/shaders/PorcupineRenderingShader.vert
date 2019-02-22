@@ -50,7 +50,7 @@ void main()
     
     vs_out.vWorldPositionPass = vec3(matrices.modelMatrix * position);
     vs_out.vLocalPositionPass = inPosition;
-    vs_out.vEyePositionPass = matrices.projMatrix * matrices.viewMatrix * position;
+    vs_out.vEyePositionPass = matrices.viewMatrix * matrices.modelMatrix * position;
     
     // Transform the vertex spatial position using
     vs_out.vMVPPass = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix;

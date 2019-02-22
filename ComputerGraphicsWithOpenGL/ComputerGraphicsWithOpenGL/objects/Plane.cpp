@@ -155,9 +155,9 @@ void CPlane::Transform(const glm::vec3 & position, const glm::vec3 & rotation, c
     // Render the planar terrain
     transform.SetIdentity();
     transform.Translate(position.x, position.y, position.z);
-    transform.RotateX(rotation.x);
-    transform.RotateY(rotation.y);
-    transform.RotateZ(rotation.z);
+    transform.RotateX(glm::radians(rotation.x));
+    transform.RotateY(glm::radians(rotation.y));
+    transform.RotateZ(glm::radians(rotation.z));
     transform.Scale(scale);
 }
 

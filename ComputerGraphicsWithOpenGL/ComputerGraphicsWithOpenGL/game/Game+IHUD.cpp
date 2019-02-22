@@ -62,7 +62,9 @@ void Game::DisplayFrameRate(CShaderProgram *fontProgram, const GLint &width, con
             m_pFtFont->Render(fontProgram, 20, height - 460, 20, "Parallax Height Scale: %f", m_parallaxHeightScale);
             m_pFtFont->Render(fontProgram, 20, height - 480, 20, "UV Tiling: %f", m_uvTiling);
             m_pFtFont->Render(fontProgram, 20, height - 500, 20, "Magnitude: %f", m_magnitude);
-            m_pFtFont->Render(fontProgram, 20, height - 520, 20, "PPFX Coverage: %f", m_coverage);
+            m_pFtFont->Render(fontProgram, 20, height - 520, 20, "SSAO Bias: %f", m_ssaoBias);
+            m_pFtFont->Render(fontProgram, 20, height - 540, 20, "SSAO Radius: %f", m_ssaoRadius);
+            m_pFtFont->Render(fontProgram, 20, height - 560, 20, "PPFX Coverage: %f", m_coverage);
         }
         
     }

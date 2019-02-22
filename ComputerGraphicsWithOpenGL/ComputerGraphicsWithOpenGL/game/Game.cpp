@@ -59,7 +59,7 @@ Game::Game()
     m_directionalLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f),
     
     // Point Light
-    m_pointIntensity = 100.5f;
+    m_pointIntensity = 60.5f;
     m_pointLightPositionsIndex = 0;
     m_pointLightPositions = {
         glm::vec3(  100.0f,  400.0f,  50.0f      ),
@@ -71,7 +71,7 @@ Game::Game()
         glm::vec3(  320.0f,  310.0f, 410.0f  ),
         glm::vec3(  20.0f,  410.0f, 413.0f  ),
         glm::vec3(  -120.0f,  350.0f, 233.0f  ),
-        glm::vec3(  -600.0f,  750.0f, 130.0f )
+        glm::vec3(  -600.0f,  2000.0f, 130.0f )
     };
     
     m_pointLightColors = {
@@ -84,7 +84,7 @@ Game::Game()
         glm::vec3(  0.97f,  0.6f, 0.1f      ),
         glm::vec3(  0.6f,  0.8f, 0.0f      ),
         glm::vec3(  1.0f,  0.2f, 0.5f      ),
-        glm::vec3(  1.0f,  1.0f, 1.0f      )
+        glm::vec3(  10.0f,  10.0f, 10.0f      )
     };
     
     // Spot Light
@@ -92,6 +92,39 @@ Game::Game()
     m_spotIntensity = 100.4f;
     m_spotCutOff = 22.5f;
     m_spotOuterCutOff = 28.0f;
+    
+    // SSAO
+    m_ssaoBias = 1.025f;
+    m_ssaoRadius = 30.5f;
+    // generate sample kernel
+    // ----------------------
+    srand(glfwGetTime()); // initialize random seed
+    m_ssaoKernelSamples = 64;
+    for (GLuint i = 0; i < m_ssaoKernelSamples; ++i)
+    {
+        glm::vec3 sample(Extensions::randFloat() * 2.0f - 1.0f,
+                         Extensions::randFloat() * 2.0f - 1.0f,
+                         Extensions::randFloat());
+        sample = glm::normalize(sample);
+        sample *= Extensions::randFloat();
+        float scale = float(i) / m_ssaoKernelSamples;
+        
+        // scale samples s.t. they're more aligned to center of kernel
+        scale = Extensions::interpolate(0.1f, 1.0f, scale * scale);
+        sample *= scale;
+        m_ssaoKernel.push_back(sample);
+    }
+    
+    // generate noise texture
+    // ----------------------
+    m_ssaoNoiseSamples = 16;
+    for (GLuint i = 0; i < m_ssaoNoiseSamples; i++)
+    {
+        glm::vec3 noise(Extensions::randFloat() * 2.0f - 1.0f,
+                        Extensions::randFloat() * 2.0f - 1.0f,
+                        0.0f); // rotate around z-axis (in tangent space)
+        m_ssaoNoise.push_back(noise);
+    }
     
     // screens
     m_pQuad = nullptr;
@@ -248,13 +281,14 @@ void Game::Initialise()
     m_pSphere = new CSphere;
     m_pFireBallSphere = new CSphere;
     m_pCube = new CCube(1.0f);
-    m_pInteriorBox = new CCube(1.0f);
+    m_pInteriorBox = new CCube(10.0f);
     m_pParallaxCube = new CCube(1.0f);
     m_pChromaticAberrationCube = new CCube(1.0f);
     m_pWoodenBox = new CCube(1.0f);
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
     m_pMetaballs = new CMetaballs;
+    
 }
 
 void Game::LoadResources(const std::string &path)
@@ -318,10 +352,10 @@ void Game::LoadResources(const std::string &path)
         { "Standard_red_pxr128_normal.tif", TextureType::NORMAL},
         { "Standard_red_pxr128_bmp.tif", TextureType::SPECULAR}
     } );
-    m_pInteriorBox->Create(path+"/textures/pixarLibrary/wood/", {
-        { "Figured_rosewood_pxr128.tif", TextureType::DIFFUSE},
-        { "Figured_rosewood_pxr128_normal.tif", TextureType::NORMAL},
-        { "Figured_rosewood_pxr128_bmp.tif", TextureType::SPECULAR}
+    m_pInteriorBox->Create(path+"/textures/pixarLibrary/brick/", {
+        { "Orange_glazed_pxr128.tif", TextureType::DIFFUSE},
+        { "Orange_glazed_pxr128_normal.tif", TextureType::NORMAL},
+        { "Orange_glazed_pxr128_bmp.tif", TextureType::SPECULAR}
     } );
     
     m_pParallaxCube->Create(path+"/textures/pixarLibrary/brick/", {

@@ -11,8 +11,9 @@ public:
                         GLboolean generateMipMaps = true, GLboolean gammaCorrection = false);
     GLboolean Load(const std::string &path, const TextureType &type = TextureType::UNKNOWN, const GLboolean &generateMipMaps = true);
     GLuint CreateTexture(std::string path, GLboolean generateMipMaps = true, GLint textureUnitAt = 0, GLboolean gammaCorrection = false);
-    GLuint CreateSimpleTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
-                            GLint textureUnitAt = 0, const GLvoid * data = nullptr);
+    GLuint CreateTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
+                         const TextureType &type = TextureType::AMBIENT, const GLvoid * data = nullptr);
+    
 	void BindTexture2D(GLint textureUnit = 0) const;
     void BindTexture2DToTextureType() const;
     void BindTexture3D(GLint textureUnit = 0);

@@ -159,22 +159,22 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
                 m_coverage = glm::clamp(m_coverage, 0.0f, 1.0f);
                 break;
             case GLFW_KEY_D:
-                m_constant -= 0.1f;
+                m_ssaoBias -= 0.1f;
                 break;
             case GLFW_KEY_F:
-                m_constant += 0.1f;
+                m_ssaoBias += 0.1f;
                 break;
             case GLFW_KEY_G:
-                m_linear -= 0.05f;
+                m_ssaoRadius -= 0.5f;
                 break;
             case GLFW_KEY_H:
-                m_linear += 0.05f;
+                m_ssaoRadius += 0.5f;
                 break;
             case GLFW_KEY_J:
-                m_exponent -= 0.05f;
+                
                 break;
             case GLFW_KEY_K:
-                m_exponent += 0.05f;
+                
                 break;
             case GLFW_KEY_L:
                 m_isMouseCursorVisible = !m_isMouseCursorVisible;

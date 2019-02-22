@@ -43,7 +43,7 @@ void main()
     vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
     vs_out.vLocalNormal = inNormal;
     
-    vs_out.vEyePosition = matrices.projMatrix * matrices.viewMatrix * position;
+    vs_out.vEyePosition = matrices.viewMatrix * matrices.modelMatrix * position;
     vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
     vs_out.vLocalPosition = inPosition;
     

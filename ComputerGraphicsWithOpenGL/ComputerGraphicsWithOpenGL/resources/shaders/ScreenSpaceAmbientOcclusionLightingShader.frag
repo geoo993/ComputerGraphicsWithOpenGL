@@ -1,11 +1,6 @@
-#version 410 core
-// https://github.com/BennyQBD/3DGameEngineCpp_60/tree/master/3DEngineCpp/res/shaders
-// https://github.com/BennyQBD/3DGameEngineCpp_60/blob/master/3DEngineCpp/res/shaders/lighting.glh
-// https://learnopengl.com/Lighting/Light-casters
-// https://learnopengl.com/Lighting/Multiple-lights
-// https://learnopengl.com/Advanced-Lighting/Advanced-Lighting
-
+#version 400 core
 #define NUMBER_OF_POINT_LIGHTS 10
+// https://learnopengl.com/#!Advanced-Lighting/SSAO
 
 uniform struct Camera
 {
@@ -35,9 +30,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec3 color;
     float shininess;
-    bool bUseAO;
 } material;
-
 
 // Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
@@ -67,7 +60,7 @@ struct PointLight
     BaseLight base;
     Attenuation attenuation;
     vec3 position;
-    float range; // This returns a radius between roughly 1.0 and 5.0 based on the light's maximum intensity.
+    float range;
 };
 
 struct SpotLight
@@ -83,6 +76,7 @@ uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
 uniform bool bUseTexture, bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
+uniform float coverage;
 
 in VS_OUT
 {
@@ -91,14 +85,13 @@ in VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
-    vec3 vWorldTangent;
     vec4 vEyePosition;
 } fs_in;
+
 
 vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
 {
     float diffuseFactor = max(dot(normal, direction), 0.0f);
-    
     vec3 view =  camera.position + camera.front;
     vec3 directionToEye = normalize(view - vertexPosition); // viewDirection
     vec3 reflectDirection = reflect(-direction, normal);    // specular reflection
@@ -107,12 +100,22 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     ? pow(max(dot(normal, halfDirection), 0.0f), material.shininess)
     : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
     
+    vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;                // albedo Map
+    float specularMap = texture(material.diffuseMap, fs_in.vTexCoord).a;            // specularMap
+    float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
+    
     vec4 lightColor = vec4(base.color, 1.0f);
     vec4 materialColor = vec4(material.color, 1.0f);
-    vec4 ambient = base.ambient * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
-    vec4 diffuse = base.diffuse * diffuseFactor * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
-    vec4 specular = base.specular * specularFactor * (bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
-    return (ambient + diffuse + specular) * base.intensity * lightColor;
+    vec4 ambient = base.ambient * (bUseTexture ? vec4(diffuseMap * ambientOcclusion, 1.0f) : materialColor);
+    vec4 diffuse = base.diffuse * diffuseFactor * (bUseTexture ? vec4(diffuseMap, 1.0f) : materialColor) * lightColor;
+    vec4 specular = base.specular * specularFactor * lightColor;
+    if (bUseTexture) {
+        specular *= specularMap;
+    } else {
+        specular *= materialColor;
+    }
+    
+    return (ambient + diffuse + specular) * base.intensity;
 }
 
 vec4 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 vertexPosition)
@@ -129,20 +132,19 @@ vec4 CalcPointLight(PointLight pointLight, vec3 normal, vec3 vertexPosition)
         return vec4(0.0f, 0.0f, 0.0f, 0.0f);
     
     vec4 color = CalcLight(pointLight.base, lightDirection, normal, vertexPosition);
- 
+    
     // attenuation
     
     float attenuation = 1.0f / (pointLight.attenuation.constant + pointLight.attenuation.linear * distanceToPoint +
                                 pointLight.attenuation.exponent * (distanceToPoint * distanceToPoint));
     return color * attenuation;
     
-
+    
     //float attenuation = (pointLight.attenuation.constant +
     //                     pointLight.attenuation.linear * distanceToPoint +
     //                     pointLight.attenuation.exponent * (distanceToPoint * distanceToPoint) + 0.0001f);
     //return color / attenuation;
 }
-
 
 vec4 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 vertexPosition)
 {
@@ -161,55 +163,57 @@ vec4 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 vertexPosition)
     return color;
 }
 
-//When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
-layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
-layout (location = 1) out vec4 vBrightColor;
-layout (location = 2) out vec3 vPosition;
-layout (location = 3) out vec3 vNormal;
-layout (location = 4) out vec4 vAlbedoSpec;
+out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
-void main() {
-    vec3 normal = normalize(fs_in.vWorldNormal);
-    vec3 worldPos = fs_in.vWorldPosition;
-    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
-    
-    if (bUseDirectionalLight){
-        // Directional lighting
-        vec4 directionalLight = CalcDirectionalLight(R_directionallight, normal, worldPos);
-        result += directionalLight;
+void main()
+{
+  
+    vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = vec4(material.color, 1.0f);
+    vec4 scene = texture(material.ambientMap, uv);
+    if (uv.x < (  coverage  ) )
+    {
+        // retrieve data from gbuffer
+        vec3 worldPos = texture(material.displacementMap, fs_in.vTexCoord).rgb;      // displacementMap
+        vec3 normal = texture(material.normalMap, fs_in.vTexCoord).rgb;             // normalMap
+        vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+        /*
+        if (bUseDirectionalLight){
+            // Directional lighting
+            vec4 directionalLight = CalcDirectionalLight(R_directionallight, normal, worldPos);
+            result += directionalLight;
+        }
+        
+        if (bUsePointLight){
+            // Point lights
+            for (int i = 0; i < NUMBER_OF_POINT_LIGHTS; i++){
+                vec4 pointL = CalcPointLight(R_pointlight[i], normal, worldPos);
+                result += pointL;
+            }
+        }
+        
+        if (bUseSpotlight){
+            // Spot light
+            vec4 spotL = CalcSpotLight(R_spotlight, normal, worldPos);
+            result += spotL;
+        }
+        
+        tc = result;
+        */
+        vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;                // albedo Map
+        float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
+        tc = vec4(diffuseMap * ambientOcclusion, 1.0f);
     }
-    
-    if (bUsePointLight){
-        // Point lights
-        for (int i = 0; i < NUMBER_OF_POINT_LIGHTS; i++){
-            vec4 pointL = CalcPointLight(R_pointlight[i], normal, worldPos);
-            result += pointL;
+    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    {
+        tc = scene;
+    }
+    else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = scene;
         }
     }
     
-    if (bUseSpotlight){
-        // Spot light
-        vec4 spotL = CalcSpotLight(R_spotlight, normal, worldPos);
-        result += spotL;
-    }
-    
-    vOutputColour = result;
-    
-    // Retrieve bright parts
-    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
-    if(brightness > 1.0f) {
-        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
-    } else {
-        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    }
-    
-    // store the fragment position vector in the first gbuffer texture
-    vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
-    // also store the per-fragment normals into the gbuffer
-    vNormal = normalize(fs_in.vWorldNormal);
-    // and the diffuse per-fragment color
-    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, fs_in.vTexCoord).rgb;
-    // store specular intensity in gAlbedoSpec's alpha component
-    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, fs_in.vTexCoord).r;
-
+    vOutputColour = tc;
 }

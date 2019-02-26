@@ -22,7 +22,7 @@ Result:	Creates one single character (its
 
 inline int next_p2(int n){int res = 1; while(res < n)res <<= 1; return res;}
 
-void CFreeTypeFont::CreateChar(int index)
+void CFreeTypeFont::CreateChar(int index, const TextureType &textureType)
 {
 
 	FT_Load_Glyph(m_ftFace, FT_Get_Char_Index(m_ftFace, index), FT_LOAD_DEFAULT);
@@ -41,7 +41,7 @@ void CFreeTypeFont::CreateChar(int index)
  
 	// And create a texture from it
 
-    m_charTextures[index].CreateFromData(bData, iTW, iTH, 8, GL_DEPTH_COMPONENT, TextureType::UNKNOWN, false);
+    m_charTextures[index].CreateFromData(bData, iTW, iTH, 8, GL_DEPTH_COMPONENT, textureType, false);
 	m_charTextures[index].SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	m_charTextures[index].SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	m_charTextures[index].SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -78,7 +78,7 @@ void CFreeTypeFont::CreateChar(int index)
 
 
 // Loads an entire font with the given path sFile and pixel size iPXSize
-bool CFreeTypeFont::LoadFont(std::string file, int ipixelSize)
+bool CFreeTypeFont::LoadFont(std::string file, int ipixelSize, const TextureType &textureType)
 {
 
 	BOOL bError = FT_Init_FreeType(&m_ftLib);
@@ -98,7 +98,7 @@ bool CFreeTypeFont::LoadFont(std::string file, int ipixelSize)
 	m_vbo.Bind();
 
 	for (int i = 0; i < 128; i++)
-		CreateChar(i);
+		CreateChar(i, textureType);
 	m_isLoaded = true;
 
 	FT_Done_Face(m_ftFace);
@@ -135,12 +135,12 @@ void CFreeTypeFont::Print(CShaderProgram* program, std::string text, int x, int 
 		iCurX += m_bearingX[iIndex] * pixelSize / m_loadedPixelSize;
 		if(text[i] != ' ')
 		{
-			m_charTextures[iIndex].BindTexture2D();
+			m_charTextures[iIndex].BindTexture2DToTextureType();
 			glm::mat4 mModelView = glm::translate(glm::mat4(1.0f), glm::vec3(float(iCurX), float(iCurY), 0.0f));
 			mModelView = glm::scale(mModelView, glm::vec3(fScale));
 			program->SetUniform("matrices.modelViewMatrix", mModelView);
 			// Draw character
-			glDrawArrays(GL_TRIANGLE_STRIP, iIndex*4, 4);
+			glDrawArrays(GL_TRIANGLE_STRIP, iIndex * 4, 4);
 		}
 
 		iCurX += (m_advX[iIndex] - m_bearingX[iIndex])*pixelSize / m_loadedPixelSize;
@@ -175,4 +175,9 @@ int CFreeTypeFont::GetTextWidth(std::string sText, int iPixelSize)
     for (int i = 0; i < (int)sText.size(); i++)
         iResult += m_advX[sText[i]];
     return iResult*iPixelSize / m_loadedPixelSize;
+}
+
+// Gets the height of text
+int CFreeTypeFont::GetTextHeight(std::string sText) {
+    return m_loadedPixelSize;
 }

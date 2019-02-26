@@ -21,11 +21,28 @@ out VS_OUT
     vec4 vEyePosition;
 } vs_out;
 
+uniform bool bUseScreenQuad;
+
 void main()
 {
-	// Transform the point
-	gl_Position = matrices.projMatrix * matrices.modelViewMatrix * vec4(inPosition, 0.0f, 1.0f);
-
-	// Pass through the texture coord
-	vs_out.vTexCoord = inCoord;
+    vec4 position = vec4(inPosition, -1.0f, 1.0f);
+    if (bUseScreenQuad) {
+        //Set the x,y position on the screen
+        gl_Position.xy = position.xy;
+        
+        //the z position is zero since we are in 2D
+        // draw triangles with depth less that 1 so that they do not get culled. -1 makes them visible
+        // https://stackoverflow.com/questions/47760298/drawing-multiple-triangles-in-opengl
+        gl_Position.z = -1.0f;
+        
+        //Indicate that the coordinates are normalized
+        gl_Position.w = 1.0f;
+    } else {
+        // Transform the point
+        gl_Position = matrices.projMatrix * matrices.modelViewMatrix * position;
+    }
+    
+    // Pass through the texture coord
+    vs_out.vTexCoord = inCoord;
 }
+

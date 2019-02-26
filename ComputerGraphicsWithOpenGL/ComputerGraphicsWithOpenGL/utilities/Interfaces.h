@@ -253,11 +253,12 @@ struct IHud
     GLboolean m_enableHud;
     CFreeTypeFont *m_pFtFont;
     virtual void RenderHUD() = 0;
-    virtual void DisplayFrameRate(CShaderProgram *fontProgram, const GLint &width, const GLint &height,
-                                  const GLuint &framesPerSecond, const bool &enableHud) = 0;
+    virtual void RenderLabels(CFreeTypeFont *font, CShaderProgram *fontProgram,
+                              const GLint &width, const GLint &height,
+                              const GLuint &framesPerSecond, const bool &enableHud) = 0;
 };
 
-struct IInput
+struct IControls
 {
     // inputs
     GLboolean m_mouseButtonDown;
@@ -270,6 +271,10 @@ struct IInput
     GLdouble m_lastKeyPressTime;
     GLint m_lastKeyPress;
     GLboolean m_isKeyPressRestriction;
+    virtual void LoadControls() = 0;
+    virtual void RenderControls(CFreeTypeFont *font, CShaderProgram *fontProgram, const std::string &material) = 0;
+    virtual void UpdateControls() = 0;
+    virtual void RemoveControls() = 0;
     virtual void UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction) = 0;
     virtual void UpdateMouseControls(const int &button, const int &action) = 0;
 };

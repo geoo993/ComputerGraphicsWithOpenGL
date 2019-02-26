@@ -236,7 +236,7 @@ void CCamera::SetViewByMouse(GLFWwindow *window, const GLfloat &mouseXoffset, co
                 Pitch = -89.0f;
         }
         */
-        
+        /*
         double middle_x = (int)m_screenWidth >> 1;
         double middle_y = (int)m_screenHeight >> 1;
         
@@ -269,6 +269,7 @@ void CCamera::SetViewByMouse(GLFWwindow *window, const GLfloat &mouseXoffset, co
         }
         
         RotateViewPoint(verticalAngle, m_worldUp);
+         */
     }
 }
 

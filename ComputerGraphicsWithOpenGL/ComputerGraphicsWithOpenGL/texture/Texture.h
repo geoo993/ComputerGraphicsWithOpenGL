@@ -9,7 +9,7 @@ class CTexture
 public:
 	void CreateFromData(BYTE* data, GLint width, GLint height, GLint bpp, GLenum format, const TextureType &type,
                         GLboolean generateMipMaps = true, GLboolean gammaCorrection = false);
-    GLboolean Load(const std::string &path, const TextureType &type = TextureType::UNKNOWN, const GLboolean &generateMipMaps = true);
+    GLboolean Load(const std::string &path, const TextureType &type = TextureType::AMBIENT, const GLboolean &generateMipMaps = true);
     GLuint CreateTexture(std::string path, GLboolean generateMipMaps = true, GLint textureUnitAt = 0, GLboolean gammaCorrection = false);
     GLuint CreateTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
                          const TextureType &type = TextureType::AMBIENT, const GLvoid * data = nullptr);

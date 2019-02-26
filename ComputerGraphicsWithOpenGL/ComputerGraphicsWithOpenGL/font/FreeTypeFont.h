@@ -12,17 +12,18 @@ public:
 	CFreeTypeFont();
 	~CFreeTypeFont();
 
-	bool LoadFont(std::string file, int pixelSize);
+	bool LoadFont(std::string file, int pixelSize, const TextureType &textureType);
 
     int GetTextWidth(std::string text, int pixelSize);
-
+    int GetTextHeight(std::string sText);
+    
     void Print(CShaderProgram* program, std::string text, int x, int y, int pixelSize = -1);
     void Render(CShaderProgram* program, int x, int y, int pixelSize, char* text, ...);
     void Release();
 
 private:
 
-	void CreateChar(int index);
+	void CreateChar(int index, const TextureType &textureType);
 
 	CTexture m_charTextures[256];
 	int m_advX[256], m_advY[256];

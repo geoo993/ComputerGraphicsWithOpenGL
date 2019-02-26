@@ -33,11 +33,13 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
+uniform bool bUseTexture;
+
 out vec4 vOutputColour;
 
 void main()
 {
-	vec4 vTexColour = texture(material.ambientMap, fs_in.vTexCoord);    // Get the texel colour from the image
-    vOutputColour = vec4(vTexColour.r) * vec4(material.color, 1.0f);    // The texel colour is a grayscale value -- apply to RGBA and combine with vColor
-       
+    vec4 vTexColour = texture(material.depthMap, fs_in.vTexCoord);    // Get the texel colour from the image
+    vec4 color = vec4(material.color, 1.0f);
+    vOutputColour = bUseTexture ? vec4(vTexColour.r) * color : color;
 }

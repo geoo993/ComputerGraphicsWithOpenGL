@@ -17,6 +17,9 @@
 #include "Extensions.h"
 #include "MatrixStack.h"
 #include "Interfaces.h"
+#include "Button.h"
+#include "ListBox.h"
+#include "Slider.h"
 #include "CModel.h"
 #include "Skybox.h"
 #include "Plane.h"
@@ -27,7 +30,6 @@
 #include "TorusKnot.h"
 #include "Metaballs.h"
 #include "Quad.h"
-
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp,
 // include the header.  In the Game constructor, set the pointer to NULL and in Game::Initialise, create a new object.  Don't forget to
@@ -44,7 +46,7 @@ class CMetaballs;
 class CQuad;
 
 class Game: IGameWindow, IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
-ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IInput {
+ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IControls {
 private:
     
     // Three main methods used in the game.  Initialise runs once, while Update and Render run repeatedly in the game loop.
@@ -274,13 +276,17 @@ protected:
     
     /// HUD
     void RenderHUD() override;
-    void DisplayFrameRate(CShaderProgram *fontProgram, const GLint &width, const GLint &height,
-                          const GLuint &framesPerSecond, const bool &enableHud) override;
+    void RenderLabels(CFreeTypeFont *font, CShaderProgram *fontProgram,
+                      const GLint &width, const GLint &height,
+                      const GLuint &framesPerSecond, const bool &enableHud) override;
     
-    /// Inputs
+    /// Controls
+    void LoadControls() override;
+    void UpdateControls() override;
+    void RenderControls(CFreeTypeFont *font, CShaderProgram *fontProgram, const std::string &material) override;
+    void RemoveControls() override;
     void UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction) override;
     void UpdateMouseControls(const int &button, const int &action) override;
-    
 };
 
 #endif /* Game_h */

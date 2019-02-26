@@ -12,15 +12,16 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     const GLint lightSpaceIndex = 51;
     const GLboolean useAO = m_currentPPFXMode == PostProcessingEffectMode::SSAO;
     
-    // Clear Buffers before rendering
-    m_gameWindow->ClearBuffers();
-    
     // enable depth testing (is disabled for rendering screen-space quad post processing)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_STENCIL_TEST);
     
-    // uncomment if stencil buffer is not used
-    glStencilMask(0x00); // make sure we don't update the stencil buffer while drawing the floor
+    // comment out if stencil buffer is not used
+    // glStencilMask(0xFF); // each bit is written to the stencil buffer as is
+    // glStencilMask(0x00); // each bit ends up as 0 in the stencil buffer (disabling writes)
+    // Most of the cases you'll just be writing 0x00 or 0xFF as the stencil mask, but it's good to know there are options to set custom bit-masks.
+    glStencilMask(0x00);
+    
     
     /// Render skybox
     CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];

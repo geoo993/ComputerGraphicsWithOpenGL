@@ -5,12 +5,222 @@
 //  Created by GEORGE QUENTIN on 06/10/2017.
 //  Copyright © 2017 LEXI LABS. All rights reserved.
 //
+// https://www.youtube.com/watch?v=EE5cS8EMT78
+// https://www.youtube.com/watch?v=L2aiuDDFNIk
 
 #include "Game.h"
 
+// Controls
+CControl *controlled = nullptr; // hold the current control that is beign manipulated
+MouseState mState;
+KeyboardState kState;
+
+static void OnMouseEnter_callback(GLFWwindow* window, int entered);
+static void OnMouseMove_callback(GLFWwindow* window, double xpos, double ypos);
+static void OnMouseDown_callback(GLFWwindow* window, int button, int action, int mods);
+static void OnMouseScroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+static void OnKeyDown_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+void Game::LoadControls() {
+    AddControl(new CButton("Run Away!", 20, 300, 200, 200, 50));
+    CListBox * listNames = (CListBox *)AddControl(new CListBox(20, 50, 300, 300, 200, 200));
+    listNames->AddItem("First Item");
+    listNames->AddItem("Second Item");
+    listNames->AddItem("Third Item");
+    listNames->AddItem("Fourth Item");
+    
+    CSlider *slider = (CSlider *)AddControl(new CSlider("The Great One!",
+                                                       20, 0.0f, 100.0f, 5, 300, 520, 200, 50));
+    slider->SetValue(&m_coverage);
+    
+    m_gameWindow->SetInputs(OnMouseEnter_callback, OnMouseMove_callback,
+                            OnMouseDown_callback, OnMouseScroll_callback,
+                            OnKeyDown_callback);
+}
+
+void Game::UpdateControls() {
+    
+    //UpdateMouseControls(mouseButton, mouseAction);
+    //UpdateKeyBoardControls(keyPressedCode, keyReleasedCode, keyPressedAction);
+    
+    /// Update mouse
+    glfwGetCursorPos(m_gameWindow->GetWindow(), &mState.x, &mState.y);
+    
+    
+    /// Update Keyboard
+    if (kState.m_keyAction == GLFW_RELEASE){
+       kState.m_keyDown = -1;
+    }
+    
+    if (kState.m_keyDown == -1){
+        
+        kState.m_keyReleased = -1;
+    }
+    
+    if (kState.m_keyDown  != -1){
+        
+    }
+}
+
+
+void Game::RenderControls(CFreeTypeFont *font, CShaderProgram *fontProgram, const std::string &material) {
+    for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
+        
+        CControl * control = (*it);
+        control->Render(font, fontProgram, material);
+        
+        if (controlled != nullptr && controlled != control) {
+            // our current controll is being controlled
+            continue;
+        }
+        if (control->Update(mState)) {
+            // Handle events of this control
+            controlled = control;
+            
+        } else if (control == controlled) {
+            // this *it control no longer has control
+            controlled = nullptr;
+        } else {
+            // we do ot need to handle events, because control has been updated...but no messages to handle
+        }
+    }
+}
+
+void Game::RemoveControls() {
+    for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
+        delete (*it);
+        it = CControl::m_controls.begin();
+    }
+}
+
+// glfw: whenever the mouse enters and leaves window, this callback is called
+static void OnMouseEnter_callback(GLFWwindow* window, int entered) {
+    if (entered) {
+        std::cout << " Entered Window " << std::endl;
+    } else {
+        std::cout << " Exited Window " << std::endl;
+    }
+}
+
+// glfw: whenever the mouse moves, this callback is called
+void OnMouseMove_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    /*
+    // https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/11.anti_aliasing_offscreen/anti_aliasing_offscreen.cpp
+    if (firstMouse)
+    {
+        mouseLastX = xpos;
+        mouseLastY = ypos;
+        firstMouse = false;
+    }
+    
+    mouseXoffset = xpos - mouseLastX;
+    mouseYoffset = mouseLastY - ypos; // reversed since y-coordinates go from bottom to top
+    
+    mouseLastX = xpos;
+    mouseLastY = ypos;
+    */
+    std::cout
+    << "Mouse Position,  "
+    << " posX: " << xpos
+    << " posY: " << ypos
+    << std::endl;
+    
+}
+
+// glfw: whenever a mouse button is pressed, this callback is called
+void OnMouseDown_callback(GLFWwindow* window, int button, int action, int mods){
+    /*
+    mouseButton = button;
+    mouseAction = action;
+    */
+    
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        mState.m_leftButtonDown = ControlType::LEFTMOUSE;
+    }
+    
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+        mState.m_leftButtonDown = ControlType::UNKNOWN;
+    }
+    
+    if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS) {
+        mState.m_middleButtonDown = ControlType::MIDDLEMOUSE;
+    }
+    
+    if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_RELEASE) {
+        mState.m_middleButtonDown = ControlType::UNKNOWN;
+    }
+    
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+        mState.m_rightButtonDown = ControlType::RIGHTMOUSE;
+    }
+    
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
+        mState.m_rightButtonDown = ControlType::UNKNOWN;
+    }
+    
+    std::cout
+    << "Mouse Down with,  "
+    << " button: " << button
+    << " action: " << action
+    << " mode: " << mods
+    << " state posX: " << mState.x
+    << " state posY: " << mState.y
+    //<< " state left down: " << mState.m_leftButtonDown
+    //<< " state middle down: " << mState.m_middleButtonDown
+    //<< " state right down: " << mState.m_rightButtonDown
+    << std::endl;
+}
+
+// glfw: whenever the mouse scroll wheel scrolls, this callback is called
+void OnMouseScroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    //https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/11.anti_aliasing_offscreen/anti_aliasing_offscreen.cpp
+    std::cout
+    << "Mouse Scroll,  "
+    << " posX: " << xoffset
+    << " posY: " << yoffset
+    << std::endl;
+    
+}
+
+// glfw: whenever the keyboard is pressed, this callback is called
+void OnKeyDown_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    std::cout
+    << "Keyboard presses"
+    << " key: " << key
+    << " scan code: " << scancode
+    << " action: " << action
+    << " mode: " << mods
+    << std::endl;
+    
+    kState.m_keyAction = action;
+    keyPressedAction = action;
+    
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
+    
+    
+    switch (action) {
+        case GLFW_PRESS:
+            kState.m_keyDown = key;
+            keyPressedCode = key;
+            break;
+        case GLFW_RELEASE:
+            kState.m_keyReleased = key;
+            keyReleasedCode = key;
+            break;
+        default:
+            break;
+    }
+    
+}
 
 void Game::UpdateMouseControls(const int &button, const int &action){
     
+    /*
     // https://stackoverflow.com/questions/37194845/using-glfw-to-capture-mouse-dragging-c
     // https://stackoverflow.com/questions/45130391/opengl-get-cursor-coordinate-on-mouse-click-in-c
     
@@ -45,14 +255,15 @@ void Game::UpdateMouseControls(const int &button, const int &action){
     if(m_mouseButtonDown) {
         // do your drag here
     }
-    
     glfwGetCursorPos(m_gameWindow->GetWindow(), &m_mouseX, &m_mouseY);
     m_gameWindow->SetCursorVisible(m_isMouseCursorVisible);
+     */
     
 }
 
 void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction){
-    
+
+    /*
     if (keyAction == GLFW_RELEASE){
         keyPressed = -1;
     }
@@ -248,6 +459,6 @@ void Game::UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAct
         m_lastKeyPressTime = m_keyPressTime;
         m_lastKeyPress = keyPressed;
     }
-    
+    */
     
 }

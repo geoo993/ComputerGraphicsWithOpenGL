@@ -6,7 +6,7 @@ class CAudio
 public:
     
 	CAudio();
-	~CAudio();
+	virtual ~CAudio();
 	bool Initialise();
 	bool LoadEventSound(const char *filename);
 	bool PlayEventSound();

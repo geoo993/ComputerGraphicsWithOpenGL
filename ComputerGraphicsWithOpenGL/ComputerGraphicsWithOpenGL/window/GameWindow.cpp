@@ -213,23 +213,22 @@ bool CGameWindow::InitOpenGL()
 	return bError;
 }
 
-void CGameWindow::SetInputs(const GLFWkeyfun &cbfunKey, const GLFWcursorposfun &cbfunMouseMove,
-                            const GLFWmousebuttonfun &cbfunMouseClick, const GLFWscrollfun &cbfunMouseScroll){
+void CGameWindow::SetInputs(const GLFWcursorenterfun &cbfunEnter,
+                            const GLFWcursorposfun &cbfunMouseMove,
+                            const GLFWmousebuttonfun &cbfunMouseClick,
+                            const GLFWscrollfun &cbfunMouseScroll,
+                            const GLFWkeyfun &cbfunKey){
     
     //glfwSetWindowSizeCallback(m_window, ReshapeWindow);
     //glfwSetWindowShouldClose(m_window, GLUS_TRUE);
     
-    glfwSetKeyCallback(m_window, cbfunKey);
-    //glfwSetCursorPosCallback(m_window, cbfunMouseMove);
+    glfwSetCursorEnterCallback(m_window, cbfunEnter);
+    glfwSetCursorPosCallback(m_window, cbfunMouseMove);
     glfwSetMouseButtonCallback(m_window, cbfunMouseClick);
     glfwSetScrollCallback(m_window, cbfunMouseScroll);
-    //glfwSetInputMode(m_window, GLFW_STICKY_KEYS, 1);
+    glfwSetKeyCallback(m_window, cbfunKey);
     
-    // tell GLFW to capture our mouse
-    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    
-    glfwMakeContextCurrent(m_window);
-    
+    SetCursorVisible(true);
 }
 
 void CGameWindow::SetCursorVisible( const bool &isVisible )
@@ -237,6 +236,7 @@ void CGameWindow::SetCursorVisible( const bool &isVisible )
     if( m_window == nullptr )
         return;
 
+    // tell GLFW to capture our mouse
     if( isVisible ){
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         assert(glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL);
@@ -246,7 +246,7 @@ void CGameWindow::SetCursorVisible( const bool &isVisible )
     }
 
     //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-    //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // to remove cursor
 
 }
 
@@ -315,6 +315,7 @@ void CGameWindow::PreRendering(){
      
      */
     glEnable(GL_MULTISAMPLE);
+    glEnable(GL_TEXTURE_2D);
     
     // https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Examples.html
     glClearDepth(1.0f); // Set background depth to farthest
@@ -565,7 +566,7 @@ void CGameWindow::ClearBuffers(){
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     //// CLEAR Buffers, The default clear value for the depth is 1.0f, which is equal to the depth of your far clipping plane
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); ////<-- CLEAR WINDOW
-    glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer
+    //glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer
 
 }
 

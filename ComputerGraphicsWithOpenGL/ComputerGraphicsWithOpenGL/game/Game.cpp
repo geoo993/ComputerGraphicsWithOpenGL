@@ -203,6 +203,7 @@ Game::Game()
     m_lastKeyPressTime = 0.0f;
     m_lastKeyPress = -1;
     m_isKeyPressRestriction = true;
+    
 }
 
 // Destructor
@@ -253,6 +254,7 @@ Game::~Game()
     delete m_gameManager;
     
     delete m_gameWindow;
+    
 }
 
 // Initialisation:  This method only runs once at startup
@@ -288,14 +290,13 @@ void Game::Initialise()
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
     m_pMetaballs = new CMetaballs;
-    
 }
 
 void Game::LoadResources(const std::string &path)
 {
    
     // font
-    m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32);
+    m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32, TextureType::DEPTH);
     
     // screens
     m_pQuad->Create(path+"/textures/pixarLibrary/fabric/", { {"Wild_flowers_pxr128.tif", TextureType::DIFFUSE}}, 1.0f, 1.0f);
@@ -427,18 +428,26 @@ void Game::PreRendering() {
 void Game::Render()
 {
 
-    ActivateFBO(m_currentPPFXMode);
     
-    RenderScene();
+    // comment out if stencil buffer is not used
+    // glStencilMask(0xFF); // each bit is written to the stencil buffer as is
+    // glStencilMask(0x00); // each bit ends up as 0 in the stencil buffer (disabling writes)
+    // Most of the cases you'll just be writing 0x00 or 0xFF as the stencil mask, but it's good to know there are options to set custom bit-masks.
+    glStencilMask(0x00);
     
-    ResetFrameBuffer();
+    //ActivateFBO( m_currentPPFXMode );
+    
+    //RenderScene();
+    
+    //ResetFrameBuffer();
     
     // Post Processing Effects
-    RenderPPFX( m_currentPPFXMode );
+    //RenderPPFX( m_currentPPFXMode );
     
     // Draw the 2D graphics after the 3D graphics
     RenderHUD();
     
+ 
     // Swap buffers right after rendering all, this is to show the current rendered image
     m_gameWindow->SwapBuffers();
 }
@@ -451,14 +460,16 @@ void Game::PostRendering() {
 // Update method runs repeatedly with the Render method
 void Game::Update()
 {
+    // update game timer
     UpdateGameTimer();
+
     // update controlls
-    UpdateMouseControls(mouseButton, mouseAction);
-    UpdateKeyBoardControls(keyPressedCode, keyReleasedCode, keyPressedAction);
+    UpdateControls();
     
     // update camera
     UpdateCamera(m_deltaTime, keyPressedCode, mouseXoffset, mouseYoffset, m_enableMouseMovement);
     
+    // update audio
     UpdateAudio();
 }
 
@@ -474,78 +485,22 @@ void Game::GameLoop()
     m_deltaTime = m_pGameTimer->Elapsed();
 }
 
-// glfw: whenever the mouse moves, this callback is called
-static void OnMouseMove_callback(GLFWwindow* window, double xpos, double ypos)
-{
-    // https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/11.anti_aliasing_offscreen/anti_aliasing_offscreen.cpp
-    if (firstMouse)
-    {
-        mouseLastX = xpos;
-        mouseLastY = ypos;
-        firstMouse = false;
-    }
-    
-    mouseXoffset = xpos - mouseLastX;
-    mouseYoffset = mouseLastY - ypos; // reversed since y-coordinates go from bottom to top
-    
-    mouseLastX = xpos;
-    mouseLastY = ypos;
-}
-
-// glfw: whenever a mouse button is pressed, this callback is called
-static void OnMouseDown_callback(GLFWwindow* window, int button, int action, int mods){
-    //std::cout << "Mouse Down with button: " << button << " and with action: " << action << std::endl;
-    mouseButton = button;
-    mouseAction = action;
-}
-
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-static void OnMouseScroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    //https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/11.anti_aliasing_offscreen/anti_aliasing_offscreen.cpp
-}
-
-// glfw: whenever the keyboard is presseds, this callback is called
-static void OnKeyDown_callback( GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    keyPressedAction = action;
-    
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-    
-    switch (action) {
-        case GLFW_PRESS:
-            keyPressedCode = key;
-            break;
-        case GLFW_RELEASE:
-            keyReleasedCode = key;
-            break;
-        default:
-            break;
-    }
-}
-
-
 void Game::Execute(const std::string &filepath, const GLuint &width, const GLuint &height)
 {
 
     Initialise();
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
-    InitialiseFrameBuffers(width, height);
-    InitialiseCamera(width, height, glm::vec3(220.0f, 500.0f, -400.0f));
-    InitialiseAudio(filepath);
+    //InitialiseFrameBuffers(width, height);
+    //InitialiseCamera(width, height, glm::vec3(220.0f, 500.0f, -400.0f));
+    //InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
     LoadResources(filepath);
-    LoadTextures(filepath);
+    //LoadTextures(filepath);
+    LoadControls();
     
     m_gameManager->SetLoaded(true); // everything has loaded
-    
-    m_gameWindow->SetInputs(OnKeyDown_callback, OnMouseMove_callback, OnMouseDown_callback, OnMouseScroll_callback);
-    
     m_gameWindow->PreRendering();
-    
     m_gameManager->SetActive(true); // game is now going to be active, or activate application
     
     while ( !m_gameWindow->ShouldClose() ){
@@ -559,6 +514,8 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
         
         m_gameWindow->PostRendering();
     }
+    
+    RemoveControls();
     
     m_gameWindow->DestroyWindow();
     

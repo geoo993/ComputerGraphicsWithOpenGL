@@ -27,6 +27,7 @@
 		C71379912203CEDF00E9A0F2 /* Torus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C713798C2203CEDF00E9A0F2 /* Torus.cpp */; };
 		C7332977221775D400BFE37B /* ToneMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7332975221775D300BFE37B /* ToneMappingShader.vert */; };
 		C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7332976221775D400BFE37B /* ToneMappingShader.frag */; };
+		C75C4CCF22208EA500C1F836 /* Control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75C4CCD22208EA500C1F836 /* Control.cpp */; };
 		C75C971F220DD69F00420DF6 /* EnvironmentMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C75C971D220DD69E00420DF6 /* EnvironmentMappingShader.vert */; };
 		C75C9720220DD69F00420DF6 /* EnvironmentMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C75C971E220DD69E00420DF6 /* EnvironmentMappingShader.frag */; };
 		C75C972F220E01A200420DF6 /* thefog_ft.tga in Resources */ = {isa = PBXBuildFile; fileRef = C75C9722220E01A200420DF6 /* thefog_ft.tga */; };
@@ -53,6 +54,7 @@
 		C76DAFFF22189C51005C354C /* lensDirt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C76DAFFE22189C50005C354C /* lensDirt.jpg */; };
 		C76DB0042218A6DE005C354C /* lensStarburst.png in Resources */ = {isa = PBXBuildFile; fileRef = C76DB0022218A6DE005C354C /* lensStarburst.png */; };
 		C76DB0052218A6DE005C354C /* lensDirt.png in Resources */ = {isa = PBXBuildFile; fileRef = C76DB0032218A6DE005C354C /* lensDirt.png */; };
+		C76ECD352220C2A600727113 /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C76ECD332220C2A600727113 /* Button.cpp */; };
 		C774664622161EF90099F081 /* Game+IGameWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C774664522161EF90099F081 /* Game+IGameWindow.cpp */; };
 		C77673AE2209F69500BA7062 /* Metal_007_Ambient_Occlusion.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C77673952209F69400BA7062 /* Metal_007_Ambient_Occlusion.jpg */; };
 		C77673AF2209F69500BA7062 /* Metal_007_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = C77673962209F69400BA7062 /* Metal_007_Base_Color.png */; };
@@ -168,6 +170,8 @@
 		C785F99B22134CAE00F1F8FD /* MultiScreenFishEyeShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C785F99122134CA700F1F8FD /* MultiScreenFishEyeShader.frag */; };
 		C785F99C22134CAE00F1F8FD /* BarrelDistortionPixelShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C785F99222134CA900F1F8FD /* BarrelDistortionPixelShader.vert */; };
 		C785F99D22134CAE00F1F8FD /* FishEyeAntiFishEyeShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C785F99322134CAB00F1F8FD /* FishEyeAntiFishEyeShader.frag */; };
+		C78DDCF2222498B20010A5D9 /* ListBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78DDCF0222498B20010A5D9 /* ListBox.cpp */; };
+		C78DDCF52224B4800010A5D9 /* Slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78DDCF32224B4800010A5D9 /* Slider.cpp */; };
 		C78F395E2215C81C006163EC /* LightSpaceShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C78F395C2215C819006163EC /* LightSpaceShader.vert */; };
 		C78F395F2215C81C006163EC /* LightSpaceShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C78F395D2215C81A006163EC /* LightSpaceShader.frag */; };
 		C7A6EE912208F6BC005D5161 /* MK2.FBX in Resources */ = {isa = PBXBuildFile; fileRef = C7A6EE7A2208F6BC005D5161 /* MK2.FBX */; };
@@ -717,7 +721,7 @@
 		C7C8F31E21FF8B4400AB865A /* Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F31C21FF8B4400AB865A /* Plane.cpp */; };
 		C7C8F32221FF8B6100AB865A /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F32021FF8B6100AB865A /* Camera.cpp */; };
 		C7C8F32521FF967500AB865A /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F32321FF967500AB865A /* GameManager.cpp */; };
-		C7C8F32821FF9A5D00AB865A /* Game+IInputs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F32621FF9A5C00AB865A /* Game+IInputs.cpp */; };
+		C7C8F32821FF9A5D00AB865A /* Game+IControls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F32621FF9A5C00AB865A /* Game+IControls.cpp */; };
 		C7C8F32921FF9A5D00AB865A /* Game+IShaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F32721FF9A5D00AB865A /* Game+IShaders.cpp */; };
 		C7C8F32B21FFA48900AB865A /* Game+IHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F32A21FFA48900AB865A /* Game+IHUD.cpp */; };
 		C7C8F42F21FFB9FF00AB865A /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C7C8F33121FFA71000AB865A /* Arial.ttf */; };
@@ -1029,6 +1033,8 @@
 		C713798C2203CEDF00E9A0F2 /* Torus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Torus.cpp; sourceTree = "<group>"; };
 		C7332975221775D300BFE37B /* ToneMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.vert; sourceTree = "<group>"; };
 		C7332976221775D400BFE37B /* ToneMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.frag; sourceTree = "<group>"; };
+		C75C4CCD22208EA500C1F836 /* Control.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Control.cpp; sourceTree = "<group>"; };
+		C75C4CCE22208EA500C1F836 /* Control.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Control.h; sourceTree = "<group>"; };
 		C75C971D220DD69E00420DF6 /* EnvironmentMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EnvironmentMappingShader.vert; sourceTree = "<group>"; };
 		C75C971E220DD69E00420DF6 /* EnvironmentMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EnvironmentMappingShader.frag; sourceTree = "<group>"; };
 		C75C9722220E01A200420DF6 /* thefog_ft.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = thefog_ft.tga; sourceTree = "<group>"; };
@@ -1055,6 +1061,8 @@
 		C76DAFFE22189C50005C354C /* lensDirt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lensDirt.jpg; sourceTree = "<group>"; };
 		C76DB0022218A6DE005C354C /* lensStarburst.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lensStarburst.png; sourceTree = "<group>"; };
 		C76DB0032218A6DE005C354C /* lensDirt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lensDirt.png; sourceTree = "<group>"; };
+		C76ECD332220C2A600727113 /* Button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
+		C76ECD342220C2A600727113 /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		C774664522161EF90099F081 /* Game+IGameWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IGameWindow.cpp"; sourceTree = "<group>"; };
 		C77673952209F69400BA7062 /* Metal_007_Ambient_Occlusion.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_007_Ambient_Occlusion.jpg; sourceTree = "<group>"; };
 		C77673962209F69400BA7062 /* Metal_007_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Metal_007_Base_Color.png; sourceTree = "<group>"; };
@@ -1170,6 +1178,11 @@
 		C785F99122134CA700F1F8FD /* MultiScreenFishEyeShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = MultiScreenFishEyeShader.frag; sourceTree = "<group>"; };
 		C785F99222134CA900F1F8FD /* BarrelDistortionPixelShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BarrelDistortionPixelShader.vert; sourceTree = "<group>"; };
 		C785F99322134CAB00F1F8FD /* FishEyeAntiFishEyeShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FishEyeAntiFishEyeShader.frag; sourceTree = "<group>"; };
+		C78DDCF0222498B20010A5D9 /* ListBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ListBox.cpp; sourceTree = "<group>"; };
+		C78DDCF1222498B20010A5D9 /* ListBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListBox.h; sourceTree = "<group>"; };
+		C78DDCF32224B4800010A5D9 /* Slider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Slider.cpp; sourceTree = "<group>"; };
+		C78DDCF42224B4800010A5D9 /* Slider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Slider.h; sourceTree = "<group>"; };
+		C78DDCF62224B80D0010A5D9 /* ControlType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlType.h; sourceTree = "<group>"; };
 		C78F395C2215C819006163EC /* LightSpaceShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightSpaceShader.vert; sourceTree = "<group>"; };
 		C78F395D2215C81A006163EC /* LightSpaceShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightSpaceShader.frag; sourceTree = "<group>"; };
 		C7A6EE7A2208F6BC005D5161 /* MK2.FBX */ = {isa = PBXFileReference; lastKnownFileType = file; path = MK2.FBX; sourceTree = "<group>"; };
@@ -1740,7 +1753,7 @@
 		C7C8F32121FF8B6100AB865A /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		C7C8F32321FF967500AB865A /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
 		C7C8F32421FF967500AB865A /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
-		C7C8F32621FF9A5C00AB865A /* Game+IInputs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IInputs.cpp"; sourceTree = "<group>"; };
+		C7C8F32621FF9A5C00AB865A /* Game+IControls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IControls.cpp"; sourceTree = "<group>"; };
 		C7C8F32721FF9A5D00AB865A /* Game+IShaders.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IShaders.cpp"; sourceTree = "<group>"; };
 		C7C8F32A21FFA48900AB865A /* Game+IHUD.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IHUD.cpp"; sourceTree = "<group>"; };
 		C7C8F32C21FFA70900AB865A /* Kai_Engel_-_08_-_Oecumene_Sleeps.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Kai_Engel_-_08_-_Oecumene_Sleeps.mp3"; sourceTree = "<group>"; };
@@ -2143,6 +2156,21 @@
 				C71379402203218B00E9A0F2 /* Lighting.h */,
 			);
 			path = lighting;
+			sourceTree = "<group>";
+		};
+		C75C4CCC22208E7F00C1F836 /* controls */ = {
+			isa = PBXGroup;
+			children = (
+				C75C4CCD22208EA500C1F836 /* Control.cpp */,
+				C75C4CCE22208EA500C1F836 /* Control.h */,
+				C76ECD332220C2A600727113 /* Button.cpp */,
+				C76ECD342220C2A600727113 /* Button.h */,
+				C78DDCF0222498B20010A5D9 /* ListBox.cpp */,
+				C78DDCF1222498B20010A5D9 /* ListBox.h */,
+				C78DDCF32224B4800010A5D9 /* Slider.cpp */,
+				C78DDCF42224B4800010A5D9 /* Slider.h */,
+			);
+			path = controls;
 			sourceTree = "<group>";
 		};
 		C75C9721220E01A200420DF6 /* fog */ = {
@@ -3159,6 +3187,7 @@
 				C7C8F2DB21FF6DB200AB865A /* audio */,
 				C7C8F2DD21FF6DE300AB865A /* buffers */,
 				C7C8F31F21FF8B4800AB865A /* camera */,
+				C75C4CCC22208E7F00C1F836 /* controls */,
 				C7C8F2DC21FF6DB700AB865A /* font */,
 				C7B932F521FE9B8B00979C04 /* game */,
 				C713793E2203215000E9A0F2 /* lighting */,
@@ -3218,7 +3247,7 @@
 				C713795A22033DE100E9A0F2 /* Game+IGameTimer.cpp */,
 				C774664522161EF90099F081 /* Game+IGameWindow.cpp */,
 				C7C8F32A21FFA48900AB865A /* Game+IHUD.cpp */,
-				C7C8F32621FF9A5C00AB865A /* Game+IInputs.cpp */,
+				C7C8F32621FF9A5C00AB865A /* Game+IControls.cpp */,
 				C7EDB0D322064878007C7D3A /* Game+ILights.cpp */,
 				C7EDB0DD22066DE4007C7D3A /* Game+IMaterials.cpp */,
 				C713795222032B2400E9A0F2 /* Game+IPostProcessing.cpp */,
@@ -3472,6 +3501,7 @@
 			children = (
 				C713795C2203418100E9A0F2 /* FrameBufferType.h */,
 				C71379422203287A00E9A0F2 /* Interfaces.h */,
+				C78DDCF62224B80D0010A5D9 /* ControlType.h */,
 				C7C8F31821FF8A7500AB865A /* LightType.h */,
 				C7F053192200B16F00864C31 /* PostProcessingEffectMode.h */,
 				C7C8F31321FF879F00AB865A /* RenderMode.h */,
@@ -5281,9 +5311,10 @@
 			files = (
 				C71379572203356000E9A0F2 /* Game+ICamera.cpp in Sources */,
 				C713797222039B1E00E9A0F2 /* FaceVertexMesh.cpp in Sources */,
-				C7C8F32821FF9A5D00AB865A /* Game+IInputs.cpp in Sources */,
+				C7C8F32821FF9A5D00AB865A /* Game+IControls.cpp in Sources */,
 				C7C8F30821FF700F00AB865A /* Transform.cpp in Sources */,
 				C7C8F32921FF9A5D00AB865A /* Game+IShaders.cpp in Sources */,
+				C78DDCF2222498B20010A5D9 /* ListBox.cpp in Sources */,
 				C713798D2203CEDF00E9A0F2 /* TorusKnot.cpp in Sources */,
 				C7C8F30B21FF701700AB865A /* GameWindow.cpp in Sources */,
 				C7C8F2EF21FF6E9900AB865A /* CModel.cpp in Sources */,
@@ -5303,11 +5334,13 @@
 				C713795B22033DE100E9A0F2 /* Game+IGameTimer.cpp in Sources */,
 				C713795922033C4E00E9A0F2 /* Game+IRenderer.cpp in Sources */,
 				C7C8F2F921FF6FCD00AB865A /* Skybox.cpp in Sources */,
+				C76ECD352220C2A600727113 /* Button.cpp in Sources */,
 				C7C8F30221FF700700AB865A /* HighResolutionTimer.cpp in Sources */,
 				C7B754662204CE1400E54C30 /* MarchingCubes.cpp in Sources */,
 				C7EDB0DE22066DE4007C7D3A /* Game+IMaterials.cpp in Sources */,
 				C7C8F2F621FF6FC600AB865A /* Texture.cpp in Sources */,
 				C7B932E721FE8E4A00979C04 /* Game.cpp in Sources */,
+				C75C4CCF22208EA500C1F836 /* Control.cpp in Sources */,
 				C7C8F2FF21FF6FFF00AB865A /* Shaders.cpp in Sources */,
 				C7C8F30721FF700F00AB865A /* Vector.cpp in Sources */,
 				C7CEE2DC221209CF00895F5D /* Quad.cpp in Sources */,
@@ -5316,6 +5349,7 @@
 				C7C8F2E621FF6E8800AB865A /* VertexBufferObject.cpp in Sources */,
 				C7C8F31221FF809300AB865A /* Cubemap.cpp in Sources */,
 				C7B754672204CE1400E54C30 /* Metaballs.cpp in Sources */,
+				C78DDCF52224B4800010A5D9 /* Slider.cpp in Sources */,
 				C7C8F2F021FF6E9900AB865A /* Mesh.cpp in Sources */,
 				C7C8F2E121FF6E7100AB865A /* Audio.cpp in Sources */,
 				C713798E2203CEDF00E9A0F2 /* Cube.cpp in Sources */,

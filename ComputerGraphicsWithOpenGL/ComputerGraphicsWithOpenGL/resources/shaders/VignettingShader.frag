@@ -19,7 +19,7 @@ uniform struct Material
     sampler2D maskMap;              // 13.  mask map
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec3 color;
+    vec4 color;
     float shininess;
 } material;
 
@@ -50,7 +50,7 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 void main()
 {
     vec2 uv = fs_in.vTexCoord.xy;
-    vec4 tc = vec4(material.color, 1.0f);
+    vec4 tc = material.color;
     
     vec4 texColour = texture(material.ambientMap, uv);
     

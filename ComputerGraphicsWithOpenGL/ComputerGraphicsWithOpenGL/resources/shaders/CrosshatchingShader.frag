@@ -21,7 +21,7 @@ uniform struct Material
     sampler2D maskMap;              // 13.  mask map
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec3 color;
+    vec4 color;
     float shininess;
 } material;
 
@@ -64,48 +64,48 @@ void main()
     
     vec2 uv = fs_in.vTexCoord.xy;
     
-    vec3 tc = material.color;
+    vec4 tc = material.color;
     
     if (uv.x < (  coverage  )  )
     {
         float lum = length(  texture(material.ambientMap, uv).rgb  );
-        tc = vec3(1.0f, 1.0f, 1.0f);
+        tc = vec4(1.0f, 1.0f, 1.0f, 1.0f);
         
         if (lum < lum_threshold_1)
         {
             if (mod(  gl_FragCoord.x + gl_FragCoord.y, 10.0f) == 0.0f)
-                tc = vec3(0.0f, 0.0f, 0.0f);
+                tc = vec4(0.0f, 0.0f, 0.0f, 1.0f);
         }
         
         if (lum < lum_threshold_2)
         {
             if (mod( gl_FragCoord.x - gl_FragCoord.y, 10.0f) == 0.0f)
-                tc = vec3(0.0f, 0.0f, 0.0f);
+                tc = vec4(0.0f, 0.0f, 0.0f, 1.0f);
         }
         
         if (lum < lum_threshold_3)
         {
             if (mod(  gl_FragCoord.x + gl_FragCoord.y - hatch_y_offset, 10.0f) == 0.0f)
-                tc = vec3(0.0f, 0.0f, 0.0f);
+                tc = vec4(0.0f, 0.0f, 0.0f, 1.0f);
         }
         
         if (lum < lum_threshold_4)
         {
             if (mod(gl_FragCoord.x - gl_FragCoord.y - hatch_y_offset, 10.0f) == 0.0f)
-                tc = vec3(0.0f, 0.0f, 0.0f);
+                tc = vec4(0.0f, 0.0f, 0.0f, 1.0f);
         }
     }
     else if (uv.x   >=   (coverage + 0.003f)  )
     {
-        tc = texture(material.ambientMap, uv).rgb;
+        tc = texture(material.ambientMap, uv);
     }
     else {
         
         if ( coverage > ( 1.0f + 0.003f) ) {
-            tc = texture(material.ambientMap, uv).rgb;
+            tc = texture(material.ambientMap, uv);
         }
     }
     
-    vOutputColour = vec4(tc, 1.0f);
+    vOutputColour = tc;
     
 }

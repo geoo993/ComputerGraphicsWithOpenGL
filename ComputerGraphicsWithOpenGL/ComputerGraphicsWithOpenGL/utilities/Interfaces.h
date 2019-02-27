@@ -50,15 +50,14 @@ struct ICamera {
     CCamera *m_pCamera;
     virtual void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) = 0;
     virtual void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) = 0;
-    virtual void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed,
-                              const GLfloat &mouseXoffset, const GLfloat &mouseYoffset, const GLboolean & mouseMove) = 0;
+    virtual void UpdateCamera(const GLdouble & deltaTime, const MouseState &mouseState, const KeyboardState &keyboardState, const GLboolean & mouseMove) = 0;
     virtual void UpdateCameraEndFrame(const GLdouble & deltaTime) = 0;
 };
 
 struct IMaterials {
     GLfloat m_materialShininess;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                    const glm::vec3 &color, const GLfloat &shininess,
+                                    const glm::vec4 &color, const GLfloat &shininess,
                                     const GLboolean &useAO) = 0;
 };
 
@@ -161,7 +160,7 @@ struct ILights
     GLfloat m_pointIntensity;
     GLuint m_pointLightPositionsIndex = 0;
     std::vector<glm::vec3> m_pointLightPositions;
-    std::vector<glm::vec3> m_pointLightColors;
+    std::vector<glm::vec4> m_pointLightColors;
     
     // Spot Light
     GLboolean m_useSpot;
@@ -262,21 +261,14 @@ struct IControls
 {
     // inputs
     GLboolean m_mouseButtonDown;
-    GLboolean m_enableMouseMovement;
-    GLboolean m_isMouseCursorVisible;
-    GLboolean m_mouseMouseMoveClickSwitch;
     GLdouble m_mouseX;
     GLdouble m_mouseY;
-    GLdouble m_keyPressTime;
-    GLdouble m_lastKeyPressTime;
-    GLint m_lastKeyPress;
-    GLboolean m_isKeyPressRestriction;
     virtual void LoadControls() = 0;
-    virtual void RenderControls(CFreeTypeFont *font, CShaderProgram *fontProgram, const std::string &material) = 0;
+    virtual void RenderControls() = 0;
     virtual void UpdateControls() = 0;
     virtual void RemoveControls() = 0;
-    virtual void UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction) = 0;
-    virtual void UpdateMouseControls(const int &button, const int &action) = 0;
+    virtual void UpdateKeyBoardControls(KeyboardState &state) = 0;
+    virtual void UpdateMouseControls(MouseState &state) = 0;
 };
 
 #endif /* Interfaces_h */

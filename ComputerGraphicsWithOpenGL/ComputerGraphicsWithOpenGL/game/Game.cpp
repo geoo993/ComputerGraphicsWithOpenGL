@@ -59,7 +59,7 @@ Game::Game()
     m_directionalLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f),
     
     // Point Light
-    m_pointIntensity = 60.5f;
+    m_pointIntensity = 40.5f;
     m_pointLightPositionsIndex = 0;
     m_pointLightPositions = {
         glm::vec3(  100.0f,  400.0f,  50.0f      ),
@@ -75,21 +75,21 @@ Game::Game()
     };
     
     m_pointLightColors = {
-        glm::vec3(  1.0f,  0.1f,  0.9f      ),
-        glm::vec3(  0.1f,  0.9f,  0.8f      ),
-        glm::vec3(  1.0f,  1.0f,  0.0f      ),
-        glm::vec3(  0.1f, 0.9f, 0.0f      ),
-        glm::vec3(  0.0f,  0.0f, 1.0f    ),
-        glm::vec3(  1.0f,  0.0f, 0.1f      ),
-        glm::vec3(  0.97f,  0.6f, 0.1f      ),
-        glm::vec3(  0.6f,  0.8f, 0.0f      ),
-        glm::vec3(  1.0f,  0.2f, 0.5f      ),
-        glm::vec3(  10.0f,  10.0f, 10.0f      )
+        glm::vec4(  1.0f,  0.1f,  0.9f, 1.0f      ),
+        glm::vec4(  0.1f,  0.9f,  0.8f , 1.0f       ),
+        glm::vec4(  1.0f,  1.0f,  0.0f  , 1.0f      ),
+        glm::vec4(  0.1f, 0.9f, 0.0f , 1.0f       ),
+        glm::vec4(  0.0f,  0.0f, 1.0f  , 1.0f    ),
+        glm::vec4(  1.0f,  0.0f, 0.1f , 1.0f       ),
+        glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f      ),
+        glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f       ),
+        glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f      ),
+        glm::vec4(  10.0f,  10.0f, 10.0f  , 1.0f      )
     };
     
     // Spot Light
     m_spotColor = glm::vec3(0.3f, 0.5f, 1.0f);;
-    m_spotIntensity = 100.4f;
+    m_spotIntensity = 40.4f;
     m_spotCutOff = 22.5f;
     m_spotOuterCutOff = 28.0f;
     
@@ -164,7 +164,7 @@ Game::Game()
     
     // woodenBox
     m_pWoodenBox = nullptr;
-    m_woodenBoxesColor = glm::vec3(1.0f, 0.5f, 0.31f);
+    m_woodenBoxesColor = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
     m_woodenBoxesUseTexture = true;
     m_woodenBoxesPosition = {
         glm::vec3(  -186.0f,  593.0f,  -132.0f   ),
@@ -195,15 +195,7 @@ Game::Game()
     
     // inputs
     m_mouseButtonDown = false;
-    m_enableMouseMovement = true;
-    m_isMouseCursorVisible = true;
-    m_mouseMouseMoveClickSwitch = false;
     m_mouseX, m_mouseY = 0.0;
-    m_keyPressTime = 0.0;
-    m_lastKeyPressTime = 0.0f;
-    m_lastKeyPress = -1;
-    m_isKeyPressRestriction = true;
-    
 }
 
 // Destructor
@@ -428,6 +420,9 @@ void Game::PreRendering() {
 void Game::Render()
 {
 
+    // enable depth testing (is disabled for rendering screen-space quad post processing)
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_STENCIL_TEST);
     
     // comment out if stencil buffer is not used
     // glStencilMask(0xFF); // each bit is written to the stencil buffer as is
@@ -435,19 +430,21 @@ void Game::Render()
     // Most of the cases you'll just be writing 0x00 or 0xFF as the stencil mask, but it's good to know there are options to set custom bit-masks.
     glStencilMask(0x00);
     
-    //ActivateFBO( m_currentPPFXMode );
+    ActivateFBO( m_currentPPFXMode );
     
-    //RenderScene();
+    RenderScene();
     
-    //ResetFrameBuffer();
+    ResetFrameBuffer();
     
     // Post Processing Effects
-    //RenderPPFX( m_currentPPFXMode );
+    RenderPPFX( m_currentPPFXMode );
     
     // Draw the 2D graphics after the 3D graphics
     RenderHUD();
     
- 
+    // Draw controls GUI objects
+    RenderControls();
+    
     // Swap buffers right after rendering all, this is to show the current rendered image
     m_gameWindow->SwapBuffers();
 }
@@ -463,11 +460,8 @@ void Game::Update()
     // update game timer
     UpdateGameTimer();
 
-    // update controlls
+    // update controls
     UpdateControls();
-    
-    // update camera
-    UpdateCamera(m_deltaTime, keyPressedCode, mouseXoffset, mouseYoffset, m_enableMouseMovement);
     
     // update audio
     UpdateAudio();
@@ -490,13 +484,13 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
 
     Initialise();
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
-    //InitialiseFrameBuffers(width, height);
-    //InitialiseCamera(width, height, glm::vec3(220.0f, 500.0f, -400.0f));
-    //InitialiseAudio(filepath);
+    InitialiseFrameBuffers(width, height);
+    InitialiseCamera(width, height, glm::vec3(220.0f, 500.0f, -400.0f));
+    InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
     LoadResources(filepath);
-    //LoadTextures(filepath);
+    LoadTextures(filepath);
     LoadControls();
     
     m_gameManager->SetLoaded(true); // everything has loaded
@@ -509,7 +503,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
         if (m_gameManager->IsActive()) {
             GameLoop();
         }else{
-            std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Do not consume processor power if application isn't active
+            std::this_thread::sleep_for(std::chrono::milliseconds(60)); // Do not consume processor power if application isn't active
         }
         
         m_gameWindow->PostRendering();

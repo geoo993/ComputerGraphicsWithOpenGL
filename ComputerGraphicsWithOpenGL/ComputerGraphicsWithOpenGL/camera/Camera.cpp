@@ -15,9 +15,9 @@ CCamera::CCamera()
 	m_up = glm::vec3(0.0f, 1.0f, 0.0f);
     m_worldUp = glm::vec3( 0.0f, 1.0f, 0.0f );
     m_pitch = 0.0f;
-    m_yaw = 0.0f;
+    m_yaw = -90.0f;
     m_roll = 0.0f;
-    m_fieldOfView = FOV;
+    m_fieldOfView = (GLfloat)FOV;
     m_movementSpeed = (GLfloat)SPEED;
     m_mouseSensitivity = (GLfloat)SENSITIVTY;
     m_screenWidth = (GLfloat)SCREEN_WIDTH;
@@ -25,8 +25,8 @@ CCamera::CCamera()
     m_zNear = (GLfloat)ZNEAR;
     m_zFar = (GLfloat)ZFAR;
     m_viewMatrix, m_modelMatrix = glm::mat4(1.0f);
-    SetPerspectiveProjectionMatrix(m_fieldOfView, (m_screenWidth/m_screenHeight), ZNEAR, ZFAR);
-    SetOrthographicProjectionMatrix(m_screenWidth, m_screenHeight, ZNEAR, ZFAR);
+    SetPerspectiveProjectionMatrix(m_fieldOfView, (m_screenWidth/m_screenHeight), m_zNear, m_zFar);
+    SetOrthographicProjectionMatrix(m_screenWidth, m_screenHeight, m_zNear, m_zFar);
 }
 CCamera::~CCamera()
 {
@@ -53,7 +53,7 @@ void CCamera::Create(
     this->SetPerspectiveProjectionMatrix(fieldOfView, (width/height), zNear, zFar);
     this->SetOrthographicProjectionMatrix(width, height, zNear, zFar);
     this->m_pitch = 0.0f;
-    this->m_yaw = 0.0f;
+    this->m_yaw = -90.0f;
     this->m_roll = 0.0f;
     this->m_movementSpeed = (GLfloat)SPEED;
     this->m_mouseSensitivity = (GLfloat)SENSITIVTY;
@@ -100,6 +100,13 @@ void CCamera::UpdateCameraVectors( )
     
     this->m_view = m_position + m_front;
     
+    this->m_viewMatrix = glm::lookAt(
+         m_position, // what position you want the camera to be at when looking at something in World Space
+         m_view, // what target you want the camera to be looking at in World Space, meaning look at what(using vec3) ?  // meaning the camera view point
+         m_up  //which direction is up, probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
+         );
+    
+    
     /*
     You need a 3 by 3 rotation matrix to rotate your object: R but if you also add translation terms, transformation matrix will be 4 by 4:
         
@@ -117,6 +124,7 @@ void CCamera::UpdateCameraVectors( )
      We can solve for p immediately from m32:
 
     */
+    /*
     // rotation matrix
     // https://www.youtube.com/watch?v=zc8b2Jo7mno
     glm::mat4 rm = glm::mat4(m_right.x,    m_right.y,      -m_right.z,      0.0f,
@@ -180,7 +188,7 @@ void CCamera::UpdateCameraVectors( )
     
     // http://www.songho.ca/opengl/gl_camera.html
     // https://www.3dgep.com/understanding-the-view-matrix/
-    /*
+    
      WARNING: NOT WORKING PROPERLY, RESEARCH VIEWMATRIX
     // Create a 4x4 view matrix from the right, up, forward and eye position vectors
     this->m_viewMatrix = {
@@ -193,12 +201,6 @@ void CCamera::UpdateCameraVectors( )
                   1.0f )
     };
     */
-     this->m_viewMatrix = glm::lookAt(
-     m_position, // what position you want the camera to be at when looking at something in World Space
-     m_view, // what target you want the camera to be looking at in World Space, meaning look at what(using vec3) ?  // meaning the camera view point
-     m_up  //which direction is up, probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
-     );
-    
 }
 
 // Set the camera at a specific position, looking at the view point, with a given up vector
@@ -214,63 +216,61 @@ void CCamera::Set(glm::vec3 &position, glm::vec3 &viewpoint, glm::vec3 &upVector
 
 
 // Respond to mouse movement
-void CCamera::SetViewByMouse(GLFWwindow *window, const GLfloat &mouseXoffset, const GLfloat &mouseYoffset, const bool &enableMouse)
-{  
-    
-    if (enableMouse) {
+void CCamera::SetViewByMouse(const MouseState &state)
+{
+    if (state.m_isEnabled && state.m_isNavigating) {
         
-        /*
-         //This is if you want to use pitch and yaw as mouse rotation of the camera
-         //WARNING: enable glfwSetCursorPosCallback(m_window, cbfunMouseMove); in GameWindow
-        GLfloat xoffset = mouseXoffset * m_mouseSensitivity;
-        GLfloat yoffset = mouseYoffset * m_mouseSensitivity;
-        Yaw   += xoffset;
-        Pitch += yoffset;
+        // https://learnopengl.com/Getting-started/Camera
+        m_yaw   += state.xoffset * m_mouseSensitivity;
+        m_pitch += state.yoffset * m_mouseSensitivity;
         
-        // Make sure that when pitch is out of bounds, screen doesn't get flipped
-        if (constrainPitch)
-        {
-            if (Pitch > 89.0f)
-                Pitch = 89.0f;
-            if (Pitch < -89.0f)
-                Pitch = -89.0f;
-        }
-        */
-        /*
-        double middle_x = (int)m_screenWidth >> 1;
-        double middle_y = (int)m_screenHeight >> 1;
+        if(m_pitch > 89.0f)
+            m_pitch = 89.0f;
+        if(m_pitch < -89.0f)
+            m_pitch = -89.0f;
         
-        static float rotation_x = 0.0f;
-
-        double mouse_x, mouse_y;
-        glfwGetCursorPos(window, &mouse_x, &mouse_y);
+        glm::vec3 front;
+        front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+        front.y = sin(glm::radians(m_pitch));
+        front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+        m_front = glm::normalize(front);
         
-        if (mouse_x == middle_x && mouse_y == middle_y) {
-            return;
-        }
-        
-        glfwSetCursorPos(window, (double)middle_x, (double)middle_y);
-        
-        GLfloat verticalAngle = (float) (middle_x - mouse_x) / 1000.0f;
-        GLfloat horizontalAngle = (float) (middle_y - mouse_y) / 1000.0f;
-
-        rotation_x -= horizontalAngle;
-        float maxAngle = 1.56f; // Just a little bit below PI / 2
-
-        if (rotation_x > maxAngle) {
-            rotation_x = maxAngle;
-        } else if (rotation_x < -maxAngle) {
-            rotation_x = -maxAngle;
-        } else {
-            glm::vec3 cross = glm::cross(m_view - m_position, m_up);
-            glm::vec3 axis = glm::normalize(cross);
-
-            RotateViewPoint(horizontalAngle, axis);
-        }
-        
-        RotateViewPoint(verticalAngle, m_worldUp);
-         */
+        UpdateCameraVectors();
     }
+}
+
+
+// Update the camera to respond to key presses for translation
+void CCamera::TranslateByKeyboard(const double &dt, const KeyboardState &keyboardState)
+{
+    
+    if (keyboardState.m_arrowKeyDown != ControlType::UNKNOWN){
+        
+        //if (keyPressed == GLFW_KEY_UP)// || keyPressed == GLFW_KEY_W )  // FORWARD
+        if (keyboardState.m_arrowKeyDown == ControlType::KEYFORWARD)
+        {
+            Advance(m_movementSpeed * dt);
+        }
+        
+        //if (keyPressed == GLFW_KEY_DOWN)// || keyPressed == GLFW_KEY_S )  // BACKWARD
+        if (keyboardState.m_arrowKeyDown == ControlType::KEYBACKWARD)
+        {
+            Advance(-m_movementSpeed * dt);
+        }
+        
+        //if (keyPressed == GLFW_KEY_LEFT)// || keyPressed == GLFW_KEY_A )  // LEFT
+        if (keyboardState.m_arrowKeyDown == ControlType::KEYLEFT)
+        {
+            Strafe(-m_movementSpeed * dt);
+        }
+        
+        //if (keyPressed == GLFW_KEY_RIGHT)// || keyPressed == GLFW_KEY_D )   //RIGHT
+        if (keyboardState.m_arrowKeyDown == ControlType::KEYRIGHT)
+        {
+            Strafe(m_movementSpeed * dt);
+        }
+    }
+    
 }
 
 // Rotate the camera view point -- this effectively rotates the camera since it is looking at the view point
@@ -343,22 +343,22 @@ void  CCamera::SetVelocity(int deltaTime) {
 }
 
 // Update the camera to respond to mouse motion for rotations and keyboard for translation
-void CCamera::Update(GLFWwindow *window, const GLdouble &dt, const GLint &key,
-                     const GLfloat &mouseXoffset, const GLfloat &mouseYoffset,
-                     const GLboolean &moveCamera, const GLboolean &enableMouse)
+void CCamera::Update(GLFWwindow *window, const GLdouble &dt,
+                     const MouseState &mouseState, const KeyboardState &keyboardState,
+                     const GLboolean &moveCamera)
 {
     m_isMoving = false;
 	glm::vec3 vector = glm::cross(m_view - m_position, m_up);
 	m_strafeVector = glm::normalize(vector);
 
     if (moveCamera) {
-        SetViewByMouse(window, mouseXoffset, mouseYoffset, enableMouse);
-        TranslateByKeyboard(dt, key);
+        SetFieldOfView(mouseState.m_scroll);
+        SetViewByMouse(mouseState);
+        TranslateByKeyboard(dt, keyboardState);
     }
     
     // Update the velocity of the camera
     SetVelocity(dt);
-    
 }
 
 // update ot the end of current frame
@@ -372,60 +372,19 @@ void CCamera::UpdateEndFrame(GLFWwindow *window, const GLdouble &dt) {
     m_prevMVP = proj * view * model;
 }
 
-// Update the camera to respond to key presses for translation
-void CCamera::TranslateByKeyboard(const double &dt, const int &keyPressed)
-{
- 
-    if (keyPressed != -1){
-        
-        // FORWARD
-        if (keyPressed == GLFW_KEY_UP)// || keyPressed == GLFW_KEY_W )
-        {
-            Advance(m_movementSpeed * dt);
-        }
-        
-        // BACKWARD
-        if (keyPressed == GLFW_KEY_DOWN)// || keyPressed == GLFW_KEY_S )
-        {
-            Advance(-m_movementSpeed * dt);
-        }
-        
-        // LEFT
-        if (keyPressed == GLFW_KEY_LEFT)// || keyPressed == GLFW_KEY_A )
-        {
-            Strafe(-m_movementSpeed * dt);
-        }
-        
-        //RIGHT
-        if (keyPressed == GLFW_KEY_RIGHT)// || keyPressed == GLFW_KEY_D )
-        {
-            Strafe(m_movementSpeed * dt);
-        }
-    }
-
-}
-
 // Set the camera perspective projection matrix to produce a view frustum with a specific field of view, aspect ratio, 
 // and near / far clipping planes
-
 void CCamera::SetPerspectiveProjectionMatrix(const GLfloat &fieldOfView, const GLfloat &aspectRatio, const GLfloat &nearClippingPlane, const GLfloat &farClippingPlane){
-    this->m_fieldOfView = fieldOfView;
-    this->m_zNear = nearClippingPlane;
-    this->m_zFar = farClippingPlane;
-    this->m_perspectiveProjectionMatrix = glm::perspective(fieldOfView, aspectRatio, nearClippingPlane, farClippingPlane);
+    this->m_perspectiveProjectionMatrix = glm::perspective(glm::radians(fieldOfView), aspectRatio, nearClippingPlane, farClippingPlane);
 }
 
 // The the camera orthographic projection matrix to match the width and height passed in
 void CCamera::SetOrthographicProjectionMatrix(const GLfloat &width, const GLfloat height, const GLfloat &zNear, const GLfloat &zFar){
-    this->m_zNear = zNear;
-    this->m_zFar = zFar;
     this->m_orthographicProjectionMatrix = glm::ortho(0.0f, width, 0.0f, height, zNear, zFar);
 }
 
 void CCamera::SetOrthographicProjectionMatrix(float value , float zNear, float zFar)
 {
-    this->m_zNear = zNear;
-    this->m_zFar = zFar;
     this->m_orthographicProjectionMatrix = glm::ortho(-value, value, -value, value, zNear, zFar);
 }
 
@@ -433,6 +392,25 @@ void CCamera::SetOrthographicProjectionMatrix(int width, int height)
 {
     m_orthographicProjectionMatrix = glm::ortho(0.0f, float(width), 0.0f, float(height));
 }
+
+// Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
+void CCamera::SetFieldOfView(const GLfloat &yoffset)
+{
+    if (m_fieldOfView >= 1.0f && m_fieldOfView <= 65.0f) {
+        m_fieldOfView -= yoffset;
+    } else if (m_fieldOfView < 1.0f) {
+        m_fieldOfView = 1.0f;
+    } else if (m_fieldOfView > 65.0f) {
+        m_fieldOfView = 65.0f;
+    }
+    SetPerspectiveProjectionMatrix(m_fieldOfView, (m_screenWidth/m_screenHeight), m_zNear, m_zFar);
+}
+
+// Set the model matrix with a new matrix
+void CCamera::SetModelMatrix(const glm::mat4 &model) {
+    this->m_modelMatrix = model;
+}
+
 
 // Return the camera position
 glm::vec3 CCamera::GetPosition() const
@@ -462,10 +440,6 @@ glm::mat4* CCamera::GetPerspectiveProjectionMatrix()
 glm::mat4* CCamera::GetOrthographicProjectionMatrix()
 {
     return &m_orthographicProjectionMatrix;
-}
-
-void CCamera::SetModelMatrix(const glm::mat4 &model) {
-    this->m_modelMatrix = model;
 }
 
 glm::mat4 CCamera::GetModelMatrix() const {
@@ -570,6 +544,10 @@ GLfloat CCamera::GetFarPlane() {
 // Return the near clipping plane
 GLfloat CCamera::GetNearPlane() {
     return m_zNear;
+}
+
+GLfloat CCamera::GetFieldOfView() {
+    return m_fieldOfView;
 }
 
 GLboolean CCamera::IsMoving() const {

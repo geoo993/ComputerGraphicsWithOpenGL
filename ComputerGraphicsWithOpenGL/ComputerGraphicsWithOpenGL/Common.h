@@ -92,22 +92,9 @@
 // Default camera values
 #define SPEED 30.0f
 #define SPEEDRATIO 0.025f
-#define SENSITIVTY 0.15f
+#define SENSITIVTY 0.05f
 #define ZOOM 45.0f
 
 #define INVALID_OGL_VALUE 0xFFFFFFFF
 #define SAFE_DELETE(p) if (p) { delete p; p = NULL; }
 #define INVALID_MATERIAL 0xFFFFFFFF
-
-//keyboard and mouse controlls
-static int keyPressedCode = -1;
-static int keyReleasedCode = -1;
-static int keyPressedAction = -1;
-static int mouseButton = -1;
-static int mouseAction = -1;
-static float mouseLastX = (float)SCREEN_WIDTH / 2.0f;
-static float mouseLastY = (float)SCREEN_HEIGHT / 2.0f;
-static float mouseXoffset = 0.0f;
-static float mouseYoffset = 0.0f;
-static bool firstMouse = true;
-using namespace std;

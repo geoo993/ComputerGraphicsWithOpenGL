@@ -15,6 +15,9 @@ CControl(positionX, positionY, width, height) {
     m_labelSize = labelSize;
     m_itemHeight = itemHeight;
     m_index = 0;
+    m_lastIndex = 0;
+    m_currentIndex = nullptr;
+    m_currentIndexChanged = nullptr;
     m_items = {};
     Create();
 }
@@ -80,13 +83,15 @@ GLboolean CListBox::Update(const MouseState &state){
         int tempIndex = (y - m_posY) / m_itemHeight; //itemHeight is the height of each row
         
         if (tempIndex >= 0 && tempIndex < (int)m_items.size()) {
-            m_index = tempIndex;
+            *m_currentIndex = tempIndex;
             
             // if we selected an item, then return true;
             return true;
         }
     }
     
+    *m_currentIndexChanged = (m_lastIndex != *m_currentIndex);
+    m_lastIndex = *m_currentIndex;
     return false;
 }
 
@@ -95,7 +100,7 @@ void CListBox::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std
     hudProgram->UseProgram();
     hudProgram->SetUniform("bUseScreenQuad", true);
     hudProgram->SetUniform("bUseTexture", false);
-    hudProgram->SetUniform(material+".color", glm::vec3(0.2f, 0.9f, 0.6f));
+    hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.7f, 0.7f, 0.7f));
     
     glBindVertexArray(m_vao);
     // Draw the triangle !
@@ -104,9 +109,10 @@ void CListBox::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std
     glDrawArrays(GL_TRIANGLE_STRIP, 0, m_numTriangles);
     glBindVertexArray(0);
     
-    if (m_index >= 0) {
+    
+    if (*m_currentIndex >= 0) {
         
-        int currentY = m_posY + m_index * m_itemHeight;
+        int currentY = m_posY + (*m_currentIndex) * m_itemHeight;
         
         GLuint VertexArrayID;
         glGenVertexArrays(1, &VertexArrayID);
@@ -115,13 +121,13 @@ void CListBox::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std
         GLfloat xP = m_posX;
         GLfloat yP = currentY;
         
-        GLfloat rectWidth = m_width;
-        GLfloat rectHeight = m_itemHeight;
+        GLfloat rectWidth = m_width - 4.0f;
+        GLfloat rectHeight = m_itemHeight - 4.0f;
         
-        GLfloat left = xP / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
-        GLfloat right = (xP + rectWidth) / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
-        GLfloat top = -yP / ((GLfloat)SCREEN_HEIGHT / 2.0f) + 1.0f;
-        GLfloat bottom = (-yP - rectHeight) / ((GLfloat)SCREEN_HEIGHT / 2.0f) + 1.0f;
+        GLfloat left = ((2.0f + xP) / ((GLfloat)SCREEN_WIDTH / 2.0f)) - 1.0f;
+        GLfloat right = ((2.0f + xP + rectWidth) / ((GLfloat)SCREEN_WIDTH / 2.0f)) - 1.0f;
+        GLfloat top = ((-2.0f - yP) / ((GLfloat)SCREEN_HEIGHT / 2.0f)) + 1.0f;
+        GLfloat bottom = ((-2.0f - yP - rectHeight) / ((GLfloat)SCREEN_HEIGHT / 2.0f)) + 1.0f;
         std::vector<glm::vec2> g_quad_vertex_buffer_data = {
             glm::vec2(right, top),                  // top right
             glm::vec2(left, top),                   // top left
@@ -152,17 +158,17 @@ void CListBox::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std
                               sizeof(glm::vec2),            // stride
                               (void*)0                      // array buffer offset
                               );
-        hudProgram->SetUniform(material+".color", glm::vec3(0.6f, 0.2f, 0.9f));
+        hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.2f, 0.2f, 0.7f));
         glDrawArrays(GL_TRIANGLE_STRIP, 0, g_quad_vertex_buffer_data.size());
         glBindVertexArray(0);
     }
  
     for (int i = 0; i < (int)m_items.size(); i++) {
         // Highlight current button
-        if (m_index == i) {
-            hudProgram->SetUniform(material+".color", glm::vec3(0.1f, 0.2f, 0.9f));
+        if (*m_currentIndex == i) {
+            hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.8f));
         } else {
-            hudProgram->SetUniform(material+".color", glm::vec3(0.9f, 0.2f, 0.2f));
+            hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.5f));
         }
         
         // Draw text inside button
@@ -173,7 +179,7 @@ void CListBox::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std
         
         hudProgram->SetUniform("bUseScreenQuad", false);
         hudProgram->SetUniform("bUseTexture", true);
-        font->Render(hudProgram, textX + 2, ((GLfloat)SCREEN_HEIGHT - textY + 2), m_labelSize, "%s", m_items[i].data());
+        font->Render(hudProgram, textX, ((GLfloat)SCREEN_HEIGHT - textY), m_labelSize, "%s", m_items[i].data());
     }
 }
 
@@ -187,7 +193,7 @@ void CListBox::AddItem(const std::string &item) {
 
 void CListBox::RemoveItem(const GLint &index) {
     int i = 0;
-    for (std::vector<string>::iterator it = m_items.begin(); it != m_items.end(); it++) {
+    for (std::vector<std::string>::iterator it = m_items.begin(); it != m_items.end(); it++) {
         if (i == index) {
             m_items.erase(it);
             break;
@@ -195,17 +201,26 @@ void CListBox::RemoveItem(const GLint &index) {
         i++;
     }
     
-    if (m_index >= (int)m_items.size()) {
-        m_index = (int)m_items.size() - 1;
+    if (*m_currentIndex >= (int)m_items.size()) {
+        *m_currentIndex = (int)m_items.size() - 1;
     }
 }
 
 void CListBox::SetCurrent(const GLint &index) {
-    m_index = index;
+    *m_currentIndex = index;
+}
+
+void CListBox::SetValue(GLuint *value, GLboolean *valueChanged) {
+    m_currentIndex = value;
+    m_currentIndexChanged = valueChanged;
+    
+    if (m_currentIndex != nullptr) {
+        m_index = *m_currentIndex;
+    }
 }
 
 GLuint CListBox::GetIndex() {
-    return m_index;
+    return *m_currentIndex;
 }
 
 GLuint CListBox::GetCount() {
@@ -215,4 +230,6 @@ GLuint CListBox::GetCount() {
 void CListBox::Release() {
     CControl::Release();
     m_items.clear();
+    delete m_currentIndex;
+    delete m_currentIndexChanged;
 }

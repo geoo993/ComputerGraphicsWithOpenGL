@@ -64,8 +64,8 @@ private:
     // skybox
     CSkybox *m_pSkybox;
     GLfloat m_mapSize;
-    GLfloat m_changeSkybox = true;
-    GLint m_skyboxNumber;
+    GLboolean m_changeSkybox;
+    GLuint m_skyboxNumber;
     
     // terrain
     CPlane *m_pPlanarTerrain;
@@ -96,7 +96,7 @@ private:
     // woodenBox
     CCube *m_pWoodenBox;
     GLboolean m_woodenBoxesUseTexture;
-    glm::vec3 m_woodenBoxesColor;
+    glm::vec4 m_woodenBoxesColor;
     std::vector<glm::vec3> m_woodenBoxesPosition;
     
     // lamp
@@ -139,13 +139,13 @@ protected:
     /// Camera
     void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) override;
     void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) override;
-    void UpdateCamera(const GLdouble & deltaTime, const GLuint & keyPressed,
-                      const GLfloat &mouseXoffset, const GLfloat &mouseYoffset, const GLboolean & mouseMove) override;
+    void UpdateCamera(const GLdouble & deltaTime, const MouseState &mouseState,
+                      const KeyboardState &keyboardState, const GLboolean & mouseMove) override;
     void UpdateCameraEndFrame(const GLdouble & deltaTime) override;
     
     /// Materials
     void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                            const glm::vec3 &color = glm::vec3(1.0f), const GLfloat &shininess = 32.0f,
+                            const glm::vec4 &color = glm::vec4(1.0f), const GLfloat &shininess = 32.0f,
                             const GLboolean &useAO = false) override;
     /// Textures
     void LoadTextures(const std::string &path) override;
@@ -283,10 +283,10 @@ protected:
     /// Controls
     void LoadControls() override;
     void UpdateControls() override;
-    void RenderControls(CFreeTypeFont *font, CShaderProgram *fontProgram, const std::string &material) override;
+    void RenderControls() override;
     void RemoveControls() override;
-    void UpdateKeyBoardControls(int &keyPressed, int &keyReleased, int &keyAction) override;
-    void UpdateMouseControls(const int &button, const int &action) override;
+    void UpdateKeyBoardControls(KeyboardState &state) override;
+    void UpdateMouseControls(MouseState &state) override;
 };
 
 #endif /* Game_h */

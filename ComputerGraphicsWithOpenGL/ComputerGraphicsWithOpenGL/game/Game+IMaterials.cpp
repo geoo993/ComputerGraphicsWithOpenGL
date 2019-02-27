@@ -9,7 +9,7 @@
 #include "Game.h"
 
 void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                              const glm::vec3 &color, const GLfloat &shininess,
+                              const glm::vec4 &color, const GLfloat &shininess,
                               const GLboolean &useAO) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName+".ambientMap", 0);           // ambient map (albedo map)

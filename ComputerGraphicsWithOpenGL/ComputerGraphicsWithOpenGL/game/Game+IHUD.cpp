@@ -24,15 +24,10 @@ void Game::RenderHUD(){
     
     hudProgram->UseProgram();
     hudProgram->SetUniform("matrices.projMatrix", orthoMatrix); // set othorgraphic view
-    SetMaterialUniform(hudProgram, "material", glm::vec3(1.0f, 1.0f, 1.0f));
+    SetMaterialUniform(hudProgram, "material", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     
     // render labels
-    hudProgram->SetUniform("bUseScreenQuad", false);
-    hudProgram->SetUniform("bUseTexture", true);
     RenderLabels(m_pFtFont, hudProgram, width, height, m_framesPerSecond, m_enableHud);
-    
-    // render controls after labels, controls have priority over labels
-    RenderControls(m_pFtFont, hudProgram, "material");
     
     glDisable(GL_BLEND);                // Re-Disable Blending
     glEnable(GL_DEPTH_TEST);            // Re-Enable Depth Testing
@@ -46,8 +41,11 @@ void Game::RenderLabels(CFreeTypeFont *font, CShaderProgram *fontProgram, const 
 
     if (framesPerSecond > 0) {
         if (enableHud) {
-            font->Render(fontProgram, width - 100, height - 20, 20, "FPS: %d", framesPerSecond);
+            fontProgram->SetUniform("bUseScreenQuad", false);
+            fontProgram->SetUniform("bUseTexture", true);
+            font->Render(fontProgram, 20, 20, 20, "FPS: %d", framesPerSecond);
             font->Render(fontProgram, (width / 2) - 100, height - 20, 20, "PPFX: %s", PostProcessingEffectToString(m_currentPPFXMode));
+            /*
             font->Render(fontProgram, 20, height - 20, 20, "Mat Shininess: %f", m_materialShininess);
             font->Render(fontProgram, 20, height - 40, 20, "DirLight Intensity: %f", m_dirIntensity);
             font->Render(fontProgram, 20, height - 60, 20, "PointLight Intensity: %f", m_pointIntensity);
@@ -76,6 +74,7 @@ void Game::RenderLabels(CFreeTypeFont *font, CShaderProgram *fontProgram, const 
             font->Render(fontProgram, 20, height - 520, 20, "SSAO Bias: %f", m_ssaoBias);
             font->Render(fontProgram, 20, height - 540, 20, "SSAO Radius: %f", m_ssaoRadius);
             font->Render(fontProgram, 20, height - 560, 20, "PPFX Coverage: %f", m_coverage);
+             */
         }
         
     }

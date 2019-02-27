@@ -20,8 +20,11 @@ public:
     GLboolean Update(const MouseState &state) override;
     virtual void Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material);
     virtual std::string GetControlType();
+    void SetValue(GLboolean *value);
     void Release() override;
 protected:
+    GLboolean           m_defaultIsEnabled;
+    GLboolean           *m_isEnabled;
     GLboolean           m_down;
     std::string         m_label;
     GLuint              m_labelSize;

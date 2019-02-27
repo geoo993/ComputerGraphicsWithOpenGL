@@ -21,7 +21,7 @@ uniform struct Material
     sampler2D maskMap;              // 13.  mask map
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec3 color;
+    vec4 color;
     float shininess;
 } material;
 
@@ -42,7 +42,7 @@ out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
 void main()
 {
-    vec4 finalColor = vec4(material.color, 1.0f);
+    vec4 tc = material.color;
     
     // Set effectCoverage to 1.0 for normal use.
     if (fs_in.vTexCoord.x < coverage)
@@ -60,20 +60,20 @@ void main()
         }
         
         vec3 visionColor = vec3(0.1f, 0.95f, 0.2f);
-        finalColor.rgb = (c + (n * 0.2f) ) * visionColor * m;
+        tc.rgb = (c + (n * 0.2f) ) * visionColor * m;
     } else if (fs_in.vTexCoord.x >= ( coverage + 0.003f) )
     {
-       finalColor = texture(material.ambientMap, fs_in.vTexCoord);
+       tc = texture(material.ambientMap, fs_in.vTexCoord);
     }
     else {
         if ( coverage > ( 1.0f + 0.003f) ) {
-            finalColor = texture(material.ambientMap, fs_in.vTexCoord);
+            tc = texture(material.ambientMap, fs_in.vTexCoord);
         }
     }
     
     vec4 result = vec4(0.0f);
     
-    result.rgb = finalColor.rgb;
+    result.rgb = tc.rgb;
     result.a = 1.0f;
     vOutputColour = result;
 }

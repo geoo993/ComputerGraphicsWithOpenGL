@@ -32,7 +32,7 @@ uniform struct Material
     sampler2D maskMap;              // 13.  mask map
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec3 color;
+    vec4 color;
     float shininess;
     bool bUseAO;
 } material;
@@ -176,7 +176,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, mat3 TBN, vec3 vertexPosition)
      : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
      vec3 specular = vec3(base.specular) * specularFactor;
      
-     return (bUseTexture ? vec4(ambient + diffuse + specular, 1.0f) : vec4(material.color, 1.0f)) * base.intensity * vec4(base.color, 1.0f);
+     return (bUseTexture ? vec4(ambient + diffuse + specular, 1.0f) : material.color) * base.intensity * vec4(base.color, 1.0f);
 }
 
 vec4 CalcDirectionalLight(DirectionalLight directionalLight, mat3 TBN, vec3 vertexPosition)

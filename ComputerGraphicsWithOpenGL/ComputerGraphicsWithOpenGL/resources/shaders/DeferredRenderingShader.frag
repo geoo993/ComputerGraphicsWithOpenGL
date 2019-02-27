@@ -31,7 +31,7 @@ uniform struct Material
     sampler2D maskMap;              // 13.  mask map
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec3 color;
+    vec4 color;
     float shininess;
 } material;
 
@@ -108,7 +108,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     float specularMap = texture(material.diffuseMap, fs_in.vTexCoord).a;        // specularMap
     
     vec4 lightColor = vec4(base.color, 1.0f);
-    vec4 materialColor = vec4(material.color, 1.0f);
+    vec4 materialColor = material.color;
     vec4 ambient = base.ambient * (bUseTexture ? diffuseMap : materialColor) * lightColor;
     vec4 diffuse = base.diffuse * diffuseFactor * (bUseTexture ? diffuseMap : materialColor) * lightColor;
     vec4 specular = base.specular * specularFactor * lightColor;
@@ -172,7 +172,7 @@ void main()
 {
     
     vec2 uv = fs_in.vTexCoord.xy;
-    vec4 tc = vec4(material.color, 1.0f);
+    vec4 tc = material.color;
     
     if (uv.x <  coverage )
     {

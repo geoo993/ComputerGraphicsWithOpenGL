@@ -21,7 +21,7 @@ uniform struct Material
     sampler2D maskMap;              // 13.  mask map
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec3 color;
+    vec4 color;
     float shininess;
 } material;
 in VS_OUT
@@ -59,22 +59,23 @@ void main()
     
     vec2 uv = fs_in.vTexCoord.xy;
     
-    vec3 tc = material.color;
+    vec4 tc = material.color;
     if (uv.x <  coverage )
     {
         vec2 rnd = vec2( rand(uv.xy), rand(uv.yx) );
-        tc = texture(material.ambientMap, uv + rnd * rnd_factor).rgb;
+        //tc = texture(material.ambientMap, uv + rnd * rnd_factor).rgb;
+        tc = texture(material.ambientMap, uv + rnd * rnd_factor);
     }
     else if (uv.x >= ( coverage + 0.003f) )
     {
-        tc = texture(material.ambientMap, uv).rgb;
+        tc = texture(material.ambientMap, uv);
     }
     else {
        
         if ( coverage > ( 1.0f + 0.003f) ) {
-            tc = texture(material.ambientMap, uv).rgb;
+            tc = texture(material.ambientMap, uv);
         }
     }
     
-    vOutputColour = vec4(tc, 1.0f);
+    vOutputColour = tc;
 }

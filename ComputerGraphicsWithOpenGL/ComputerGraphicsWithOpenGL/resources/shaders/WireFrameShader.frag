@@ -25,7 +25,7 @@ uniform struct Material
     sampler2D maskMap;              // 13.  mask map
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec3 color;
+    vec4 color;
     float shininess;
 } material;
 
@@ -56,7 +56,7 @@ void main()
         
         if (distance < thickness){
             vOutputColour = bUseTexture
-            ? texture(material.diffuseMap, fs_in.vTexCoord) : vec4(material.color, 1.0f); //draw fragment if close to edge
+            ? texture(material.diffuseMap, fs_in.vTexCoord) : material.color; //draw fragment if close to edge
         }else if (distance >= thickness){
             discard; //discard if not
         }

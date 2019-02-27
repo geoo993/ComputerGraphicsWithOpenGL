@@ -19,7 +19,7 @@ uniform struct Material
     sampler2D maskMap;              // 13.  mask map
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec3 color;
+    vec4 color;
     float shininess;
 } material;
 
@@ -40,6 +40,5 @@ out vec4 vOutputColour;
 void main()
 {
     vec4 vTexColour = texture(material.depthMap, fs_in.vTexCoord);    // Get the texel colour from the image
-    vec4 color = vec4(material.color, 1.0f);
-    vOutputColour = bUseTexture ? vec4(vTexColour.r) * color : color;
+    vOutputColour = bUseTexture ? vec4(vTexColour.r) * material.color : material.color;
 }

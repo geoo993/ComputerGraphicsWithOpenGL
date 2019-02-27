@@ -31,7 +31,7 @@ uniform struct Material
     sampler2D maskMap;              // 13.  mask map
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec3 color;
+    vec4 color;
     float shininess;
     bool bUseAO;
 } material;
@@ -120,7 +120,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     
     // toon black edges
     vec4 lightColor = vec4(base.color, 1.0f);
-    vec4 materialColor = vec4(material.color, 1.0f);
+    vec4 materialColor = material.color;
     float edgeMask = (dot(directionToEye, normal) < 0.4f) ? 0.0f : 1.0f;
     vec4 toonColor = edgeMask * lightColor;
     
@@ -130,7 +130,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     vec4 ambient = base.ambient * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
     vec4 diffuse = base.diffuse * diffuseFactor * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
     vec4 specular = base.specular * specularFactor * (bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
-    return (ambient + diffuse + specular +toonColor) * base.intensity * lightColor;
+    return (ambient + diffuse + specular + toonColor) * base.intensity * lightColor;
 }
 
 vec4 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 vertexPosition)

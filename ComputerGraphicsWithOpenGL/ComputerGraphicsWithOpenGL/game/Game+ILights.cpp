@@ -89,7 +89,7 @@ void Game::RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) {
         if (m_pHeightmapTerrain->IsHeightMapRendered()) {
             position = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
         }
-        glm::vec3 color = m_pointLightColors[i];
+        glm::vec3 color = glm::vec3(m_pointLightColors[i]);
         PointLight pointLight(color, m_pointIntensity, Attenuation(m_constant, m_linear, m_exponent), position);
         SetPointLightUniform(pShaderProgram, uniformName, pointLight);
     }

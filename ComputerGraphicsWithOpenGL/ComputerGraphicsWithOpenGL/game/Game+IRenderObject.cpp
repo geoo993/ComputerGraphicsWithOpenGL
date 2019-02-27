@@ -24,12 +24,11 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
 }
 
 void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
-    // start by deleting current skybox and create new one
-    if (m_changeSkybox == true) {
+
+//    // start by deleting current skybox and create new one
+    if (m_changeSkybox) {
         m_pSkybox->Release();
         m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, m_skyboxNumber);
-        //cout << "Changing skybox to " << m_skyboxNumber << endl;
-        m_changeSkybox = false;
     }
     
     // draw skybox as last

@@ -26,6 +26,8 @@ public:
     void RemoveItem(const GLint &index);
     void SetCurrent(const GLint &index);
     
+    void SetValue(GLuint *value, GLboolean *valueChanged);
+    
     GLuint GetIndex();
     GLuint GetCount();
     
@@ -34,6 +36,9 @@ protected:
     GLuint                      m_labelSize;
     GLuint                      m_itemHeight;
     GLuint                      m_index;
+    GLuint                      m_lastIndex;
+    GLuint                      *m_currentIndex;
+    GLboolean                   *m_currentIndexChanged;
     std::vector<std::string>    m_items;
 };
 

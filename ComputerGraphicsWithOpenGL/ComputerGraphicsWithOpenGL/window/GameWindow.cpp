@@ -209,7 +209,6 @@ bool CGameWindow::InitOpenGL()
     GLint MaxTextureUnits;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureUnits);
     std::cout << "There are "<< MaxTextureUnits << " texture units supported by GPU. " << std::endl;
-
 	return bError;
 }
 
@@ -228,6 +227,10 @@ void CGameWindow::SetInputs(const GLFWcursorenterfun &cbfunEnter,
     glfwSetScrollCallback(m_window, cbfunMouseScroll);
     glfwSetKeyCallback(m_window, cbfunKey);
     
+    // https://www.youtube.com/watch?v=L2aiuDDFNIk
+    // what sticky keys is doing is it makes sure that the keys or keyboard events are polled, this means glfwPollEvents will handle these events
+    glfwSetInputMode(m_window, GLFW_STICKY_KEYS, 1);
+    
     SetCursorVisible(true);
 }
 
@@ -236,18 +239,18 @@ void CGameWindow::SetCursorVisible( const bool &isVisible )
     if( m_window == nullptr )
         return;
 
+    // https://www.youtube.com/watch?v=EE5cS8EMT78
     // tell GLFW to capture our mouse
     if( isVisible ){
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        assert(glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL);
+        //assert(glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_NORMAL);
     }else{
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-        assert(glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN);
+        //assert(glfwGetInputMode(m_window, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN);
     }
 
     //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // to remove cursor
-
 }
 
 //Check whether window should close

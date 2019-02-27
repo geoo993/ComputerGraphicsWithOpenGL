@@ -68,6 +68,10 @@ GLint CControl::GetHeight() const {
     return m_height;
 }
 
+GLboolean CControl::GetIsInside() const {
+    return m_isInside;
+}
+
 void CControl::Release() {
     this->m_controls.remove(this);
     glDeleteVertexArrays(1, &m_vao);

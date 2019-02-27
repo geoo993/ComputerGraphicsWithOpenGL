@@ -16,28 +16,6 @@
 #include "FreeTypeFont.h"
 #include "VertexBufferObject.h"
 
-struct MouseState {
-    ControlType m_leftButtonDown;
-    ControlType m_rightButtonDown;
-    ControlType m_middleButtonDown;
-    
-    GLdouble x;
-    GLdouble y;
-    
-    MouseState(): m_leftButtonDown(ControlType::LEFTMOUSE),
-    m_rightButtonDown(ControlType::MIDDLEMOUSE),
-    m_middleButtonDown(ControlType::RIGHTMOUSE),
-    x(0), y(0) {}
-};
-
-struct KeyboardState {
-    GLint m_keyDown;
-    GLint m_keyReleased;
-    GLint m_keyAction;
-    
-    KeyboardState(): m_keyDown(0), m_keyReleased(0), m_keyAction(0) {}
-};
-
 // abstract class
 class CControl {
 
@@ -55,6 +33,7 @@ public:
     
     GLint GetWidth() const;
     GLint GetHeight() const;
+    GLboolean GetIsInside() const;
     
     virtual void Release();
     

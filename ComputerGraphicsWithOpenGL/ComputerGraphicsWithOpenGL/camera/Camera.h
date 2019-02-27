@@ -1,15 +1,7 @@
 #pragma once
 
 #include "GameWindow.h"
-
-// Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
-enum CameraMovement
-{
-    FORWARD,
-    BACKWARD,
-    LEFT,
-    RIGHT
-};
+#include "ControlType.h"
 
 class CCamera {
 public:
@@ -36,6 +28,7 @@ public:
     glm::mat4 GetViewWithoutTranslation() const;        // Get view and removing translation properties from view matrix
     GLfloat GetFarPlane();                              // Gets far clipping plane
     GLfloat GetNearPlane();                             // Gets near clipping plane
+    GLfloat GetFieldOfView();                           // Gets camera field of view
     glm::vec3 GetLeft();                               // Gets the camera left vector
     glm::vec3 GetRight();                              // Gets the camera right vector
     glm::vec3 GetUp();                                 // Gets the camera up vector
@@ -61,10 +54,10 @@ public:
     glm::vec3 PositionInFrontOfCamera( const GLfloat &distance);
     
 	// Respond to mouse movement to rotate the camera
-	void SetViewByMouse(GLFWwindow *window, const GLfloat &mouseXoffset, const GLfloat &mouseYoffset, const bool &enableMouse = true);
+    void SetViewByMouse(const MouseState &state);
 
     // Respond to keyboard presses on arrow keys to translate the camera
-    void TranslateByKeyboard(const double &dt, const int &keyPressed);
+    void TranslateByKeyboard(const double &dt, const KeyboardState &keyboardState);
     
 	// Strafe the camera (move it side to side)
 	void Strafe(double direction);
@@ -72,11 +65,10 @@ public:
 	// Advance the camera (move it forward or backward)
 	void Advance(double direction);
     
-    
     // Update the camera
-    void Update(GLFWwindow *window, const GLdouble &dt, const GLint &key,
-                const GLfloat &mouseXoffset, const GLfloat &mouseYoffset,
-                const GLboolean &moveCamera, const GLboolean &enableMouse);
+    void Update(GLFWwindow *window, const GLdouble &dt,
+                const MouseState &mouseState, const KeyboardState &keyboardState,
+                const GLboolean &moveCamera);
     void UpdateEndFrame(GLFWwindow *window, const GLdouble &dt);
     
     // Set the projection matrices
@@ -85,6 +77,9 @@ public:
     void SetOrthographicProjectionMatrix(float value , float zNear, float zFar);
     void SetOrthographicProjectionMatrix(int width, int height);
     void SetModelMatrix(const glm::mat4 &model);
+    
+    // Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
+    void SetFieldOfView(const GLfloat &yoffset);
     // Set the camera velocity
     void SetVelocity(int deltaTime);
     
@@ -135,9 +130,7 @@ private:
     GLfloat m_screenWidth;           // the width size of the screen window
     GLfloat m_screenHeight;          // the height size of the screen window
     
-    // Mouse 
-    GLboolean m_firstMouse = true;
-    
     // Matrices
     glm::mat4 m_prevMVP;            // previous model->view->projection of the camera
+    
 };

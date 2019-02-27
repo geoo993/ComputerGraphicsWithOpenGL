@@ -256,7 +256,7 @@ void Game::SetFishEyeLensUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
     pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
-    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX,m_mouseY));
+    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX, m_mouseY));
     pShaderProgram->SetUniform("lensSize", 0.35f);
     pShaderProgram->SetUniform("lensOutlineColor", glm::vec3(0.2f, 0.4f, 0.6f));
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1

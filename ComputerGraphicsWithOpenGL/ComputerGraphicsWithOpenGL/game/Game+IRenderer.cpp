@@ -12,28 +12,15 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     const GLint lightSpaceIndex = 51;
     const GLboolean useAO = m_currentPPFXMode == PostProcessingEffectMode::SSAO;
     
-    // enable depth testing (is disabled for rendering screen-space quad post processing)
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_STENCIL_TEST);
-    
-    // comment out if stencil buffer is not used
-    // glStencilMask(0xFF); // each bit is written to the stencil buffer as is
-    // glStencilMask(0x00); // each bit ends up as 0 in the stencil buffer (disabling writes)
-    // Most of the cases you'll just be writing 0x00 or 0xFF as the stencil mask, but it's good to know there are options to set custom bit-masks.
-    glStencilMask(0x00);
-    
-    
     /// Render skybox
     CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
     SetMaterialUniform(pSkyBoxProgram, "material");
     RenderSkyBox(pSkyBoxProgram);
-
-    
-    /*
+/*
     /// Render terrain
     CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 2];
-    SetMaterialUniform(pTerrainProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess, useAO);
-    RenderTerrain(pTerrainProgram, false, true);
+    SetMaterialUniform(pTerrainProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
+    RenderTerrain(pTerrainProgram, true, true);
     */
     
     /*
@@ -54,7 +41,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
             GLfloat roughness = glm::clamp((GLfloat)col / (GLfloat)numCol, 0.05f, 1.0f);
             glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
             SetPBRMaterialUniform(pPBRProgram, "material", albedo, metallic, roughness);
-            SetMaterialUniform(pPBRProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess, useAO);
+            SetMaterialUniform(pPBRProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
             RenderSphere(pPBRProgram, position, 30.0f, m_woodenBoxesUseTexture);
         }
     }
@@ -85,8 +72,8 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     }
     
     GLfloat objGap = 100.0f;
-    GLuint objRows = 5;
-    GLuint objCols = 5;
+    GLuint objRows = 1;
+    GLuint objCols = 1;
     for (GLuint row = 0; row < objRows; row++) {
         for (GLuint col = 0; col < objCols; col++) {
             glm::vec3 position = glm::vec3(((GLfloat)row * objGap) - 100.0f, 60.0f, ((GLfloat)col * objGap) -100.0f);
@@ -103,12 +90,12 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     // Add Default Lights
     RenderLight(pLightProgram, m_pCamera);
     
-    /*
+
     /// Normal Mapping
     CShaderProgram *pNormalMappingProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 6];
     SetCameraUniform(pNormalMappingProgram, "camera", m_pCamera);
     SetLightUniform(pNormalMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-    SetMaterialUniform(pNormalMappingProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess, useAO);
+    SetMaterialUniform(pNormalMappingProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
     RenderCube(pNormalMappingProgram, glm::vec3(1000.0f, 500.0f, 1000.0f), 100.0f, true);
     
     // Add Normal mapping Lights
@@ -118,7 +105,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     CShaderProgram *pBumpMappingProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 7];
     SetCameraUniform(pBumpMappingProgram, "camera", m_pCamera);
     SetLightUniform(pBumpMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-    SetMaterialUniform(pBumpMappingProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess, useAO);
+    SetMaterialUniform(pBumpMappingProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
     SetBumpMapUniform(pBumpMappingProgram, m_uvTiling);
     RenderCube(pBumpMappingProgram, glm::vec3(500.0f, 500.0f, 1000.0f), 100.0f, true);
     RenderTorusKnot(pBumpMappingProgram, m_torusKnotPosition, 5.0f, true);
@@ -130,7 +117,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     CShaderProgram *pParallaxNormalMappingProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 8];
     SetCameraUniform(pParallaxNormalMappingProgram, "camera", m_pCamera);
     SetLightUniform(pParallaxNormalMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-    SetMaterialUniform(pParallaxNormalMappingProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess, useAO);
+    SetMaterialUniform(pParallaxNormalMappingProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
     SetParallaxMapUniform(pParallaxNormalMappingProgram, m_parallaxHeightScale);
     RenderParallaxCube(pParallaxNormalMappingProgram, glm::vec3(0.0f, 500.0f, 1000.0f), 100.0f, true);
     
@@ -140,7 +127,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     /// Environment Mapping
     CShaderProgram *pEnvironmentMapProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 9];
     SetCameraUniform(pEnvironmentMapProgram, "camera", m_pCamera);
-    SetMaterialUniform(pEnvironmentMapProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f));
+    SetMaterialUniform(pEnvironmentMapProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
     SetEnvironmentMapUniform(pEnvironmentMapProgram, m_useRefraction);
     RenderCube(pEnvironmentMapProgram, glm::vec3(-500.0f, 500.0f, 1000.0f), 100.0f, true);
     //RenderMetalBalls(pEnvironmentMapProgram, m_metalballsPosition, 100.0f, true);
@@ -149,9 +136,9 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     /// Chromatic Aberration Mapping
     CShaderProgram *pChromaticAberrationProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 10];
     SetCameraUniform(pChromaticAberrationProgram, "camera", m_pCamera);
-    SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f));
+    SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
     RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_woodenBoxesUseTexture);
-    */
+    
     /*
     /// Explosion Program
     CShaderProgram *pExplosionProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 11];
@@ -178,7 +165,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     CShaderProgram *pToonProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 14];
     SetCameraUniform(pToonProgram, "camera", m_pCamera);
     SetLightUniform(pToonProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-    SetMaterialUniform(pToonProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess, useAO);
+    SetMaterialUniform(pToonProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
     RenderTorus(pToonProgram, m_torusPosition, 20.0f, false);
     RenderSphere(pToonProgram, m_spherePosition, 30.0f, false);
     
@@ -187,7 +174,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     
     /// FireBall Program
     CShaderProgram *pFireBallProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 54];
-    SetMaterialUniform(pFireBallProgram, "material", glm::vec3(0.3f, 0.1f, 0.7f), m_materialShininess, useAO);
+    SetMaterialUniform(pFireBallProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
     SetFireBallUniform(pFireBallProgram);
     RenderFireBallSphere(pFireBallProgram, glm::vec3(-500.0f, 470.0f, -1000.0f), 50.0f);
      */

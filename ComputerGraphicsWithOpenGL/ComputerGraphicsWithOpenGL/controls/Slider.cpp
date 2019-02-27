@@ -111,7 +111,7 @@ void CSlider::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std:
     hudProgram->UseProgram();
     hudProgram->SetUniform("bUseScreenQuad", true);
     hudProgram->SetUniform("bUseTexture", false);
-    hudProgram->SetUniform(material+".color", glm::vec3(0.2f, 0.9f, 0.6f));
+    hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.7f, 0.7f, 0.7f));
     
     glBindVertexArray(m_vao);
     // Draw the triangle !
@@ -120,62 +120,63 @@ void CSlider::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std:
     glDrawArrays(GL_TRIANGLE_STRIP, 0, m_numTriangles);
     glBindVertexArray(0);
     
-    GLint currentX = (GLint)(*m_current - m_min) / (m_max - m_min) * (m_width - m_tickSize) + m_posX;
-    
-    GLuint VertexArrayID;
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
-    
-    GLfloat xP = (GLfloat)currentX;
-    GLfloat yP = m_posY;
-    
-    GLfloat rectWidth = m_tickSize;
-    GLfloat rectHeight = m_height;
-    
-    GLfloat left = xP / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
-    GLfloat right = (xP + rectWidth) / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
-    GLfloat top = -yP / ((GLfloat)SCREEN_HEIGHT / 2.0f) + 1.0f;
-    GLfloat bottom = (-yP - rectHeight) / ((GLfloat)SCREEN_HEIGHT / 2.0f) + 1.0f;
-    std::vector<glm::vec2> g_quad_vertex_buffer_data = {
-        glm::vec2(right, top),                  // top right
-        glm::vec2(left, top),                   // top left
-        glm::vec2(left, bottom),                // bottom left
-        glm::vec2(left, bottom),                // bottom left
-        glm::vec2(right, top),                  // top right
-        glm::vec2(right, bottom),               // bottom right
-    };
-    
-    // This will identify our vertex buffer
-    GLuint vertexbuffer;
-    // Generate 1 buffer, put the resulting identifier in vertexbuffer
-    glGenBuffers(1, &vertexbuffer);
-    // The following commands will talk about our 'vertexbuffer' buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    // Give our vertices to OpenGL.
-    //glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_buffer_data, GL_STATIC_DRAW);
-    glBufferData(GL_ARRAY_BUFFER, g_quad_vertex_buffer_data.size() * sizeof(g_quad_vertex_buffer_data[0]), &g_quad_vertex_buffer_data[0], GL_STATIC_DRAW);
-    
-    // 1st attribute buffer : vertices
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glVertexAttribPointer(
-                          0,                            // attribute 0. No particular reason for 0, but must match the layout in the shader.
-                          2,                            // size
-                          GL_FLOAT,                     // type
-                          GL_FALSE,                     // normalized?
-                          sizeof(glm::vec2),            // stride
-                          (void*)0                      // array buffer offset
-                          );
-    hudProgram->SetUniform(material+".color", glm::vec3(0.6f, 0.2f, 0.9f));
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, g_quad_vertex_buffer_data.size());
-    glBindVertexArray(0);
-    
+    // Slider bar
+    {
+        GLfloat currentX = (*m_current - m_min) / (m_max - m_min) * (GLfloat)(m_width - m_tickSize) + (GLfloat)m_posX;
+        GLuint VertexArrayID;
+        glGenVertexArrays(1, &VertexArrayID);
+        glBindVertexArray(VertexArrayID);
+        
+        GLfloat xP = m_posX; //(GLfloat)currentX;
+        GLfloat yP = m_posY;
+        
+        GLfloat rectWidth = currentX + (m_tickSize / 2.0f) - m_posX; // m_tickSize
+        GLfloat rectHeight = m_height - 4.0f;
+        
+        GLfloat left = xP / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
+        GLfloat right = (xP + rectWidth) / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
+        GLfloat top = ((-2.0f - yP) / ((GLfloat)SCREEN_HEIGHT / 2.0f)) + 1.0f;
+        GLfloat bottom = ((-2.0f - yP - rectHeight) / ((GLfloat)SCREEN_HEIGHT / 2.0f)) + 1.0f;
+        std::vector<glm::vec2> g_quad_vertex_buffer_data = {
+            glm::vec2(right, top),                  // top right
+            glm::vec2(left, top),                   // top left
+            glm::vec2(left, bottom),                // bottom left
+            glm::vec2(left, bottom),                // bottom left
+            glm::vec2(right, top),                  // top right
+            glm::vec2(right, bottom),               // bottom right
+        };
+        
+        // This will identify our vertex buffer
+        GLuint vertexbuffer;
+        // Generate 1 buffer, put the resulting identifier in vertexbuffer
+        glGenBuffers(1, &vertexbuffer);
+        // The following commands will talk about our 'vertexbuffer' buffer
+        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+        // Give our vertices to OpenGL.
+        //glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_buffer_data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, g_quad_vertex_buffer_data.size() * sizeof(g_quad_vertex_buffer_data[0]), &g_quad_vertex_buffer_data[0], GL_STATIC_DRAW);
+        
+        // 1st attribute buffer : vertices
+        glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+        glVertexAttribPointer(
+                              0,                            // attribute 0. No particular reason for 0, but must match the layout in the shader.
+                              2,                            // size
+                              GL_FLOAT,                     // type
+                              GL_FALSE,                     // normalized?
+                              sizeof(glm::vec2),            // stride
+                              (void*)0                      // array buffer offset
+                              );
+        hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.2f, 0.2f, 0.7f));
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, g_quad_vertex_buffer_data.size());
+        glBindVertexArray(0);
+    }
     
     // Highlight button
     if (m_isInside) {
-        hudProgram->SetUniform(material+".color", glm::vec3(0.1f, 0.2f, 0.9f));
+        hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.8f));
     } else {
-        hudProgram->SetUniform(material+".color", glm::vec3(0.9f, 0.2f, 0.2f));
+        hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.5f));
     }
     
     // Draw text inside button
@@ -186,8 +187,7 @@ void CSlider::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std:
     
     hudProgram->SetUniform("bUseScreenQuad", false);
     hudProgram->SetUniform("bUseTexture", true);
-    font->Render(hudProgram, textX + 1, (GLfloat)SCREEN_HEIGHT - textY + 1, m_labelSize, "%s", m_label.data());
-    
+    font->Render(hudProgram, textX, (GLfloat)SCREEN_HEIGHT - textY, m_labelSize, "%s", m_label.data());
 }
 
 std::string CSlider::GetControlType() {
@@ -204,4 +204,5 @@ void CSlider::SetValue(GLfloat *value) {
 
 void CSlider::Release() {
     CControl::Release();
+    delete m_current;
 }

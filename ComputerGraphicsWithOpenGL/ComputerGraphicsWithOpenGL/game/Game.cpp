@@ -265,17 +265,10 @@ void Game::PreRendering() {
 void Game::Render()
 {
 
-    // enable depth testing (is disabled for rendering screen-space quad post processing)
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_STENCIL_TEST);
-    
-    // comment out if stencil buffer is not used
-    // glStencilMask(0xFF); // each bit is written to the stencil buffer as is
-    // glStencilMask(0x00); // each bit ends up as 0 in the stencil buffer (disabling writes)
-    // Most of the cases you'll just be writing 0x00 or 0xFF as the stencil mask, but it's good to know there are options to set custom bit-masks.
-    glStencilMask(0x00);
-    
     ActivateFBO( m_currentPPFXMode );
+    
+    // Clear buffers before rendering
+    m_gameWindow->ClearBuffers();
     
     RenderScene();
     
@@ -290,13 +283,13 @@ void Game::Render()
     // Draw controls GUI objects
     RenderControls();
     
+    // Swap buffers right after rendering all, this is to show the current rendered image
+    m_gameWindow->SwapBuffers();
 }
 
 void Game::PostRendering() {
     UpdateCameraEndFrame(m_deltaTime);
     
-    // Swap buffers right after rendering all, this is to show the current rendered image
-    m_gameWindow->SwapBuffers();
 }
 
 // The game loop runs repeatedly until game over
@@ -329,7 +322,6 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     m_gameManager->SetActive(true); // game is now going to be active, or activate application
     
     while ( !m_gameWindow->ShouldClose() ){
-        m_gameWindow->ClearBuffers();
         
         if (m_gameManager->IsActive()) {
             GameLoop();

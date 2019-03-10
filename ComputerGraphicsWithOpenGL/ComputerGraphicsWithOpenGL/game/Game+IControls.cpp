@@ -26,7 +26,7 @@ void Game::LoadControls() {
     m_gameWindow->SetInputs(OnMouseEnter_callback, OnMouseMove_callback,
                             OnMouseDown_callback, OnMouseScroll_callback,
                             OnKeyDown_callback);
-    /*
+    
     /// LEFT SCREEN
     GLint boxXLeft = 10;
     GLint boxYLeft = 10;
@@ -152,12 +152,12 @@ void Game::LoadControls() {
     skyboxeNames->AddItem("Yokohama Day");
     skyboxeNames->AddItem("Fog");
     skyboxeNames->SetValue(&m_skyboxNumber, &m_changeSkybox);
-     */
+     
 }
 
 void Game::RenderControls() {
     
-    /*
+    
     CShaderProgram *hudProgram = (*m_pShaderPrograms)[0];
     SetMaterialUniform(hudProgram, "material", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     
@@ -165,8 +165,8 @@ void Game::RenderControls() {
     glEnable(GL_BLEND);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);          // Type Of Blending To Perform
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//    glDisable(GL_TEXTURE_2D);                   // disable texture mapping
-//    glShadeModel(GL_SMOOTH);
+    glDisable(GL_TEXTURE_2D);                   // disable texture mapping
+    glShadeModel(GL_SMOOTH);
     for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
         
         CControl * control = (*it);
@@ -189,9 +189,7 @@ void Game::RenderControls() {
     }
     glDisable(GL_BLEND);                // Re-Disable Blending
     glEnable(GL_DEPTH_TEST);            // Re-Enable Depth Testing
-//    glEnable(GL_TEXTURE_2D);            // Re-Enable Texture Mapping
-    
-     */
+    glEnable(GL_TEXTURE_2D);            // Re-Enable Texture Mapping
 }
 
 void Game::UpdateControls() {
@@ -211,10 +209,12 @@ void Game::UpdateControls() {
 }
 
 void Game::RemoveControls() {
+    /*
     for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
         delete (*it);
         it = CControl::m_controls.begin();
     }
+    */
 }
 
 // glfw: whenever the mouse enters and leaves window, this callback is called

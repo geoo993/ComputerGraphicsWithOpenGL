@@ -170,8 +170,7 @@ void main()
 {
   
     vec2 uv = fs_in.vTexCoord.xy;
-    vec4 tc = vec4(material.color, 1.0f);
-    vec4 scene = texture(material.ambientMap, uv);
+    vec4 tc = material.color;
     if (uv.x < (  coverage  ) )
     {
         // retrieve data from gbuffer
@@ -207,12 +206,12 @@ void main()
     }
     else if ( uv.x  >=  (  coverage  +   0.003f) )
     {
-        tc = scene;
+        tc = texture(material.ambientMap, uv);
     }
     else {
         
         if ( coverage > ( 1.0f + 0.003f) ) {
-            tc = scene;
+            tc = texture(material.ambientMap, uv);
         }
     }
     

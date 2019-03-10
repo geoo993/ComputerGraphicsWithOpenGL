@@ -26,7 +26,7 @@ void Game::LoadControls() {
     m_gameWindow->SetInputs(OnMouseEnter_callback, OnMouseMove_callback,
                             OnMouseDown_callback, OnMouseScroll_callback,
                             OnKeyDown_callback);
-    
+    /*
     /// LEFT SCREEN
     GLint boxXLeft = 10;
     GLint boxYLeft = 10;
@@ -152,26 +152,12 @@ void Game::LoadControls() {
     skyboxeNames->AddItem("Yokohama Day");
     skyboxeNames->AddItem("Fog");
     skyboxeNames->SetValue(&m_skyboxNumber, &m_changeSkybox);
-}
-
-void Game::UpdateControls() {
-//    std::cout
-//    << " Light,"
-//    << ", use dir: " << (int)m_useDir
-//    << ", use point: " << (int)m_usePoint
-//    << ", use spot: " << (int)m_useSpot
-//    << std::endl;
-    
-    UpdateMouseControls(mState);
-    UpdateKeyBoardControls(kState);
-    
-    // update camera
-    UpdateCamera(m_deltaTime, mState, kState, mState.m_isEnabled);
-    
+     */
 }
 
 void Game::RenderControls() {
     
+    /*
     CShaderProgram *hudProgram = (*m_pShaderPrograms)[0];
     SetMaterialUniform(hudProgram, "material", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     
@@ -179,9 +165,8 @@ void Game::RenderControls() {
     glEnable(GL_BLEND);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);          // Type Of Blending To Perform
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDisable(GL_TEXTURE_2D);                   // disable texture mapping
-    glShadeModel(GL_SMOOTH);
-    
+//    glDisable(GL_TEXTURE_2D);                   // disable texture mapping
+//    glShadeModel(GL_SMOOTH);
     for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
         
         CControl * control = (*it);
@@ -202,10 +187,26 @@ void Game::RenderControls() {
             // we do ot need to handle events, because control has been updated...but no messages to handle
         }
     }
-    
     glDisable(GL_BLEND);                // Re-Disable Blending
     glEnable(GL_DEPTH_TEST);            // Re-Enable Depth Testing
-    glEnable(GL_TEXTURE_2D);            // Re-Enable Texture Mapping
+//    glEnable(GL_TEXTURE_2D);            // Re-Enable Texture Mapping
+    
+     */
+}
+
+void Game::UpdateControls() {
+    //    std::cout
+    //    << " Light,"
+    //    << ", use dir: " << (int)m_useDir
+    //    << ", use point: " << (int)m_usePoint
+    //    << ", use spot: " << (int)m_useSpot
+    //    << std::endl;
+    
+    UpdateMouseControls(mState);
+    UpdateKeyBoardControls(kState);
+    
+    // update camera
+    UpdateCamera(m_deltaTime, mState, kState, mState.m_isEnabled);
     
 }
 

@@ -120,6 +120,8 @@ private:
     GLfloat m_yaw;                   // also known as Heading: rotation about y axis (aka “yaw”)
     GLfloat m_pitch;                 // rotation about x axis
     GLfloat m_roll;                  // also known as Bank: rotation about z axis (aka “roll”)
+    GLfloat m_horizontalAngle;       // horizontal angle : toward -Z
+    GLfloat m_verticalAngle;         // vertical angle : 0, toward -Y
     glm::vec3 m_velocity;            // The camera's velocity vector
     
     // Camera options

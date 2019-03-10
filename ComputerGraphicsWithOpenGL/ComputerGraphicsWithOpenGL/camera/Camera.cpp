@@ -352,7 +352,7 @@ void CCamera::Update(GLFWwindow *window, const GLdouble &dt,
 	m_strafeVector = glm::normalize(vector);
 
     if (moveCamera) {
-        SetFieldOfView(mouseState.m_scroll);
+        //SetFieldOfView(mouseState.m_scroll);
         SetViewByMouse(mouseState);
         TranslateByKeyboard(dt, keyboardState);
     }

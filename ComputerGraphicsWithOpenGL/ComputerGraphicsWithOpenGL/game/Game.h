@@ -45,15 +45,10 @@ class CTorusKnot;
 class CMetaballs;
 class CQuad;
 
-class Game: IGameWindow, IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
+class Game: IGameWindow, IResources, IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
 ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IControls {
 private:
     
-    // Three main methods used in the game.  Initialise runs once, while Update and Render run repeatedly in the game loop.
-    void Initialise();
-    void LoadResources(const std::string &path);
-    void Update();
-    void GameLoop();
     
 // properties
 private:
@@ -120,6 +115,7 @@ public:
     Game &operator=(const Game &other);
     ~Game();
     
+    void GameLoop();
     void Execute(const std::string &filepath, const GLuint &width, const GLuint &height);
    
 protected:
@@ -128,6 +124,9 @@ protected:
     void InitialiseGameWindow(const std::string &name, const std::string &filepath,
                               const GLuint &width,
                               const GLuint &height) override;
+    /// Resources
+    void InitialiseResources() override;
+    void LoadResources(const std::string &path) override;
     
     /// Game timer
     void UpdateGameTimer() override;

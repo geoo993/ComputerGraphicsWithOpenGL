@@ -28,6 +28,11 @@ struct IGameWindow
                                       const GLuint &width, const GLuint &height) = 0;
 };
 
+struct IResources {
+    virtual void InitialiseResources() = 0;
+    virtual void LoadResources(const std::string &path) = 0;
+};
+
 struct IGameTimer
 {
     CHighResolutionTimer *m_pGameTimer;

@@ -178,6 +178,7 @@
 		C7A6EE922208F6BC005D5161 /* MK2.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7A6EE7B2208F6BC005D5161 /* MK2.obj */; };
 		C7A6EE9E2208F6BC005D5161 /* SchofieldNo3NickelCO2BBRevolver.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7A6EE8A2208F6BC005D5161 /* SchofieldNo3NickelCO2BBRevolver.obj */; };
 		C7A6EEA02208F6BC005D5161 /* AO.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7A6EE8C2208F6BC005D5161 /* AO.jpg */; };
+		C7A8ED8222347A2F00A9662D /* Game+IResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7A8ED8122347A2F00A9662D /* Game+IResources.cpp */; };
 		C7B4D39D22146E2900BCE130 /* metalgrid-albedo.png in Resources */ = {isa = PBXBuildFile; fileRef = C7B4D32122146E2500BCE130 /* metalgrid-albedo.png */; };
 		C7B4D39E22146E2900BCE130 /* metalgrid-roughness.png in Resources */ = {isa = PBXBuildFile; fileRef = C7B4D32222146E2500BCE130 /* metalgrid-roughness.png */; };
 		C7B4D39F22146E2900BCE130 /* metalgrid-ao.png in Resources */ = {isa = PBXBuildFile; fileRef = C7B4D32322146E2500BCE130 /* metalgrid-ao.png */; };
@@ -1189,6 +1190,7 @@
 		C7A6EE7B2208F6BC005D5161 /* MK2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MK2.obj; sourceTree = "<group>"; };
 		C7A6EE8A2208F6BC005D5161 /* SchofieldNo3NickelCO2BBRevolver.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SchofieldNo3NickelCO2BBRevolver.obj; sourceTree = "<group>"; };
 		C7A6EE8C2208F6BC005D5161 /* AO.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = AO.jpg; sourceTree = "<group>"; };
+		C7A8ED8122347A2F00A9662D /* Game+IResources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IResources.cpp"; sourceTree = "<group>"; };
 		C7B4D32122146E2500BCE130 /* metalgrid-albedo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metalgrid-albedo.png"; sourceTree = "<group>"; };
 		C7B4D32222146E2500BCE130 /* metalgrid-roughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metalgrid-roughness.png"; sourceTree = "<group>"; };
 		C7B4D32322146E2500BCE130 /* metalgrid-ao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metalgrid-ao.png"; sourceTree = "<group>"; };
@@ -3253,6 +3255,7 @@
 				C713795222032B2400E9A0F2 /* Game+IPostProcessing.cpp */,
 				C713795822033C4E00E9A0F2 /* Game+IRenderer.cpp */,
 				C7137962220388B200E9A0F2 /* Game+IRenderObject.cpp */,
+				C7A8ED8122347A2F00A9662D /* Game+IResources.cpp */,
 				C7C8F32721FF9A5D00AB865A /* Game+IShaders.cpp */,
 				C75C973B220E1CE600420DF6 /* Game+IShaderUniform.cpp */,
 				C713796B2203964000E9A0F2 /* Game+ITextures.cpp */,
@@ -5350,6 +5353,7 @@
 				C7C8F31221FF809300AB865A /* Cubemap.cpp in Sources */,
 				C7B754672204CE1400E54C30 /* Metaballs.cpp in Sources */,
 				C78DDCF52224B4800010A5D9 /* Slider.cpp in Sources */,
+				C7A8ED8222347A2F00A9662D /* Game+IResources.cpp in Sources */,
 				C7C8F2F021FF6E9900AB865A /* Mesh.cpp in Sources */,
 				C7C8F2E121FF6E7100AB865A /* Audio.cpp in Sources */,
 				C713798E2203CEDF00E9A0F2 /* Cube.cpp in Sources */,

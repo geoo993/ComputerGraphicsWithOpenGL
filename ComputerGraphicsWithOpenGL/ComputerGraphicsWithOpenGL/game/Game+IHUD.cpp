@@ -19,8 +19,8 @@ void Game::RenderHUD(){
     glEnable(GL_BLEND);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE);          // Type Of Blending To Perform
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//    glDisable(GL_TEXTURE_2D);                   // disable texture mapping
-//    glShadeModel(GL_SMOOTH);
+    glDisable(GL_TEXTURE_2D);                   // disable texture mapping
+    glShadeModel(GL_SMOOTH);
     
     hudProgram->UseProgram();
     hudProgram->SetUniform("matrices.projMatrix", orthoMatrix); // set othorgraphic view
@@ -31,7 +31,7 @@ void Game::RenderHUD(){
     
     glDisable(GL_BLEND);                // Re-Disable Blending
     glEnable(GL_DEPTH_TEST);            // Re-Enable Depth Testing
-//    glEnable(GL_TEXTURE_2D);            // Re-Enable Texture Mapping
+    glEnable(GL_TEXTURE_2D);            // Re-Enable Texture Mapping
     
 }
 

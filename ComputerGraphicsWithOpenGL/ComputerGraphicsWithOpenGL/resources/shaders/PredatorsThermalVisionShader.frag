@@ -49,7 +49,6 @@ void main()
      */
     
     vec2 uv = fs_in.vTexCoord.xy;
-    
     vec4 tc = material.color;
     
     if (uv.x < (  coverage  ) )

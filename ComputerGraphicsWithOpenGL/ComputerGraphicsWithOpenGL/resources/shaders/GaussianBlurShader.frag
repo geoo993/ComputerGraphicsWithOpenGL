@@ -41,7 +41,7 @@ in VS_OUT
 } fs_in;
 
 uniform bool bHorizontal;
-uniform float intensity;
+uniform float intensity = 1.0f;
 uniform float coverage;        // between (0.0f and 1.0f)
 float weight[5] = float[] (0.2270270270f, 0.1945945946f, 0.1216216216f, 0.0540540541f, 0.0162162162f);
 
@@ -78,13 +78,13 @@ void main() {
         vec3 result = texture(material.depthMap, uv).rgb * weight[0]; // current fragment's contribution
         if(bHorizontal) {
             for(int i = 1; i < 5; ++i) {
-                result += texture(material.depthMap, uv + vec2(tex_offset.x * i, 0.0f)).rgb * weight[i]*intensity;
-                result += texture(material.depthMap, uv - vec2(tex_offset.x * i, 0.0f)).rgb * weight[i]*intensity;
+                result += texture(material.depthMap, uv + vec2(tex_offset.x * i, 0.0f)).rgb * weight[i] * intensity;
+                result += texture(material.depthMap, uv - vec2(tex_offset.x * i, 0.0f)).rgb * weight[i] * intensity;
             }
         } else {
             for(int i = 1; i < 5; ++i) {
-                result += texture(material.depthMap, uv + vec2(0.0f, tex_offset.y * i)).rgb * weight[i]*intensity;
-                result += texture(material.depthMap, uv - vec2(0.0f, tex_offset.y * i)).rgb * weight[i]*intensity;
+                result += texture(material.depthMap, uv + vec2(0.0f, tex_offset.y * i)).rgb * weight[i] * intensity;
+                result += texture(material.depthMap, uv - vec2(0.0f, tex_offset.y * i)).rgb * weight[i] * intensity;
             }
         }
         

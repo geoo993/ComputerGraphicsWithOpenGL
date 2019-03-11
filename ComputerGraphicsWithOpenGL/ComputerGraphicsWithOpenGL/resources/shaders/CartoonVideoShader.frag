@@ -1,5 +1,5 @@
 #version 400 core
-// https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp
+//https://www.shadertoy.com/view/ldl3WM
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -34,26 +34,51 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int mouseDown;
 uniform vec2 mouse;
 uniform float time;
-uniform float channelTime = 1.0f;   // Time for channel (if video or sound), in seconds
-uniform vec4 date;          // (year, month, day, time in seconds)
 uniform float width;   // width of the current render target
 uniform float height;  // height of the current render target
-uniform float coverage;        // between (0.0f and 1.0f)
+
+float eps = 0.007f;
 
 out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
-    // https://gamedev.stackexchange.com/questions/106674/shadertoy-getting-help-moving-to-glsl
-    // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml
-    // https://stackoverflow.com/questions/26965787/how-to-get-accurate-fragment-screen-position-like-gl-fragcood-in-vertex-shader
-    vec2 fragCoord = gl_FragCoord.xy;
-    vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
-    vec2 resolution = vec2(width, height);// width and height of the screen
-    vec2 uv = fs_in.vTexCoord.xy;
-    vec4 vTexColour = texture(material.ambientMap, fs_in.vTexCoord);
-    vOutputColour = vTexColour;
+    vec2 uv = fs_in.vTexCoord.xy;// / resolution.xy;
+    
+    vec3 t   = texture(material.ambientMap, uv).rgb;
+    vec3 t00 = texture(material.ambientMap, uv+vec2(-eps,-eps)).rgb;
+    vec3 t10 = texture(material.ambientMap, uv+vec2( eps,-eps)).rgb;
+    vec3 t01 = texture(material.ambientMap, uv+vec2(-eps, eps)).rgb;
+    vec3 t11 = texture(material.ambientMap, uv+vec2( eps, eps)).rgb;
+    vec3 tm = (t00+t01+t10+t11)/4.0f;
+    vec3 v=t; vec3 c;
+    
+    //t = .5+.5*sin(vec4(100.,76.43,23.75,1.)*t);
+    t = t-tm;
+    //t = 1.-t;
+    t = t*t*t;
+    //t = 1.-t;
+    v=t;
+    v = 10000.0f*t;
+    
+    float g = (tm.x-0.3f)*5.0f;
+    //g = (g-.5); g = g*g*g/2.-.5;
+    vec3 col0 = vec3(0.0f,0.0f,0.0f);
+    vec3 col1 = vec3(0.2f,0.5f,1.0f);
+    vec3 col2 = vec3(1.0f,0.8f,0.7f);
+    vec3 col3 = vec3(1.0f,1.0f,1.0f);
+    if      (g > 2.0f) c = mix(col2,col3,g-2.0f);
+    else if (g > 1.0f) c = mix(col1,col2,g-1.0f);
+    else             c = mix(col0,col1,g);
+    
+    c = clamp(c,0.0f,1.0f);
+    v = clamp(v,0.0f,1.0f);
+    v = c*(1.0f-v);
+    //v = c-1.5*(1.-v); v = 1.-v;
+    v = clamp(v,0.0f,1.0f);
+    if (v==col0) v=col3;
+    
+    vOutputColour = vec4(v,1.0f);
 }

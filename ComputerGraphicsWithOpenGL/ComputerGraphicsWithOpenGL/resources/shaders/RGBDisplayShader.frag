@@ -1,5 +1,5 @@
 #version 400 core
-// https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp
+// https://www.shadertoy.com/view/4dX3DM
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -34,11 +34,6 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int mouseDown;
-uniform vec2 mouse;
-uniform float time;
-uniform float channelTime = 1.0f;   // Time for channel (if video or sound), in seconds
-uniform vec4 date;          // (year, month, day, time in seconds)
 uniform float width;   // width of the current render target
 uniform float height;  // height of the current render target
 uniform float coverage;        // between (0.0f and 1.0f)
@@ -53,7 +48,23 @@ void main()
     vec2 fragCoord = gl_FragCoord.xy;
     vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
     vec2 resolution = vec2(width, height);// width and height of the screen
-    vec2 uv = fs_in.vTexCoord.xy;
-    vec4 vTexColour = texture(material.ambientMap, fs_in.vTexCoord);
-    vOutputColour = vTexColour;
+    
+    int CELL_SIZE = 6;
+    float CELL_SIZE_FLOAT = float(CELL_SIZE);
+    int RED_COLUMNS = int(CELL_SIZE_FLOAT/3.0f);
+    int GREEN_COLUMNS = CELL_SIZE-RED_COLUMNS;
+    
+    vec2 p = floor(fragCoordViewportCoordinates.xy / CELL_SIZE_FLOAT)*CELL_SIZE_FLOAT;
+    int offsetx = int(mod(fragCoordViewportCoordinates.x, CELL_SIZE_FLOAT));
+    int offsety = int(mod(fragCoordViewportCoordinates.y, CELL_SIZE_FLOAT));
+    
+    vec4 sum = texture(material.ambientMap, p / resolution.xy);
+    
+    vOutputColour = vec4(0.0f,0.0f,0.0f,1.0f);
+    if (offsety < CELL_SIZE-1) {
+        if (offsetx < RED_COLUMNS) vOutputColour.r = sum.r;
+        else if (offsetx < GREEN_COLUMNS) vOutputColour.g = sum.g;
+        else vOutputColour.b = sum.b;
+    }
+    
 }

@@ -40,11 +40,11 @@ uniform int width;   // width of the current render target
 uniform int height;  // height of the current render target
 
 uniform float coverage;
-float hatch_y_offset = 5.0f;
-float lum_threshold_1 = 1.0f;
-float lum_threshold_2 =  0.7f;
-float lum_threshold_3 = 0.5f;
-float lum_threshold_4 = 0.3f;
+uniform float hatch_y_offset = 5.0f;
+uniform float lum_threshold_1 = 1.0f;
+uniform float lum_threshold_2 =  0.7f;
+uniform float lum_threshold_3 = 0.5f;
+uniform float lum_threshold_4 = 0.3f;
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 

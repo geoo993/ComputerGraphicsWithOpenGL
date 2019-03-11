@@ -41,7 +41,8 @@ in VS_OUT
 } fs_in;
 
 uniform float width, height;
-uniform float spanOffset, coverage;
+uniform float spanOffset = 20.0f;
+uniform float coverage;
 
 #define FxaaInt2 ivec2
 #define FxaaFloat2 vec2

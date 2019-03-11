@@ -35,7 +35,7 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform float noiseSize;
+uniform float noiseSize = 4.0f;
 
 out float vOutputColour;        // The output colour formely  gl_FragColor
 

@@ -35,7 +35,7 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform float radius;  // radius between 0.0f and 1.0f
+uniform float radius = 0.9f;  // radius between 0.0f and 1.0f
 uniform float coverage;
 const float PI = 3.1415926535f;
 

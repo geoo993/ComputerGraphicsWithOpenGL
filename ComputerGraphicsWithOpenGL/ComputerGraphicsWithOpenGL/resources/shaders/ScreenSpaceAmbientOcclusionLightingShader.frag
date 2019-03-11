@@ -75,7 +75,7 @@ struct SpotLight
 uniform DirectionalLight R_directionallight;
 uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
-uniform bool bUseTexture, bUseBlinn, bUseSmoothSpot;
+uniform bool bUseLight, bUseTexture, bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
 uniform float coverage;
 
@@ -177,32 +177,34 @@ void main()
         vec3 worldPos = texture(material.displacementMap, fs_in.vTexCoord).rgb;      // displacementMap
         vec3 normal = texture(material.normalMap, fs_in.vTexCoord).rgb;             // normalMap
         vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
-        /*
-        if (bUseDirectionalLight){
-            // Directional lighting
-            vec4 directionalLight = CalcDirectionalLight(R_directionallight, normal, worldPos);
-            result += directionalLight;
-        }
         
-        if (bUsePointLight){
-            // Point lights
-            for (int i = 0; i < NUMBER_OF_POINT_LIGHTS; i++){
-                vec4 pointL = CalcPointLight(R_pointlight[i], normal, worldPos);
-                result += pointL;
+        if (bUseLight) {
+            if (bUseDirectionalLight){
+                // Directional lighting
+                vec4 directionalLight = CalcDirectionalLight(R_directionallight, normal, worldPos);
+                result += directionalLight;
             }
+            
+            if (bUsePointLight){
+                // Point lights
+                for (int i = 0; i < NUMBER_OF_POINT_LIGHTS; i++){
+                    vec4 pointL = CalcPointLight(R_pointlight[i], normal, worldPos);
+                    result += pointL;
+                }
+            }
+            
+            if (bUseSpotlight){
+                // Spot light
+                vec4 spotL = CalcSpotLight(R_spotlight, normal, worldPos);
+                result += spotL;
+            }
+            
+            tc = result;
+        } else {
+            vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;                // albedo Map
+            float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
+            tc = vec4(diffuseMap * ambientOcclusion, 1.0f);
         }
-        
-        if (bUseSpotlight){
-            // Spot light
-            vec4 spotL = CalcSpotLight(R_spotlight, normal, worldPos);
-            result += spotL;
-        }
-        
-        tc = result;
-        */
-        vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;                // albedo Map
-        float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
-        tc = vec4(diffuseMap * ambientOcclusion, 1.0f);
     }
     else if ( uv.x  >=  (  coverage  +   0.003f) )
     {

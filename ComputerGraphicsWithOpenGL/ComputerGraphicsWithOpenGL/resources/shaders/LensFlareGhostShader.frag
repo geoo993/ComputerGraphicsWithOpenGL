@@ -41,12 +41,12 @@ in VS_OUT
 
 uniform int lensType;           // between 1 and 3
 uniform bool bUselensTexture;
-uniform int ghostCount;         // number of ghost samples, between 4 and 32
-uniform float ghostDispersal;   // dispersion factor, between 0 and 2
-uniform float ghostThreshold;   // between 0.0f and 20.0f
-uniform float ghostDistortion;
-uniform float haloRadius;       // between 0.0f and 2.0f
-uniform float haloThreshold;    // between 0.0f and 20.0f
+uniform int ghostCount = 5;         // number of ghost samples, between 4 and 32
+uniform float ghostDispersal = 0.39f;   // dispersion factor, between 0 and 2
+uniform float ghostThreshold = 10.0f;   // between 0.0f and 20.0f
+uniform float ghostDistortion = 4.3f;
+uniform float haloRadius = 0.3f;       // between 0.0f and 2.0f
+uniform float haloThreshold = 9.0f;    // between 0.0f and 20.0f
 
 // This can be used as a direct replacement for the calls to texture()
 vec4 textureDistorted(
@@ -129,11 +129,11 @@ void main()
     
     vec4 result = vec4(0.0f);
     for (int i = 0; i < ghostCount; ++i) {
-        if (lensType == 1){ // Ghost
+        if (lensType == 0){ // Ghost
             result += applyGhost(material.depthMap, texcoord, i, ghostVec, direction, distortion);
-        } else if (lensType == 2) { // Halo
+        } else if (lensType == 1) { // Halo
             result += applyHalo(material.depthMap, texcoord, ghostVec, direction, distortion);
-        } else if (lensType == 3) { // Combine Ghost and Halo
+        } else if (lensType == 2) { // Combine Ghost and Halo
             result += applyGhost(material.depthMap, texcoord, i, ghostVec, direction, distortion);
             result += applyHalo(material.depthMap, texcoord, ghostVec, direction, distortion);
         } else {

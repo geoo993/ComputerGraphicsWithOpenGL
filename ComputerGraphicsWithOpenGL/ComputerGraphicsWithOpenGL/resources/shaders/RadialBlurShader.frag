@@ -40,7 +40,8 @@ in VS_OUT
 //const float sampleStrength = 2.2f;
 
 // RadialBlur - Shader
-uniform float resolution, radius;
+uniform float resolution = 2.0f;
+uniform float radius = 0.4f;
 uniform float coverage;        // between (0.0f and 1.0f)
 out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 

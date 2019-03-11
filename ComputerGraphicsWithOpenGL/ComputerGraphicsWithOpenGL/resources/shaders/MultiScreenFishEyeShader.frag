@@ -36,7 +36,9 @@ in VS_OUT
     vec4 vPosDevSpace;
 } fs_in;
 
-uniform float lensRadius, signcurvature, coverage;
+uniform float lensRadius = 3.5f;
+uniform float signcurvature = 10.0f;
+uniform float coverage;
 const float PI = 3.1415926535f;
 
 #define EPSILON 0.000011

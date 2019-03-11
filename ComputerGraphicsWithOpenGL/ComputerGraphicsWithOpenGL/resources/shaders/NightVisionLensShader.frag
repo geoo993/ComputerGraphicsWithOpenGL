@@ -36,7 +36,9 @@ in VS_OUT
 } fs_in;
 
 uniform float elapsedTime; // seconds
-uniform float luminanceThreshold, colorAmplification, coverage;
+uniform float luminanceThreshold = 0.2f;
+uniform float colorAmplification = 4.0f;
+uniform float coverage;
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 

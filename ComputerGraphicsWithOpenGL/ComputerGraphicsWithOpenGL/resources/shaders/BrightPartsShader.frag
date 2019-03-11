@@ -37,7 +37,8 @@ in VS_OUT
 } fs_in;
 
 uniform bool bSmoothGradient;
-uniform float intensity, coverage;
+uniform float intensity = 1.0f;
+uniform float coverage;
 
 //When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
 out vec4 vOutputColour; // The output colour formely  gl_FragColor

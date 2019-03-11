@@ -52,7 +52,7 @@ enum class PostProcessingEffectMode {
     FXAA,
     DeferredRendering,
     SSAO,
-    
+    RainDrops,
     NumberOfPPFX,
 };
 

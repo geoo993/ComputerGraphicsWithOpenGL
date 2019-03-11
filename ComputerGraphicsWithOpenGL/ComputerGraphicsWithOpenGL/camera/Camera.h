@@ -69,7 +69,7 @@ public:
     void Update(GLFWwindow *window, const GLdouble &dt,
                 const MouseState &mouseState, const KeyboardState &keyboardState,
                 const GLboolean &moveCamera);
-    void UpdateEndFrame(GLFWwindow *window, const GLdouble &dt);
+    void Reset(GLFWwindow *window, const GLdouble &dt);
     
     // Set the projection matrices
     void SetPerspectiveProjectionMatrix(const GLfloat &fieldOfView, const GLfloat &aspectRatio, const GLfloat &nearClippingPlane, const GLfloat &farClippingPlane);

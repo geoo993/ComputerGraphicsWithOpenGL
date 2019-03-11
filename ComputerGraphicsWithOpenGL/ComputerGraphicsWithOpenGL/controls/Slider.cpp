@@ -8,11 +8,11 @@
 
 #include "Slider.h"
 
-CSlider::CSlider(std::string label, GLuint labelSize, GLfloat min, GLfloat max, GLuint tickSize,
-                 GLint positionX, GLint positionY, GLint width, GLint height) :
-CControl(positionX, positionY, width, height) {
+CSlider::CSlider(std::string label, GLfloat min, GLfloat max, GLuint tickSize,
+                 GUIBoxData *data, const GUIMode &mode, const GLboolean & create, const PostProcessingEffectMode &ppfxMode) :
+CControl(data, mode, ppfxMode) {
     m_label = label;
-    m_labelSize = labelSize;
+    m_labelSize = data->textSize;
     
     m_dragging = false;
     m_defaultValue = 0.0f;
@@ -20,7 +20,10 @@ CControl(positionX, positionY, width, height) {
     m_max = max;
     m_current = nullptr;
     m_tickSize = tickSize;
-    Create();
+    m_isActive = false;
+    m_uuid = "Slider::"+label;
+    
+    if (create) Create();
 }
 
 void CSlider::Create() {
@@ -71,6 +74,7 @@ void CSlider::Create() {
     
     glBindVertexArray(0);
     
+    m_isActive = true;
 }
 
 GLboolean CSlider::Update(const MouseState &state) {
@@ -108,90 +112,92 @@ GLboolean CSlider::Update(const MouseState &state) {
 }
 
 void CSlider::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material) {
-    hudProgram->UseProgram();
-    hudProgram->SetUniform("bUseScreenQuad", true);
-    hudProgram->SetUniform("bUseTexture", false);
-    hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.7f, 0.7f, 0.7f));
-    
-    glBindVertexArray(m_vao);
-    // Draw the triangle !
-    // https://www.youtube.com/watch?v=4qECwne-CD8
-    // https://stackoverflow.com/questions/39430404/drawing-pixels-in-opengl
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, m_numTriangles);
-    glBindVertexArray(0);
-    
-    // Slider bar
-    {
-        GLfloat currentX = (*m_current - m_min) / (m_max - m_min) * (GLfloat)(m_width - m_tickSize) + (GLfloat)m_posX;
-        GLuint VertexArrayID;
-        glGenVertexArrays(1, &VertexArrayID);
-        glBindVertexArray(VertexArrayID);
+    if (m_isActive && m_current != nullptr) {
+        hudProgram->UseProgram();
+        hudProgram->SetUniform("bUseScreenQuad", true);
+        hudProgram->SetUniform("bUseTexture", false);
+        hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.7f, 0.7f, 0.7f));
         
-        GLfloat xP = m_posX; //(GLfloat)currentX;
-        GLfloat yP = m_posY;
-        
-        GLfloat rectWidth = currentX + (m_tickSize / 2.0f) - m_posX; // m_tickSize
-        GLfloat rectHeight = m_height - 4.0f;
-        
-        GLfloat left = xP / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
-        GLfloat right = (xP + rectWidth) / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
-        GLfloat top = ((-2.0f - yP) / ((GLfloat)SCREEN_HEIGHT / 2.0f)) + 1.0f;
-        GLfloat bottom = ((-2.0f - yP - rectHeight) / ((GLfloat)SCREEN_HEIGHT / 2.0f)) + 1.0f;
-        std::vector<glm::vec2> g_quad_vertex_buffer_data = {
-            glm::vec2(right, top),                  // top right
-            glm::vec2(left, top),                   // top left
-            glm::vec2(left, bottom),                // bottom left
-            glm::vec2(left, bottom),                // bottom left
-            glm::vec2(right, top),                  // top right
-            glm::vec2(right, bottom),               // bottom right
-        };
-        
-        // This will identify our vertex buffer
-        GLuint vertexbuffer;
-        // Generate 1 buffer, put the resulting identifier in vertexbuffer
-        glGenBuffers(1, &vertexbuffer);
-        // The following commands will talk about our 'vertexbuffer' buffer
-        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-        // Give our vertices to OpenGL.
-        //glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_buffer_data, GL_STATIC_DRAW);
-        glBufferData(GL_ARRAY_BUFFER, g_quad_vertex_buffer_data.size() * sizeof(g_quad_vertex_buffer_data[0]), &g_quad_vertex_buffer_data[0], GL_STATIC_DRAW);
-        
-        // 1st attribute buffer : vertices
-        glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-        glVertexAttribPointer(
-                              0,                            // attribute 0. No particular reason for 0, but must match the layout in the shader.
-                              2,                            // size
-                              GL_FLOAT,                     // type
-                              GL_FALSE,                     // normalized?
-                              sizeof(glm::vec2),            // stride
-                              (void*)0                      // array buffer offset
-                              );
-        hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.2f, 0.2f, 0.7f));
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, g_quad_vertex_buffer_data.size());
+        glBindVertexArray(m_vao);
+        // Draw the triangle !
+        // https://www.youtube.com/watch?v=4qECwne-CD8
+        // https://stackoverflow.com/questions/39430404/drawing-pixels-in-opengl
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, m_numTriangles);
         glBindVertexArray(0);
+        
+        // Slider bar
+        {
+            GLfloat currentX = (*m_current - m_min) / (m_max - m_min) * (GLfloat)(m_width - m_tickSize) + (GLfloat)m_posX;
+            GLuint VertexArrayID;
+            glGenVertexArrays(1, &VertexArrayID);
+            glBindVertexArray(VertexArrayID);
+            
+            GLfloat xP = m_posX; //(GLfloat)currentX;
+            GLfloat yP = m_posY;
+            
+            GLfloat rectWidth = currentX + (m_tickSize / 2.0f) - m_posX; // m_tickSize
+            GLfloat rectHeight = m_height - 4.0f;
+            
+            GLfloat left = xP / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
+            GLfloat right = (xP + rectWidth) / ((GLfloat)SCREEN_WIDTH / 2.0f) - 1.0f;
+            GLfloat top = ((-2.0f - yP) / ((GLfloat)SCREEN_HEIGHT / 2.0f)) + 1.0f;
+            GLfloat bottom = ((-2.0f - yP - rectHeight) / ((GLfloat)SCREEN_HEIGHT / 2.0f)) + 1.0f;
+            std::vector<glm::vec2> g_quad_vertex_buffer_data = {
+                glm::vec2(right, top),                  // top right
+                glm::vec2(left, top),                   // top left
+                glm::vec2(left, bottom),                // bottom left
+                glm::vec2(left, bottom),                // bottom left
+                glm::vec2(right, top),                  // top right
+                glm::vec2(right, bottom),               // bottom right
+            };
+            
+            // This will identify our vertex buffer
+            GLuint vertexbuffer;
+            // Generate 1 buffer, put the resulting identifier in vertexbuffer
+            glGenBuffers(1, &vertexbuffer);
+            // The following commands will talk about our 'vertexbuffer' buffer
+            glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+            // Give our vertices to OpenGL.
+            //glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_buffer_data, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, g_quad_vertex_buffer_data.size() * sizeof(g_quad_vertex_buffer_data[0]), &g_quad_vertex_buffer_data[0], GL_STATIC_DRAW);
+            
+            // 1st attribute buffer : vertices
+            glEnableVertexAttribArray(0);
+            glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+            glVertexAttribPointer(
+                                  0,                            // attribute 0. No particular reason for 0, but must match the layout in the shader.
+                                  2,                            // size
+                                  GL_FLOAT,                     // type
+                                  GL_FALSE,                     // normalized?
+                                  sizeof(glm::vec2),            // stride
+                                  (void*)0                      // array buffer offset
+                                  );
+            hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.2f, 0.2f, 0.7f));
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, g_quad_vertex_buffer_data.size());
+            glBindVertexArray(0);
+        }
+        
+        // Highlight button
+        if (m_isInside) {
+            hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.8f));
+        } else {
+            hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.5f));
+        }
+        
+        // Draw text inside button
+        GLuint textWidth = (strlen(m_label.data()) * m_labelSize) / 2;
+        GLuint textHeight = m_labelSize / 2;
+        int textX = m_posX + (m_width - textWidth) / 2;
+        int textY = m_posY + (m_height + textHeight) / 2;
+        
+        hudProgram->SetUniform("bUseScreenQuad", false);
+        hudProgram->SetUniform("bUseTexture", true);
+        font->Render(hudProgram, textX, (GLfloat)SCREEN_HEIGHT - textY, m_labelSize, "%s", m_label.data());
     }
-    
-    // Highlight button
-    if (m_isInside) {
-        hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.8f));
-    } else {
-        hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.5f));
-    }
-    
-    // Draw text inside button
-    GLuint textWidth = (strlen(m_label.data()) * m_labelSize) / 2;
-    GLuint textHeight = m_labelSize / 2;
-    int textX = m_posX + (m_width - textWidth) / 2;
-    int textY = m_posY + (m_height + textHeight) / 2;
-    
-    hudProgram->SetUniform("bUseScreenQuad", false);
-    hudProgram->SetUniform("bUseTexture", true);
-    font->Render(hudProgram, textX, (GLfloat)SCREEN_HEIGHT - textY, m_labelSize, "%s", m_label.data());
 }
 
-std::string CSlider::GetControlType() {
-    return "Slider::"+m_label;
+GUIType CSlider::GetGUIType() {
+    return GUIType::SLIDER;
 }
 
 void CSlider::SetValue(GLfloat *value) {
@@ -202,7 +208,16 @@ void CSlider::SetValue(GLfloat *value) {
     }
 }
 
+void CSlider::Clear() {
+    CControl::Clear();
+}
+
+
 void CSlider::Release() {
     CControl::Release();
     delete m_current;
+    m_current = nullptr;
+    
+    m_dragging = false;
+    m_defaultValue = 0.0f;
 }

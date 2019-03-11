@@ -14,17 +14,18 @@
 class CSlider: public CControl {
     
 public:
-    CSlider(std::string label, GLuint labelSize,
-            GLfloat min, GLfloat max, GLuint tickSize,
-            GLint positionX, GLint positionY, GLint width, GLint height);
+    CSlider(std::string label, GLfloat min, GLfloat max, GLuint tickSize, GUIBoxData *data,
+            const GUIMode &mode = GUIMode::STATIC, const GLboolean & create = true,
+            const PostProcessingEffectMode &ppfxMode = PostProcessingEffectMode::DefaultFrameBuffer);
     
     virtual void Create();
     GLboolean Update(const MouseState &state) override;
     virtual void Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material);
-    virtual std::string GetControlType();
+    virtual GUIType GetGUIType();
     
     void SetValue(GLfloat *value);
     
+    void Clear() override;
     void Release() override;
 protected:
     GLboolean           m_dragging;

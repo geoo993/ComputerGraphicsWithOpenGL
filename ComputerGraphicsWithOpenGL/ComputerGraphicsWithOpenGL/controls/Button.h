@@ -14,13 +14,16 @@
 class CButton: public CControl {
   
 public:
-    CButton(std::string label, GLuint labelSize, GLint positionX, GLint positionY, GLint width, GLint height);
+    CButton(std::string label, GUIBoxData *data,
+            const GUIMode &mode = GUIMode::STATIC, const GLboolean & create = true,
+            const PostProcessingEffectMode &ppfxMode = PostProcessingEffectMode::DefaultFrameBuffer);
     
     virtual void Create();
     GLboolean Update(const MouseState &state) override;
     virtual void Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material);
-    virtual std::string GetControlType();
+    virtual GUIType GetGUIType();
     void SetValue(GLboolean *value);
+    void Clear() override;
     void Release() override;
 protected:
     GLboolean           m_defaultIsEnabled;

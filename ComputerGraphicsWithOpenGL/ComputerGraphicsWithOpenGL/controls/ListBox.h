@@ -14,13 +14,14 @@
 class CListBox: public CControl {
     
 public:
-    CListBox(GLuint labelSize, GLint itemHeight,
-             GLint positionX, GLint positionY, GLint width, GLint height);
+    CListBox(GUIBoxData *data, GLint itemHeight,
+             const GUIMode &mode = GUIMode::STATIC, const GLboolean & create = true,
+             const PostProcessingEffectMode &ppfxMode = PostProcessingEffectMode::DefaultFrameBuffer);
     
     virtual void Create();
     GLboolean Update(const MouseState &state) override;
     virtual void Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material);
-    virtual std::string GetControlType();
+    virtual GUIType GetGUIType();
     
     void AddItem(const std::string &item);
     void RemoveItem(const GLint &index);
@@ -31,6 +32,7 @@ public:
     GLuint GetIndex();
     GLuint GetCount();
     
+    void Clear() override;
     void Release() override;
 protected:
     GLuint                      m_labelSize;

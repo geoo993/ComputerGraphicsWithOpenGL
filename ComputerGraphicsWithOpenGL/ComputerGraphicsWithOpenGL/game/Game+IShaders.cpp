@@ -134,7 +134,8 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionBlurShader.frag");
     sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionLightingShader.vert");// 58
     sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionLightingShader.frag");
-    
+    sShaderFileNames.push_back("RainDropsShader.vert");// 59
+    sShaderFileNames.push_back("RainDropsShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -626,6 +627,13 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pScreenSpaceAmbientOcclusionLightingProgram->AddShaderToProgram(&shShaders[120]);
     pScreenSpaceAmbientOcclusionLightingProgram->LinkProgram();
     m_pShaderPrograms->push_back(pScreenSpaceAmbientOcclusionLightingProgram);
+    
+    CShaderProgram *pRainDropsProgram = new CShaderProgram;
+    pRainDropsProgram->CreateProgram();
+    pRainDropsProgram->AddShaderToProgram(&shShaders[121]);
+    pRainDropsProgram->AddShaderToProgram(&shShaders[122]);
+    pRainDropsProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pRainDropsProgram);
 
 }
 

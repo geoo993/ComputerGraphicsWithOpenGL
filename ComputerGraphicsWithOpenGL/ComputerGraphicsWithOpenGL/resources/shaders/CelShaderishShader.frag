@@ -1,6 +1,5 @@
 #version 400 core
-
-// http://www.geeks3d.com/20110428/shader-library-swirl-post-processing-filter-in-glsl/
+// https://www.shadertoy.com/view/ld2XWD
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -35,57 +34,35 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int width;   // width of the current render target
-uniform int height;  // height of the current render target
-
-// Swirl effect parameters
-uniform float radius = 350.0f;
-uniform float angle = 0.8f;
+uniform float threshold;        // between (0.0f and 1.0f)
 uniform float coverage;        // between (0.0f and 1.0f)
 
-vec4 SwirlFX(sampler2D texCoord, vec2 uv)
+float GetTexture(float x, float y)
 {
-    vec2 texSize = vec2(width, height); // screen size
-    vec2 tc = uv * texSize; // texture coords
-    vec2 center = vec2(width / 2.0f, height / 2.0f);
-    tc -= center;
-    float dist = length(tc);
-    if (dist < radius)
-    {
-        float percent = (radius - dist) / radius;
-        float theta = percent * percent * angle * 8.0f;
-        float s = sin(theta);
-        float c = cos(theta);
-        tc = vec2(dot(tc, vec2(c, -s)), dot(tc, vec2(s, c)));
-    }
-    tc += center;
-    vec3 color = texture(texCoord, tc / texSize).rgb;
-    return vec4(color, 1.0f);
+    return texture(material.ambientMap, vec2(x, y) ).x;
 }
 
-out vec4 vOutputColour;		// The output colour formely  gl_FragColor
+out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
+    float x = fs_in.vTexCoord.x;
+    float y = fs_in.vTexCoord.y;
     
-    vec2 uv = fs_in.vTexCoord.xy;
-    vec4 tc = material.color;
+    float xValue = -GetTexture(x-1.0, y-1.0) - 2.0*GetTexture(x-1.0, y) - GetTexture(x-1.0, y+1.0)
+    + GetTexture(x+1.0, y-1.0) + 2.0*GetTexture(x+1.0, y) + GetTexture(x+1.0, y+1.0);
+    float yValue = GetTexture(x-1.0, y-1.0) + 2.0*GetTexture(x, y-1.0) + GetTexture(x+1.0, y-1.0)
+    - GetTexture(x-1.0, y+1.0) - 2.0*GetTexture(x, y+1.0) - GetTexture(x+1.0, y+1.0);
     
-    if (uv.x < (  coverage  ) )
+    if(length(vec2(xValue, yValue)) > threshold)
     {
-        tc = SwirlFX(material.ambientMap, uv);
+        vOutputColour = vec4(0);
     }
-    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    else
     {
-        tc = texture(material.ambientMap, uv);
+        vec2 uv = vec2(x, y);
+        vec4 currentPixel = texture(material.ambientMap, uv);
+        vOutputColour = currentPixel;
     }
-    else {
-        
-        if ( coverage > ( 1.0f + 0.003f) ) {
-            tc = texture(material.ambientMap, uv);
-        }
-    }
-    
-    vOutputColour = tc;
     
 }

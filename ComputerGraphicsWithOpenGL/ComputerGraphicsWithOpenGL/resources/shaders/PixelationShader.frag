@@ -39,8 +39,8 @@ uniform int width;   // width of the current render target
 uniform int height;  // height of the current render target
 
 uniform float coverage;  // offset of the vertical red line, between (0 and 1)
-uniform float pixel_width;  // width of a low resolution pixel
-uniform float pixel_height;  // height of a low resolution pixel
+uniform float pixel_width;  // width of a low resolution pixel = 15.0f
+uniform float pixel_height;  // height of a low resolution pixel = 10.0f
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 

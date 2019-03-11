@@ -104,13 +104,13 @@ void main()
         //for round effect, not elliptical
         vec3 col = vec3(0.0f);
         
-        if ( isSixScreens){
+        if (isSixScreens){
             col = texture(material.ambientMap, vec2(uv.x * prop, uv.y * prop)).xyz;
-        }else if (isFourScreens) {
+        } else if (isFourScreens) {
             col = texture(material.ambientMap, vec2(uv.x , uv.y * prop)).xyz;
-        }else if (isTwoScreens) {
+        } else if (isTwoScreens) {
             col = texture(material.ambientMap, vec2( uv.x , uv.y / prop )).xyz;
-        }else if (isOneScreen) {
+        } else if (isOneScreen) {
             //col = texture(material.ambientMap, vec2( uv.x / (prop * 1.45f), uv.y / (prop * 1.0f) )).xyz;
             col = texture(material.ambientMap, vec2(uv.x, uv.y * prop)).xyz;
         }

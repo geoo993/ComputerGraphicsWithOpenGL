@@ -38,14 +38,15 @@ uniform int width;   // width of the current render target
 uniform int height;  // height of the current render target
 uniform float coverage;    // x position of the vertical red line
 
-float rnd_factor = 0.05f;  // effect param, default value: 0.05
-float rnd_scale = 5.1f;    // effect param, default value: 5.1
+uniform float randomFactor = 0.05f;  // effect param, default value: 0.05
+uniform float randomScale = 5.1f;    // effect param, default value: 5.1
+
 vec2 v1 = vec2(92.0f, 80.0f);  // effect param, default value: vec2(92.,80.)
 vec2 v2 = vec2(41.0f, 62.0f);  // effect param, default value: vec2(41.,62.)
 
 float rand(vec2 co)
 {
-    return fract( sin( dot( co.xy ,v1) ) + cos( dot( co.xy, v2) ) * rnd_scale);
+    return fract( sin( dot( co.xy ,v1) ) + cos( dot( co.xy, v2) ) * randomScale);
 }
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
@@ -63,8 +64,8 @@ void main()
     if (uv.x <  coverage )
     {
         vec2 rnd = vec2( rand(uv.xy), rand(uv.yx) );
-        //tc = texture(material.ambientMap, uv + rnd * rnd_factor).rgb;
-        tc = texture(material.ambientMap, uv + rnd * rnd_factor);
+        //tc = texture(material.ambientMap, uv + rnd * randomFactor).rgb;
+        tc = texture(material.ambientMap, uv + rnd * randomFactor);
     }
     else if (uv.x >= ( coverage + 0.003f) )
     {

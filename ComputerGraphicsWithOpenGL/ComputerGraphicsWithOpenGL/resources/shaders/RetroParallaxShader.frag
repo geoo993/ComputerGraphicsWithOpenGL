@@ -1,5 +1,6 @@
 #version 400 core
-// https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp
+
+// https://www.shadertoy.com/view/4sSGD1
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -34,11 +35,7 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int mouseDown;
-uniform vec2 mouse;
 uniform float time;
-uniform float channelTime = 1.0f;   // Time for channel (if video or sound), in seconds
-uniform vec4 date;          // (year, month, day, time in seconds)
 uniform float width;   // width of the current render target
 uniform float height;  // height of the current render target
 uniform float coverage;        // between (0.0f and 1.0f)
@@ -53,7 +50,36 @@ void main()
     vec2 fragCoord = gl_FragCoord.xy;
     vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
     vec2 resolution = vec2(width, height);// width and height of the screen
-    vec2 uv = fs_in.vTexCoord.xy;
-    vec4 vTexColour = texture(material.ambientMap, fs_in.vTexCoord);
-    vOutputColour = vTexColour;
+    
+    vec2 pixel = fragCoordViewportCoordinates.xy - resolution.xy * 0.5f;
+    
+    // pixellate
+    const float pixelSize = 4.0f;
+    pixel = floor(pixel/pixelSize);
+    
+    //vec2 offset = vec2(time*3000.0f,pow(max(-sin(time*0.2f),0.0f),2.0f)*16000.0f)/pixelSize;
+    vec2 offset = vec2(3000.0f,pow(max(-sin(0.2f),0.0f),2.0f)*16000.0f)/pixelSize;
+    
+    vec3 col;
+    for ( int i=0; i < 8; i++ )
+    {
+        // parallax position, whole pixels for retro feel
+        float depth = 20.0f+float(i);
+        vec2 uv = pixel + floor(offset/depth);
+        
+        uv /= resolution.y;
+        uv *= depth/20.0f;
+        uv *= 0.4f*pixelSize;
+        
+        col = texture( material.ambientMap, uv+0.5f ).rgb;
+        
+        if ( 1.0f-col.y < float(i+1)/8.0f )
+        {
+            col = mix( vec3(0.4f,0.6f,0.7f), col, exp2(-float(i)*0.1f) );
+            break;
+        }
+    }
+    
+    vOutputColour = vec4(col,1.0f);
+    
 }

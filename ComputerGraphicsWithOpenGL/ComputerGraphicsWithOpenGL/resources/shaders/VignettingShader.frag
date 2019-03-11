@@ -33,14 +33,12 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform bool bTint, bUseGray, bUseSepia;
-uniform float coverage;        // between (0.0f and 1.0f)
-
+uniform bool bTint, bUseSepia;
 //RADIUS of our vignette, where 0.5 results in a circle fitting the screen
-const float RADIUS = 0.3f; // [0 - 0.5]
-
+uniform float radius = 0.3f; // [0 - 0.5]
 //softness of our vignette, between 0.0 and 1.0 or between 0.0 and 0.5
-const float SOFTNESS = 0.25f; //[]
+uniform float softness = 0.25f;
+uniform float coverage;        // between (0.0f and 1.0f)
 
 //sepia colour, adjust to taste
 const vec3 SEPIA = vec3(1.2f, 1.0f, 0.8f);
@@ -62,7 +60,7 @@ void main()
         float len = length(vectorFromCentrePosition);
         
         //use smoothstep to create a smooth vignette
-        float vignette = 1.0f - smoothstep(RADIUS, 1.0f - SOFTNESS, len);
+        float vignette = 1.0f - smoothstep(radius, 1.0f - softness, len);
         
         
         if (bTint) {
@@ -71,23 +69,17 @@ void main()
             texColour.rgb = mix(texColour.rgb, texColour.rgb * vignette, 0.5f);
             
             vec3 finalColor;
-            
-            //2. GRAYSCALE
-            
             //convert to grayscale using NTSC conversion weights
             float gray = dot(texColour.rgb, vec3(0.299f, 0.587f, 0.114f));
             vec3 grayColor = vec3(gray);
-            
-            if (bUseGray == true){
-                finalColor = grayColor;
-            }
-            
             if (bUseSepia == true) {
-                //3. SEPIA
-                
+                //SEPIA
                 //create our sepia tone from some constant value
                 vec3 sepiaColor = grayColor * SEPIA;
                 finalColor = sepiaColor;
+            } else {
+                //GRAYSCALE
+                finalColor = grayColor;
             }
             
             

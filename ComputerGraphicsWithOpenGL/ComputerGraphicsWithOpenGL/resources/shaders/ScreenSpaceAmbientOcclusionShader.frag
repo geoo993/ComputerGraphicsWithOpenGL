@@ -40,7 +40,10 @@ in VS_OUT
 
 uniform mat4 projection;
 uniform vec3 samples[KERNEL_SIZE];
-uniform float radius, bias, width, height, noiseSize;
+uniform float radius = 30.5f;
+uniform float bias = 1.025f;
+uniform float width, height;
+uniform float noiseSize = 4.0f;
 
 out float vOutputColour;        // The output colour formely  gl_FragColor
 

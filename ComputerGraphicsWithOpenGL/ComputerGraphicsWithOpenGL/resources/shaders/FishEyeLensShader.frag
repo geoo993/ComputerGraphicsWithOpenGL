@@ -38,8 +38,8 @@ in VS_OUT
 uniform float width;   // width of the current render target
 uniform float height;  // height of the current render target
 uniform vec2 mouse;
-uniform float lensSize; // 0.4
-uniform vec3 lensOutlineColor; // 
+uniform float lensSize = 0.4f;
+uniform vec3 lensOutlineColor; 
 uniform float coverage;
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor

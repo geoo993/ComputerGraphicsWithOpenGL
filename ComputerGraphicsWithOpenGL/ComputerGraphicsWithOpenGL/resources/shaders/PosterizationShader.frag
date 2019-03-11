@@ -35,7 +35,9 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform float gamma, numColors, coverage;
+uniform float gamma = 0.6f;
+uniform float numColors = 8.0f;
+uniform float coverage;
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 

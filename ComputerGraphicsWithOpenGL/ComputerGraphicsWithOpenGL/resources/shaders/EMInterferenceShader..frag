@@ -1,6 +1,5 @@
 #version 400 core
-
-// http://www.geeks3d.com/20110428/shader-library-swirl-post-processing-filter-in-glsl/
+// https://www.shadertoy.com/view/lsXSWl
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -35,57 +34,38 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int width;   // width of the current render target
-uniform int height;  // height of the current render target
-
-// Swirl effect parameters
-uniform float radius = 350.0f;
-uniform float angle = 0.8f;
+uniform float time;
 uniform float coverage;        // between (0.0f and 1.0f)
 
-vec4 SwirlFX(sampler2D texCoord, vec2 uv)
+#define PI 3.1415927
+
+float rng2(vec2 seed)
 {
-    vec2 texSize = vec2(width, height); // screen size
-    vec2 tc = uv * texSize; // texture coords
-    vec2 center = vec2(width / 2.0f, height / 2.0f);
-    tc -= center;
-    float dist = length(tc);
-    if (dist < radius)
-    {
-        float percent = (radius - dist) / radius;
-        float theta = percent * percent * angle * 8.0f;
-        float s = sin(theta);
-        float c = cos(theta);
-        tc = vec2(dot(tc, vec2(c, -s)), dot(tc, vec2(s, c)));
-    }
-    tc += center;
-    vec3 color = texture(texCoord, tc / texSize).rgb;
-    return vec4(color, 1.0f);
+    return fract(sin(dot(seed * floor(time * 12.0f), vec2(127.1f,311.7f))) * 43758.5453123f);
 }
 
-out vec4 vOutputColour;		// The output colour formely  gl_FragColor
+float rng(float seed)
+{
+    return rng2(vec2(seed, 1.0f));
+}
+
+out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
+    vec2 uv = fs_in.vTexCoord.xy;// / resolution.xy;
     
-    vec2 uv = fs_in.vTexCoord.xy;
-    vec4 tc = material.color;
+    vec2 blockS = floor(uv * vec2(24.0f, 9.0f));
+    vec2 blockL = floor(uv * vec2(8.0f, 4.0f));
     
-    if (uv.x < (  coverage  ) )
-    {
-        tc = SwirlFX(material.ambientMap, uv);
-    }
-    else if ( uv.x  >=  (  coverage  +   0.003f) )
-    {
-        tc = texture(material.ambientMap, uv);
-    }
-    else {
-        
-        if ( coverage > ( 1.0f + 0.003f) ) {
-            tc = texture(material.ambientMap, uv);
-        }
-    }
+    float r = rng2(uv);
+    vec3 noise = (vec3(r, 1.0f - r, r / 2.0f + 0.5f) * 1.0f - 2.0f) * 0.08f;
     
-    vOutputColour = tc;
+    float lineNoise = pow(rng2(blockS), 8.0f) * pow(rng2(blockL), 3.0f) - pow(rng(7.2341f), 17.0f) * 2.0f;
     
+    vec4 col1 = texture(material.ambientMap, uv);
+    vec4 col2 = texture(material.ambientMap, uv + vec2(lineNoise * 0.05f * rng(5.0f), 0));
+    vec4 col3 = texture(material.ambientMap, uv - vec2(lineNoise * 0.05f * rng(31.0f), 0));
+    
+    vOutputColour = vec4(vec3(col1.x, col2.y, col3.z) + noise, 1.0f);
 }

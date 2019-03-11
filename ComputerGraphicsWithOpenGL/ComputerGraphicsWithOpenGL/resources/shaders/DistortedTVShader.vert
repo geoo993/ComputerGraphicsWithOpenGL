@@ -25,12 +25,9 @@ out VS_OUT
     vec3 vWorldPosition;
     vec3 vWorldNormal;
     vec4 vEyePosition;
-    vec4 vPosDevSpace;
 } vs_out;
 
 uniform bool bUseScreenQuad;
-uniform float xOffset = 0.5f;
-uniform float yOffset = 0.5f;
 
 // This is the entry point into the vertex shader
 void main()
@@ -51,10 +48,7 @@ void main()
     vs_out.vLocalPosition = inPosition;
     
     // Transform the vertex spatial position using
-    vec4 glPosition = bUseScreenQuad ? position : matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
-    vs_out.vPosDevSpace = glPosition / glPosition.z;
-    vs_out.vPosDevSpace = vec4(xOffset, yOffset, 1.0f, 1.0f) + (vs_out.vPosDevSpace + vec4(1.0f, 1.0f, 0.0f, 0.0f));
+    gl_Position = bUseScreenQuad ? position : matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
     
-    gl_Position = glPosition;
 }
 

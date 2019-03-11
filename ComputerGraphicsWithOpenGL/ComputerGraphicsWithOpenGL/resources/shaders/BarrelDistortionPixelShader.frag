@@ -35,7 +35,8 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform float barrelPower, coverage;
+uniform float barrelPower = 2.0f;
+uniform float coverage;
 const float PI = 3.1415926535f;
 
 vec2 Distort(vec2 p, float power)

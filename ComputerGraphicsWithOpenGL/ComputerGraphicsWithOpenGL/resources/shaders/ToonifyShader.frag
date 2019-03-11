@@ -40,9 +40,8 @@ in VS_OUT
 } fs_in;
 
 uniform float coverage;        // between (0.0f and 1.0f)
-
-float lower_edge_thres = 0.2f; // must be lower than upper_edge_thres
-float upper_edge_thres = 5.0f; // must be higher than lower_edge_thres
+uniform float lower_edge_thres = 0.2f; // must be lower than upper_edge_thres
+uniform float upper_edge_thres = 5.0f; // must be higher than lower_edge_thres
 
 
 #define HueLevCount 6

@@ -49,11 +49,12 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int nSamples;
+uniform int nSamples = 11;
 uniform mat4 inverseModelView;  // the inverse of the current model-view matrix.
 uniform mat4 inverseProjection;  // the inverse of the current projection matrix.
 uniform mat4 prevMVP;           //each frame, store the camera's model-view-projection matrix so that in the next frame we'll have access to it.
-uniform float currentFps, targetFps;        // current frame rate and desired frame rate
+uniform float currentFps;       // current frame rate
+uniform float targetFps = 60.0f;        // desired frame rate
 uniform float coverage;        // between (0.0f and 1.0f)
 
 out vec4 vOutputColour;        // The output colour formely  gl_FragColor

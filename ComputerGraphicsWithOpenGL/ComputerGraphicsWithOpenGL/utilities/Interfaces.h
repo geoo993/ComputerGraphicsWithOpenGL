@@ -36,15 +36,17 @@ struct IResources {
 struct IGameTimer
 {
     CHighResolutionTimer *m_pGameTimer;
-    GLfloat m_timeInSeconds, m_timeInMilliSeconds, m_timePerSecond;
+    glm::vec4 m_date;
+    GLfloat m_timeInSeconds, m_timeInMilliSeconds, m_timePerSecond, m_channelTime;
     GLdouble m_deltaTime, m_elapsedTime;
     GLint m_framesPerSecond, m_frameCount;
-    virtual void UpdateGameTimer() = 0;
+    virtual void UpdateSystemTime() = 0;
+    virtual void UpdateGameTime() = 0;
 };
 
 struct IAudio {
     CAudio *m_pAudio;
-    GLint m_audioNumber;
+    GLfloat m_audioNumber;
     GLboolean m_changeAudio;
     std::vector <std::string> m_audioFiles;
     virtual void InitialiseAudio(const std::string &path) = 0;
@@ -56,7 +58,7 @@ struct ICamera {
     virtual void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) = 0;
     virtual void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) = 0;
     virtual void UpdateCamera(const GLdouble & deltaTime, const MouseState &mouseState, const KeyboardState &keyboardState, const GLboolean & mouseMove) = 0;
-    virtual void UpdateCameraEndFrame(const GLdouble & deltaTime) = 0;
+    virtual void ResetCamera(const GLdouble & deltaTime) = 0;
 };
 
 struct IMaterials {
@@ -137,6 +139,7 @@ struct IShaderUniform {
     virtual void SetScreenSpaceAmbientOcclusionUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) = 0;
+    virtual void SetRainDropsUniform(CShaderProgram *pShaderProgram) = 0;
 };
 
 struct ILights
@@ -233,13 +236,84 @@ struct IPostProcessing {
     std::vector<CFrameBufferObject*> m_pFBOs;
     GLboolean m_changePPFXMode;
     GLuint m_PPFXOption;
-    GLfloat m_coverage, m_shockWaveTime;
+    GLfloat m_coverage;
     
-    // ssao
+    // Screen Wave
+    GLfloat m_screenWaveOffset;
+    
+    // Swirl
+    GLfloat m_swirlOffset, m_swirlRadius, m_swirlAngle;
+    
+    //Night Vision
+    GLfloat m_nightVisionluminanceThreshold, m_nightVisionColorAmplification;
+    
+    // Posterization
+    GLfloat m_posterizationGama, m_posterizationColors;
+    
+    // Pixelation
+    GLfloat m_pixelWidth, m_pixelHeight;
+    
+    // Frosted Glass Effect
+    GLfloat m_frostedGlassPixelX, m_frostedGlassPixelY, m_frostedGlassFrequency;
+    
+    // Frosted Glass
+    GLfloat m_frostedGlassRandomFactor, m_frostedGlassRandomScale;
+    
+    // Crosshatching
+    GLfloat m_crosshatchingOffset;
+    GLfloat m_crosshatchingThreshold_1, m_crosshatchingThreshold_2, m_crosshatchingThreshold_3, m_crosshatchingThreshold_4;
+    
+    // Toonify
+    GLfloat m_toonifyLowerTres, m_toonifyUpperTres;
+    
+    //shockwave
+    GLfloat m_shockWaveTime;
+    
+    // FishEye
+    GLfloat m_fishEyeRadius;
+    
+    // Barrel Distortion
+    GLfloat m_barrelDistortionPower;
+    
+    // MultiScreenFishEye
+    GLfloat m_multiScreenFishEyeOffsetX, m_multiScreenFishEyeOffsetY, m_multiScreenFishEyeRadius, m_multiScreenFishEyeCurvature;
+    
+    // Fish Eye Lens
+    GLfloat m_fishEyeLensSize;
+    
+    // Gaussian Blur
+    GLfloat m_gaussianBlurIntensity;
+    
+    // Radial Blur
+    GLfloat m_radialBlurRadius, m_radialBlurResolution;
+    
+    // Motion Blur
+    GLfloat m_motionBlurTargetFps, m_motionBlurSamples;
+    
+    // Vignetting
+    GLboolean m_vignettingTint, m_vignettingSepia;
+    GLfloat m_vignettingRadius, m_vignettingSoftness;
+    
+    // BrightParts
+    GLboolean m_brightPartsSmoothGradient;
+    GLfloat m_brightPartsIntensity;
+    
+    // Lens Flare
+    GLuint m_lensFlareNumber;
+    GLboolean m_lensFlareUseDirt;
+    GLfloat m_lensFlareGhostCount, m_lensFlareGhostDispersal, m_lensFlareGhostThreshold, m_lensFlareGhostDistortion;
+    GLfloat m_lensFlareHaloRadius, m_lensFlareHaloThreshold;
+    
+    // Fast Approximate Anti Aliasing
+    GLfloat m_ffaaOffset;
+    
+    // SSAO
     std::vector<glm::vec3> m_ssaoKernel;
     std::vector<glm::vec3> m_ssaoNoise;
     GLuint m_ssaoKernelSamples, m_ssaoNoiseSamples;
-    GLfloat m_ssaoBias, m_ssaoRadius;
+    GLfloat m_ssaoBias, m_ssaoRadius, m_ssaoNoiseSize;
+    GLboolean m_ssaoNoiseUseLight;
+    
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;
     virtual void ActivateFBO(const PostProcessingEffectMode &mode) = 0;
@@ -271,6 +345,7 @@ struct IControls
     virtual void LoadControls() = 0;
     virtual void RenderControls() = 0;
     virtual void UpdateControls() = 0;
+    virtual void ClearControls() = 0;
     virtual void RemoveControls() = 0;
     virtual void UpdateKeyBoardControls(KeyboardState &state) = 0;
     virtual void UpdateMouseControls(MouseState &state) = 0;

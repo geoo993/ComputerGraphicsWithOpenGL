@@ -26,12 +26,12 @@ void Game::InitialiseAudio(const std::string &path){
 
 void Game::UpdateAudio() {
     
-    if (m_changeAudio == true) {
-        m_pAudio->StopAll();
-        m_pAudio->LoadMusicStream(m_audioFiles[m_audioNumber].c_str());
-        m_pAudio->PlayMusicStream();
-        m_changeAudio = false;
-    }
+//    if (m_changeAudio == true) {
+//        m_pAudio->StopAll();
+//        m_pAudio->LoadMusicStream(m_audioFiles[m_audioNumber].c_str());
+//        m_pAudio->PlayMusicStream();
+//        m_changeAudio = false;
+//    }
     
     m_pAudio->Update();
 }

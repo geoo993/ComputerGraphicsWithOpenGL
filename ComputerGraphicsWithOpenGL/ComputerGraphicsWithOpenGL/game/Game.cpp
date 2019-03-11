@@ -11,9 +11,11 @@ Game::Game()
     
     // game timer
     m_pGameTimer = nullptr;
+    m_date = glm::vec4(1.0f);
     m_timeInSeconds = 0.0f;
     m_timeInMilliSeconds = 0.0f;
     m_timePerSecond = 0.0f;
+    m_channelTime = 0.0f;
     m_deltaTime = 0.5f;
     m_elapsedTime = 0.0f;
     m_framesPerSecond = 0;
@@ -54,11 +56,13 @@ Game::Game()
     m_exponent = 0.0019f;
 
     // Dir Light
+    m_useDir = false;
     m_dirColor = glm::vec3(1.0f, 1.0f, 1.0f);
     m_dirIntensity = 0.8f;
     m_directionalLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f),
     
     // Point Light
+    m_usePoint = true;
     m_pointIntensity = 40.5f;
     m_pointLightPositionsIndex = 0;
     m_pointLightPositions = {
@@ -88,14 +92,13 @@ Game::Game()
     };
     
     // Spot Light
+    m_useSpot = false;
     m_spotColor = glm::vec3(0.3f, 0.5f, 1.0f);;
     m_spotIntensity = 40.4f;
     m_spotCutOff = 22.5f;
     m_spotOuterCutOff = 28.0f;
     
     // SSAO
-    m_ssaoBias = 1.025f;
-    m_ssaoRadius = 30.5f;
     // generate sample kernel
     // ----------------------
     srand(glfwGetTime()); // initialize random seed
@@ -252,7 +255,8 @@ Game::~Game()
 void Game::PreRendering() {
     
     // update game timer
-    UpdateGameTimer();
+    UpdateSystemTime();
+    UpdateGameTime();
     
     // update controls
     UpdateControls();
@@ -288,8 +292,8 @@ void Game::Render()
 }
 
 void Game::PostRendering() {
-    UpdateCameraEndFrame(m_deltaTime);
-    
+    ResetCamera(m_deltaTime);
+    ClearControls();
 }
 
 // The game loop runs repeatedly until game over

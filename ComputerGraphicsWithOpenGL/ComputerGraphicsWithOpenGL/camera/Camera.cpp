@@ -352,7 +352,7 @@ void CCamera::Update(GLFWwindow *window, const GLdouble &dt,
 	m_strafeVector = glm::normalize(vector);
 
     if (moveCamera) {
-        //SetFieldOfView(mouseState.m_scroll);
+        SetFieldOfView(mouseState.m_scroll);
         SetViewByMouse(mouseState);
         TranslateByKeyboard(dt, keyboardState);
     }
@@ -362,7 +362,7 @@ void CCamera::Update(GLFWwindow *window, const GLdouble &dt,
 }
 
 // update ot the end of current frame
-void CCamera::UpdateEndFrame(GLFWwindow *window, const GLdouble &dt) {
+void CCamera::Reset(GLFWwindow *window, const GLdouble &dt) {
     m_previousPosition = m_position;
     
     // set the previous model->view->matrix of the camera

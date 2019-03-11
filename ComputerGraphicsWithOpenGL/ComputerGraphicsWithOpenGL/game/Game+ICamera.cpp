@@ -33,6 +33,6 @@ void Game::UpdateCamera(const GLdouble & deltaTime, const MouseState &mouseState
     m_pCamera->Update(m_gameWindow->GetWindow(), deltaTime, mouseState, keyboardState, true);
 }
 
-void Game::UpdateCameraEndFrame(const GLdouble & deltaTime) {
-    m_pCamera->UpdateEndFrame(m_gameWindow->GetWindow(), deltaTime);
+void Game::ResetCamera(const GLdouble & deltaTime) {
+    m_pCamera->Reset(m_gameWindow->GetWindow(), deltaTime);
 }

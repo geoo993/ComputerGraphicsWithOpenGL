@@ -587,6 +587,12 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             
             return;
         }
+        case PostProcessingEffectMode::RainDrops: {
+            CShaderProgram *pRainDropsProgram = (*m_pShaderPrograms)[59];
+            SetRainDropsUniform(pRainDropsProgram);
+            RenderToScreen(pRainDropsProgram);
+            return;
+        }
         default: return;
         
     }
@@ -756,6 +762,9 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::SSAO:
             RenderPPFXScene(PostProcessingEffectMode::SSAO);
             break;
+        case PostProcessingEffectMode::RainDrops:
+            RenderPPFXScene(PostProcessingEffectMode::RainDrops);
+            break;
     }
     
 }
@@ -842,6 +851,8 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
             return "Deferred Rendering";
         case PostProcessingEffectMode::SSAO:
         return "Screen Space Ambient Occlusion";
+        case PostProcessingEffectMode::RainDrops:
+        return "Rain Drops";
         default:
         return "";
     }
@@ -927,6 +938,8 @@ FrameBufferType Game::GetFBOtype(const PostProcessingEffectMode &mode){
         return FrameBufferType::GeometryBuffer;
         case PostProcessingEffectMode::SSAO:
         return FrameBufferType::GeometryBuffer;
+        case PostProcessingEffectMode::RainDrops:
+        FrameBufferType::Default;
         default:
         return FrameBufferType::Default;
     }

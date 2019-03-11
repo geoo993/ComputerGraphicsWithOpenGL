@@ -10,13 +10,16 @@
 
 std::list<CControl *> CControl::m_controls;
 
-CControl::CControl(GLint positionX, GLint positionY, GLint width, GLint height) {
+CControl::CControl(GUIBoxData *data, const GUIMode &mode, const PostProcessingEffectMode &ppfxMode) {
     m_controls.push_back(this);
-    m_posX = positionX;
-    m_posY = positionY;
-    m_width = width;
-    m_height = height;
+    m_posX = data->x;
+    m_posY = data->y;
+    m_width = data->width;
+    m_height = data->height;
     m_vao, m_numTriangles = 0;
+    m_uuid = "Control::";
+    m_mode = mode;
+    m_ppfx = ppfxMode;
 }
 
 CControl::~CControl() {
@@ -47,9 +50,6 @@ GLboolean CControl::Update(const MouseState &state){
     return false;
 }
 
-//std::string CControl::GetControlType() {
-//    return "Control";
-//}
 void CControl::SetPosition(GLint x, GLint y) {
     m_posX = x;
     m_posY = y;
@@ -68,14 +68,37 @@ GLint CControl::GetHeight() const {
     return m_height;
 }
 
+GUIType CControl::GetGUIType() {
+    return GUIType::UNKNOWN;
+}
+
 GLboolean CControl::GetIsInside() const {
     return m_isInside;
+}
+
+GLboolean CControl::GetIsActive() const {
+    return m_isActive;
+}
+
+GUIMode CControl::GetGUIMode() const {
+    return m_mode;
+}
+
+PostProcessingEffectMode CControl::GetPostProcessingEffectMode() const {
+    return m_ppfx;
+}
+
+void CControl::Clear() {
+    glDeleteVertexArrays(1, &m_vao);
+    m_vbo.Release();
+    m_isActive = false;
 }
 
 void CControl::Release() {
     this->m_controls.remove(this);
     glDeleteVertexArrays(1, &m_vao);
     m_vbo.Release();
+    m_isActive = false;
 }
 
 CControl * AddControl(CControl *control) {

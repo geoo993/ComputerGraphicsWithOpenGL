@@ -129,7 +129,8 @@ protected:
     void LoadResources(const std::string &path) override;
     
     /// Game timer
-    void UpdateGameTimer() override;
+    void UpdateSystemTime() override;
+    void UpdateGameTime() override;
     
     /// Audio
     void InitialiseAudio(const std::string &path) override;
@@ -140,7 +141,7 @@ protected:
     void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) override;
     void UpdateCamera(const GLdouble & deltaTime, const MouseState &mouseState,
                       const KeyboardState &keyboardState, const GLboolean & mouseMove) override;
-    void UpdateCameraEndFrame(const GLdouble & deltaTime) override;
+    void ResetCamera(const GLdouble & deltaTime) override;
     
     /// Materials
     void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
@@ -211,6 +212,7 @@ protected:
     void SetScreenSpaceAmbientOcclusionUniform(CShaderProgram *pShaderProgram) override;
     void SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) override;
     void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture = true) override;
+    void SetRainDropsUniform(CShaderProgram *pShaderProgram) override;
     
     /// Lights
     void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
@@ -283,6 +285,7 @@ protected:
     void LoadControls() override;
     void UpdateControls() override;
     void RenderControls() override;
+    void ClearControls() override;
     void RemoveControls() override;
     void UpdateKeyBoardControls(KeyboardState &state) override;
     void UpdateMouseControls(MouseState &state) override;

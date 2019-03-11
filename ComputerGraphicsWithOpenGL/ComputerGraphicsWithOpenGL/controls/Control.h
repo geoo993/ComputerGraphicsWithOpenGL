@@ -13,20 +13,22 @@
 
 #include "Common.h"
 #include "ControlType.h"
+#include "GUIType.h"
 #include "FreeTypeFont.h"
 #include "VertexBufferObject.h"
+#include "PostProcessingEffectMode.h"
 
 // abstract class
 class CControl {
 
 public:
-    CControl(GLint positionX, GLint positionY, GLint width, GLint height);
+    CControl(GUIBoxData *data, const GUIMode &mode, const PostProcessingEffectMode &ppfxMode);
     virtual ~CControl();
     
     virtual void Create() = 0;
     virtual void Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material) = 0;
     virtual GLboolean Update(const MouseState &state);
-    virtual std::string GetControlType() = 0;
+    virtual GUIType GetGUIType() = 0;
     
     void SetPosition(GLint x, GLint y);
     void SetSize(GLint width, GLint height);
@@ -34,19 +36,25 @@ public:
     GLint GetWidth() const;
     GLint GetHeight() const;
     GLboolean GetIsInside() const;
+    GLboolean GetIsActive() const;
+    GUIMode GetGUIMode() const;
+    PostProcessingEffectMode GetPostProcessingEffectMode() const;
     
+    virtual void Clear();
     virtual void Release();
     
 public:
     static std::list<CControl *> m_controls;
     
 protected:
-    GLboolean           m_isInside;
-    
-    GLint               m_posX, m_posY;
-    GLint               m_width, m_height;
-    GLuint              m_vao, m_numTriangles;
-    CVertexBufferObject m_vbo;
+    GLboolean                       m_isInside, m_isActive;
+    std::string                     m_uuid;
+    GUIMode                         m_mode;
+    PostProcessingEffectMode        m_ppfx;
+    GLint                           m_posX, m_posY;
+    GLint                           m_width, m_height;
+    GLuint                          m_vao, m_numTriangles;
+    CVertexBufferObject             m_vbo;
     
 };
 

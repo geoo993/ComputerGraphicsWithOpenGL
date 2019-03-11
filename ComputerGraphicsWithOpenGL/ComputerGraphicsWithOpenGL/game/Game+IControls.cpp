@@ -27,119 +27,107 @@ void Game::LoadControls() {
                             OnMouseDown_callback, OnMouseScroll_callback,
                             OnKeyDown_callback);
     
+    GUIBoxData *guiBox = new GUIBoxData();
+    guiBox->x = 10;
+    guiBox->y = 10;
+    guiBox->width = 200;
+    guiBox->height = 30;
+    guiBox->textSize = 15;
+    
     /// LEFT SCREEN
-    GLint boxXLeft = 10;
-    GLint boxYLeft = 10;
-    GLint boxWidth = 200;
-    GLint boxHeight = 30;
-    GLint textSize = 15;
-    
-    CButton * useDir = (CButton *)AddControl(new CButton("Use Diriectional Light", textSize, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CButton * useDir = (CButton *)AddControl(new CButton("Use Diriectional Light", guiBox));
     useDir->SetValue(&m_useDir);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CButton * usePoint = (CButton *)AddControl(new CButton("Use Point Light", textSize, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CButton * usePoint = (CButton *)AddControl(new CButton("Use Point Light", guiBox));
     usePoint->SetValue(&m_usePoint);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CButton * useSpot = (CButton *)AddControl(new CButton("Use Spot Light", textSize, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CButton * useSpot = (CButton *)AddControl(new CButton("Use Spot Light", guiBox));
     useSpot->SetValue(&m_useSpot);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CButton * useSmoothSpot = (CButton *)AddControl(new CButton("Use Smooth Spot Light", textSize, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CButton * useSmoothSpot = (CButton *)AddControl(new CButton("Use Smooth Spot Light", guiBox));
     useSmoothSpot->SetValue(&m_useSmoothSpot);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CButton * useBlinn = (CButton *)AddControl(new CButton("Use Blinn Light", textSize, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CButton * useBlinn = (CButton *)AddControl(new CButton("Use Blinn Light", guiBox));
     useBlinn->SetValue(&m_useBlinn);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CButton * useHDR = (CButton *)AddControl(new CButton("Use HDR Light", textSize, boxXLeft, boxYLeft, boxWidth, boxHeight));
-    useHDR->SetValue(&m_HDR);
-    boxYLeft += boxHeight;
-    
-    CSlider *dirIntensity = (CSlider *)AddControl(new CSlider("Dir Light Intensity", textSize, 0.0f, 2.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *dirIntensity = (CSlider *)AddControl(new CSlider("Dir Light Intensity", 0.0f, 2.0f, 5, guiBox));
     dirIntensity->SetValue(&m_dirIntensity);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *pointIntensity = (CSlider *)AddControl(new CSlider("Point Light Intensity", textSize, 0.0f, 100.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *pointIntensity = (CSlider *)AddControl(new CSlider("Point Light Intensity", 0.0f, 100.0f, 5, guiBox));
     pointIntensity->SetValue(&m_pointIntensity);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *spotIntensity = (CSlider *)AddControl(new CSlider("Spot Light Intensity", textSize, 0.0f, 100.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *spotIntensity = (CSlider *)AddControl(new CSlider("Spot Light Intensity", 0.0f, 100.0f, 5, guiBox));
     spotIntensity->SetValue(&m_spotIntensity);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *spotCutoff = (CSlider *)AddControl(new CSlider("Spot Light Cutoff", textSize, 0.0f, 50.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *spotCutoff = (CSlider *)AddControl(new CSlider("Spot Light Cutoff", 0.0f, 50.0f, 5, guiBox));
     spotCutoff->SetValue(&m_spotCutOff);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *spotOuterCutoff = (CSlider *)AddControl(new CSlider("Spot Light Outer Cutoff", textSize, 0.0f, 50.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *spotOuterCutoff = (CSlider *)AddControl(new CSlider("Spot Light Outer Cutoff", 0.0f, 50.0f, 5, guiBox));
     spotOuterCutoff->SetValue(&m_spotOuterCutOff);
-    boxYLeft += boxHeight + 5;
+    guiBox->y += guiBox->height + 5;
 
-    CSlider *ambientLight = (CSlider *)AddControl(new CSlider("Ambient Intensity", textSize, 0.0f, 5.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *ambientLight = (CSlider *)AddControl(new CSlider("Ambient Intensity", 0.0f, 5.0f, 5, guiBox));
     ambientLight->SetValue(&m_ambient);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *diffuseLight = (CSlider *)AddControl(new CSlider("Diffuse Intensity", textSize, 0.0f, 10.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *diffuseLight = (CSlider *)AddControl(new CSlider("Diffuse Intensity", 0.0f, 10.0f, 5, guiBox));
     diffuseLight->SetValue(&m_diffuse);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *specularLight = (CSlider *)AddControl(new CSlider("Specular Intensity", textSize, 0.0f, 10.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *specularLight = (CSlider *)AddControl(new CSlider("Specular Intensity", 0.0f, 10.0f, 5, guiBox));
     specularLight->SetValue(&m_specular);
-    boxYLeft += boxHeight + 5;
+    guiBox->y += guiBox->height + 5;
     
-    CSlider *constantAtt = (CSlider *)AddControl(new CSlider("Attenuation Constant", textSize, 0.0f, 1.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *constantAtt = (CSlider *)AddControl(new CSlider("Attenuation Constant", 0.0f, 1.0f, 5, guiBox));
     constantAtt->SetValue(&m_constant);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *linearAtt = (CSlider *)AddControl(new CSlider("Attenuation Linear", textSize, 0.0f, 0.1f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *linearAtt = (CSlider *)AddControl(new CSlider("Attenuation Linear", 0.0f, 0.1f, 5, guiBox));
     linearAtt->SetValue(&m_linear);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *quadraticAtt = (CSlider *)AddControl(new CSlider("Attenuation Quadratic", textSize, 0.0f, 0.03f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *quadraticAtt = (CSlider *)AddControl(new CSlider("Attenuation Quadratic", 0.0f, 0.03f, 5, guiBox));
     quadraticAtt->SetValue(&m_exponent);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height + 5;
     
-    CSlider *lightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", textSize, 0.0f, 1.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
-    lightExposure->SetValue(&m_exposure);
-    boxYLeft += boxHeight;
-    
-    CSlider *lightGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", textSize, 0.0f, 4.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
-    lightGamma->SetValue(&m_gama);
-    boxYLeft += boxHeight + 5;
-    
-    CButton * matTexture = (CButton *)AddControl(new CButton("Material Texture", textSize, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CButton * matTexture = (CButton *)AddControl(new CButton("Material Texture", guiBox));
     matTexture->SetValue(&m_woodenBoxesUseTexture);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *matShiniess = (CSlider *)AddControl(new CSlider("Material Shininess", textSize, 0.0f, 50.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *matShiniess = (CSlider *)AddControl(new CSlider("Material Shininess", 0.0f, 50.0f, 5, guiBox));
     matShiniess->SetValue(&m_materialShininess);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *matUVTilling = (CSlider *)AddControl(new CSlider("Material UV Tilling", textSize, 0.0f, 5.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *matUVTilling = (CSlider *)AddControl(new CSlider("Material UV Tilling", 0.0f, 5.0f, 5, guiBox));
     matUVTilling->SetValue(&m_uvTiling);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CSlider *matParallax = (CSlider *)AddControl(new CSlider("Material Parallax Scale", textSize, 0.0f, 2.0f, 5, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CSlider *matParallax = (CSlider *)AddControl(new CSlider("Material Parallax Scale", 0.0f, 2.0f, 5, guiBox));
     matParallax->SetValue(&m_parallaxHeightScale);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
-    CButton * matRefraction = (CButton *)AddControl(new CButton("Material Refraction", textSize, boxXLeft, boxYLeft, boxWidth, boxHeight));
+    CButton * matRefraction = (CButton *)AddControl(new CButton("Material Refraction", guiBox));
     matRefraction->SetValue(&m_useRefraction);
-    boxYLeft += boxHeight;
+    guiBox->y += guiBox->height;
     
    
     /// RIGHT SCREEN
-    GLint boxXRight = SCREEN_WIDTH - boxWidth - 10;
-    GLint boxYRight = 10;
-    CSlider *coverage = (CSlider *)AddControl(new CSlider("PPFX Coverage", textSize, 0.0f, 1.0f, 5, boxXRight, boxYRight, boxWidth, boxHeight));
-    coverage->SetValue(&m_coverage);
-    boxYRight += boxHeight + 5;
+    GLint rightStartingY = 10;
+    guiBox->x = SCREEN_WIDTH - guiBox->width - 10;
+    guiBox->y = rightStartingY;
     
-    CListBox * skyboxeNames = (CListBox *)AddControl(new CListBox(textSize, boxHeight, boxXRight, boxYRight,
-                                                                   boxWidth, boxHeight * m_pSkybox->GetNumberOfSkyboxes() ));
+    GLint itemHeight = guiBox->height ;
+    guiBox->height = itemHeight * m_pSkybox->GetNumberOfSkyboxes();
+    CListBox * skyboxeNames = (CListBox *)AddControl(new CListBox(guiBox, itemHeight ));
     skyboxeNames->AddItem("Color Basement");
     skyboxeNames->AddItem("Common Room");
     skyboxeNames->AddItem("Dining Room");
@@ -152,11 +140,387 @@ void Game::LoadControls() {
     skyboxeNames->AddItem("Yokohama Day");
     skyboxeNames->AddItem("Fog");
     skyboxeNames->SetValue(&m_skyboxNumber, &m_changeSkybox);
-     
+    
+    guiBox->height = itemHeight;
+    
+    /// Post Processing Effect GUI
+    GLint ppfxY = (guiBox->height * m_pSkybox->GetNumberOfSkyboxes()) + 5;
+    guiBox->y += ppfxY;
+    
+    CSlider *coverage = (CSlider *)AddControl(new CSlider("PPFX Coverage", 0.0f, 1.0f, 5, guiBox));
+    coverage->SetValue(&m_coverage);
+    
+    // Screen wave
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *screenWaveOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 1.0f, 5, guiBox,
+                                                                  GUIMode::DYNAMIC, false, PostProcessingEffectMode::ScreenWave));
+    screenWaveOffset->SetValue(&m_screenWaveOffset);
+    
+    /// Swirl
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *swirlRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 720.0f, 5, guiBox,
+                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::Swirl));
+    swirlRadius->SetValue(&m_swirlRadius);
+    guiBox->y += guiBox->height;
+    
+    CSlider *swirlAngle = (CSlider *)AddControl(new CSlider("Angle", 0.0f, 3.14159265359f, 5, guiBox,
+                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::Swirl));
+    swirlAngle->SetValue(&m_swirlAngle);
+
+    /// Night Vision
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *nightVisionluminanceThreshold = (CSlider *)AddControl(new CSlider("Luminance Threshold", 0.0f, 1.0f, 5, guiBox,
+                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::NightVision));
+    nightVisionluminanceThreshold->SetValue(&m_nightVisionluminanceThreshold);
+    guiBox->y += guiBox->height;
+    
+    CSlider *nightVisionColorAmplification = (CSlider *)AddControl(new CSlider("Color Amplification", 0.0f, 10.0f, 5, guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::NightVision));
+    nightVisionColorAmplification->SetValue(&m_nightVisionColorAmplification);
+    
+    /// Posterization
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *posterizationGama = (CSlider *)AddControl(new CSlider("Gama", 0.0f, 2.0f, 5, guiBox,
+                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::Posterization));
+    posterizationGama->SetValue(&m_posterizationGama);
+    guiBox->y += guiBox->height;
+    
+    CSlider *posterizationColors = (CSlider *)AddControl(new CSlider("Number Of Colors", 0.0f, 20.0f, 5, guiBox,
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::Posterization));
+    posterizationColors->SetValue(&m_posterizationColors);
+    
+    /// Pixelation
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *pixelationWidth = (CSlider *)AddControl(new CSlider("Pixel Width", 0.0f, 20.0f, 5, guiBox,
+                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::Pixelation));
+    pixelationWidth->SetValue(&m_pixelWidth);
+    guiBox->y += guiBox->height;
+    
+    CSlider *pixelationHeight = (CSlider *)AddControl(new CSlider("Pixel Height", 0.0f, 20.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Pixelation));
+    pixelationHeight->SetValue(&m_pixelHeight);
+    
+    /// Frosted Glass Effect
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *frostedGlassPixelX = (CSlider *)AddControl(new CSlider("Pixel X", 0.0f, 20.0f, 5, guiBox,
+                                                                 GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassEffect));
+    frostedGlassPixelX->SetValue(&m_frostedGlassPixelX);
+    guiBox->y += guiBox->height;
+    
+    CSlider *frostedGlassPixelY = (CSlider *)AddControl(new CSlider("Pixel Y", 0.0f, 20.0f, 5, guiBox,
+                                                                  GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassEffect));
+    frostedGlassPixelY->SetValue(&m_frostedGlassPixelY);
+    guiBox->y += guiBox->height;
+    
+    CSlider *frostedGlassFrequency = (CSlider *)AddControl(new CSlider("Frequency", 0.0f, 1.0f, 5, guiBox,
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassEffect));
+    frostedGlassFrequency->SetValue(&m_frostedGlassFrequency);
+    
+    /// Frosted Glass
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *frostedGlassRandomFactor = (CSlider *)AddControl(new CSlider("Random Factor", 0.0f, 0.5f, 5, guiBox,
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
+    frostedGlassRandomFactor->SetValue(&m_frostedGlassRandomFactor);
+    guiBox->y += guiBox->height;
+    
+    CSlider *frostedGlassRandomScale = (CSlider *)AddControl(new CSlider("Random Scale", 0.0f, 10.0f, 5, guiBox,
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
+    frostedGlassRandomScale->SetValue(&m_frostedGlassRandomScale);
+    
+    
+    /// Crosshatching
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *crosshatchingOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 10.0f, 5, guiBox,
+                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::Crosshatching));
+    crosshatchingOffset->SetValue(&m_crosshatchingOffset);
+    guiBox->y += guiBox->height;
+    
+    CSlider *crosshatchingThreshold_1 = (CSlider *)AddControl(new CSlider("Luminance Threshold 1", 0.0f, 1.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Crosshatching));
+    crosshatchingThreshold_1->SetValue(&m_crosshatchingThreshold_1);
+    guiBox->y += guiBox->height;
+    
+    CSlider *crosshatchingThreshold_2 = (CSlider *)AddControl(new CSlider("Luminance Threshold 2", 0.0f, 1.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Crosshatching));
+    crosshatchingThreshold_2->SetValue(&m_crosshatchingThreshold_2);
+    guiBox->y += guiBox->height;
+    
+    CSlider *crosshatchingThreshold_3 = (CSlider *)AddControl(new CSlider("Luminance Threshold 3", 0.0f, 1.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Crosshatching));
+    crosshatchingThreshold_3->SetValue(&m_crosshatchingThreshold_3);
+    guiBox->y += guiBox->height;
+    
+    CSlider *crosshatchingThreshold_4 = (CSlider *)AddControl(new CSlider("Luminance Threshold 4", 0.0f, 1.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Crosshatching));
+    crosshatchingThreshold_4->SetValue(&m_crosshatchingThreshold_4);
+    
+    // Toonify
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *toonifyLowerTres = (CSlider *)AddControl(new CSlider("Lower Threshold", 0.0f, 1.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Toonify));
+    toonifyLowerTres->SetValue(&m_toonifyLowerTres);
+    guiBox->y += guiBox->height;
+    
+    CSlider *toonifyUpperTres = (CSlider *)AddControl(new CSlider("Upper Threshold", 0.0f, 10.0f, 5, guiBox,
+                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::Toonify));
+    toonifyUpperTres->SetValue(&m_toonifyUpperTres);
+    
+    // Fish Eye
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *fishEyeRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 1.0f, 5, guiBox,
+                                                                  GUIMode::DYNAMIC, false, PostProcessingEffectMode::FishEye));
+    fishEyeRadius->SetValue(&m_fishEyeRadius);
+    
+    // Barrel Distortion
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *barrelDistortionPower = (CSlider *)AddControl(new CSlider("Power", 0.0f, 10.0f, 5, guiBox,
+                                                                  GUIMode::DYNAMIC, false, PostProcessingEffectMode::BarrelDistortion));
+    barrelDistortionPower->SetValue(&m_barrelDistortionPower);
+    
+    // MultiScreenFishEye
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *multiScreenFishEyeOffsetX = (CSlider *)AddControl(new CSlider("X Offset", 0.0f, 1.0f, 5, guiBox,
+                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::MultiScreenFishEye));
+    multiScreenFishEyeOffsetX->SetValue(&m_multiScreenFishEyeOffsetX);
+    guiBox->y += guiBox->height;
+    
+    CSlider *multiScreenFishEyeOffsetY = (CSlider *)AddControl(new CSlider("Y Offset", 0.0f, 1.0f, 5, guiBox,
+                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::MultiScreenFishEye));
+    multiScreenFishEyeOffsetY->SetValue(&m_multiScreenFishEyeOffsetY);
+    guiBox->y += guiBox->height;
+    
+    CSlider *multiScreenFishEyeRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 5.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::MultiScreenFishEye));
+    multiScreenFishEyeRadius->SetValue(&m_multiScreenFishEyeRadius);
+    guiBox->y += guiBox->height;
+    
+    CSlider *multiScreenFishEyeCurvature = (CSlider *)AddControl(new CSlider("Curvature", 0.0f, 10.0f, 5, guiBox,
+                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::MultiScreenFishEye));
+    multiScreenFishEyeCurvature->SetValue(&m_multiScreenFishEyeCurvature);
+    
+    // FishEyeLens
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *fishEyeLensSize = (CSlider *)AddControl(new CSlider("Size", 0.0f, 1.0f, 5, guiBox,
+                                                                           GUIMode::DYNAMIC, false, PostProcessingEffectMode::FishEyeLens));
+    fishEyeLensSize->SetValue(&m_fishEyeLensSize);
+    
+    // Gaussian Blur
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *gaussianBlurIntensity = (CSlider *)AddControl(new CSlider("Intensity", 0.0f, 2.0f, 5, guiBox,
+                                                                 GUIMode::DYNAMIC, false, PostProcessingEffectMode::GaussianBlur));
+    gaussianBlurIntensity->SetValue(&m_gaussianBlurIntensity);
+    
+    // Radial Blur
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *radialBlurRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 1.0f, 5, guiBox,
+                                                                           GUIMode::DYNAMIC, false, PostProcessingEffectMode::RadialBlur));
+    radialBlurRadius->SetValue(&m_radialBlurRadius);
+    guiBox->y += guiBox->height;
+    
+    CSlider *radialBlurResolution = (CSlider *)AddControl(new CSlider("Resolution", 0.0f, 10.0f, 5, guiBox,
+                                                                           GUIMode::DYNAMIC, false, PostProcessingEffectMode::RadialBlur));
+    radialBlurResolution->SetValue(&m_radialBlurResolution);
+    
+    // Motion Blur
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *motionBlurTargetFps = (CSlider *)AddControl(new CSlider("Target FPS", 0.0f, 300.0f, 5, guiBox,
+                                                                  GUIMode::DYNAMIC, false, PostProcessingEffectMode::MotionBlur));
+    motionBlurTargetFps->SetValue(&m_motionBlurTargetFps);
+    guiBox->y += guiBox->height;
+    
+    CSlider *motionBlurSamples = (CSlider *)AddControl(new CSlider("Samples", 0.0f, 20.0f, 5, guiBox,
+                                                                      GUIMode::DYNAMIC, false, PostProcessingEffectMode::MotionBlur));
+    motionBlurSamples->SetValue(&m_motionBlurSamples);
+    
+    // Vignetting
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * vignettingTint = (CButton *)AddControl(new CButton("Tint", guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::Vignetting));
+    vignettingTint->SetValue(&m_vignettingTint);
+    guiBox->y += guiBox->height;
+    
+    CButton * vignettingSepia = (CButton *)AddControl(new CButton("Use Sepia", guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::Vignetting));
+    vignettingSepia->SetValue(&m_vignettingSepia);
+    guiBox->y += guiBox->height;
+    
+    CSlider *vignettingRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 1.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Vignetting));
+    vignettingRadius->SetValue(&m_vignettingRadius);
+    guiBox->y += guiBox->height;
+    
+    CSlider *vignettingSoftness = (CSlider *)AddControl(new CSlider("Softness", 0.0f, 1.0f, 5, guiBox,
+                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::Vignetting));
+    vignettingSoftness->SetValue(&m_vignettingSoftness);
+    
+    
+    // BrightParts
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * brightPartsSmoothGradient = (CButton *)AddControl(new CButton("Smooth Gradient", guiBox,
+                                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::BrightParts));
+    brightPartsSmoothGradient->SetValue(&m_brightPartsSmoothGradient);
+    guiBox->y += guiBox->height;
+    
+    CSlider *brightPartsIntensity = (CSlider *)AddControl(new CSlider("Intensity", 0.0f, 2.0f, 5, guiBox,
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::BrightParts));
+    brightPartsIntensity->SetValue(&m_brightPartsIntensity);
+    
+    // Bloom
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *bloomIntensity = (CSlider *)AddControl(new CSlider("Intensity", 0.0f, 2.0f, 5, guiBox,
+                                                                       GUIMode::DYNAMIC, false, PostProcessingEffectMode::Bloom));
+    bloomIntensity->SetValue(&m_gaussianBlurIntensity);
+    guiBox->y += guiBox->height;
+    
+    CButton * bloomUseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
+                                                              GUIMode::DYNAMIC, false, PostProcessingEffectMode::Bloom));
+    bloomUseHDR->SetValue(&m_HDR);
+    guiBox->y += guiBox->height;
+    
+    CSlider *bloomlightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", 0.0f, 1.0f, 5,
+                                                                    guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::Bloom));
+    bloomlightExposure->SetValue(&m_exposure);
+    guiBox->y += guiBox->height;
+    
+    CSlider *bloomGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", 0.0f, 3.0f, 5,
+                                                            guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::Bloom));
+    bloomGamma->SetValue(&m_gama);
+    
+    
+    // HRDToneMapping
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * hdruseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::HDRToneMapping));
+    hdruseHDR->SetValue(&m_HDR);
+    guiBox->y += guiBox->height;
+    
+    CSlider *hrdlightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", 0.0f, 1.0f, 5,
+                                                                    guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::HDRToneMapping));
+    hrdlightExposure->SetValue(&m_exposure);
+    guiBox->y += guiBox->height;
+    
+    CSlider *hdrGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", 0.0f, 3.0f, 5,
+                                                            guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::HDRToneMapping));
+    hdrGamma->SetValue(&m_gama);
+    
+    // Lens Flare
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->height = itemHeight * 3;
+    GLboolean m_changeLensFlare = true;
+    CListBox * lensFlareNames = (CListBox *)AddControl(new CListBox(guiBox, itemHeight,
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
+    lensFlareNames->AddItem("Ghost");
+    lensFlareNames->AddItem("Halo");
+    lensFlareNames->AddItem("Ghost & Halo");
+    lensFlareNames->SetValue(&m_lensFlareNumber, &m_changeLensFlare);
+    guiBox->y += guiBox->height + 5;
+    guiBox->height = itemHeight;
+    
+    CButton * lensFlareUseDirt = (CButton *)AddControl(new CButton("Use Dirt Texture", guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
+    lensFlareUseDirt->SetValue(&m_lensFlareUseDirt);
+    guiBox->y += guiBox->height;
+    
+    CSlider *lensFlareIntensity = (CSlider *)AddControl(new CSlider("Intensity", 0.0f, 2.0f, 5, guiBox,
+                                                                GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
+    lensFlareIntensity->SetValue(&m_gaussianBlurIntensity);
+    guiBox->y += guiBox->height;
+    
+    m_lensFlareGhostCount = 5.0f;
+    m_lensFlareGhostDispersal = 0.39f;
+    m_lensFlareGhostThreshold = 10.0f;
+    m_lensFlareGhostDistortion = 4.3f;
+    m_lensFlareHaloRadius = 0.3f;
+    m_lensFlareHaloThreshold = 9.0f;
+    
+    CSlider *lensFlareGhostCount = (CSlider *)AddControl(new CSlider("Ghost Count", 0.0f, 10.0f, 5, guiBox,
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
+    lensFlareGhostCount->SetValue(&m_lensFlareGhostCount);
+    guiBox->y += guiBox->height;
+    
+    CSlider *lensFlareGhostDispersal = (CSlider *)AddControl(new CSlider("Ghost Dispersal", 0.0f, 2.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
+    lensFlareGhostDispersal->SetValue(&m_lensFlareGhostDispersal);
+    guiBox->y += guiBox->height;
+    
+    CSlider *lensFlareGhostThreshold = (CSlider *)AddControl(new CSlider("Ghost Threshold", 0.0f, 20.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
+    lensFlareGhostThreshold->SetValue(&m_lensFlareGhostThreshold);
+    guiBox->y += guiBox->height;
+    
+    CSlider *lensFlareGhostDistortion = (CSlider *)AddControl(new CSlider("Ghost Distortion", 0.0f, 5.0f, 5, guiBox,
+                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
+    lensFlareGhostDistortion->SetValue(&m_lensFlareGhostDistortion);
+    guiBox->y += guiBox->height;
+    
+    CSlider *lensFlareHaloRadius = (CSlider *)AddControl(new CSlider("Halo Radius", 0.0f, 2.0f, 5, guiBox,
+                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
+    lensFlareHaloRadius->SetValue(&m_lensFlareHaloRadius);
+    guiBox->y += guiBox->height;
+    
+    CSlider *lensFlareHaloThreshold = (CSlider *)AddControl(new CSlider("Halo Threshold", 0.0f, 20.0f, 5, guiBox,
+                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
+    lensFlareHaloThreshold->SetValue(&m_lensFlareHaloThreshold);
+    guiBox->y += guiBox->height;
+    
+    // Fast Approximate Anti Aliasing
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *ffaaOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 128.0f, 5, guiBox,
+                                                                GUIMode::DYNAMIC, false, PostProcessingEffectMode::FXAA));
+    ffaaOffset->SetValue(&m_ffaaOffset);
+    
+    // SSAO
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * ssaoNoiseUseLight = (CButton *)AddControl(new CButton("Use Light", guiBox,
+                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
+    ssaoNoiseUseLight->SetValue(&m_ssaoNoiseUseLight);
+    guiBox->y += guiBox->height;
+    
+    CSlider *ssaoBias = (CSlider *)AddControl(new CSlider("Bias", 0.0f, 2.0f, 5, guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
+    ssaoBias->SetValue(&m_ssaoBias);
+    guiBox->y += guiBox->height;
+    
+    CSlider *ssaoRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 50.0f, 5, guiBox,
+                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
+    ssaoRadius->SetValue(&m_ssaoRadius);
+    guiBox->y += guiBox->height;
+    
+    CSlider *ssaoNoise = (CSlider *)AddControl(new CSlider("Noise", 0.0f, 10.0f, 5, guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
+    ssaoNoise->SetValue(&m_ssaoNoiseSize);
+
 }
 
 void Game::RenderControls() {
     
+    for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
+        CControl * control = (*it);
+        if (m_currentPPFXMode == control->GetPostProcessingEffectMode()) {
+            // // Create dynamic GUI objects
+            switch(control->GetGUIType()) {
+                case GUIType::BUTTON: {
+                    CButton * button = (CButton *)(*it);
+                    if (button->GetIsActive() == false && button->GetGUIMode() == GUIMode::DYNAMIC) {
+                        button->Create();
+                    }
+                    break;
+                }
+                case GUIType::LISTBOX: {
+                    CListBox * listbox = (CListBox *)(*it);
+                    if (listbox->GetIsActive() == false && listbox->GetGUIMode() == GUIMode::DYNAMIC) {
+                        listbox->Create();
+                    }
+                    break;
+                }
+                case GUIType::SLIDER: {
+                    CSlider * slider = (CSlider *)(*it);
+                    if (slider->GetIsActive() == false && slider->GetGUIMode() == GUIMode::DYNAMIC) {
+                        slider->Create();
+                    }
+                    break;
+                }
+            }
+        }
+    }
     
     CShaderProgram *hudProgram = (*m_pShaderPrograms)[0];
     SetMaterialUniform(hudProgram, "material", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -167,39 +531,69 @@ void Game::RenderControls() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_TEXTURE_2D);                   // disable texture mapping
     glShadeModel(GL_SMOOTH);
+    
     for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
         
         CControl * control = (*it);
-        control->Render(m_pFtFont, hudProgram, "material");
         
-        if ( (controlled != nullptr && controlled != control) || mState.m_isNavigating) {
-            // our current controll is being controlled
-            continue;
-        }
-        if (control->Update(mState)) {
-            // Handle events of this control
-            controlled = control;
+        /// Render GUI objects
+        if (control->GetIsActive() == true) {
+            control->Render(m_pFtFont, hudProgram, "material");
             
-        } else if (control == controlled) {
-            // this *it control no longer has control
-            controlled = nullptr;
-        } else {
-            // we do ot need to handle events, because control has been updated...but no messages to handle
+            if ( (controlled != nullptr && controlled != control) || mState.m_isNavigating) {
+                // our current controll is being controlled
+                continue;
+            }
+            if (control->Update(mState)) {
+                // Handle events of this control
+                controlled = control;
+                
+            } else if (control == controlled) {
+                // this *it control no longer has control
+                controlled = nullptr;
+            } else {
+                // we do ot need to handle events, because control has been updated...but no messages to handle
+            }
         }
+        
     }
     glDisable(GL_BLEND);                // Re-Disable Blending
     glEnable(GL_DEPTH_TEST);            // Re-Enable Depth Testing
     glEnable(GL_TEXTURE_2D);            // Re-Enable Texture Mapping
+    
+    for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
+        CControl * control = (*it);
+        if (m_currentPPFXMode == control->GetPostProcessingEffectMode()) {
+            // Clear dynamic GUI objects
+            switch(control->GetGUIType()) {
+                case GUIType::BUTTON: {
+                    CButton * button = (CButton *)(*it);
+                    if (button->GetIsActive() == true && button->GetGUIMode() == GUIMode::DYNAMIC) {
+                        button->Clear();
+                    }
+                    break;
+                }
+                case GUIType::LISTBOX: {
+                    CListBox * listbox = (CListBox *)(*it);
+                    if (listbox->GetIsActive() == true && listbox->GetGUIMode() == GUIMode::DYNAMIC) {
+                        listbox->Clear();
+                    }
+                    break;
+                }
+                case GUIType::SLIDER: {
+                    CSlider * slider = (CSlider *)(*it);
+                    if (slider->GetIsActive() == true && slider->GetGUIMode() == GUIMode::DYNAMIC) {
+                        slider->Clear();
+                    }
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void Game::UpdateControls() {
-    //    std::cout
-    //    << " Light,"
-    //    << ", use dir: " << (int)m_useDir
-    //    << ", use point: " << (int)m_usePoint
-    //    << ", use spot: " << (int)m_useSpot
-    //    << std::endl;
-    
+ 
     UpdateMouseControls(mState);
     UpdateKeyBoardControls(kState);
     
@@ -208,13 +602,22 @@ void Game::UpdateControls() {
     
 }
 
+void Game::ClearControls() {
+    for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
+        CControl * control = (*it);
+        
+        if (control->GetIsActive() == false) {
+            control->Clear();
+        }
+    }
+}
+
 void Game::RemoveControls() {
-    /*
+    
     for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
         delete (*it);
         it = CControl::m_controls.begin();
     }
-    */
 }
 
 // glfw: whenever the mouse enters and leaves window, this callback is called
@@ -255,28 +658,11 @@ void OnMouseDown_callback(GLFWwindow* window, int button, int action, int mods){
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
         mState.m_rightButtonDown = ControlType::UNKNOWN;
     }
-    /*
-    std::cout
-    << "Mouse Down with,  "
-    << " button: " << button
-    << " action: " << action
-    << " mode: " << mods
-    << " state posX: " << mState.x
-    << " state posY: " << mState.y
-    << std::endl;
-     */
 }
 
 // glfw: whenever the mouse moves, this callback is called
 void OnMouseMove_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    /*
-     std::cout
-     << "Mouse Position,  "
-     << " posX: " << xpos
-     << " posY: " << ypos
-     << std::endl;
-     */
     mState.x = xpos;
     mState.y = ypos;
     
@@ -290,15 +676,7 @@ void OnMouseMove_callback(GLFWwindow* window, double xpos, double ypos)
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 void OnMouseScroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    /*
     //https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/11.anti_aliasing_offscreen/anti_aliasing_offscreen.cpp
-    std::cout
-    << "Mouse Scroll,  "
-    << " posX: " << xoffset
-    << " posY: " << yoffset
-    << std::endl;
-    */
-  
     mState.m_scroll = yoffset;
 }
 
@@ -424,20 +802,6 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
         
         switch (state.m_keyPressed)
         {
-                /*
-            case GLFW_KEY_D:
-                m_ssaoBias -= 0.1f;
-                break;
-            case GLFW_KEY_F:
-                m_ssaoBias += 0.1f;
-                break;
-            case GLFW_KEY_G:
-                m_ssaoRadius -= 0.5f;
-                break;
-            case GLFW_KEY_H:
-                m_ssaoRadius += 0.5f;
-                break;
-                 */
             case GLFW_KEY_GRAVE_ACCENT: {
                 m_changePPFXMode = true;
                 GLint currentIndex = static_cast<GLint>(m_currentPPFXMode);

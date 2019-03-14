@@ -170,6 +170,7 @@ protected:
     void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) override;
     void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) override;
     void SetFireBallUniform(CShaderProgram *pShaderProgram) override;
+    void SetJupiterColorUniform(CShaderProgram *pShaderProgram) override;
     
     /// Post Processing Unifom
     void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) override;

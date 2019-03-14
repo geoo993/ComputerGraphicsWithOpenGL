@@ -75,6 +75,15 @@ void Game::SetFireBallUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->SetUniform("explosion", 0.001f);
 }
 
+void Game::SetJupiterColorUniform(CShaderProgram *pShaderProgram){
+
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("time", m_timeInSeconds);
+    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX, m_mouseY));
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+}
+
 
 
 /// Post Processing Uniforms

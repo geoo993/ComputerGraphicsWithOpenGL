@@ -59,6 +59,8 @@
 		C713798E2203CEDF00E9A0F2 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71379852203CEDE00E9A0F2 /* Cube.cpp */; };
 		C713798F2203CEDF00E9A0F2 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71379882203CEDE00E9A0F2 /* Sphere.cpp */; };
 		C71379912203CEDF00E9A0F2 /* Torus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C713798C2203CEDF00E9A0F2 /* Torus.cpp */; };
+		C71E7E83223ADB9500336C6C /* JupiterColorShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C71E7E81223ADB9500336C6C /* JupiterColorShader.frag */; };
+		C71E7E84223ADB9500336C6C /* JupiterColorShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C71E7E82223ADB9500336C6C /* JupiterColorShader.vert */; };
 		C7332977221775D400BFE37B /* ToneMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7332975221775D300BFE37B /* ToneMappingShader.vert */; };
 		C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7332976221775D400BFE37B /* ToneMappingShader.frag */; };
 		C75C4CCF22208EA500C1F836 /* Control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75C4CCD22208EA500C1F836 /* Control.cpp */; };
@@ -89,6 +91,7 @@
 		C76DB0042218A6DE005C354C /* lensStarburst.png in Resources */ = {isa = PBXBuildFile; fileRef = C76DB0022218A6DE005C354C /* lensStarburst.png */; };
 		C76DB0052218A6DE005C354C /* lensDirt.png in Resources */ = {isa = PBXBuildFile; fileRef = C76DB0032218A6DE005C354C /* lensDirt.png */; };
 		C76ECD352220C2A600727113 /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C76ECD332220C2A600727113 /* Button.cpp */; };
+		C7724C9A223ABCC2008DDEE9 /* watercolor.png in Resources */ = {isa = PBXBuildFile; fileRef = C7724C99223ABCC2008DDEE9 /* watercolor.png */; };
 		C774664622161EF90099F081 /* Game+IGameWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C774664522161EF90099F081 /* Game+IGameWindow.cpp */; };
 		C77673AE2209F69500BA7062 /* Metal_007_Ambient_Occlusion.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C77673952209F69400BA7062 /* Metal_007_Ambient_Occlusion.jpg */; };
 		C77673AF2209F69500BA7062 /* Metal_007_Base_Color.png in Resources */ = {isa = PBXBuildFile; fileRef = C77673962209F69400BA7062 /* Metal_007_Base_Color.png */; };
@@ -1101,6 +1104,8 @@
 		C71379892203CEDE00E9A0F2 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
 		C713798A2203CEDE00E9A0F2 /* Torus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Torus.h; sourceTree = "<group>"; };
 		C713798C2203CEDF00E9A0F2 /* Torus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Torus.cpp; sourceTree = "<group>"; };
+		C71E7E81223ADB9500336C6C /* JupiterColorShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = JupiterColorShader.frag; sourceTree = "<group>"; };
+		C71E7E82223ADB9500336C6C /* JupiterColorShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = JupiterColorShader.vert; sourceTree = "<group>"; };
 		C7332975221775D300BFE37B /* ToneMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.vert; sourceTree = "<group>"; };
 		C7332976221775D400BFE37B /* ToneMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.frag; sourceTree = "<group>"; };
 		C75C4CCD22208EA500C1F836 /* Control.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Control.cpp; sourceTree = "<group>"; };
@@ -1133,6 +1138,7 @@
 		C76DB0032218A6DE005C354C /* lensDirt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lensDirt.png; sourceTree = "<group>"; };
 		C76ECD332220C2A600727113 /* Button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
 		C76ECD342220C2A600727113 /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
+		C7724C99223ABCC2008DDEE9 /* watercolor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = watercolor.png; sourceTree = "<group>"; };
 		C774664522161EF90099F081 /* Game+IGameWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IGameWindow.cpp"; sourceTree = "<group>"; };
 		C77673952209F69400BA7062 /* Metal_007_Ambient_Occlusion.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_007_Ambient_Occlusion.jpg; sourceTree = "<group>"; };
 		C77673962209F69400BA7062 /* Metal_007_Base_Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Metal_007_Base_Color.png; sourceTree = "<group>"; };
@@ -3357,6 +3363,8 @@
 		C7C8F2C921FF5F3C00AB865A /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				C71E7E81223ADB9500336C6C /* JupiterColorShader.frag */,
+				C71E7E82223ADB9500336C6C /* JupiterColorShader.vert */,
 				C7090CEB22367B21006FE002 /* PaletteQuantizationAndDitheringShader.frag */,
 				C7090CEA22367B21006FE002 /* PaletteQuantizationAndDitheringShader.vert */,
 				C7090CE7223676FC006FE002 /* DistortedTVShader.frag */,
@@ -3519,6 +3527,7 @@
 		C7C8F2CA21FF5F4D00AB865A /* textures */ = {
 			isa = PBXGroup;
 			children = (
+				C7724C99223ABCC2008DDEE9 /* watercolor.png */,
 				C7EED11022111ECC0079F5C0 /* clean-gray-paper.png */,
 				C7DE38FD221CA1CA00595556 /* explosion.png */,
 				C76DAFFD22189C36005C354C /* lensFlare */,
@@ -4813,6 +4822,7 @@
 				C7B75A372204E32C00E54C30 /* Pink-brown_painted_pxr128_normal.tif in Resources */,
 				C7DE3901221CCD1B00595556 /* DeferredRenderingShader.vert in Resources */,
 				C7B759642204E32C00E54C30 /* Marine_plywood_pxr128.tif in Resources */,
+				C71E7E84223ADB9500336C6C /* JupiterColorShader.vert in Resources */,
 				C7B759392204E32C00E54C30 /* Australian_rosewood_pxr128_normal.tif in Resources */,
 				C7B75A762204E32D00E54C30 /* Jade_cloth_pxr128_bmp.tif in Resources */,
 				C7B759362204E32C00E54C30 /* Figured_mahogany_pxr128_bmp.tif in Resources */,
@@ -5098,6 +5108,7 @@
 				C7C8F42F21FFB9FF00AB865A /* Arial.ttf in Resources */,
 				C7B75A612204E32D00E54C30 /* Pink_marble_pxr128.tif in Resources */,
 				C7CEE2EA2212435600895F5D /* KernelShader.frag in Resources */,
+				C7724C9A223ABCC2008DDEE9 /* watercolor.png in Resources */,
 				C7C8F4A721FFBA9E00AB865A /* _up.jpg in Resources */,
 				C7B4D3A822146E2900BCE130 /* iron-roughness.png in Resources */,
 				C7B4D3A322146E2900BCE130 /* woodframe-albedo.png in Resources */,
@@ -5171,6 +5182,7 @@
 				C7B759292204E32C00E54C30 /* Burled_walnut_pxr128.tif in Resources */,
 				C7B759ED2204E32C00E54C30 /* Vertical_redwood_pxr128.tif in Resources */,
 				C7C8F44921FFBA2A00AB865A /* _dn.jpg in Resources */,
+				C71E7E83223ADB9500336C6C /* JupiterColorShader.frag in Resources */,
 				C7DE39F2221F1F1500595556 /* ScreenSpaceAmbientOcclusionShader.frag in Resources */,
 				C7B759BD2204E32C00E54C30 /* Steel_diamond_plate_pxr128.tif in Resources */,
 				C7B4D3C422146E2900BCE130 /* streaked-marble-normal.png in Resources */,

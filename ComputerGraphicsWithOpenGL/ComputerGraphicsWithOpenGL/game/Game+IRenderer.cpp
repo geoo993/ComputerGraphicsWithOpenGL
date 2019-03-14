@@ -191,4 +191,11 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     RenderFireBallSphere(pFireBallProgram, glm::vec3(-500.0f, 470.0f, -1000.0f), 50.0f);
      */
     
+    /*
+    /// Jupiter Program
+    CShaderProgram *pJupiterProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 60];
+    SetMaterialUniform(pJupiterProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
+    SetJupiterColorUniform(pJupiterProgram);
+    RenderSphere(pJupiterProgram, m_spherePosition, 30.0f, false);
+    */
 }

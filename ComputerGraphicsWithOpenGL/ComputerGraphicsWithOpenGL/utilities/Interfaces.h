@@ -97,6 +97,7 @@ struct IShaderUniform {
     virtual void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) = 0;
     virtual void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) = 0;
     virtual void SetFireBallUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetJupiterColorUniform(CShaderProgram *pShaderProgram) = 0;
     
     ///Post Processing Uniform
     virtual void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) = 0;

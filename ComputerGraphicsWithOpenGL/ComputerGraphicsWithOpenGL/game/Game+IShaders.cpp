@@ -136,6 +136,8 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("ScreenSpaceAmbientOcclusionLightingShader.frag");
     sShaderFileNames.push_back("RainDropsShader.vert");// 59
     sShaderFileNames.push_back("RainDropsShader.frag");
+    sShaderFileNames.push_back("JupiterColorShader.vert");// 60
+    sShaderFileNames.push_back("JupiterColorShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -635,6 +637,13 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pRainDropsProgram->LinkProgram();
     m_pShaderPrograms->push_back(pRainDropsProgram);
 
+    // Create the Jupiter Color shader program
+    CShaderProgram *pJupiterColorProgram = new CShaderProgram;
+    pJupiterColorProgram->CreateProgram();
+    pJupiterColorProgram->AddShaderToProgram(&shShaders[123]);
+    pJupiterColorProgram->AddShaderToProgram(&shShaders[124]);
+    pJupiterColorProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pJupiterColorProgram);
 }
 
 

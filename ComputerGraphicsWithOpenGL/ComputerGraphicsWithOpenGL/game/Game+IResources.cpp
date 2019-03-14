@@ -138,7 +138,8 @@ void Game::LoadResources(const std::string &path)
                           { "chipped-paint-ao.png",   TextureType::AO }                          // aoMap 4
                       }, 50, 50);
     m_pFireBallSphere->Create(path+"/textures/",
-                              {   { "explosion.png", TextureType::NOISE }
+                              //{   { "explosion.png", TextureType::NOISE }
+                              {   { "watercolor.png", TextureType::NOISE }
                               }, 50, 50);
     m_pTorus->Create(path+"/textures/pixarLibrary/metal/", {
         {"Alloy_diamond_plate_pxr128.tif", TextureType::DIFFUSE},

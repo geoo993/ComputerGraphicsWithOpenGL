@@ -9,17 +9,6 @@
 #include "Game.h"
 
 /// Shaders Uniforms
-void Game::SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                 const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) {
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform(uniformName+".albedo", albedo);
-    pShaderProgram->SetUniform(uniformName+".metallic", metallic);
-    pShaderProgram->SetUniform(uniformName+".roughness", roughness);
-    pShaderProgram->SetUniform(uniformName+".fresnel", 0.6f);
-    pShaderProgram->SetUniform(uniformName+".ao", 1.0f);
-    
-}
-
 void Game::SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("bRefraction", useRefraction);

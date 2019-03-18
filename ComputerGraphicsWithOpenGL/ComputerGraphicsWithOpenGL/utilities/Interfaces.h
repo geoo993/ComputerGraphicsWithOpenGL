@@ -66,6 +66,8 @@ struct IMaterials {
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec4 &color, const GLfloat &shininess,
                                     const GLboolean &useAO) = 0;
+    virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                                       const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) = 0;
 };
 
 struct ITextures {
@@ -83,8 +85,6 @@ struct IShaders {
 struct IShaderUniform {
     GLboolean m_useRefraction;
     GLfloat m_parallaxHeightScale, m_uvTiling, m_magnitude;
-    virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                       const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) = 0;
     virtual void SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) = 0;
     virtual void SetParallaxMapUniform(CShaderProgram *pShaderProgram, const GLfloat &heightScale) = 0;
     virtual void SetBumpMapUniform(CShaderProgram *pShaderProgram, const GLfloat &uvTiling) = 0;

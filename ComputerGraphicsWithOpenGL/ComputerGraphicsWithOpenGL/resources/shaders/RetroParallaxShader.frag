@@ -36,6 +36,7 @@ in VS_OUT
 } fs_in;
 
 uniform float time;
+uniform float pixelSize; // between 1.0f and 20.0f
 uniform float width;   // width of the current render target
 uniform float height;  // height of the current render target
 uniform float coverage;        // between (0.0f and 1.0f)
@@ -44,42 +45,58 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
-    // https://gamedev.stackexchange.com/questions/106674/shadertoy-getting-help-moving-to-glsl
-    // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml
-    // https://stackoverflow.com/questions/26965787/how-to-get-accurate-fragment-screen-position-like-gl-fragcood-in-vertex-shader
-    vec2 fragCoord = gl_FragCoord.xy;
-    vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
-    vec2 resolution = vec2(width, height);// width and height of the screen
     
-    vec2 pixel = fragCoordViewportCoordinates.xy - resolution.xy * 0.5f;
+
+    vec4 tc = material.color;
     
-    // pixellate
-    const float pixelSize = 4.0f;
-    pixel = floor(pixel/pixelSize);
-    
-    //vec2 offset = vec2(time*3000.0f,pow(max(-sin(time*0.2f),0.0f),2.0f)*16000.0f)/pixelSize;
-    vec2 offset = vec2(3000.0f,pow(max(-sin(0.2f),0.0f),2.0f)*16000.0f)/pixelSize;
-    
-    vec3 col;
-    for ( int i=0; i < 8; i++ )
+    if (fs_in.vTexCoord.x <  coverage )
     {
-        // parallax position, whole pixels for retro feel
-        float depth = 20.0f+float(i);
-        vec2 uv = pixel + floor(offset/depth);
+        // https://gamedev.stackexchange.com/questions/106674/shadertoy-getting-help-moving-to-glsl
+        // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml
+        // https://stackoverflow.com/questions/26965787/how-to-get-accurate-fragment-screen-position-like-gl-fragcood-in-vertex-shader
+        vec2 fragCoord = gl_FragCoord.xy;
+        vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
+        vec2 resolution = vec2(width, height);// width and height of the screen
         
-        uv /= resolution.y;
-        uv *= depth/20.0f;
-        uv *= 0.4f*pixelSize;
+        vec2 pixel = fragCoordViewportCoordinates.xy - resolution.xy * 0.5f;
         
-        col = texture( material.ambientMap, uv+0.5f ).rgb;
+        // pixellate
+        pixel = floor(pixel/pixelSize);
         
-        if ( 1.0f-col.y < float(i+1)/8.0f )
+        vec2 offset = vec2(time*3000.0f,pow(max(-sin(time*0.2f),0.0f),2.0f)*16000.0f)/pixelSize;
+        //vec2 offset = vec2(3000.0f,pow(max(-sin(0.2f),0.0f),2.0f)*16000.0f)/pixelSize;
+        
+        vec3 col;
+        for ( int i=0; i < 8; i++ )
         {
-            col = mix( vec3(0.4f,0.6f,0.7f), col, exp2(-float(i)*0.1f) );
-            break;
+            // parallax position, whole pixels for retro feel
+            float depth = 20.0f+float(i);
+            vec2 uv = pixel + floor(offset/depth);
+            
+            uv /= resolution.y;
+            uv *= depth/20.0f;
+            uv *= 0.4f*pixelSize;
+            
+            col = texture( material.ambientMap, uv+0.5f ).rgb;
+            
+            if ( 1.0f-col.y < float(i+1)/8.0f )
+            {
+                col = mix( vec3(0.4f,0.6f,0.7f), col, exp2(-float(i)*0.1f) );
+                break;
+            }
+        }
+        tc = vec4(col,1.0f);
+        
+    } else if (fs_in.vTexCoord.x >= ( coverage + 0.003f) )
+    {
+        tc = texture(material.ambientMap, fs_in.vTexCoord.xy);
+    } else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, fs_in.vTexCoord.xy);
         }
     }
     
-    vOutputColour = vec4(col,1.0f);
+    vOutputColour = tc;
     
 }

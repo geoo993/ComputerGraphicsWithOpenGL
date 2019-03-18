@@ -99,51 +99,64 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 void main()
 {
     
-    vec2 resolution = vec2(width, height);// width and height of the screen
+    vec4 tc = material.color;
     
-    float screenAspect = resolution.x / resolution.y;
+    if (fs_in.vTexCoord.x <  coverage )
+    {
+        vec2 resolution = vec2(width, height);// width and height of the screen
+        
+        float screenAspect = resolution.x / resolution.y;
+        
+        float mouseZ = mouseDown;
+        // set offset via mouse-x if button down, else timer
+        vec2 offset = mix(vec2(0.4f*sin(time/1.5f),0.0f),
+                          vec2(0.5f-(mouse.x / resolution.x),0.0f),
+                          step(1.0f, mouseZ));
+        offset *= mat2(0.9659f,-0.2588f,0.2588f,0.9659f); // 15deg rotation
+        
+        
+        // set mosaic density via mouse-y if button down, else default
+        float cellsHigh = mix(defaultCells,
+                              mix(minCells,maxCells,1.0f-sqrt(1.0f-(mouse.y / resolution.y))),
+                              step(1.0f,mouseZ));
+        
+        float cellsWide = cellsHigh * screenAspect * triAspect;
+        vec2 cellSize = vec2(1.0f/cellsWide,1.0f/cellsHigh);
+        
+        vec2 uv = fixUV(fs_in.vTexCoord);
+        
+        // find whether co-ord in 'odd' or 'even' cell
+        float score = hitTest(uv-0.5f,cellSize);
+        float oddEven = step(0.0f,score);
+        
+        // texture lookup with chroma spread
+        vec2 uvTranslate = 0.5f * cellSize * mix(-offset/4.0f,offset,oddEven);
+        float chromAbr = pow(aberration,sqrt(1.2f*cellsHigh));
+        vec4 txColor = vec4(
+                            texture(material.ambientMap, clamp(uv+(uvTranslate/chromAbr),0.0f,1.0f)).x,
+                            texture(material.ambientMap, clamp(uv+uvTranslate,0.0f,1.0f)).y,
+                            texture(material.ambientMap, clamp(uv+(chromAbr*uvTranslate),0.0f,1.0f)).z,
+                            1.0f);
+        
+        // vary brightness based on offset, distance from top of cell
+        float bright = (0.04f + (0.04f * length(offset)/0.5f)) * (1.0f-(0.7f*fract((uv.y-0.5f)/cellSize.y)));
+        tc = mix(txColor, mix(pow(txColor,vec4(2.0f)), vec4(1.0f)-pow(vec4(1.)-txColor,vec4(2.0f)),oddEven), vec4(bright));
+        
+        // vignetting based on distance from centre of cell, attenuation by cell count
+        float attn = pow(0.97f,pow(cellsHigh,1.3f));
+        float vignette = distFromTriCentre(uv-0.5f, cellSize, oddEven);
+        tc -= 0.25f*attn * (1.0f - (pow(0.92f,3.0f*pow(vignette,2.5f))));
+        
+        // darken near tri edges
+        float edges = 1.0f-pow(abs(score),0.5f);
+        tc -= 0.5f*attn * (1.0f - (pow(0.9f,1.0f*pow(edges,4.0f))));
+    } else if (fs_in.vTexCoord.x >= ( coverage + 0.003f) ) {
+        tc = texture(material.ambientMap, fs_in.vTexCoord.xy);
+    } else {
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, fs_in.vTexCoord.xy);
+        }
+    }
     
-    float mouseZ = mouseDown;
-    // set offset via mouse-x if button down, else timer
-    vec2 offset = mix(vec2(0.4f*sin(time/1.5f),0.0f),
-                      vec2(0.5f-(mouse.x / resolution.x),0.0f),
-                      step(1.0f, mouseZ));
-    offset *= mat2(0.9659f,-0.2588f,0.2588f,0.9659f); // 15deg rotation
-    
-    
-    // set mosaic density via mouse-y if button down, else default
-    float cellsHigh = mix(defaultCells,
-                          mix(minCells,maxCells,1.0f-sqrt(1.0f-(mouse.y / resolution.y))),
-                          step(1.0f,mouseZ));
-    
-    float cellsWide = cellsHigh * screenAspect * triAspect;
-    vec2 cellSize = vec2(1.0f/cellsWide,1.0f/cellsHigh);
-    
-    vec2 uv = fixUV(fs_in.vTexCoord);
-    
-    // find whether co-ord in 'odd' or 'even' cell
-    float score = hitTest(uv-0.5f,cellSize);
-    float oddEven = step(0.0f,score);
-    
-    // texture lookup with chroma spread
-    vec2 uvTranslate = 0.5f * cellSize * mix(-offset/4.0f,offset,oddEven);
-    float chromAbr = pow(aberration,sqrt(1.2f*cellsHigh));
-    vec4 txColor = vec4(
-                        texture(material.ambientMap, clamp(uv+(uvTranslate/chromAbr),0.0f,1.0f)).x,
-                        texture(material.ambientMap, clamp(uv+uvTranslate,0.0f,1.0f)).y,
-                        texture(material.ambientMap, clamp(uv+(chromAbr*uvTranslate),0.0f,1.0f)).z,
-                        1.0f);
-    
-    // vary brightness based on offset, distance from top of cell
-    float bright = (0.04f + (0.04f * length(offset)/0.5f)) * (1.0f-(0.7f*fract((uv.y-0.5f)/cellSize.y)));
-    vOutputColour = mix(txColor, mix(pow(txColor,vec4(2.0f)), vec4(1.0f)-pow(vec4(1.)-txColor,vec4(2.0f)),oddEven), vec4(bright));
-    
-    // vignetting based on distance from centre of cell, attenuation by cell count
-    float attn = pow(0.97f,pow(cellsHigh,1.3f));
-    float vignette = distFromTriCentre(uv-0.5f, cellSize, oddEven);
-    vOutputColour -= 0.25f*attn * (1.0f - (pow(0.92f,3.0f*pow(vignette,2.5f))));
-    
-    // darken near tri edges
-    float edges = 1.0f-pow(abs(score),0.5f);
-    vOutputColour -= 0.5f*attn * (1.0f - (pow(0.9f,1.0f*pow(edges,4.0f))));
+    vOutputColour = tc;
 }

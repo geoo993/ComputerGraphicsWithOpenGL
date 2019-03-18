@@ -42,29 +42,48 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
-    // https://gamedev.stackexchange.com/questions/106674/shadertoy-getting-help-moving-to-glsl
-    // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml
-    // https://stackoverflow.com/questions/26965787/how-to-get-accurate-fragment-screen-position-like-gl-fragcood-in-vertex-shader
-    vec2 fragCoord = gl_FragCoord.xy;
-    vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
-    vec2 resolution = vec2(width, height);// width and height of the screen
     
-    int CELL_SIZE = 6;
-    float CELL_SIZE_FLOAT = float(CELL_SIZE);
-    int RED_COLUMNS = int(CELL_SIZE_FLOAT/3.0f);
-    int GREEN_COLUMNS = CELL_SIZE-RED_COLUMNS;
+    vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = material.color;
     
-    vec2 p = floor(fragCoordViewportCoordinates.xy / CELL_SIZE_FLOAT)*CELL_SIZE_FLOAT;
-    int offsetx = int(mod(fragCoordViewportCoordinates.x, CELL_SIZE_FLOAT));
-    int offsety = int(mod(fragCoordViewportCoordinates.y, CELL_SIZE_FLOAT));
-    
-    vec4 sum = texture(material.ambientMap, p / resolution.xy);
-    
-    vOutputColour = vec4(0.0f,0.0f,0.0f,1.0f);
-    if (offsety < CELL_SIZE-1) {
-        if (offsetx < RED_COLUMNS) vOutputColour.r = sum.r;
-        else if (offsetx < GREEN_COLUMNS) vOutputColour.g = sum.g;
-        else vOutputColour.b = sum.b;
+    if (uv.x < (  coverage  ) )
+    {
+        // https://gamedev.stackexchange.com/questions/106674/shadertoy-getting-help-moving-to-glsl
+        // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml
+        // https://stackoverflow.com/questions/26965787/how-to-get-accurate-fragment-screen-position-like-gl-fragcood-in-vertex-shader
+        vec2 fragCoord = gl_FragCoord.xy;
+        vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
+        vec2 resolution = vec2(width, height);// width and height of the screen
+        
+        int CELL_SIZE = 6;
+        float CELL_SIZE_FLOAT = float(CELL_SIZE);
+        int RED_COLUMNS = int(CELL_SIZE_FLOAT/3.0f);
+        int GREEN_COLUMNS = CELL_SIZE-RED_COLUMNS;
+        
+        vec2 p = floor(fragCoordViewportCoordinates.xy / CELL_SIZE_FLOAT)*CELL_SIZE_FLOAT;
+        int offsetx = int(mod(fragCoordViewportCoordinates.x, CELL_SIZE_FLOAT));
+        int offsety = int(mod(fragCoordViewportCoordinates.y, CELL_SIZE_FLOAT));
+        
+        vec4 sum = texture(material.ambientMap, p / resolution.xy);
+        
+        tc = vec4(0.0f,0.0f,0.0f,1.0f);
+        if (offsety < CELL_SIZE-1) {
+            if (offsetx < RED_COLUMNS) tc.r = sum.r;
+            else if (offsetx < GREEN_COLUMNS) tc.g = sum.g;
+            else tc.b = sum.b;
+        }
+        
+    }
+    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    }
+    else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
     }
     
+    vOutputColour = tc;
 }

@@ -487,7 +487,12 @@ void Game::LoadControls() {
     CSlider *ssaoNoise = (CSlider *)AddControl(new CSlider("Noise", 0.0f, 10.0f, 5, guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
     ssaoNoise->SetValue(&m_ssaoNoiseSize);
-
+    
+    // Cel Shaderish
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *cellThreshold = (CSlider *)AddControl(new CSlider("Threshold", 0.0f, 1.0f, 5, guiBox,
+                                                                       GUIMode::DYNAMIC, false, PostProcessingEffectMode::CelShaderish));
+    cellThreshold->SetValue(&m_cellThreshold);
 }
 
 void Game::RenderControls() {

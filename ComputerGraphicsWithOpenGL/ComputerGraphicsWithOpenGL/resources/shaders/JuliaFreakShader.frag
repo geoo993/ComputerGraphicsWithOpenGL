@@ -44,11 +44,26 @@ void main()
 {
 
     vec2 uv = fs_in.vTexCoord.xy - 0.5f;
+    vec4 tc = material.color;
     
-    const vec2 M = vec2(0.36f, 0.196f);
-    uv = vec2(uv.x*uv.x - uv.y*uv.y, 2.0f * uv.x * uv.y) + M;
-    uv = vec2(uv.x*uv.x - uv.y*uv.y, 2.0f * uv.x * uv.y) + M;
-    uv = vec2(uv.x*uv.x - uv.y*uv.y, 2.0f * uv.x * uv.y) + M;
+    if (fs_in.vTexCoord.x <  coverage )
+    {
+        const vec2 M = vec2(0.36f, 0.196f);
+        uv = vec2(uv.x*uv.x - uv.y*uv.y, 2.0f * uv.x * uv.y) + M;
+        uv = vec2(uv.x*uv.x - uv.y*uv.y, 2.0f * uv.x * uv.y) + M;
+        uv = vec2(uv.x*uv.x - uv.y*uv.y, 2.0f * uv.x * uv.y) + M;
+        
+        tc = vec4(texture(material.ambientMap,uv));
+        
+    } else if (fs_in.vTexCoord.x >= ( coverage + 0.003f) )
+    {
+        tc = texture(material.ambientMap, fs_in.vTexCoord.xy);
+    } else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, fs_in.vTexCoord.xy);
+        }
+    }
     
-    vOutputColour = vec4(texture(material.ambientMap,uv));
+    vOutputColour = tc;
 }

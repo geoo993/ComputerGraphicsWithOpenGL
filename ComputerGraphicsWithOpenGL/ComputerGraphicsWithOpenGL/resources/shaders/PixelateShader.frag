@@ -43,15 +43,34 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
-    // https://gamedev.stackexchange.com/questions/106674/shadertoy-getting-help-moving-to-glsl
-    // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml
-    // https://stackoverflow.com/questions/26965787/how-to-get-accurate-fragment-screen-position-like-gl-fragcood-in-vertex-shader
-    vec2 fragCoord = gl_FragCoord.xy;
-    vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
-    vec2 resolution = vec2(width, height);// width and height of the screen
+    vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = material.color;
     
-    vec2 modul = mod(fragCoordViewportCoordinates, pixelSize);
-    vec2 normalizedCord= vec2(fragCoordViewportCoordinates-modul)/resolution.xy;
-    vOutputColour = texture(material.ambientMap, normalizedCord);
+    if (uv.x < (  coverage  ) )
+    {
+        
+        // https://gamedev.stackexchange.com/questions/106674/shadertoy-getting-help-moving-to-glsl
+        // https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml
+        // https://stackoverflow.com/questions/26965787/how-to-get-accurate-fragment-screen-position-like-gl-fragcood-in-vertex-shader
+        vec2 fragCoord = gl_FragCoord.xy;
+        vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
+        vec2 resolution = vec2(width, height);// width and height of the screen
+        
+        vec2 modul = mod(fragCoordViewportCoordinates, pixelSize);
+        vec2 normalizedCord= vec2(fragCoordViewportCoordinates-modul)/resolution.xy;
+        tc = texture(material.ambientMap, normalizedCord);
+    }
+    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    }
+    else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
+    }
+    
+    vOutputColour = tc;
     
 }

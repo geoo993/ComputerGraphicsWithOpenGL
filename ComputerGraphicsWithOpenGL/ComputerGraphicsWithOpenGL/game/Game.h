@@ -185,7 +185,9 @@ protected:
     void SetLensCircleUniform(CShaderProgram *pShaderProgram) override;
     void SetPosterizationUniform(CShaderProgram *pShaderProgram) override;
     void SetDreamVisionUniform(CShaderProgram *pShaderProgram) override;
+    void SetPixelateUniform(CShaderProgram *pShaderProgram) override;
     void SetPixelationUniform(CShaderProgram *pShaderProgram) override;
+    void SetKnittedPixelationUniform(CShaderProgram *pShaderProgram) override;
     void SetFrostedGlassEffectUniform(CShaderProgram *pShaderProgram) override;
     void SetFrostedGlassUniform(CShaderProgram *pShaderProgram) override;
     void SetCrosshatchingUniform(CShaderProgram *pShaderProgram) override;
@@ -214,6 +216,20 @@ protected:
     void SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) override;
     void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture = true) override;
     void SetRainDropsUniform(CShaderProgram *pShaderProgram) override;
+    void SetPaletteQuantizationAndDitheringUniform(CShaderProgram *pShaderProgram) override;
+    void SetDistortedTVUniform(CShaderProgram *pShaderProgram) override;
+    void SetRGBDisplayUniform(CShaderProgram *pShaderProgram) override;
+    void SetRetroParallaxUniform(CShaderProgram *pShaderProgram) override;
+    void SetScaryRetroParallaxUniform(CShaderProgram *pShaderProgram) override;
+    void SetMoneyFilterUniform(CShaderProgram *pShaderProgram) override;
+    void SetMicroprismMosaicUniform(CShaderProgram *pShaderProgram) override;
+    void SetBayerMatrixDitheringUniform(CShaderProgram *pShaderProgram) override;
+    void SetJuliaFreakUniform(CShaderProgram *pShaderProgram) override;
+    void SetHeartBlendUniform(CShaderProgram *pShaderProgram) override;
+    void SetEMInterferenceUniform(CShaderProgram *pShaderProgram) override;
+    void SetCubicLensDistortionUniform(CShaderProgram *pShaderProgram) override;
+    void SetCelShaderishUniform(CShaderProgram *pShaderProgram) override;
+    void SetCartoonVideoUniform(CShaderProgram *pShaderProgram) override;
     
     /// Lights
     void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,

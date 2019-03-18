@@ -112,7 +112,9 @@ struct IShaderUniform {
     virtual void SetLensCircleUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetPosterizationUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetDreamVisionUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetPixelateUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetPixelationUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetKnittedPixelationUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetFrostedGlassEffectUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetFrostedGlassUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetCrosshatchingUniform(CShaderProgram *pShaderProgram) = 0;
@@ -141,6 +143,20 @@ struct IShaderUniform {
     virtual void SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) = 0;
     virtual void SetRainDropsUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetPaletteQuantizationAndDitheringUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetDistortedTVUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetRGBDisplayUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetRetroParallaxUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetScaryRetroParallaxUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetMoneyFilterUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetMicroprismMosaicUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetBayerMatrixDitheringUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetJuliaFreakUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetHeartBlendUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetEMInterferenceUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetCubicLensDistortionUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetCelShaderishUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetCartoonVideoUniform(CShaderProgram *pShaderProgram) = 0;
 };
 
 struct ILights
@@ -314,6 +330,9 @@ struct IPostProcessing {
     GLuint m_ssaoKernelSamples, m_ssaoNoiseSamples;
     GLfloat m_ssaoBias, m_ssaoRadius, m_ssaoNoiseSize;
     GLboolean m_ssaoNoiseUseLight;
+    
+    // Cell Shaderish
+    GLfloat m_cellThreshold;
     
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;

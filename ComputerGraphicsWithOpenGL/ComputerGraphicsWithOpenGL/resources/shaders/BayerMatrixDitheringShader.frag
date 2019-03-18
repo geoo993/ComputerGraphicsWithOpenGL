@@ -36,24 +36,26 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
+uniform float width;   // width of the current render target
+uniform float height;  // height of the current render target
 uniform float coverage;        // between (0.0f and 1.0f)
 
-const float strength = 0.5;
-const float gamma = 0.6;
-const float brightness = 1.4;
+const float strength = 0.5f;
+const float gamma = 0.6f;
+const float brightness = 1.4f;
 
-const float orig = 1.0 - strength;
+const float orig = 1.0f - strength;
 
 float luma(vec4 rgba) {
-    const vec3 W = vec3(0.2125, 0.7154, 0.0721);
+    const vec3 W = vec3(0.2125f, 0.7154f, 0.0721f);
     return dot(rgba.xyz, W);
 }
 
 float dither8x8(vec2 position, float lum) {
-    int x = int(mod(position.x, 8.0));
-    int y = int(mod(position.y, 8.0));
+    int x = int(mod(position.x, 8.0f));
+    int y = int(mod(position.y, 8.0f));
     int index = x + y * 8;
-    float limit = 0.0;
+    float limit = 0.0f;
     
     if (x < 8) {
         if (index == 0) limit = 0.015625;
@@ -122,14 +124,14 @@ float dither8x8(vec2 position, float lum) {
         if (index == 63) limit = 0.34375;
     }
     
-    return lum < limit ? 0.0 : brightness;
+    return lum < limit ? 0.0f : brightness;
 }
 
 vec4 dither8x8(vec2 position, vec4 color) {
     float l = luma(color);
     l = pow(l, gamma);
-    l -= 1.0/255.0;
-    return vec4(color.rgb * dither8x8(position, l), 1.0);
+    l -= 1.0f/255.0f;
+    return vec4(color.rgb * dither8x8(position, l), 1.0f);
 }
 
 out vec4 vOutputColour;        // The output colour formely  gl_FragColor
@@ -137,10 +139,25 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 void main()
 {
 
-    vec2 screen = vec2(width, height);
-    vec2 resolution = screen;//mouse.xy / screen;
-    vec2 uv = fs_in.vTexCoord.xy;// / resolution.xy;
-    vec4 vTexColour = texture(material.ambientMap, fs_in.vTexCoord);
     
-    vOutputColour = orig * vTexColour + strength * dither8x8(gl_FragCoord.xy, vTexColour);
+    vec4 tc = material.color;
+    
+    if (fs_in.vTexCoord.x <  coverage )
+    {
+        vec2 screen = vec2(width, height);
+        vec2 resolution = screen;//mouse.xy / screen;
+        vec4 vTexColour = texture(material.ambientMap, fs_in.vTexCoord);
+        tc = orig * vTexColour + strength * dither8x8(gl_FragCoord.xy, vTexColour);
+    } else if (fs_in.vTexCoord.x >= ( coverage + 0.003f) )
+    {
+        tc = texture(material.ambientMap, fs_in.vTexCoord.xy);
+    } else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, fs_in.vTexCoord.xy);
+        }
+    }
+    
+    vOutputColour = tc;
+    
 }

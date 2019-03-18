@@ -139,6 +139,40 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("JupiterColorShader.vert");// 60
     sShaderFileNames.push_back("JupiterColorShader.frag");
     
+    
+    sShaderFileNames.push_back("PaletteQuantizationAndDitheringShader.vert");// 61
+    sShaderFileNames.push_back("PaletteQuantizationAndDitheringShader.frag");
+    sShaderFileNames.push_back("DistortedTVShader.vert");// 62
+    sShaderFileNames.push_back("DistortedTVShader.frag");
+    sShaderFileNames.push_back("RGBDisplayShader.vert");// 63
+    sShaderFileNames.push_back("RGBDisplayShader.frag");
+    sShaderFileNames.push_back("PixelateShader.vert");// 64
+    sShaderFileNames.push_back("PixelateShader.frag");
+    sShaderFileNames.push_back("RetroParallaxShader.vert");// 65
+    sShaderFileNames.push_back("RetroParallaxShader.frag");
+    sShaderFileNames.push_back("ScaryRetroParallaxShader.vert");// 66
+    sShaderFileNames.push_back("ScaryRetroParallaxShader.frag");
+    sShaderFileNames.push_back("MoneyFilterShader.vert");// 67
+    sShaderFileNames.push_back("MoneyFilterShader.frag");
+    sShaderFileNames.push_back("MicroprismMosaicShader.vert");// 68
+    sShaderFileNames.push_back("MicroprismMosaicShader.frag");
+    sShaderFileNames.push_back("KnittedPixelationShader.vert");// 69
+    sShaderFileNames.push_back("KnittedPixelationShader.frag");
+    sShaderFileNames.push_back("BayerMatrixDitheringShader.vert");// 70
+    sShaderFileNames.push_back("BayerMatrixDitheringShader.frag");
+    sShaderFileNames.push_back("JuliaFreakShader.vert");// 71
+    sShaderFileNames.push_back("JuliaFreakShader.frag");
+    sShaderFileNames.push_back("HeartBlendShader.vert");// 72
+    sShaderFileNames.push_back("HeartBlendShader.frag");
+    sShaderFileNames.push_back("EMInterferenceShader.vert");// 73
+    sShaderFileNames.push_back("EMInterferenceShader.frag");
+    sShaderFileNames.push_back("CubicLensDistortionShader.vert");// 74
+    sShaderFileNames.push_back("CubicLensDistortionShader.frag");
+    sShaderFileNames.push_back("CelShaderishShader.vert");// 75
+    sShaderFileNames.push_back("CelShaderishShader.frag");
+    sShaderFileNames.push_back("CartoonVideoShader.vert");// 76
+    sShaderFileNames.push_back("CartoonVideoShader.frag");
+    
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
         int iShaderType;
@@ -644,6 +678,134 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pJupiterColorProgram->AddShaderToProgram(&shShaders[124]);
     pJupiterColorProgram->LinkProgram();
     m_pShaderPrograms->push_back(pJupiterColorProgram);
+    
+    // Create the Palette Quantization And Dithering program
+    CShaderProgram *pPaletteQuantizationAndDitheringProgram = new CShaderProgram;
+    pPaletteQuantizationAndDitheringProgram->CreateProgram();
+    pPaletteQuantizationAndDitheringProgram->AddShaderToProgram(&shShaders[125]);
+    pPaletteQuantizationAndDitheringProgram->AddShaderToProgram(&shShaders[126]);
+    pPaletteQuantizationAndDitheringProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pPaletteQuantizationAndDitheringProgram);
+    
+    // Create the DistortedTV program
+    CShaderProgram *pDistortedTVProgram = new CShaderProgram;
+    pDistortedTVProgram->CreateProgram();
+    pDistortedTVProgram->AddShaderToProgram(&shShaders[127]);
+    pDistortedTVProgram->AddShaderToProgram(&shShaders[128]);
+    pDistortedTVProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pDistortedTVProgram);
+    
+    // Create the RGBDisplay program
+    CShaderProgram *pRGBDisplayProgram = new CShaderProgram;
+    pRGBDisplayProgram->CreateProgram();
+    pRGBDisplayProgram->AddShaderToProgram(&shShaders[129]);
+    pRGBDisplayProgram->AddShaderToProgram(&shShaders[130]);
+    pRGBDisplayProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pRGBDisplayProgram);
+    
+    // Create the Pixelate program
+    CShaderProgram *pPixelateProgram = new CShaderProgram;
+    pPixelateProgram->CreateProgram();
+    pPixelateProgram->AddShaderToProgram(&shShaders[131]);
+    pPixelateProgram->AddShaderToProgram(&shShaders[132]);
+    pPixelateProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pPixelateProgram);
+    
+    // Create the Retro Parallax program
+    CShaderProgram *pRetroParallaxProgram = new CShaderProgram;
+    pRetroParallaxProgram->CreateProgram();
+    pRetroParallaxProgram->AddShaderToProgram(&shShaders[133]);
+    pRetroParallaxProgram->AddShaderToProgram(&shShaders[134]);
+    pRetroParallaxProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pRetroParallaxProgram);
+    
+    // Create the Scary Retro Parallax program
+    CShaderProgram *pScaryRetroParallaxProgram = new CShaderProgram;
+    pScaryRetroParallaxProgram->CreateProgram();
+    pScaryRetroParallaxProgram->AddShaderToProgram(&shShaders[135]);
+    pScaryRetroParallaxProgram->AddShaderToProgram(&shShaders[136]);
+    pScaryRetroParallaxProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pScaryRetroParallaxProgram);
+    
+    // Create the Scary MoneyFilter program
+    CShaderProgram *pMoneyFilterProgram = new CShaderProgram;
+    pMoneyFilterProgram->CreateProgram();
+    pMoneyFilterProgram->AddShaderToProgram(&shShaders[137]);
+    pMoneyFilterProgram->AddShaderToProgram(&shShaders[138]);
+    pMoneyFilterProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pMoneyFilterProgram);
+    
+    // Create the Microprism Mosaic program
+    CShaderProgram *pMicroprismMosaicProgram = new CShaderProgram;
+    pMicroprismMosaicProgram->CreateProgram();
+    pMicroprismMosaicProgram->AddShaderToProgram(&shShaders[139]);
+    pMicroprismMosaicProgram->AddShaderToProgram(&shShaders[140]);
+    pMicroprismMosaicProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pMicroprismMosaicProgram);
+    
+    // Create the Knitted Pixelation program
+    CShaderProgram *pKnittedPixelationProgram = new CShaderProgram;
+    pKnittedPixelationProgram->CreateProgram();
+    pKnittedPixelationProgram->AddShaderToProgram(&shShaders[141]);
+    pKnittedPixelationProgram->AddShaderToProgram(&shShaders[142]);
+    pKnittedPixelationProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pKnittedPixelationProgram);
+    
+    // Create the Bayer Matrix Dithering program
+    CShaderProgram *pBayerMatrixDitheringProgram = new CShaderProgram;
+    pBayerMatrixDitheringProgram->CreateProgram();
+    pBayerMatrixDitheringProgram->AddShaderToProgram(&shShaders[143]);
+    pBayerMatrixDitheringProgram->AddShaderToProgram(&shShaders[144]);
+    pBayerMatrixDitheringProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pBayerMatrixDitheringProgram);
+    
+    // Create the Julia Freak program
+    CShaderProgram *pJuliaFreakProgram = new CShaderProgram;
+    pJuliaFreakProgram->CreateProgram();
+    pJuliaFreakProgram->AddShaderToProgram(&shShaders[145]);
+    pJuliaFreakProgram->AddShaderToProgram(&shShaders[146]);
+    pJuliaFreakProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pJuliaFreakProgram);
+    
+    // Create the Heart Blend program
+    CShaderProgram *pJHeartBlendProgram = new CShaderProgram;
+    pJHeartBlendProgram->CreateProgram();
+    pJHeartBlendProgram->AddShaderToProgram(&shShaders[147]);
+    pJHeartBlendProgram->AddShaderToProgram(&shShaders[148]);
+    pJHeartBlendProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pJHeartBlendProgram);
+    
+    // Create the EM Interference program
+    CShaderProgram *pEMInterferenceProgram = new CShaderProgram;
+    pEMInterferenceProgram->CreateProgram();
+    pEMInterferenceProgram->AddShaderToProgram(&shShaders[149]);
+    pEMInterferenceProgram->AddShaderToProgram(&shShaders[150]);
+    pEMInterferenceProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pEMInterferenceProgram);
+    
+    // Create the Cubic Lens Distortion program
+    CShaderProgram *pCubicLensDistortionProgram = new CShaderProgram;
+    pCubicLensDistortionProgram->CreateProgram();
+    pCubicLensDistortionProgram->AddShaderToProgram(&shShaders[151]);
+    pCubicLensDistortionProgram->AddShaderToProgram(&shShaders[152]);
+    pCubicLensDistortionProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pCubicLensDistortionProgram);
+    
+    // Create the Cel Shaderish program
+    CShaderProgram *pCelShaderishProgram = new CShaderProgram;
+    pCelShaderishProgram->CreateProgram();
+    pCelShaderishProgram->AddShaderToProgram(&shShaders[153]);
+    pCelShaderishProgram->AddShaderToProgram(&shShaders[154]);
+    pCelShaderishProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pCelShaderishProgram);
+    
+    // Create the Cartoon Video program
+    CShaderProgram *pCartoonVideoProgram = new CShaderProgram;
+    pCartoonVideoProgram->CreateProgram();
+    pCartoonVideoProgram->AddShaderToProgram(&shShaders[155]);
+    pCartoonVideoProgram->AddShaderToProgram(&shShaders[156]);
+    pCartoonVideoProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pCartoonVideoProgram);
 }
 
 

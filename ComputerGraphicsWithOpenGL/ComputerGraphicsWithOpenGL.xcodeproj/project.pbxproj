@@ -16,7 +16,7 @@
 		C7090CB82235E38E006FE002 /* CubicLensDistortionShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7090CB62235E38E006FE002 /* CubicLensDistortionShader.vert */; };
 		C7090CB92235E38E006FE002 /* CubicLensDistortionShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7090CB72235E38E006FE002 /* CubicLensDistortionShader.frag */; };
 		C7090CBC2235E465006FE002 /* EMInterferenceShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7090CBA2235E465006FE002 /* EMInterferenceShader.vert */; };
-		C7090CBD2235E465006FE002 /* EMInterferenceShader..frag in Resources */ = {isa = PBXBuildFile; fileRef = C7090CBB2235E465006FE002 /* EMInterferenceShader..frag */; };
+		C7090CBD2235E465006FE002 /* EMInterferenceShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7090CBB2235E465006FE002 /* EMInterferenceShader.frag */; };
 		C7090CC02235E666006FE002 /* HeartBlendShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7090CBE2235E665006FE002 /* HeartBlendShader.frag */; };
 		C7090CC12235E666006FE002 /* HeartBlendShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7090CBF2235E666006FE002 /* HeartBlendShader.vert */; };
 		C7090CC42235E727006FE002 /* JuliaFreakShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7090CC22235E726006FE002 /* JuliaFreakShader.frag */; };
@@ -1052,7 +1052,7 @@
 		C7090CB62235E38E006FE002 /* CubicLensDistortionShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubicLensDistortionShader.vert; sourceTree = "<group>"; };
 		C7090CB72235E38E006FE002 /* CubicLensDistortionShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CubicLensDistortionShader.frag; sourceTree = "<group>"; };
 		C7090CBA2235E465006FE002 /* EMInterferenceShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EMInterferenceShader.vert; sourceTree = "<group>"; };
-		C7090CBB2235E465006FE002 /* EMInterferenceShader..frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EMInterferenceShader..frag; sourceTree = "<group>"; };
+		C7090CBB2235E465006FE002 /* EMInterferenceShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EMInterferenceShader.frag; sourceTree = "<group>"; };
 		C7090CBE2235E665006FE002 /* HeartBlendShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = HeartBlendShader.frag; sourceTree = "<group>"; };
 		C7090CBF2235E666006FE002 /* HeartBlendShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = HeartBlendShader.vert; sourceTree = "<group>"; };
 		C7090CC22235E726006FE002 /* JuliaFreakShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = JuliaFreakShader.frag; sourceTree = "<group>"; };
@@ -3389,7 +3389,7 @@
 				C7090CC32235E726006FE002 /* JuliaFreakShader.vert */,
 				C7090CBE2235E665006FE002 /* HeartBlendShader.frag */,
 				C7090CBF2235E666006FE002 /* HeartBlendShader.vert */,
-				C7090CBB2235E465006FE002 /* EMInterferenceShader..frag */,
+				C7090CBB2235E465006FE002 /* EMInterferenceShader.frag */,
 				C7090CBA2235E465006FE002 /* EMInterferenceShader.vert */,
 				C7090CB72235E38E006FE002 /* CubicLensDistortionShader.frag */,
 				C7090CB62235E38E006FE002 /* CubicLensDistortionShader.vert */,
@@ -4816,7 +4816,7 @@
 				C7C8F46621FFBA5A00AB865A /* _ft.jpg in Resources */,
 				C7B759622204E32C00E54C30 /* Dark_birdseye_maple_pxr128_normal.tif in Resources */,
 				C7B7598F2204E32C00E54C30 /* Stucco_pxr128.tif in Resources */,
-				C7090CBD2235E465006FE002 /* EMInterferenceShader..frag in Resources */,
+				C7090CBD2235E465006FE002 /* EMInterferenceShader.frag in Resources */,
 				C7B4D3FC22146E2900BCE130 /* harshbricks-albedo.png in Resources */,
 				C7B75A782204E32D00E54C30 /* White_lace_pxr128_normal.tif in Resources */,
 				C7B75A372204E32C00E54C30 /* Pink-brown_painted_pxr128_normal.tif in Resources */,

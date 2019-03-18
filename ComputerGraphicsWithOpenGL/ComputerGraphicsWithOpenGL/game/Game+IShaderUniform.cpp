@@ -152,7 +152,6 @@ void Game::SetNightVisionUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->SetUniform("luminanceThreshold", m_nightVisionluminanceThreshold);  // 0.0f  to 1.0f
     pShaderProgram->SetUniform("colorAmplification", m_nightVisionColorAmplification); // 0.0f to 10.0f
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
-    
 }
 
 void Game::SetLensCircleUniform(CShaderProgram *pShaderProgram){
@@ -169,6 +168,15 @@ void Game::SetPosterizationUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
+void Game::SetPixelateUniform(CShaderProgram *pShaderProgram){
+    
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("width", m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("pixelSize", m_pixelWidth); // 0 to 20
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
 void Game::SetPixelationUniform(CShaderProgram *pShaderProgram){
     
     pShaderProgram->UseProgram();
@@ -177,6 +185,13 @@ void Game::SetPixelationUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->SetUniform("pixel_width", m_pixelWidth); // 0 to 20
     pShaderProgram->SetUniform("pixel_height", m_pixelHeight); // 0 to 20
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+void Game::SetKnittedPixelationUniform(CShaderProgram *pShaderProgram){
+
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+    
 }
 
 void Game::SetDreamVisionUniform(CShaderProgram *pShaderProgram){
@@ -497,3 +512,108 @@ void Game::SetRainDropsUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
+
+void Game::SetPaletteQuantizationAndDitheringUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX, m_mouseY));
+    pShaderProgram->SetUniform("date", m_date);
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetDistortedTVUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("time", m_timeInSeconds);
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetRGBDisplayUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetRetroParallaxUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("time", m_timeInSeconds);
+    pShaderProgram->SetUniform("pixelSize", m_pixelWidth); // 0 to 20
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetScaryRetroParallaxUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("time", m_timeInSeconds);
+    pShaderProgram->SetUniform("channelTime", m_channelTime);
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetMoneyFilterUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX, m_mouseY));
+    pShaderProgram->SetUniform("mouseDown", (int)m_mouseButtonDown);
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetMicroprismMosaicUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("time", m_timeInSeconds);
+    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX, m_mouseY));
+    pShaderProgram->SetUniform("mouseDown", (int)m_mouseButtonDown);
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetBayerMatrixDitheringUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetJuliaFreakUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetHeartBlendUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetEMInterferenceUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("time", m_timeInSeconds);
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetCubicLensDistortionUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("time", m_timeInSeconds);
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetCelShaderishUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("threshold", m_cellThreshold); // between 0 and 1
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+
+void Game::SetCartoonVideoUniform(CShaderProgram *pShaderProgram) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX, m_mouseY));
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+}
+

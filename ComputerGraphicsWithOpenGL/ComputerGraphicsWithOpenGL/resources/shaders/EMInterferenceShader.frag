@@ -54,18 +54,33 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 void main()
 {
     vec2 uv = fs_in.vTexCoord.xy;// / resolution.xy;
+    vec4 tc = material.color;
     
-    vec2 blockS = floor(uv * vec2(24.0f, 9.0f));
-    vec2 blockL = floor(uv * vec2(8.0f, 4.0f));
+    if (uv.x <  coverage )
+    {
+        vec2 blockS = floor(uv * vec2(24.0f, 9.0f));
+        vec2 blockL = floor(uv * vec2(8.0f, 4.0f));
+        
+        float r = rng2(uv);
+        vec3 noise = (vec3(r, 1.0f - r, r / 2.0f + 0.5f) * 1.0f - 2.0f) * 0.08f;
+        
+        float lineNoise = pow(rng2(blockS), 8.0f) * pow(rng2(blockL), 3.0f) - pow(rng(7.2341f), 17.0f) * 2.0f;
+        
+        vec4 col1 = texture(material.ambientMap, uv);
+        vec4 col2 = texture(material.ambientMap, uv + vec2(lineNoise * 0.05f * rng(5.0f), 0));
+        vec4 col3 = texture(material.ambientMap, uv - vec2(lineNoise * 0.05f * rng(31.0f), 0));
+        
+        tc = vec4(vec3(col1.x, col2.y, col3.z) + noise, 1.0f);
+        
+    } else if (uv.x >= ( coverage + 0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    } else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
+    }
     
-    float r = rng2(uv);
-    vec3 noise = (vec3(r, 1.0f - r, r / 2.0f + 0.5f) * 1.0f - 2.0f) * 0.08f;
-    
-    float lineNoise = pow(rng2(blockS), 8.0f) * pow(rng2(blockL), 3.0f) - pow(rng(7.2341f), 17.0f) * 2.0f;
-    
-    vec4 col1 = texture(material.ambientMap, uv);
-    vec4 col2 = texture(material.ambientMap, uv + vec2(lineNoise * 0.05f * rng(5.0f), 0));
-    vec4 col3 = texture(material.ambientMap, uv - vec2(lineNoise * 0.05f * rng(31.0f), 0));
-    
-    vOutputColour = vec4(vec3(col1.x, col2.y, col3.z) + noise, 1.0f);
+    vOutputColour = tc;
 }

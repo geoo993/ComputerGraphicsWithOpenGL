@@ -132,39 +132,53 @@ void main()
     vec2 resolution = vec2(width, height);// width and height of the screen
     vec2 uv = fs_in.vTexCoord.xy;
     //vec2 uv =  fragCoordViewportCoordinates.xy/resolution.xy;
+    vec4 tc = material.color;
     
-    float jerkOffset = (1.0f-step(snoise(vec2(time*1.3f,5.0f)),0.8f))*0.05f;
-    
-    float fuzzOffset = snoise(vec2(time*15.0f,uv.y*80.0f))*0.003f;
-    float largeFuzzOffset = snoise(vec2(time*1.0f,uv.y*25.0f))*0.004f;
-    
-    float vertMovementOn = (1.0f-step(snoise(vec2(time*0.2f,8.0f)),0.4f))*vertMovementOpt;
-    float vertJerk = (1.0f-step(snoise(vec2(time*1.5f,5.0f)),0.6f))*vertJerkOpt;
-    float vertJerk2 = (1.0f-step(snoise(vec2(time*5.5f,5.0f)),0.2f))*vertJerkOpt;
-    float yOffset = abs(sin(time)*4.0f)*vertMovementOn+vertJerk*vertJerk2*0.3f;
-    float y = mod(uv.y+yOffset,1.0f);
-    
-    
-    float xOffset = (fuzzOffset + largeFuzzOffset) * horzFuzzOpt;
-    
-    float staticVal = 0.0f;
-    
-    for (float y = -1.0; y <= 1.0; y += 1.0) {
-        float maxDist = 5.0f/200.0f;
-        float dist = y/200.0;
-        staticVal += staticV(vec2(uv.x,uv.y+dist))*(maxDist-abs(dist))*1.5f;
+    if (uv.x <  coverage )
+    {
+        float jerkOffset = (1.0f-step(snoise(vec2(time*1.3f,5.0f)),0.8f))*0.05f;
+        
+        float fuzzOffset = snoise(vec2(time*15.0f,uv.y*80.0f))*0.003f;
+        float largeFuzzOffset = snoise(vec2(time*1.0f,uv.y*25.0f))*0.004f;
+        
+        float vertMovementOn = (1.0f-step(snoise(vec2(time*0.2f,8.0f)),0.4f))*vertMovementOpt;
+        float vertJerk = (1.0f-step(snoise(vec2(time*1.5f,5.0f)),0.6f))*vertJerkOpt;
+        float vertJerk2 = (1.0f-step(snoise(vec2(time*5.5f,5.0f)),0.2f))*vertJerkOpt;
+        float yOffset = abs(sin(time)*4.0f)*vertMovementOn+vertJerk*vertJerk2*0.3f;
+        float y = mod(uv.y+yOffset,1.0f);
+        
+        
+        float xOffset = (fuzzOffset + largeFuzzOffset) * horzFuzzOpt;
+        
+        float staticVal = 0.0f;
+        
+        for (float y = -1.0; y <= 1.0; y += 1.0) {
+            float maxDist = 5.0f/200.0f;
+            float dist = y/200.0;
+            staticVal += staticV(vec2(uv.x,uv.y+dist))*(maxDist-abs(dist))*1.5f;
+        }
+        
+        staticVal *= bottomStaticOpt;
+        
+        float red     =   texture(    material.ambientMap,     vec2(uv.x + xOffset -0.01f*rgbOffsetOpt,y)).r+staticVal;
+        float green =     texture(    material.ambientMap,     vec2(uv.x + xOffset,      y)).g+staticVal;
+        float blue     =    texture(    material.ambientMap,     vec2(uv.x + xOffset +0.01f*rgbOffsetOpt,y)).b+staticVal;
+        
+        vec3 color = vec3(red,green,blue);
+        float scanline = sin(uv.y*800.0f)*0.04f*scalinesOpt;
+        color -= scanline;
+        
+        tc = vec4(color,1.0f);
+    } else if (uv.x >= ( coverage + 0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    } else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
     }
     
-    staticVal *= bottomStaticOpt;
-    
-    float red     =   texture(    material.ambientMap,     vec2(uv.x + xOffset -0.01f*rgbOffsetOpt,y)).r+staticVal;
-    float green =     texture(    material.ambientMap,     vec2(uv.x + xOffset,      y)).g+staticVal;
-    float blue     =    texture(    material.ambientMap,     vec2(uv.x + xOffset +0.01f*rgbOffsetOpt,y)).b+staticVal;
-    
-    vec3 color = vec3(red,green,blue);
-    float scanline = sin(uv.y*800.0f)*0.04f*scalinesOpt;
-    color -= scanline;
-    
-    vOutputColour = vec4(color,1.0f);
+    vOutputColour = tc;
     
 }

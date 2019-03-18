@@ -27,7 +27,9 @@ enum class PostProcessingEffectMode {
     LensCircle,
     Posterization,
     DreamVision,
+    Pixelate,
     Pixelation,
+    KnittedPixelation,
     FrostedGlassEffect,
     FrostedGlass,
     Crosshatching,
@@ -53,6 +55,22 @@ enum class PostProcessingEffectMode {
     DeferredRendering,
     SSAO,
     RainDrops,
+    PaletteQuantizationAndDithering,
+    DistortedTV,
+    RGBDisplay,
+    RetroParallax,
+    ScaryRetroParallax,
+    MoneyFilter,
+    MicroprismMosaic,
+    BayerMatrixDithering,
+    JuliaFreak,
+    HeartBlend,
+    EMInterference,
+    CubicLensDistortion,
+    CelShaderish,
+    CartoonVideo,
+    
+    
     NumberOfPPFX,
 };
 

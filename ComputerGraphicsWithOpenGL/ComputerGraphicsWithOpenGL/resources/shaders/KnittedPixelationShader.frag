@@ -49,20 +49,35 @@ void main()
     vec2 fragCoord = gl_FragCoord.xy * 0.5f + 0.5f;
     vec2 resolution = vec2(width, height);// width and height of the screen
     vec2 uv = fs_in.vTexCoord.xy;
-    vec4 vTexColour = texture(material.ambientMap, fs_in.vTexCoord);
+    vec4 tc = material.color;
     
-    vec2 posInTile = mod(vec2(fragCoord), tileSize);
-    vec2 tileNum = floor(vec2(fragCoord)/ tileSize);
+    if (uv.x < (  coverage  ) )
+    {
+        vec2 posInTile = mod(vec2(fragCoord), tileSize);
+        vec2 tileNum = floor(vec2(fragCoord)/ tileSize);
+        
+        vec2 nrmPosInTile = posInTile / tileSize;
+        tileNum.y += floor(abs(nrmPosInTile.x - 0.5) + nrmPosInTile.y);
+        
+        vec2 texCoord = tileNum * tileSize / resolution.xy;
+        //texCoord.y = 1.0 - texCoord.y;
+        
+        vec3 color = texture(material.ambientMap, texCoord).rgb;
+        
+        color *= fract((nrmPosInTile.y + abs(nrmPosInTile.x - 0.5)) * floor(threads));
+        
+        tc = vec4(color, 1.0);
+    }
+    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    }
+    else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
+    }
     
-    vec2 nrmPosInTile = posInTile / tileSize;
-    tileNum.y += floor(abs(nrmPosInTile.x - 0.5) + nrmPosInTile.y);
-    
-    vec2 texCoord = tileNum * tileSize / resolution.xy;
-    //texCoord.y = 1.0 - texCoord.y;
-    
-    vec3 color = texture(material.ambientMap, texCoord).rgb;
-    
-    color *= fract((nrmPosInTile.y + abs(nrmPosInTile.x - 0.5)) * floor(threads));
-    
-    vOutputColour = vec4(color, 1.0);
+    vOutputColour = tc;
 }

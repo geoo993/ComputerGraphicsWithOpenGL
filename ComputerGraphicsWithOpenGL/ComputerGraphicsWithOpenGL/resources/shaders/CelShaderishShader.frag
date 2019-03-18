@@ -34,7 +34,7 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform float threshold;        // between (0.0f and 1.0f)
+uniform float threshold = 0.1f;        // between (0.0f and 0.10f)
 uniform float coverage;        // between (0.0f and 1.0f)
 
 float GetTexture(float x, float y)
@@ -46,23 +46,41 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()
 {
-    float x = fs_in.vTexCoord.x;
-    float y = fs_in.vTexCoord.y;
     
-    float xValue = -GetTexture(x-1.0, y-1.0) - 2.0*GetTexture(x-1.0, y) - GetTexture(x-1.0, y+1.0)
-    + GetTexture(x+1.0, y-1.0) + 2.0*GetTexture(x+1.0, y) + GetTexture(x+1.0, y+1.0);
-    float yValue = GetTexture(x-1.0, y-1.0) + 2.0*GetTexture(x, y-1.0) + GetTexture(x+1.0, y-1.0)
-    - GetTexture(x-1.0, y+1.0) - 2.0*GetTexture(x, y+1.0) - GetTexture(x+1.0, y+1.0);
+    vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = material.color;
     
-    if(length(vec2(xValue, yValue)) > threshold)
+    if (uv.x <  coverage )
     {
-        vOutputColour = vec4(0);
-    }
-    else
+        float x = fs_in.vTexCoord.x;
+        float y = fs_in.vTexCoord.y;
+        
+        float xValue = -GetTexture(x-1.0, y-1.0) - 2.0*GetTexture(x-1.0, y) - GetTexture(x-1.0, y+1.0)
+        + GetTexture(x+1.0, y-1.0) + 2.0*GetTexture(x+1.0, y) + GetTexture(x+1.0, y+1.0);
+        float yValue = GetTexture(x-1.0, y-1.0) + 2.0*GetTexture(x, y-1.0) + GetTexture(x+1.0, y-1.0)
+        - GetTexture(x-1.0, y+1.0) - 2.0*GetTexture(x, y+1.0) - GetTexture(x+1.0, y+1.0);
+        
+        if(length(vec2(xValue, yValue)) > threshold)
+        {
+            tc = vec4(0);
+        }
+        else
+        {
+            vec2 uv = vec2(x, y);
+            vec4 currentPixel = texture(material.ambientMap, uv);
+            tc = currentPixel;
+        }
+        
+    } else if (uv.x >= ( coverage + 0.003f) )
     {
-        vec2 uv = vec2(x, y);
-        vec4 currentPixel = texture(material.ambientMap, uv);
-        vOutputColour = currentPixel;
+        tc = texture(material.ambientMap, uv);
+    } else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
     }
+    
+    vOutputColour = tc;
     
 }

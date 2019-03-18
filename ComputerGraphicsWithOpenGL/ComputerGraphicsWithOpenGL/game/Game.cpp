@@ -15,7 +15,7 @@ Game::Game()
     m_timeInSeconds = 0.0f;
     m_timeInMilliSeconds = 0.0f;
     m_timePerSecond = 0.0f;
-    m_channelTime = 0.0f;
+    m_channelTime = 1.0f;
     m_deltaTime = 0.5f;
     m_elapsedTime = 0.0f;
     m_framesPerSecond = 0;

@@ -63,15 +63,30 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 void main()
 {
     vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = material.color;
     
-    float k = 1.0f * sin( time * 0.9f );
-    float kcube = 0.5f * sin( time );
+    if (uv.x <  coverage )
+    {
+        float k = 1.0f * sin( time * 0.9f );
+        float kcube = 0.5f * sin( time );
+        
+        float offset = 0.1f * sin( time * 0.5f );
+        
+        float red = texture( material.ambientMap, computeUV( uv, k + offset, kcube ) ).r;
+        float green = texture( material.ambientMap, computeUV( uv, k, kcube ) ).g;
+        float blue = texture( material.ambientMap, computeUV( uv, k - offset, kcube ) ).b;
+        
+        tc = vec4( red, green, blue, 1.0f );
+       
+    } else if (uv.x >= ( coverage + 0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    } else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
+    }
     
-    float offset = 0.1f * sin( time * 0.5f );
-    
-    float red = texture( material.ambientMap, computeUV( uv, k + offset, kcube ) ).r;
-    float green = texture( material.ambientMap, computeUV( uv, k, kcube ) ).g;
-    float blue = texture( material.ambientMap, computeUV( uv, k - offset, kcube ) ).b;
-    
-    vOutputColour = vec4( red, green, blue, 1.0f );
+    vOutputColour = tc;
 }

@@ -40,12 +40,27 @@ out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 void main()
 {
     vec2 uv = fs_in.vTexCoord.xy;
+    vec4 tc = material.color;
     
-    uv.x = (abs(uv.x * 2.0f - 1.0f));
-    uv.y = (abs(uv.y * 2.0f - 1.0f));
+    if (uv.x <  coverage )
+    {
+        uv.x = (abs(uv.x * 2.0f - 1.0f));
+        uv.y = (abs(uv.y * 2.0f - 1.0f));
+        
+        vec2 left  = vec2(uv.x - sin(uv.x*uv.y), uv.x);
+        vec2 right = vec2(uv.x + sin(uv.x*uv.y), uv.y);
+        
+        tc = texture(material.ambientMap, left) * texture(material.ambientMap, right);
+        
+    } else if (uv.x >= ( coverage + 0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    } else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
+    }
     
-    vec2 left  = vec2(uv.x - sin(uv.x*uv.y), uv.x);
-    vec2 right = vec2(uv.x + sin(uv.x*uv.y), uv.y);
-    
-    vOutputColour = texture(material.ambientMap, left) * texture(material.ambientMap, right);
+    vOutputColour = tc;
 }

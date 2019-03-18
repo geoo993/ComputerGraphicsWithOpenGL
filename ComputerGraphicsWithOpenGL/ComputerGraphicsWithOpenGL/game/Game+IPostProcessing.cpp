@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::DefaultFrameBuffer;
+    m_currentPPFXMode = PostProcessingEffectMode::CartoonVideo;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -165,10 +165,22 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             RenderToScreen(pDreamVisionProgram);
             return;
         }
+        case PostProcessingEffectMode::Pixelate: {
+            CShaderProgram *pPixelateProgram = (*m_pShaderPrograms)[64];
+            SetPixelateUniform(pPixelateProgram);
+            RenderToScreen(pPixelateProgram);
+            return;
+        }
         case PostProcessingEffectMode::Pixelation: {
             CShaderProgram *pPixelationProgram = (*m_pShaderPrograms)[29];
             SetPixelationUniform(pPixelationProgram);
             RenderToScreen(pPixelationProgram);
+            return;
+        }
+        case PostProcessingEffectMode::KnittedPixelation: {
+            CShaderProgram *pKnittedPixelationProgram = (*m_pShaderPrograms)[69];
+            SetKnittedPixelationUniform(pKnittedPixelationProgram);
+            RenderToScreen(pKnittedPixelationProgram);
             return;
         }
         case PostProcessingEffectMode::FrostedGlassEffect: {
@@ -593,6 +605,90 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             RenderToScreen(pRainDropsProgram);
             return;
         }
+        case PostProcessingEffectMode::PaletteQuantizationAndDithering: {
+            CShaderProgram *pPaletteQuantizationAndDitheringProgram = (*m_pShaderPrograms)[61];
+            SetPaletteQuantizationAndDitheringUniform(pPaletteQuantizationAndDitheringProgram);
+            RenderToScreen(pPaletteQuantizationAndDitheringProgram);
+            return;
+        }
+        case PostProcessingEffectMode::DistortedTV: {
+            CShaderProgram *pDistortedTVProgram = (*m_pShaderPrograms)[62];
+            SetDistortedTVUniform(pDistortedTVProgram);
+            RenderToScreen(pDistortedTVProgram);
+            return;
+        }
+        case PostProcessingEffectMode::RGBDisplay: {
+            CShaderProgram *pRGBDisplayProgram = (*m_pShaderPrograms)[63];
+            SetRGBDisplayUniform(pRGBDisplayProgram);
+            RenderToScreen(pRGBDisplayProgram);
+            return;
+        }
+        case PostProcessingEffectMode::RetroParallax: {
+            CShaderProgram *pRetroParallaxProgram = (*m_pShaderPrograms)[65];
+            SetRetroParallaxUniform(pRetroParallaxProgram);
+            RenderToScreen(pRetroParallaxProgram);
+            return;
+        }
+        case PostProcessingEffectMode::ScaryRetroParallax: {
+            CShaderProgram *pScaryRetroParallaxProgram = (*m_pShaderPrograms)[66];
+            SetScaryRetroParallaxUniform(pScaryRetroParallaxProgram);
+            RenderToScreen(pScaryRetroParallaxProgram);
+            return;
+        }
+        case PostProcessingEffectMode::MoneyFilter: {
+            CShaderProgram *pMoneyFilterProgram = (*m_pShaderPrograms)[67];
+            SetMoneyFilterUniform(pMoneyFilterProgram);
+            RenderToScreen(pMoneyFilterProgram);
+            return;
+        }
+        case PostProcessingEffectMode::MicroprismMosaic: {
+            CShaderProgram *pMicroprismMosaicProgram = (*m_pShaderPrograms)[68];
+            SetMicroprismMosaicUniform(pMicroprismMosaicProgram);
+            RenderToScreen(pMicroprismMosaicProgram);
+            return;
+        }
+        case PostProcessingEffectMode::BayerMatrixDithering: {
+            CShaderProgram *pBayerMatrixDitheringProgram = (*m_pShaderPrograms)[70];
+            SetBayerMatrixDitheringUniform(pBayerMatrixDitheringProgram);
+            RenderToScreen(pBayerMatrixDitheringProgram);
+            return;
+        }
+        case PostProcessingEffectMode::JuliaFreak: {
+            CShaderProgram *pJuliaFreakProgram = (*m_pShaderPrograms)[71];
+            SetJuliaFreakUniform(pJuliaFreakProgram);
+            RenderToScreen(pJuliaFreakProgram);
+            return;
+        }
+        case PostProcessingEffectMode::HeartBlend: {
+            CShaderProgram *pHeartBlendProgram = (*m_pShaderPrograms)[72];
+            SetHeartBlendUniform(pHeartBlendProgram);
+            RenderToScreen(pHeartBlendProgram);
+            return;
+        }
+        case PostProcessingEffectMode::EMInterference: {
+            CShaderProgram *pEMInterferencedProgram = (*m_pShaderPrograms)[73];
+            SetEMInterferenceUniform(pEMInterferencedProgram);
+            RenderToScreen(pEMInterferencedProgram);
+            return;
+        }
+        case PostProcessingEffectMode::CubicLensDistortion: {
+            CShaderProgram *pCubicLensDistortionProgram = (*m_pShaderPrograms)[74];
+            SetCubicLensDistortionUniform(pCubicLensDistortionProgram);
+            RenderToScreen(pCubicLensDistortionProgram);
+            return;
+        }
+        case PostProcessingEffectMode::CelShaderish: {
+            CShaderProgram *pCelShaderishProgram = (*m_pShaderPrograms)[75];
+            SetCelShaderishUniform(pCelShaderishProgram);
+            RenderToScreen(pCelShaderishProgram);
+            return;
+        }
+        case PostProcessingEffectMode::CartoonVideo: {
+            CShaderProgram *pCartoonVideoProgram = (*m_pShaderPrograms)[76];
+            SetCartoonVideoUniform(pCartoonVideoProgram);
+            RenderToScreen(pCartoonVideoProgram);
+            return;
+        }
         default: return;
         
     }
@@ -687,8 +783,14 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::DreamVision:
             RenderPPFXScene(PostProcessingEffectMode::DreamVision);
             break;
+        case PostProcessingEffectMode::Pixelate:
+            RenderPPFXScene(PostProcessingEffectMode::Pixelate);
+            break;
         case PostProcessingEffectMode::Pixelation:
             RenderPPFXScene(PostProcessingEffectMode::Pixelation);
+            break;
+        case PostProcessingEffectMode::KnittedPixelation:
+            RenderPPFXScene(PostProcessingEffectMode::KnittedPixelation);
             break;
         case PostProcessingEffectMode::FrostedGlassEffect:
             RenderPPFXScene(PostProcessingEffectMode::FrostedGlassEffect);
@@ -765,6 +867,48 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::RainDrops:
             RenderPPFXScene(PostProcessingEffectMode::RainDrops);
             break;
+        case PostProcessingEffectMode::PaletteQuantizationAndDithering:
+            RenderPPFXScene(PostProcessingEffectMode::PaletteQuantizationAndDithering);
+            break;
+        case PostProcessingEffectMode::DistortedTV:
+            RenderPPFXScene(PostProcessingEffectMode::DistortedTV);
+            break;
+        case PostProcessingEffectMode::RGBDisplay:
+            RenderPPFXScene(PostProcessingEffectMode::RGBDisplay);
+            break;
+        case PostProcessingEffectMode::RetroParallax:
+            RenderPPFXScene(PostProcessingEffectMode::RetroParallax);
+            break;
+        case PostProcessingEffectMode::ScaryRetroParallax:
+            RenderPPFXScene(PostProcessingEffectMode::ScaryRetroParallax);
+            break;
+        case PostProcessingEffectMode::MoneyFilter:
+            RenderPPFXScene(PostProcessingEffectMode::MoneyFilter);
+            break;
+        case PostProcessingEffectMode::MicroprismMosaic:
+            RenderPPFXScene(PostProcessingEffectMode::MicroprismMosaic);
+            break;
+        case PostProcessingEffectMode::BayerMatrixDithering:
+            RenderPPFXScene(PostProcessingEffectMode::BayerMatrixDithering);
+            break;
+        case PostProcessingEffectMode::JuliaFreak:
+            RenderPPFXScene(PostProcessingEffectMode::JuliaFreak);
+            break;
+        case PostProcessingEffectMode::HeartBlend:
+            RenderPPFXScene(PostProcessingEffectMode::HeartBlend);
+            break;
+        case PostProcessingEffectMode::EMInterference:
+            RenderPPFXScene(PostProcessingEffectMode::EMInterference);
+            break;
+        case PostProcessingEffectMode::CubicLensDistortion:
+            RenderPPFXScene(PostProcessingEffectMode::CubicLensDistortion);
+            break;
+        case PostProcessingEffectMode::CelShaderish:
+            RenderPPFXScene(PostProcessingEffectMode::CelShaderish);
+            break;
+        case PostProcessingEffectMode::CartoonVideo:
+            RenderPPFXScene(PostProcessingEffectMode::CartoonVideo);
+            break;
     }
     
 }
@@ -801,8 +945,12 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         return "Posterization";
         case PostProcessingEffectMode::DreamVision:
         return "Dream Vision";
+        case PostProcessingEffectMode::Pixelate:
+        return "Pixelate";
         case PostProcessingEffectMode::Pixelation:
         return "Pixelation";
+        case PostProcessingEffectMode::KnittedPixelation:
+        return "Knitted Pixelation";
         case PostProcessingEffectMode::FrostedGlassEffect:
         return "Frosted Glass Effect";
         case PostProcessingEffectMode::FrostedGlass:
@@ -836,23 +984,51 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         case PostProcessingEffectMode::DepthMapping:
             return "Depth Mapping";
         case PostProcessingEffectMode::Vignetting:
-        return "Vignetting";
+            return "Vignetting";
         case PostProcessingEffectMode::BrightParts:
-        return "Bright Parts";
+            return "Bright Parts";
         case PostProcessingEffectMode::Bloom:
-        return "Bloom";
+            return "Bloom";
         case PostProcessingEffectMode::HDRToneMapping:
             return "HDR Tone Mapping";
         case PostProcessingEffectMode::LensFlare:
-        return "Lens Flare";
+            return "Lens Flare";
         case PostProcessingEffectMode::FXAA:
-        return "Fast Approximate Anti-Aliasing (FXAA)";
+            return "Fast Approximate Anti-Aliasing (FXAA)";
         case PostProcessingEffectMode::DeferredRendering:
             return "Deferred Rendering";
         case PostProcessingEffectMode::SSAO:
-        return "Screen Space Ambient Occlusion";
+            return "Screen Space Ambient Occlusion";
         case PostProcessingEffectMode::RainDrops:
-        return "Rain Drops";
+            return "Rain Drops";
+        case PostProcessingEffectMode::PaletteQuantizationAndDithering:
+            return "Palette Quantization And Dithering";
+        case PostProcessingEffectMode::DistortedTV:
+            return "Distorted TV";
+        case PostProcessingEffectMode::RGBDisplay:
+            return "RGB Display";
+        case PostProcessingEffectMode::RetroParallax:
+            return "Retro Parallax";
+        case PostProcessingEffectMode::ScaryRetroParallax:
+            return "Scary Retro Parallax";
+        case PostProcessingEffectMode::MoneyFilter:
+            return "Money Filter";
+        case PostProcessingEffectMode::MicroprismMosaic:
+            return "Microprism Mosaic";
+        case PostProcessingEffectMode::BayerMatrixDithering:
+            return "Bayer Matrix Dithering";
+        case PostProcessingEffectMode::JuliaFreak:
+            return "Julia Freak";
+        case PostProcessingEffectMode::HeartBlend:
+            return "Heart Blend";
+        case PostProcessingEffectMode::EMInterference:
+            return "EM Interference";
+        case PostProcessingEffectMode::CubicLensDistortion:
+            return "Cubic Lens Distortion";
+        case PostProcessingEffectMode::CelShaderish:
+            return "Cel Shaderish";
+        case PostProcessingEffectMode::CartoonVideo:
+            return "Cartoon Video";
         default:
         return "";
     }
@@ -862,68 +1038,8 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
 FrameBufferType Game::GetFBOtype(const PostProcessingEffectMode &mode){
     
     switch(mode) {
-        case PostProcessingEffectMode::DefaultFrameBuffer:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::ColorInversion:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::GrayScale:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::Kernel:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::KernelBlur:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::SobelEdgeDetection:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::FreiChenEdgeDetection:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::ScreenWave:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::Swirl:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::NightVision:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::LensCircle:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::Posterization:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::DreamVision:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::Pixelation:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::FrostedGlassEffect:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::FrostedGlass:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::Crosshatching:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::PredatorsThermalVision:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::Toonify:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::Shockwave:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::FishEye:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::BarrelDistortion:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::MultiScreenFishEye:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::FishEyeLens:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::FishEyeAntiFishEye:
-        return FrameBufferType::Default;
         case PostProcessingEffectMode::GaussianBlur:
         return FrameBufferType::GeometryBuffer;
-        case PostProcessingEffectMode::Blur:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::RadialBlur:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::MotionBlur:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::DepthMapping:
-        return FrameBufferType::Default;
-        case PostProcessingEffectMode::Vignetting:
-        return FrameBufferType::Default;
         case PostProcessingEffectMode::BrightParts:
         return FrameBufferType::GeometryBuffer;
         case PostProcessingEffectMode::Bloom:
@@ -932,14 +1048,10 @@ FrameBufferType Game::GetFBOtype(const PostProcessingEffectMode &mode){
         return FrameBufferType::GeometryBuffer;
         case PostProcessingEffectMode::LensFlare:
         return FrameBufferType::GeometryBuffer;
-        case PostProcessingEffectMode::FXAA:
-        return FrameBufferType::Default;
         case PostProcessingEffectMode::DeferredRendering:
         return FrameBufferType::GeometryBuffer;
         case PostProcessingEffectMode::SSAO:
         return FrameBufferType::GeometryBuffer;
-        case PostProcessingEffectMode::RainDrops:
-        FrameBufferType::Default;
         default:
         return FrameBufferType::Default;
     }

@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::CartoonVideo;
+    m_currentPPFXMode = PostProcessingEffectMode::DefaultFrameBuffer;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);

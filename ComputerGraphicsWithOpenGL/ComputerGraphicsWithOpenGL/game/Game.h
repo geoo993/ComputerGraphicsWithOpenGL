@@ -147,6 +147,9 @@ protected:
     void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                             const glm::vec4 &color = glm::vec4(1.0f), const GLfloat &shininess = 32.0f,
                             const GLboolean &useAO = false) override;
+    void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                               const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) override;
+    
     /// Textures
     void LoadTextures(const std::string &path) override;
     CTexture * AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection = false) override;
@@ -156,8 +159,6 @@ protected:
     void LoadShaderPrograms(const std::string &path) override;
     
     /// Shader uniform
-    void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                               const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) override;
     void SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) override;
     void SetParallaxMapUniform(CShaderProgram *pShaderProgram, const GLfloat &heightScale) override;
     void SetBumpMapUniform(CShaderProgram *pShaderProgram, const GLfloat &uvTiling) override;

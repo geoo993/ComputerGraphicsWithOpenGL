@@ -24,23 +24,27 @@ out VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
+    vec3 vWorldTangent;
     vec4 vEyePosition;
 } vs_out;
 
+uniform bool bReverseNormals;
+
 // This is the entry point into the vertex shader
-void main()
-{	
+void main() {
     
     vec4 position = vec4(inPosition, 1.0f);
-    vec4 normal = vec4(inNormal, 1.0f);
+    vec3 tangent = bReverseNormals ? (-1.0f * inTangent) : inTangent;
+    vec3 normal = bReverseNormals ? (-1.0f * inNormal) : inNormal;
     
     // Pass through the texture coordinate
     vs_out.vTexCoord = inCoord;
     
     // Get the vertex normal and vertex position in eye coordinates
     //mat3 normalMatrix = mat3(transpose(inverse(matrices.modelMatrix)));
-    vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
-    vs_out.vLocalNormal = inNormal;
+    vs_out.vWorldNormal = matrices.normalMatrix * normal;
+    vs_out.vWorldTangent = matrices.normalMatrix * tangent;
+    vs_out.vLocalNormal = normal;
     
     vs_out.vEyePosition = matrices.viewMatrix * matrices.modelMatrix * position;
     vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);
@@ -49,19 +53,21 @@ void main()
     // https://gamedev.stackexchange.com/questions/66642/tangent-on-generated-sphere
     // https://www.geeks3d.com/20130122/normal-mapping-without-precomputed-tangent-space-vectors/
     /*
-    vec3 tangent;
-    vec3 biTangent;
-    vec3 c1 = cross(inNormal, vec3(0.0f, 0.0f, 1.0f));
-    vec3 c2 = cross(inNormal, vec3(0.0f, 1.0f, 0.0f));
-    if (length(c1) > length(c2))
-        tangent = c1;
-    else
-        tangent = c2;
-    tangent = normalize(tangent);
-    biTangent = normalize(cross(inNormal, tangent));
-    vs_out.vLocalNormal = biTangent;
+     vec3 tangent;
+     vec3 biTangent;
+     vec3 c1 = cross(inNormal, vec3(0.0f, 0.0f, 1.0f));
+     vec3 c2 = cross(inNormal, vec3(0.0f, 1.0f, 0.0f));
+     if (length(c1) > length(c2))
+     tangent = c1;
+     else
+     tangent = c2;
+     tangent = normalize(tangent);
+     biTangent = normalize(cross(inNormal, tangent));
+     vs_out.vLocalNormal = biTangent;
      */
     
     // Transform the vertex spatial position using
     gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
-} 
+    
+}
+

@@ -130,7 +130,11 @@ uniform struct Material
     vec4 color;
     float shininess;
     bool bUseAO;
+} material;
 
+// Structure holding PBR material information:  its albedo, metallic, roughness, etc...
+uniform struct PBR
+{
     // for more info look at https://marmoset.co/posts/physically-based-rendering-and-you-can-too/
     vec3  albedo;           // Albedo is the base color input, commonly known as a diffuse map.
     // all values below are between 0 and 1
@@ -138,7 +142,7 @@ uniform struct Material
     float roughness;        // Microsurface defines how rough or smooth the surface of a material is. between 0 and 1
     float fresnel;          // Fresnel is the percentage of light that a surface reflects at grazing angles.
     float ao;               // Ambient occlusion(AO) represents large scale occluded light and is generally baked from a 3d model.
-} material;
+} pbr;
 
 // Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
@@ -180,6 +184,8 @@ in VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
+    vec3 vWorldTangent;
+    vec4 vEyePosition;
 } fs_in;
 
 // ----------------------------------------------------------------------------
@@ -257,11 +263,11 @@ layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
-    vec3 albedo     = bUseTexture ? pow(texture(material.ambientMap, fs_in.vTexCoord).rgb, vec3(2.2f)) : material.albedo;       // ambient map (albedo map)
-    float metallic  = bUseTexture ? texture(material.diffuseMap, fs_in.vTexCoord).r : material.metallic;                          // diffuse map (metallic map)
-    float roughness = bUseTexture ? texture(material.specularMap, fs_in.vTexCoord).r : material.roughness;                         // specular map (roughness map)
+    vec3 albedo     = bUseTexture ? pow(texture(material.ambientMap, fs_in.vTexCoord).rgb, vec3(2.2f)) : pbr.albedo;       // ambient map (albedo map)
+    float metallic  = bUseTexture ? texture(material.diffuseMap, fs_in.vTexCoord).r : pbr.metallic;                          // diffuse map (metallic map)
+    float roughness = bUseTexture ? texture(material.specularMap, fs_in.vTexCoord).r : pbr.roughness;                         // specular map (roughness map)
     vec3 normal     = bUseTexture ? getNormalFromMap(fs_in.vWorldNormal, fs_in.vWorldPosition) : normalize(fs_in.vWorldNormal);    // normal map
-    float ao        = bUseTexture ? texture(material.aoMap, fs_in.vTexCoord).r : material.ao;                               // ambient oclusion map
+    float ao        = bUseTexture ? texture(material.aoMap, fs_in.vTexCoord).r : pbr.ao;                               // ambient oclusion map
     
     vec3 worldPos   = fs_in.vWorldPosition;
     vec3 view       =  camera.position + camera.front;

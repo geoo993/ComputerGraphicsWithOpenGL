@@ -91,7 +91,7 @@ void Game::LoadResources(const std::string &path)
     // m_pSchofield
     
     /// https://www.cgtrader.com/free-3d-models/military/other/mk2-grenade-1c0f476e-3caa-4b74-9b3f-22280615a688
-    m_pGrenade->Create(path+"/models/mk2_grenade/", "MK2.obj");
+    //m_pGrenade->Create(path+"/models/mk2_grenade/", "MK2.obj");
     
     m_pNanosuit->Create(path+"/models/nanosuit/", "nanosuit.obj");
     

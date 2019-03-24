@@ -31,9 +31,11 @@ Game::Game()
     m_pCamera = nullptr;
     
     // materials
+    m_parallaxHeightScale = 1.0f;
     m_materialShininess = 30.0f;
     m_uvTiling = 1.4f;
     m_magnitude = 0.3f;
+    m_albedo, m_metallic, m_roughness, m_fresnel = 0.0f;
     
     //textures settings
     m_textures.reserve(50);
@@ -98,10 +100,14 @@ Game::Game()
     m_spotCutOff = 22.5f;
     m_spotOuterCutOff = 28.0f;
     
+    // PPFX
+    m_ffaaOffset, m_cellThreshold = 0.0f;
+    
     // SSAO
     // generate sample kernel
     // ----------------------
     srand(glfwGetTime()); // initialize random seed
+    m_ssaoBias, m_ssaoRadius, m_ssaoNoiseSize = 0.0f;
     m_ssaoKernelSamples = 64;
     for (GLuint i = 0; i < m_ssaoKernelSamples; ++i)
     {
@@ -150,7 +156,6 @@ Game::Game()
     m_pSchofield = nullptr;
     m_pMusket = nullptr;
     m_pGrenade = nullptr;
-    m_pNanosuit = nullptr;
     m_pFlashlight = nullptr;
     
     //sphere object
@@ -224,7 +229,6 @@ Game::~Game()
     delete m_pParallaxCube;
     delete m_pChromaticAberrationCube;
     delete m_pWoodenBox;
-    delete m_pNanosuit;
     delete m_pTorus;
     delete m_pTorusKnot;
     delete m_pMetaballs;

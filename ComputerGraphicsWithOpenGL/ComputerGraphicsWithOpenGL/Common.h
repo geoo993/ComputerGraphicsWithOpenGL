@@ -78,7 +78,7 @@
 #include <math.h>
 
 #define SCREEN_WIDTH 1440
-#define SCREEN_HEIGHT 820
+#define SCREEN_HEIGHT 880
 #define SHADOW_WIDTH 1024
 #define SHADOW_HEIGHT 1024
 #define FPS 60

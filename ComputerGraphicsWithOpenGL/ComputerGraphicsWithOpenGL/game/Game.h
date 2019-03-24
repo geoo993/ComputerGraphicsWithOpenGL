@@ -73,7 +73,6 @@ private:
     CModel * m_pSchofield;
     CModel * m_pMusket;
     CModel * m_pGrenade;
-    CModel * m_pNanosuit;
     CModel * m_pFlashlight;
     
     //sphere object
@@ -259,8 +258,6 @@ protected:
                         const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                        const GLfloat & scale, const GLboolean &useTexture) override;
-    void RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation,
-                        const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                     const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,

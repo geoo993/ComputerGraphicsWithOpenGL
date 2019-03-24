@@ -62,7 +62,7 @@ struct ICamera {
 };
 
 struct IMaterials {
-    GLfloat m_materialShininess;
+    GLfloat m_materialShininess, m_albedo, m_metallic, m_roughness, m_fresnel;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec4 &color, const GLfloat &shininess,
                                     const GLboolean &useAO) = 0;
@@ -224,8 +224,6 @@ struct IRenderObject
                                 const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderNanosuit(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation,
-                               const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
@@ -267,6 +265,9 @@ struct IPostProcessing {
     // Posterization
     GLfloat m_posterizationGama, m_posterizationColors;
     
+    // Pixelate
+    GLfloat m_pixelateSize;
+
     // Pixelation
     GLfloat m_pixelWidth, m_pixelHeight;
     

@@ -985,33 +985,6 @@
 		C7EED10E221105360079F5C0 /* WireFrameShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EED105221105360079F5C0 /* WireFrameShader.frag */; };
 		C7EED11122111ECC0079F5C0 /* moon_surface.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7EED10F22111ECB0079F5C0 /* moon_surface.jpg */; };
 		C7EED11222111ECC0079F5C0 /* clean-gray-paper.png in Resources */ = {isa = PBXBuildFile; fileRef = C7EED11022111ECC0079F5C0 /* clean-gray-paper.png */; };
-		C7FB5760220C7294006F2D91 /* hand_showroom_refl.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5745220C7294006F2D91 /* hand_showroom_refl.png */; };
-		C7FB5761220C7294006F2D91 /* body_showroom_ddn.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5746220C7294006F2D91 /* body_showroom_ddn.png */; };
-		C7FB5762220C7294006F2D91 /* helmet_showroom_ddn.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5747220C7294006F2D91 /* helmet_showroom_ddn.png */; };
-		C7FB5763220C7294006F2D91 /* arm_showroom_ddn.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5748220C7294006F2D91 /* arm_showroom_ddn.png */; };
-		C7FB5764220C7294006F2D91 /* arm_showroom_spec.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5749220C7294006F2D91 /* arm_showroom_spec.png */; };
-		C7FB5765220C7294006F2D91 /* leg_dif.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB574A220C7294006F2D91 /* leg_dif.png */; };
-		C7FB5766220C7294006F2D91 /* arm_showroom_refl.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB574B220C7294006F2D91 /* arm_showroom_refl.png */; };
-		C7FB5767220C7294006F2D91 /* hand_showroom_spec.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB574C220C7294006F2D91 /* hand_showroom_spec.png */; };
-		C7FB5768220C7294006F2D91 /* glass_ddn.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB574D220C7294006F2D91 /* glass_ddn.png */; };
-		C7FB5769220C7294006F2D91 /* glass_refl.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB574E220C7294006F2D91 /* glass_refl.png */; };
-		C7FB576A220C7294006F2D91 /* nanosuit.mtl in Resources */ = {isa = PBXBuildFile; fileRef = C7FB574F220C7294006F2D91 /* nanosuit.mtl */; };
-		C7FB576B220C7294006F2D91 /* body_dif.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5750220C7294006F2D91 /* body_dif.png */; };
-		C7FB576C220C7294006F2D91 /* hand_showroom_ddn.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5751220C7294006F2D91 /* hand_showroom_ddn.png */; };
-		C7FB576D220C7294006F2D91 /* body_showroom_refl.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5752220C7294006F2D91 /* body_showroom_refl.png */; };
-		C7FB576E220C7294006F2D91 /* glass_dif.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5753220C7294006F2D91 /* glass_dif.png */; };
-		C7FB576F220C7294006F2D91 /* arm_dif.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5754220C7294006F2D91 /* arm_dif.png */; };
-		C7FB5770220C7294006F2D91 /* nanosuit.blend in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5755220C7294006F2D91 /* nanosuit.blend */; };
-		C7FB5771220C7294006F2D91 /* helmet_diff.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5756220C7294006F2D91 /* helmet_diff.png */; };
-		C7FB5772220C7294006F2D91 /* nanosuit.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5757220C7294006F2D91 /* nanosuit.obj */; };
-		C7FB5773220C7294006F2D91 /* leg_showroom_refl.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5758220C7294006F2D91 /* leg_showroom_refl.png */; };
-		C7FB5774220C7294006F2D91 /* leg_showroom_ddn.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5759220C7294006F2D91 /* leg_showroom_ddn.png */; };
-		C7FB5775220C7294006F2D91 /* helmet_showroom_refl.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB575A220C7294006F2D91 /* helmet_showroom_refl.png */; };
-		C7FB5776220C7294006F2D91 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = C7FB575B220C7294006F2D91 /* LICENSE.txt */; };
-		C7FB5777220C7294006F2D91 /* helmet_showroom_spec.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB575C220C7294006F2D91 /* helmet_showroom_spec.png */; };
-		C7FB5778220C7294006F2D91 /* leg_showroom_spec.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB575D220C7294006F2D91 /* leg_showroom_spec.png */; };
-		C7FB5779220C7294006F2D91 /* body_showroom_spec.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB575E220C7294006F2D91 /* body_showroom_spec.png */; };
-		C7FB577A220C7294006F2D91 /* hand_dif.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB575F220C7294006F2D91 /* hand_dif.png */; };
 		C7FB577F220CBE2A006F2D91 /* PhysicallyBasedRenderingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7FB577D220CBE29006F2D91 /* PhysicallyBasedRenderingShader.vert */; };
 		C7FB5780220CBE2A006F2D91 /* PhysicallyBasedRenderingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7FB577E220CBE2A006F2D91 /* PhysicallyBasedRenderingShader.frag */; };
 		C7FB5784220CE7D6006F2D91 /* woodenBoxSpecular.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5782220CE7D6006F2D91 /* woodenBoxSpecular.png */; };
@@ -2167,33 +2140,6 @@
 		C7EED11022111ECC0079F5C0 /* clean-gray-paper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clean-gray-paper.png"; sourceTree = "<group>"; };
 		C7F053192200B16F00864C31 /* PostProcessingEffectMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostProcessingEffectMode.h; sourceTree = "<group>"; };
 		C7F98BDC2201143E0079CE80 /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
-		C7FB5745220C7294006F2D91 /* hand_showroom_refl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hand_showroom_refl.png; sourceTree = "<group>"; };
-		C7FB5746220C7294006F2D91 /* body_showroom_ddn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body_showroom_ddn.png; sourceTree = "<group>"; };
-		C7FB5747220C7294006F2D91 /* helmet_showroom_ddn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = helmet_showroom_ddn.png; sourceTree = "<group>"; };
-		C7FB5748220C7294006F2D91 /* arm_showroom_ddn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arm_showroom_ddn.png; sourceTree = "<group>"; };
-		C7FB5749220C7294006F2D91 /* arm_showroom_spec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arm_showroom_spec.png; sourceTree = "<group>"; };
-		C7FB574A220C7294006F2D91 /* leg_dif.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leg_dif.png; sourceTree = "<group>"; };
-		C7FB574B220C7294006F2D91 /* arm_showroom_refl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arm_showroom_refl.png; sourceTree = "<group>"; };
-		C7FB574C220C7294006F2D91 /* hand_showroom_spec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hand_showroom_spec.png; sourceTree = "<group>"; };
-		C7FB574D220C7294006F2D91 /* glass_ddn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glass_ddn.png; sourceTree = "<group>"; };
-		C7FB574E220C7294006F2D91 /* glass_refl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glass_refl.png; sourceTree = "<group>"; };
-		C7FB574F220C7294006F2D91 /* nanosuit.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = nanosuit.mtl; sourceTree = "<group>"; };
-		C7FB5750220C7294006F2D91 /* body_dif.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body_dif.png; sourceTree = "<group>"; };
-		C7FB5751220C7294006F2D91 /* hand_showroom_ddn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hand_showroom_ddn.png; sourceTree = "<group>"; };
-		C7FB5752220C7294006F2D91 /* body_showroom_refl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body_showroom_refl.png; sourceTree = "<group>"; };
-		C7FB5753220C7294006F2D91 /* glass_dif.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glass_dif.png; sourceTree = "<group>"; };
-		C7FB5754220C7294006F2D91 /* arm_dif.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arm_dif.png; sourceTree = "<group>"; };
-		C7FB5755220C7294006F2D91 /* nanosuit.blend */ = {isa = PBXFileReference; lastKnownFileType = file; path = nanosuit.blend; sourceTree = "<group>"; };
-		C7FB5756220C7294006F2D91 /* helmet_diff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = helmet_diff.png; sourceTree = "<group>"; };
-		C7FB5757220C7294006F2D91 /* nanosuit.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = nanosuit.obj; sourceTree = "<group>"; };
-		C7FB5758220C7294006F2D91 /* leg_showroom_refl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leg_showroom_refl.png; sourceTree = "<group>"; };
-		C7FB5759220C7294006F2D91 /* leg_showroom_ddn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leg_showroom_ddn.png; sourceTree = "<group>"; };
-		C7FB575A220C7294006F2D91 /* helmet_showroom_refl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = helmet_showroom_refl.png; sourceTree = "<group>"; };
-		C7FB575B220C7294006F2D91 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		C7FB575C220C7294006F2D91 /* helmet_showroom_spec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = helmet_showroom_spec.png; sourceTree = "<group>"; };
-		C7FB575D220C7294006F2D91 /* leg_showroom_spec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leg_showroom_spec.png; sourceTree = "<group>"; };
-		C7FB575E220C7294006F2D91 /* body_showroom_spec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = body_showroom_spec.png; sourceTree = "<group>"; };
-		C7FB575F220C7294006F2D91 /* hand_dif.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hand_dif.png; sourceTree = "<group>"; };
 		C7FB577B220CAACB006F2D91 /* TextureType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureType.h; sourceTree = "<group>"; };
 		C7FB577C220CBC79006F2D91 /* EnumToString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnumToString.h; sourceTree = "<group>"; };
 		C7FB577D220CBE29006F2D91 /* PhysicallyBasedRenderingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = PhysicallyBasedRenderingShader.vert; sourceTree = "<group>"; };
@@ -3547,7 +3493,6 @@
 		C7C8F2CB21FF5F5C00AB865A /* models */ = {
 			isa = PBXGroup;
 			children = (
-				C7FB5744220C7294006F2D91 /* nanosuit */,
 				C77673E2220A22B400BA7062 /* crossbow */,
 				C77673D8220A22B400BA7062 /* flashlight */,
 				C77673ED220A22B400BA7062 /* horn */,
@@ -4419,40 +4364,6 @@
 			path = GroundMoss;
 			sourceTree = "<group>";
 		};
-		C7FB5744220C7294006F2D91 /* nanosuit */ = {
-			isa = PBXGroup;
-			children = (
-				C7FB5754220C7294006F2D91 /* arm_dif.png */,
-				C7FB5748220C7294006F2D91 /* arm_showroom_ddn.png */,
-				C7FB574B220C7294006F2D91 /* arm_showroom_refl.png */,
-				C7FB5749220C7294006F2D91 /* arm_showroom_spec.png */,
-				C7FB5750220C7294006F2D91 /* body_dif.png */,
-				C7FB5746220C7294006F2D91 /* body_showroom_ddn.png */,
-				C7FB5752220C7294006F2D91 /* body_showroom_refl.png */,
-				C7FB575E220C7294006F2D91 /* body_showroom_spec.png */,
-				C7FB574D220C7294006F2D91 /* glass_ddn.png */,
-				C7FB5753220C7294006F2D91 /* glass_dif.png */,
-				C7FB574E220C7294006F2D91 /* glass_refl.png */,
-				C7FB575F220C7294006F2D91 /* hand_dif.png */,
-				C7FB5751220C7294006F2D91 /* hand_showroom_ddn.png */,
-				C7FB5745220C7294006F2D91 /* hand_showroom_refl.png */,
-				C7FB574C220C7294006F2D91 /* hand_showroom_spec.png */,
-				C7FB5756220C7294006F2D91 /* helmet_diff.png */,
-				C7FB5747220C7294006F2D91 /* helmet_showroom_ddn.png */,
-				C7FB575A220C7294006F2D91 /* helmet_showroom_refl.png */,
-				C7FB575C220C7294006F2D91 /* helmet_showroom_spec.png */,
-				C7FB574A220C7294006F2D91 /* leg_dif.png */,
-				C7FB5759220C7294006F2D91 /* leg_showroom_ddn.png */,
-				C7FB5758220C7294006F2D91 /* leg_showroom_refl.png */,
-				C7FB575D220C7294006F2D91 /* leg_showroom_spec.png */,
-				C7FB575B220C7294006F2D91 /* LICENSE.txt */,
-				C7FB5755220C7294006F2D91 /* nanosuit.blend */,
-				C7FB574F220C7294006F2D91 /* nanosuit.mtl */,
-				C7FB5757220C7294006F2D91 /* nanosuit.obj */,
-			);
-			path = nanosuit;
-			sourceTree = "<group>";
-		};
 		C7FB5781220CE7D6006F2D91 /* woodenBox */ = {
 			isa = PBXGroup;
 			children = (
@@ -4526,7 +4437,6 @@
 				C7B4D3DF22146E2900BCE130 /* rustediron-streaks-metal.png in Resources */,
 				C7B4D3B622146E2900BCE130 /* octostone-metal.png in Resources */,
 				C785F97E2212E74000F1F8FD /* noise_texture_colored.png in Resources */,
-				C7FB576E220C7294006F2D91 /* glass_dif.png in Resources */,
 				C7B759442204E32C00E54C30 /* Figured_rosewood_pxr128_normal.tif in Resources */,
 				C7C8F45F21FFBA4900AB865A /* _up.jpg in Resources */,
 				C7B759C92204E32C00E54C30 /* Fine_gravel_pxr128_bmp.tif in Resources */,
@@ -4597,7 +4507,6 @@
 				C7C8F44B21FFBA2A00AB865A /* _bk.jpg in Resources */,
 				C776741A220A22B500BA7062 /* horn_Normal_OpenGL.png in Resources */,
 				C7B75A182204E32C00E54C30 /* Cinder_block_pxr128_normal.tif in Resources */,
-				C7FB5768220C7294006F2D91 /* glass_ddn.png in Resources */,
 				C77673B32209F69500BA7062 /* Metal_007_Height.jpg in Resources */,
 				C7B4D3ED22146E2900BCE130 /* charcoal-albedo.png in Resources */,
 				C7B759DA2204E32C00E54C30 /* Bowling_grass_pxr128_normal.tif in Resources */,
@@ -4610,7 +4519,6 @@
 				C7B759722204E32C00E54C30 /* Burled_ash_pxr128_bmp.tif in Resources */,
 				C7C8F45121FFBA3A00AB865A /* _bk.jpg in Resources */,
 				C7B75A422204E32C00E54C30 /* Purple_shingle_pxr128_normal.tif in Resources */,
-				C7FB5779220C7294006F2D91 /* body_showroom_spec.png in Resources */,
 				C7B759E22204E32C00E54C30 /* Beach_sand_pxr128.tif in Resources */,
 				C7C8F49321FFBA8900AB865A /* _bk.jpg in Resources */,
 				C7C8F44E21FFBA3A00AB865A /* _ft.jpg in Resources */,
@@ -4635,14 +4543,12 @@
 				C7DE39E0221E25D600595556 /* specular.png in Resources */,
 				C7B75A892204E32D00E54C30 /* White_lace_pxr128_bmp.tif in Resources */,
 				C785F988221341CC00F1F8FD /* SobelEdgeDetectionShader.vert in Resources */,
-				C7FB5764220C7294006F2D91 /* arm_showroom_spec.png in Resources */,
 				C7CEE2D92211E33F00895F5D /* ImageProcessingShader.vert in Resources */,
 				C7B759B52204E32C00E54C30 /* Round_mesh_pxr128.tif in Resources */,
 				C7B75A5A2204E32D00E54C30 /* Gray_granite_pxr128_bmp.tif in Resources */,
 				C7B75A322204E32C00E54C30 /* Gray_deco_block_pxr128_bmp.tif in Resources */,
 				C7EEC50C22136AF700909E4C /* MotionBlurShader.vert in Resources */,
 				C785F99622134CAE00F1F8FD /* FishEyeLensShader.frag in Resources */,
-				C7FB5778220C7294006F2D91 /* leg_showroom_spec.png in Resources */,
 				C7B75AAA2204E32D00E54C30 /* Gray_swirl_marble_pxr128_normal.tif in Resources */,
 				C7B759DC2204E32C00E54C30 /* Brown_dirt_pxr128.tif in Resources */,
 				C7C8F46D21FFBA6000AB865A /* _dn.jpg in Resources */,
@@ -4680,7 +4586,6 @@
 				C7B4D3F222146E2900BCE130 /* titanium-metal.png in Resources */,
 				C7EED106221105360079F5C0 /* ExplosionShader.frag in Resources */,
 				C75C972F220E01A200420DF6 /* thefog_ft.tga in Resources */,
-				C7FB576C220C7294006F2D91 /* hand_showroom_ddn.png in Resources */,
 				C77673B62209F69500BA7062 /* chipped-paint-metal-metal.png in Resources */,
 				C7C8F4A421FFBA9E00AB865A /* _rt.jpg in Resources */,
 				C7EEC51022136AF700909E4C /* BlurShader.frag in Resources */,
@@ -4774,7 +4679,6 @@
 				C785F99A22134CAE00F1F8FD /* FishEyeShader.vert in Resources */,
 				C785F97F2212E74000F1F8FD /* night_vision_binoculars_mask.png in Resources */,
 				C7CEE2EF2212435600895F5D /* EdgeDetectionShader.vert in Resources */,
-				C7FB5776220C7294006F2D91 /* LICENSE.txt in Resources */,
 				C75C9733220E01A200420DF6 /* thefog_up.tga in Resources */,
 				C785F96C2212DA7E00F1F8FD /* NightVisionLensShader.frag in Resources */,
 				C7C8F45E21FFBA4900AB865A /* _lf.jpg in Resources */,
@@ -4841,7 +4745,6 @@
 				C7B75A2A2204E32C00E54C30 /* Red-orange_glazed_pxr128_bmp.tif in Resources */,
 				C7B75A692204E32D00E54C30 /* Buffed_marble_pxr128.tif in Resources */,
 				C7B759A92204E32C00E54C30 /* Louvered_steel_pxr128_bmp.tif in Resources */,
-				C7FB5762220C7294006F2D91 /* helmet_showroom_ddn.png in Resources */,
 				C7090CE8223676FD006FE002 /* DistortedTVShader.vert in Resources */,
 				C7C8F48421FFBA7C00AB865A /* _ft.jpg in Resources */,
 				C7B75A302204E32C00E54C30 /* Building_block_pxr128.tif in Resources */,
@@ -4862,7 +4765,6 @@
 				C7B759512204E32C00E54C30 /* Burled_ash_pxr128.tif in Resources */,
 				C7B759352204E32C00E54C30 /* Honduran_mahogany_pxr128_normal.tif in Resources */,
 				C7C8F47821FFBA6F00AB865A /* _ft.jpg in Resources */,
-				C7FB5761220C7294006F2D91 /* body_showroom_ddn.png in Resources */,
 				C7B75A5B2204E32D00E54C30 /* Black_granite_pxr128_bmp.tif in Resources */,
 				C785F94B2212D2BD00F1F8FD /* ScreenWaveShader.vert in Resources */,
 				C75C9745220E212F00420DF6 /* bricks_disp.jpg in Resources */,
@@ -4875,9 +4777,7 @@
 				C785F9732212DA7E00F1F8FD /* LensCircleShader.frag in Resources */,
 				C7B4D3EB22146E2900BCE130 /* charcoal-height.png in Resources */,
 				C7B759A22204E32C00E54C30 /* Rattan_pxr128.tif in Resources */,
-				C7FB5767220C7294006F2D91 /* hand_showroom_spec.png in Resources */,
 				C7B75A452204E32C00E54C30 /* Tar_paper_pxr128_bmp.tif in Resources */,
-				C7FB576F220C7294006F2D91 /* arm_dif.png in Resources */,
 				C7B75A742204E32D00E54C30 /* Blue_marble_pxr128.tif in Resources */,
 				C7C8F4AD21FFC92900AB865A /* SkyBoxShader.vert in Resources */,
 				C776740F220A22B500BA7062 /* Crossbow_D180227_Metallic.png in Resources */,
@@ -4891,7 +4791,6 @@
 				C785F9682212DA7E00F1F8FD /* CrosshatchingShader.vert in Resources */,
 				C7B759D62204E32C00E54C30 /* Ivy_pxr128.tif in Resources */,
 				C7B75A922204E32D00E54C30 /* Woven_flower_pxr128.tif in Resources */,
-				C7FB576A220C7294006F2D91 /* nanosuit.mtl in Resources */,
 				C7C8F45921FFBA4100AB865A /* _up.jpg in Resources */,
 				C776740A220A22B500BA7062 /* Crossbow_D180227_FR.obj in Resources */,
 				C7B75A152204E32C00E54C30 /* Standard_red_pxr128_bmp.tif in Resources */,
@@ -4907,7 +4806,6 @@
 				C75C9720220DD69F00420DF6 /* EnvironmentMappingShader.frag in Resources */,
 				C7B4D3B222146E2900BCE130 /* slipperystonework-albedo.png in Resources */,
 				C7B7599C2204E32C00E54C30 /* Black_glazed_tile_pxr128_normal.tif in Resources */,
-				C7FB5775220C7294006F2D91 /* helmet_showroom_refl.png in Resources */,
 				C7B759FA2204E32C00E54C30 /* Vertical_metal_pxr128.tif in Resources */,
 				C7B4D3C622146E2900BCE130 /* aluminium-roughness.png in Resources */,
 				C7B759B22204E32C00E54C30 /* Round_mesh_pxr128_normal.tif in Resources */,
@@ -5044,7 +4942,6 @@
 				C7DE39D5221E25D600595556 /* normal.jpg in Resources */,
 				C7B75A132204E32C00E54C30 /* Blue_glazed_pxr128_bmp.tif in Resources */,
 				C7EED10A221105360079F5C0 /* PorcupineRenderingShader.frag in Resources */,
-				C7FB5760220C7294006F2D91 /* hand_showroom_refl.png in Resources */,
 				C7B4D3D822146E2900BCE130 /* oakfloor2-normal.png in Resources */,
 				C7B759942204E32C00E54C30 /* Pink_tile_pxr128.tif in Resources */,
 				C7090CDC223671A8006FE002 /* RetroParallaxShader.frag in Resources */,
@@ -5056,7 +4953,6 @@
 				C7B75A912204E32D00E54C30 /* Blue_cotton_tweed_pxr128_bmp.tif in Resources */,
 				C7B4D3C522146E2900BCE130 /* streaked-marble-albedo.png in Resources */,
 				C7B75AA82204E32D00E54C30 /* Gray_swirl_marble_pxr128_bmp.tif in Resources */,
-				C7FB577A220C7294006F2D91 /* hand_dif.png in Resources */,
 				C785F9762212DA7E00F1F8FD /* ShockwaveShader.vert in Resources */,
 				C7B7597F2204E32C00E54C30 /* Nails_pxr128_normal.tif in Resources */,
 				C7B759C62204E32C00E54C30 /* Fine_gray_gravel_pxr128_normal.tif in Resources */,
@@ -5092,7 +4988,6 @@
 				C7B75A812204E32D00E54C30 /* Stripes_pxr128_normal.tif in Resources */,
 				C776741F220A22B500BA7062 /* Musket_D180221_Base_Color.png in Resources */,
 				C7C8F45721FFBA4100AB865A /* _bk.jpg in Resources */,
-				C7FB5765220C7294006F2D91 /* leg_dif.png in Resources */,
 				C7DE39E3221E25D600595556 /* heightmap2.png in Resources */,
 				C7767405220A22B500BA7062 /* MIPIM_D180606_Base_Color.png in Resources */,
 				C7C8F43021FFBA0400AB865A /* Kai_Engel_-_02_-_Better_Way.mp3 in Resources */,
@@ -5116,7 +5011,6 @@
 				C7B759892204E32C00E54C30 /* Belgium_block_pxr128_bmp.tif in Resources */,
 				C7B75A632204E32D00E54C30 /* Red_granite_pxr128.tif in Resources */,
 				C7B759AB2204E32C00E54C30 /* Wire_screen_pxr128.tif in Resources */,
-				C7FB5772220C7294006F2D91 /* nanosuit.obj in Resources */,
 				C7B4D3A522146E2900BCE130 /* woodframe-height.png in Resources */,
 				C7B75A012204E32C00E54C30 /* Weathered_vertical_pxr128_bmp.tif in Resources */,
 				C77673B42209F69500BA7062 /* chipped-paint-metal-rough2.png in Resources */,
@@ -5156,7 +5050,6 @@
 				C7C8F4A521FFBA9E00AB865A /* _bk.jpg in Resources */,
 				C7DE39E9221E25D600595556 /* sand.png in Resources */,
 				C77673CE220A1BA800BA7062 /* MK2_Metallic.png in Resources */,
-				C7FB5766220C7294006F2D91 /* arm_showroom_refl.png in Resources */,
 				C776740E220A22B500BA7062 /* Crossbow_D180227_Normal_DirectX.png in Resources */,
 				C7DE39EB221E25D600595556 /* normal.jpg in Resources */,
 				C7767407220A22B500BA7062 /* MIPIM_D180606_Normal_DirectX.png in Resources */,
@@ -5175,7 +5068,6 @@
 				C7C8F49621FFBA9000AB865A /* _ft.jpg in Resources */,
 				C7B759CA2204E32C00E54C30 /* Street_asphalt_pxr128.tif in Resources */,
 				C7EEC50D22136AF700909E4C /* VignettingShader.vert in Resources */,
-				C7FB5763220C7294006F2D91 /* arm_showroom_ddn.png in Resources */,
 				C7B759C02204E32C00E54C30 /* Fine_gravel_pxr128_normal.tif in Resources */,
 				C7B75A9F2204E32D00E54C30 /* Blue_cotton_tweed_pxr128_bmp.jpg in Resources */,
 				C7090CBC2235E465006FE002 /* EMInterferenceShader.vert in Resources */,
@@ -5190,11 +5082,9 @@
 				C7B759732204E32C00E54C30 /* Figured_birdseye_maple_pxr128.tif in Resources */,
 				C7B75A3B2204E32C00E54C30 /* Gray_shingle_pxr128.tif in Resources */,
 				C7C8F45621FFBA4100AB865A /* _rt.jpg in Resources */,
-				C7FB5771220C7294006F2D91 /* helmet_diff.png in Resources */,
 				C7B759F62204E32C00E54C30 /* Vertical_redwood_pxr128_bmp.tif in Resources */,
 				C7B75A362204E32C00E54C30 /* Blue_glazed_pxr128_normal.tif in Resources */,
 				C7B75A3D2204E32C00E54C30 /* Brown_staggered_pxr128_normal.tif in Resources */,
-				C7FB5770220C7294006F2D91 /* nanosuit.blend in Resources */,
 				C7B7592B2204E32C00E54C30 /* Australian_rosewood_pxr128_bmp.tif in Resources */,
 				C7B759C72204E32C00E54C30 /* Beach_sand_pxr128_bmp.tif in Resources */,
 				C7B759BB2204E32C00E54C30 /* Louvered_steel_pxr128_normal.tif in Resources */,
@@ -5289,7 +5179,6 @@
 				C7B759582204E32C00E54C30 /* Hackberry_pxr128.tif in Resources */,
 				C70A1F91220EEED100170280 /* ChromaticAberrationShader.frag in Resources */,
 				C7C8F49121FFBA8900AB865A /* _dn.jpg in Resources */,
-				C7FB5769220C7294006F2D91 /* glass_refl.png in Resources */,
 				C785F9722212DA7E00F1F8FD /* FrostedGlassEffectShader.frag in Resources */,
 				C7B4D3C922146E2900BCE130 /* aluminium-albedo.png in Resources */,
 				C7DE39D4221E25D600595556 /* diffuse.jpg in Resources */,
@@ -5300,7 +5189,6 @@
 				C7B75A242204E32C00E54C30 /* Thin_building_block_pxr128_bmp.tif in Resources */,
 				C7B75A752204E32D00E54C30 /* Pink_marble_pxr128_bmp.tif in Resources */,
 				C7DE39F8221F2D0700595556 /* ScreenSpaceAmbientOcclusionLightingShader.vert in Resources */,
-				C7FB5774220C7294006F2D91 /* leg_showroom_ddn.png in Resources */,
 				C77673AF2209F69500BA7062 /* Metal_007_Base_Color.png in Resources */,
 				C7B75A602204E32D00E54C30 /* Green_marble_pxr128.tif in Resources */,
 				C7C8F43121FFBA0400AB865A /* Kai_Engel_-_03_-_Brooks.mp3 in Resources */,
@@ -5321,7 +5209,6 @@
 				C70A1F93220EEED100170280 /* BumpMappingShader.vert in Resources */,
 				C7090CB02235D733006FE002 /* CartoonVideoShader.frag in Resources */,
 				C7B75A8C2204E32D00E54C30 /* Flower_pattern_pxr128_bmp.tif in Resources */,
-				C7FB576B220C7294006F2D91 /* body_dif.png in Resources */,
 				C7B759B72204E32C00E54C30 /* Black_mesh_pxr128_normal.tif in Resources */,
 				C77673BA2209F69500BA7062 /* rust-panel-normal-ue.png in Resources */,
 				C7B7595C2204E32C00E54C30 /* White_oak_pxr128.tif in Resources */,
@@ -5354,7 +5241,6 @@
 				C77673B72209F69500BA7062 /* chipped-paint-metal-albedo.png in Resources */,
 				C7B759FE2204E32C00E54C30 /* Poured_cement_pxr128.tif in Resources */,
 				C7C8F48C21FFBA8300AB865A /* _rt.jpg in Resources */,
-				C7FB5773220C7294006F2D91 /* leg_showroom_refl.png in Resources */,
 				C7B75A532204E32D00E54C30 /* Black_marble_pxr128_bmp.tif in Resources */,
 				C7B75A822204E32D00E54C30 /* Stripes_pxr128.tif in Resources */,
 				C7B4D3AA22146E2900BCE130 /* iron-albedo.png in Resources */,
@@ -5370,9 +5256,7 @@
 				C7767406220A22B500BA7062 /* MIPIM_D180606_Metallic.png in Resources */,
 				C7090CD1223665B1006FE002 /* MicroprismMosaicShader.vert in Resources */,
 				C785F9702212DA7E00F1F8FD /* PredatorsThermalVisionShader.frag in Resources */,
-				C7FB576D220C7294006F2D91 /* body_showroom_refl.png in Resources */,
 				C7DE39D0221E25D600595556 /* diffuse.jpg in Resources */,
-				C7FB5777220C7294006F2D91 /* helmet_showroom_spec.png in Resources */,
 				C7B4D3EC22146E2900BCE130 /* charcoal-metal.png in Resources */,
 				C7C8F47F21FFBA7500AB865A /* _dn.jpg in Resources */,
 				C7B4D3BE22146E2900BCE130 /* granitesmooth-roughness.png in Resources */,

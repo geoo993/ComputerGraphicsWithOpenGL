@@ -34,7 +34,7 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform float pixelSize; // between 1.0f and 20.0f
+uniform float pixelSize = 10.0f; // between 1.0f and 20.0f
 uniform float width;   // width of the current render target
 uniform float height;  // height of the current render target
 uniform float coverage;        // between (0.0f and 1.0f)
@@ -55,7 +55,6 @@ void main()
         vec2 fragCoord = gl_FragCoord.xy;
         vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
         vec2 resolution = vec2(width, height);// width and height of the screen
-        
         vec2 modul = mod(fragCoordViewportCoordinates, pixelSize);
         vec2 normalizedCord= vec2(fragCoordViewportCoordinates-modul)/resolution.xy;
         tc = texture(material.ambientMap, normalizedCord);

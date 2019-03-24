@@ -297,6 +297,7 @@ protected:
                       const GLuint &framesPerSecond, const bool &enableHud) override;
     
     /// Controls
+    const char * const ControlTypeToString(const ControlType &type) override;
     void LoadControls() override;
     void UpdateControls() override;
     void RenderControls() override;

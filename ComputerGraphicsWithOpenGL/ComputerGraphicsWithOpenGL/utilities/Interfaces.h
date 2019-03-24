@@ -363,6 +363,7 @@ struct IControls
     GLboolean m_mouseButtonDown;
     GLdouble m_mouseX;
     GLdouble m_mouseY;
+    virtual const char * const ControlTypeToString(const ControlType &type) = 0;
     virtual void LoadControls() = 0;
     virtual void RenderControls() = 0;
     virtual void UpdateControls() = 0;

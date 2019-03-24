@@ -9,6 +9,8 @@
 #include "Game.h"
 
 void Game::RenderScene(const GLboolean &toLightSpace){
+    const GLint lightSpaceIndex = 51;
+    const GLboolean useAO = m_currentPPFXMode == PostProcessingEffectMode::SSAO;
     
     // enable depth testing (is disabled for rendering screen-space quad post processing)
     glEnable(GL_DEPTH_TEST);
@@ -20,10 +22,10 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     // Most of the cases you'll just be writing 0x00 or 0xFF as the stencil mask, but it's good to know there are options to set custom bit-masks.
     glStencilMask(0x00);
     
-    
-    const GLint lightSpaceIndex = 51;
-    const GLboolean useAO = m_currentPPFXMode == PostProcessingEffectMode::SSAO;
-    
+    /// Render skybox
+    CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
+    SetMaterialUniform(pSkyBoxProgram, "material");
+    RenderSkyBox(pSkyBoxProgram);
 /*
     /// Render terrain
     CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 2];
@@ -196,10 +198,4 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetJupiterColorUniform(pJupiterProgram);
     RenderSphere(pJupiterProgram, m_spherePosition, 30.0f, false);
     */
-    
-    
-    /// Render skybox
-    CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
-    SetMaterialUniform(pSkyBoxProgram, "material");
-    RenderSkyBox(pSkyBoxProgram);
 }

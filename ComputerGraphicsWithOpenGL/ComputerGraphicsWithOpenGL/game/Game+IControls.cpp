@@ -663,7 +663,6 @@ void Game::ClearControls() {
 }
 
 void Game::RemoveControls() {
-    
     for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
         delete (*it);
         it = CControl::m_controls.begin();

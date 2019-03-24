@@ -21,6 +21,30 @@ static void OnMouseDown_callback(GLFWwindow* window, int button, int action, int
 static void OnMouseScroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 static void OnKeyDown_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
+
+const char * const Game::ControlTypeToString(const ControlType &type){
+    switch(type) {
+        case ControlType::LEFTMOUSE:
+            return "LEFT MOUSE";
+        case ControlType::MIDDLEMOUSE:
+            return "MIDDLE MOUSE";
+        case ControlType::RIGHTMOUSE:
+            return "RIGHT MOUSE";
+        case ControlType::KEYFORWARD:
+            return "KEY FORWARD";
+        case ControlType::KEYBACKWARD:
+            return "KEY BACKWARD";
+        case ControlType::KEYLEFT:
+            return "KEY LEFT";
+        case ControlType::KEYRIGHT:
+            return "KEY RIGHT";
+        case ControlType::UNKNOWN:
+            return "Unknown";
+        default:
+            return "";
+    }
+}
+
 void Game::LoadControls() {
     
     m_gameWindow->SetInputs(OnMouseEnter_callback, OnMouseMove_callback,
@@ -513,6 +537,7 @@ void Game::LoadControls() {
     CSlider *cellThreshold = (CSlider *)AddControl(new CSlider("Threshold", 0.0f, 1.0f, 5, guiBox,
                                                                        GUIMode::DYNAMIC, false, PostProcessingEffectMode::CelShaderish));
     cellThreshold->SetValue(&m_cellThreshold);
+    
 }
 
 void Game::RenderControls() {
@@ -770,6 +795,16 @@ void Game::UpdateMouseControls(MouseState &state){
     } else {
         state.m_isNavigating = false;
     }
+    
+    /*
+    std::cout
+    << " mouse down " << ControlTypeToString(state.m_leftButtonDown)
+    << ", mouse navigating " << Extensions::BoolToString(state.m_isNavigating)
+    << ", mouse is dragging " <<  Extensions::BoolToString(state.m_isDragging)
+    << ", mouse x " << (state.x)
+    << ", mouse y " << (state.y)
+    << std::endl;
+    */
 }
 
 // glfw: whenever the keyboard is pressed, this callback is called

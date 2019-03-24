@@ -37,7 +37,7 @@ in VS_OUT
 
 uniform float width;   // width of the current render target
 uniform float height;  // height of the current render target
-uniform vec2 iMouse;
+uniform vec2 mouse;
 uniform bool isSixScreens;
 uniform bool isFourScreens;
 uniform bool isTwoScreens;
@@ -76,7 +76,7 @@ void main()
         // distance of pixel from center
         float r = sqrt( dot(d, d) );
         //amount of effect
-        float power = ( 2.0f * 3.141592f / (2.0f * sqrt(dot(m, m))) ) * (iMouse.x / width - 0.5f);
+        float power = ( 2.0f * 3.141592f / (2.0f * sqrt(dot(m, m))) ) * (mouse.x / width - 0.5f);
         
         //radius of 1:1 effect
         float bind;

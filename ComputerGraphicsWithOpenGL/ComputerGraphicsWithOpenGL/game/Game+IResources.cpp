@@ -24,12 +24,11 @@ void Game::InitialiseResources()
     m_pPlanarTerrain = new CPlane;
     m_pHeightmapTerrain = new CHeightMapTerrain;
     m_pLamp = new CCube(1.0f);
-    m_pCrossbow = new CModel;
-    m_pHorn = new CModel;
-    m_pSchofield = new CModel;
-    m_pMusket = new CModel;
-    m_pGrenade = new CModel;
-    m_pNanosuit = new CModel;
+    //m_pCrossbow = new CModel;
+    //m_pHorn = new CModel;
+    //m_pSchofield = new CModel;
+    //m_pMusket = new CModel;
+    //m_pGrenade = new CModel;
     m_pFlashlight = new CModel;
     m_pSphere = new CSphere;
     m_pFireBallSphere = new CSphere;
@@ -92,8 +91,6 @@ void Game::LoadResources(const std::string &path)
     
     /// https://www.cgtrader.com/free-3d-models/military/other/mk2-grenade-1c0f476e-3caa-4b74-9b3f-22280615a688
     //m_pGrenade->Create(path+"/models/mk2_grenade/", "MK2.obj");
-    
-    m_pNanosuit->Create(path+"/models/nanosuit/", "nanosuit.obj");
     
     /// https://www.cgtrader.com/free-3d-models/military/gun/mipim-d180606
     //m_pFlashlight

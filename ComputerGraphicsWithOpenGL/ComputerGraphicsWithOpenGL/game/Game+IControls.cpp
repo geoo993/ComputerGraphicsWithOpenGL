@@ -117,15 +117,30 @@ void Game::LoadControls() {
     
     CButton * matRefraction = (CButton *)AddControl(new CButton("Material Refraction", guiBox));
     matRefraction->SetValue(&m_useRefraction);
+    guiBox->y += guiBox->height + 5;
+    
+    CSlider *albedo = (CSlider *)AddControl(new CSlider("Albedo", 0.0f, 1.0f, 5, guiBox));
+    albedo->SetValue(&m_albedo);
     guiBox->y += guiBox->height;
     
-   
+    CSlider *metallic = (CSlider *)AddControl(new CSlider("Metallic", 0.0f, 1.0f, 5, guiBox));
+    metallic->SetValue(&m_metallic);
+    guiBox->y += guiBox->height;
+    
+    CSlider *roughness = (CSlider *)AddControl(new CSlider("Roughness", 0.0f, 1.0f, 5, guiBox));
+    roughness->SetValue(&m_roughness);
+    guiBox->y += guiBox->height;
+    
+    CSlider *fresnel = (CSlider *)AddControl(new CSlider("Fresnel", 0.0f, 1.0f, 5, guiBox));
+    fresnel->SetValue(&m_fresnel);
+    guiBox->y += guiBox->height;
     /// RIGHT SCREEN
     GLint rightStartingY = 10;
     guiBox->x = SCREEN_WIDTH - guiBox->width - 10;
     guiBox->y = rightStartingY;
     
-    GLint itemHeight = guiBox->height ;
+    GLint itemHeight = guiBox->height;
+    
     guiBox->height = itemHeight * m_pSkybox->GetNumberOfSkyboxes();
     CListBox * skyboxeNames = (CListBox *)AddControl(new CListBox(guiBox, itemHeight ));
     skyboxeNames->AddItem("Color Basement");
@@ -189,6 +204,12 @@ void Game::LoadControls() {
                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Posterization));
     posterizationColors->SetValue(&m_posterizationColors);
     
+     /// Pixelate
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *pixelateSize = (CSlider *)AddControl(new CSlider("Pixel Size", 0.0f, 40.0f, 5, guiBox,
+    GUIMode::DYNAMIC, false, PostProcessingEffectMode::Pixelate));
+    pixelateSize->SetValue(&m_pixelateSize);
+    
     /// Pixelation
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
     CSlider *pixelationWidth = (CSlider *)AddControl(new CSlider("Pixel Width", 0.0f, 20.0f, 5, guiBox,
@@ -226,7 +247,6 @@ void Game::LoadControls() {
     CSlider *frostedGlassRandomScale = (CSlider *)AddControl(new CSlider("Random Scale", 0.0f, 10.0f, 5, guiBox,
                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
     frostedGlassRandomScale->SetValue(&m_frostedGlassRandomScale);
-    
     
     /// Crosshatching
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;

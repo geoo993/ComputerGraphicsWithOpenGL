@@ -162,7 +162,7 @@ void Game::SetPixelateUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("width", m_gameWindow->GetWidth());
     pShaderProgram->SetUniform("height", m_gameWindow->GetHeight());
-    pShaderProgram->SetUniform("pixelSize", m_pixelWidth); // 0 to 20
+    pShaderProgram->SetUniform("pixelSize", m_pixelateSize); // 0 to 40
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
@@ -290,7 +290,7 @@ void Game::SetFishEyeAntiFishEyeUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
     pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
-    pShaderProgram->SetUniform("iMouse", glm::vec2(m_mouseX,m_mouseY));
+    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX,m_mouseY));
     
     // only one of four must be true
     pShaderProgram->SetUniform("isSixScreens", false);

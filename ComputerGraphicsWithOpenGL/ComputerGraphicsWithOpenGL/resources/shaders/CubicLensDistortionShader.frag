@@ -52,7 +52,6 @@ vec2 computeUV( vec2 uv, float k, float kcube ){
     }
     
     vec2 nUv = f * t + 0.5f;
-    nUv.y = 1.0f - nUv.y;
     
     return nUv;
     

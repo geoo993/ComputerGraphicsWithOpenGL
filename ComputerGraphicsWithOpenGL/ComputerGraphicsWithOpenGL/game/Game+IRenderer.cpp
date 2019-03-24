@@ -24,10 +24,6 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     const GLint lightSpaceIndex = 51;
     const GLboolean useAO = m_currentPPFXMode == PostProcessingEffectMode::SSAO;
     
-    /// Render skybox
-    CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
-    SetMaterialUniform(pSkyBoxProgram, "material");
-    RenderSkyBox(pSkyBoxProgram);
 /*
     /// Render terrain
     CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 2];
@@ -35,12 +31,11 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     RenderTerrain(pTerrainProgram, true, true);
     */
     
-    
+    /*
     ///  Physically Based Rendering
     CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
     SetCameraUniform(pPBRProgram, "camera", m_pCamera);
     SetLightUniform(pPBRProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-    SetMaterialUniform(pPBRProgram, "material", m_woodenBoxesColor, m_materialShininess, useAO);
     
     // Render Spheres
     GLfloat gap = 100.0f;
@@ -54,6 +49,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
             GLfloat roughness = glm::clamp((GLfloat)col / (GLfloat)numCol, 0.05f, 1.0f);
             glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
             SetMaterialUniform(pPBRProgram, "material", m_woodenBoxesColor, m_materialShininess, useAO);
+            //m_albedo, m_metallic, m_roughness, m_fresnel;
             SetPBRMaterialUniform(pPBRProgram, "pbr", albedo, metallic, roughness);
             RenderSphere(pPBRProgram, position, 30.0f, m_woodenBoxesUseTexture);
         }
@@ -62,7 +58,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     
     // Add Physically Based Rendering Lights
     RenderLight(pPBRProgram, m_pCamera);
-    
+    */
 
     /// Render Lamps
     CShaderProgram *pLampProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 4];
@@ -83,17 +79,17 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         GLfloat angle = 20.0f * (GLfloat)i;
         RenderWoodenBox(pLightProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_woodenBoxesUseTexture);
     }
-    /*
+    
+    
     GLfloat objGap = 100.0f;
-    GLuint objRows = 1;
-    GLuint objCols = 1;
+    GLuint objRows = 2;
+    GLuint objCols = 2;
     for (GLuint row = 0; row < objRows; row++) {
         for (GLuint col = 0; col < objCols; col++) {
-            glm::vec3 position = glm::vec3(((GLfloat)row * objGap) - 100.0f, 60.0f, ((GLfloat)col * objGap) -100.0f);
-            RenderNanosuit(pLightProgram, position, glm::vec3(0.0f, 0.0f, 0.0f), 15.0f, m_woodenBoxesUseTexture);
+            glm::vec3 position = glm::vec3(((GLfloat)row * objGap) - 100.0f, 100.0f, ((GLfloat)col * objGap) -100.0f);
+            RenderSphere(pLightProgram, position, 30.0f, m_woodenBoxesUseTexture);
         }
     }
-    */
     
     // RenderTerrain
     RenderTerrain(pLightProgram, false, true);
@@ -200,4 +196,10 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetJupiterColorUniform(pJupiterProgram);
     RenderSphere(pJupiterProgram, m_spherePosition, 30.0f, false);
     */
+    
+    
+    /// Render skybox
+    CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
+    SetMaterialUniform(pSkyBoxProgram, "material");
+    RenderSkyBox(pSkyBoxProgram);
 }

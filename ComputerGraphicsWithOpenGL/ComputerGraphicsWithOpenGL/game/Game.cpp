@@ -257,7 +257,7 @@ Game::~Game()
 }
 
 void Game::PreRendering() {
-    
+
     // update game timer
     UpdateSystemTime();
     UpdateGameTime();
@@ -272,12 +272,8 @@ void Game::PreRendering() {
 // Render scene method runs
 void Game::Render()
 {
-
     ActivateFBO( m_currentPPFXMode );
-    
-    // Clear buffers before rendering
-    m_gameWindow->ClearBuffers();
-    
+
     RenderScene();
     
     ResetFrameBuffer();
@@ -291,8 +287,6 @@ void Game::Render()
     // Draw controls GUI objects
     RenderControls();
     
-    // Swap buffers right after rendering all, this is to show the current rendered image
-    m_gameWindow->SwapBuffers();
 }
 
 void Game::PostRendering() {
@@ -331,12 +325,19 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     
     while ( !m_gameWindow->ShouldClose() ){
         
+        // Clear buffers before rendering
+        m_gameWindow->ClearBuffers();
+        
         if (m_gameManager->IsActive()) {
             GameLoop();
         }else{
             std::this_thread::sleep_for(std::chrono::milliseconds(60)); // Do not consume processor power if application isn't active
         }
         
+        // Swap buffers right after rendering all, this is to show the current rendered image
+        m_gameWindow->SwapBuffers();
+        
+        // Poll IO events (keys pressed/released, mouse moved etc.)
         m_gameWindow->PostRendering();
     }
     

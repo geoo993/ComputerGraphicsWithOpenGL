@@ -101,7 +101,7 @@ Game::Game()
     m_spotOuterCutOff = 28.0f;
     
     // PPFX
-    m_ffaaOffset, m_cellThreshold = 0.0f;
+    m_ffaaOffset = 0.0f;
     
     // SSAO
     // generate sample kernel
@@ -273,7 +273,10 @@ void Game::PreRendering() {
 void Game::Render()
 {
     ActivateFBO( m_currentPPFXMode );
-
+    
+    // Clear buffers before rendering
+    m_gameWindow->ClearBuffers();
+    
     RenderScene();
     
     ResetFrameBuffer();
@@ -325,20 +328,18 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     
     while ( !m_gameWindow->ShouldClose() ){
         
-        // Clear buffers before rendering
-        m_gameWindow->ClearBuffers();
         
         if (m_gameManager->IsActive()) {
             GameLoop();
         }else{
             std::this_thread::sleep_for(std::chrono::milliseconds(60)); // Do not consume processor power if application isn't active
         }
+
+        // Poll IO events (keys pressed/released, mouse moved etc.)
+        m_gameWindow->PostRendering();
         
         // Swap buffers right after rendering all, this is to show the current rendered image
         m_gameWindow->SwapBuffers();
-        
-        // Poll IO events (keys pressed/released, mouse moved etc.)
-        m_gameWindow->PostRendering();
     }
     
     RemoveControls();

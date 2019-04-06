@@ -230,7 +230,7 @@ void Game::LoadControls() {
     
      /// Pixelate
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CSlider *pixelateSize = (CSlider *)AddControl(new CSlider("Pixel Size", 0.0f, 40.0f, 5, guiBox,
+    CSlider *pixelateSize = (CSlider *)AddControl(new CSlider("Pixel Size", 0.0f, 20.0f, 5, guiBox,
     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Pixelate));
     pixelateSize->SetValue(&m_pixelateSize);
     
@@ -263,12 +263,12 @@ void Game::LoadControls() {
     
     /// Frosted Glass
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CSlider *frostedGlassRandomFactor = (CSlider *)AddControl(new CSlider("Random Factor", 0.0f, 0.5f, 5, guiBox,
+    CSlider *frostedGlassRandomFactor = (CSlider *)AddControl(new CSlider("Random Factor", 0.0f, 0.4f, 5, guiBox,
                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
     frostedGlassRandomFactor->SetValue(&m_frostedGlassRandomFactor);
     guiBox->y += guiBox->height;
     
-    CSlider *frostedGlassRandomScale = (CSlider *)AddControl(new CSlider("Random Scale", 0.0f, 10.0f, 5, guiBox,
+    CSlider *frostedGlassRandomScale = (CSlider *)AddControl(new CSlider("Random Scale", 0.0f, 0.4f, 5, guiBox,
                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
     frostedGlassRandomScale->SetValue(&m_frostedGlassRandomScale);
     
@@ -531,13 +531,6 @@ void Game::LoadControls() {
     CSlider *ssaoNoise = (CSlider *)AddControl(new CSlider("Noise", 0.0f, 10.0f, 5, guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
     ssaoNoise->SetValue(&m_ssaoNoiseSize);
-    
-    // Cel Shaderish
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CSlider *cellThreshold = (CSlider *)AddControl(new CSlider("Threshold", 0.0f, 1.0f, 5, guiBox,
-                                                                       GUIMode::DYNAMIC, false, PostProcessingEffectMode::CelShaderish));
-    cellThreshold->SetValue(&m_cellThreshold);
-    
 }
 
 void Game::RenderControls() {
@@ -568,6 +561,11 @@ void Game::RenderControls() {
                     }
                     break;
                 }
+            }
+        } else {
+            if (control->GetGUIMode() == GUIMode::DYNAMIC) {
+                control->SetIsActive(false);
+                control->SetIsInside(false);
             }
         }
     }
@@ -751,7 +749,6 @@ void Game::UpdateMouseControls(MouseState &state){
     
     lastScroll = state.m_scroll;
     
-    
     //// https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/11.anti_aliasing_offscreen/anti_aliasing_offscreen.cpp
     /// https://www.3dbuzz.com/training/view/opengl-in-depth/particle-engine/viewport-navigation
     static GLint lastX = -1;
@@ -778,7 +775,6 @@ void Game::UpdateMouseControls(MouseState &state){
     // Check if we are inside a control
     GLboolean isInsideAControl = false;
     for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
-        
         CControl * control = (*it);
         if (control->GetIsInside()) {
             isInsideAControl = true;
@@ -798,8 +794,10 @@ void Game::UpdateMouseControls(MouseState &state){
     /*
     std::cout
     << " mouse down " << ControlTypeToString(state.m_leftButtonDown)
+    << ", mouse is enabled " <<  Extensions::BoolToString(state.m_isEnabled)
     << ", mouse navigating " << Extensions::BoolToString(state.m_isNavigating)
     << ", mouse is dragging " <<  Extensions::BoolToString(state.m_isDragging)
+    << ", mouse is inside a Control " <<  Extensions::BoolToString(isInsideAControl)
     << ", mouse x " << (state.x)
     << ", mouse y " << (state.y)
     << std::endl;

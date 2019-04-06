@@ -35,7 +35,7 @@ in VS_OUT
 
 uniform float coverage;        // between (0.0f and 1.0f)
 uniform vec4 blurColor;
-uniform int width, height;
+uniform float width, height;
 
 out vec4 vOutputColour;  // formely  gl_FragColor
 
@@ -49,8 +49,8 @@ void main()
     
     if (uv.x < (  coverage  ) )
     {
-        float dx = 1.0 / float(width);
-        float dy = 1.0 / float(height);
+        float dx = 1.0 / width;
+        float dy = 1.0 / height;
         int halfSize = 3;
         vec4 avg = vec4(0);
         for (int y = -halfSize; y <= halfSize; y++) {

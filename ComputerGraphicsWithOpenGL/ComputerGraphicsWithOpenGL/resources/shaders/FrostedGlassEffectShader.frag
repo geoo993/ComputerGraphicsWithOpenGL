@@ -35,8 +35,8 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int width;   // width of the current render target
-uniform int height;  // height of the current render target
+uniform float width;   // width of the current render target
+uniform float height;  // height of the current render target
 
 uniform float coverage; // x position of the vertical red line
 uniform float PixelX;   // effect param, default value: 2.0

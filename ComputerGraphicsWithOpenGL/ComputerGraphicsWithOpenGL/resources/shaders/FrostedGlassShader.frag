@@ -34,10 +34,7 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int width;   // width of the current render target
-uniform int height;  // height of the current render target
 uniform float coverage;    // x position of the vertical red line
-
 uniform float randomFactor = 0.05f;  // effect param, default value: 0.05
 uniform float randomScale = 5.1f;    // effect param, default value: 5.1
 

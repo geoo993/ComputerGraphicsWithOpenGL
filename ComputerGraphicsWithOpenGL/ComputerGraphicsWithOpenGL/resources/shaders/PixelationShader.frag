@@ -35,8 +35,8 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int width;   // width of the current render target
-uniform int height;  // height of the current render target
+uniform float width;   // width of the current render target
+uniform float height;  // height of the current render target
 
 uniform float coverage;  // offset of the vertical red line, between (0 and 1)
 uniform float pixel_width;  // width of a low resolution pixel = 15.0f

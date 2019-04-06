@@ -32,6 +32,8 @@ public:
     
     void SetPosition(GLint x, GLint y);
     void SetSize(GLint width, GLint height);
+    void SetIsActive(const GLboolean &active);
+    void SetIsInside(const GLboolean &inside);
     
     GLint GetWidth() const;
     GLint GetHeight() const;
@@ -45,10 +47,10 @@ public:
     
 public:
     static std::list<CControl *> m_controls;
+    std::string                     m_uuid;
     
 protected:
     GLboolean                       m_isInside, m_isActive;
-    std::string                     m_uuid;
     GUIMode                         m_mode;
     PostProcessingEffectMode        m_ppfx;
     GLint                           m_posX, m_posY;

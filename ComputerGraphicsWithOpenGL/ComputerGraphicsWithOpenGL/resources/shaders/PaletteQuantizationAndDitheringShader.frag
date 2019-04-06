@@ -59,11 +59,11 @@ const float ResolutionDivisor = 2.0f;
 
 float quantize(float inp, float period)
 {
-    return floor((inp+period/2.)/period)*period;
+    return floor((inp+period/2.0f)/period)*period;
 }
 vec2 quantize(vec2 inp, vec2 period)
 {
-    return floor((inp+period/2.)/period)*period;
+    return floor((inp+period/2.0f)/period)*period;
 }
 
 //----------------------------------------------------------------------------
@@ -165,21 +165,22 @@ void main()
 
     
     // framing and post
-    float ySplit = (mouse.y > 0.0f ? mouse.y / resolution.y : 0.3f);
+    float ySplit = ((mouse.y > 0.0f) ? (1.0f - (mouse.y / resolution.y)) : 1.0f);
     float xSplit = coverage;
     if(uv.x > xSplit) {
-        vOutputColour = vec4(originalCol, 1);
+        vOutputColour = vec4(originalCol, 1.0f);
     } else {
-        if(uv.y > ySplit)
+        if(uv.y > ySplit) {
             vOutputColour = vec4(dc, 1.0f);
-        else
+        } else {
             vOutputColour = vec4(qc, 1.0f);
+        }
     }
     
     float f = abs(uv.x - xSplit);
-    vOutputColour.rgb *= smoothstep(0.00f,0.005f, f);
+    vOutputColour.rgb *= smoothstep(0.00f, 0.005f, f);
     f = abs(uv.y - ySplit);
     if(uv.x < xSplit) {
-        vOutputColour.rgb *= smoothstep(0.00f,0.005f, f);
+        vOutputColour.rgb *= smoothstep(0.00f, 0.005f, f);
     }
 }

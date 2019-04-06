@@ -34,7 +34,6 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform float threshold = 0.1f;        // between (0.0f and 0.10f)
 uniform float coverage;        // between (0.0f and 1.0f)
 
 float GetTexture(float x, float y)
@@ -55,14 +54,14 @@ void main()
         float x = fs_in.vTexCoord.x;
         float y = fs_in.vTexCoord.y;
         
-        float xValue = -GetTexture(x-1.0, y-1.0) - 2.0*GetTexture(x-1.0, y) - GetTexture(x-1.0, y+1.0)
-        + GetTexture(x+1.0, y-1.0) + 2.0*GetTexture(x+1.0, y) + GetTexture(x+1.0, y+1.0);
+        float xValue = -GetTexture(x-1.0, y-1.0) - 2.0 * GetTexture(x-1.0, y) - GetTexture(x-1.0, y+1.0)
+        + GetTexture(x+1.0, y-1.0) + 2.0 * GetTexture(x+1.0, y) + GetTexture(x+1.0, y+1.0);
         float yValue = GetTexture(x-1.0, y-1.0) + 2.0*GetTexture(x, y-1.0) + GetTexture(x+1.0, y-1.0)
-        - GetTexture(x-1.0, y+1.0) - 2.0*GetTexture(x, y+1.0) - GetTexture(x+1.0, y+1.0);
+        - GetTexture(x-1.0, y+1.0) - 2.0 * GetTexture(x, y+1.0) - GetTexture(x+1.0, y+1.0);
         
-        if(length(vec2(xValue, yValue)) > threshold)
+        if(length(vec2(xValue, yValue)) > 0.0f)
         {
-            tc = vec4(0);
+            tc = vec4(0.0f);
         }
         else
         {

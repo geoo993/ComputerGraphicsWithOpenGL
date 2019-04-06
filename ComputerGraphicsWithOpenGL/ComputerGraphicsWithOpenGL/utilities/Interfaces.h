@@ -332,9 +332,6 @@ struct IPostProcessing {
     GLfloat m_ssaoBias, m_ssaoRadius, m_ssaoNoiseSize;
     GLboolean m_ssaoNoiseUseLight;
     
-    // Cell Shaderish
-    GLfloat m_cellThreshold;
-    
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;
     virtual void ActivateFBO(const PostProcessingEffectMode &mode) = 0;

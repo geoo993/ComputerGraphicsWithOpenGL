@@ -79,6 +79,7 @@ void Game::SetJupiterColorUniform(CShaderProgram *pShaderProgram){
 void Game::SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("bUseScreenQuad", bUseScreenQuad);
+    /*
     pShaderProgram->SetUniform("time", m_timeInSeconds);
     pShaderProgram->SetUniform("date", m_date);
     pShaderProgram->SetUniform("channelTime", m_channelTime);
@@ -87,6 +88,7 @@ void Game::SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboo
     pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
     pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+     */
 }
 
 void Game::SetColorInversionUniform(CShaderProgram *pShaderProgram){
@@ -124,8 +126,8 @@ void Game::SetScreenWaveUniform(CShaderProgram *pShaderProgram){
 void Game::SetSwirlUniform(CShaderProgram *pShaderProgram){
     
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("width", m_gameWindow->GetWidth());
-    pShaderProgram->SetUniform("height", m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("radius", m_swirlRadius); // 0 to 360
     pShaderProgram->SetUniform("angle", m_swirlAngle);  //0.8f); 0 to pi
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
@@ -158,33 +160,30 @@ void Game::SetPosterizationUniform(CShaderProgram *pShaderProgram){
 }
 
 void Game::SetPixelateUniform(CShaderProgram *pShaderProgram){
-    
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("width", m_gameWindow->GetWidth());
-    pShaderProgram->SetUniform("height", m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX, m_mouseY));
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("pixelSize", m_pixelateSize); // 0 to 40
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
 void Game::SetPixelationUniform(CShaderProgram *pShaderProgram){
-    
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("width", m_gameWindow->GetWidth());
-    pShaderProgram->SetUniform("height", m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("pixel_width", m_pixelWidth); // 0 to 20
     pShaderProgram->SetUniform("pixel_height", m_pixelHeight); // 0 to 20
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 void Game::SetKnittedPixelationUniform(CShaderProgram *pShaderProgram){
-
+    pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
     pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
-    
 }
 
 void Game::SetDreamVisionUniform(CShaderProgram *pShaderProgram){
-    
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
@@ -194,8 +193,8 @@ void Game::SetFrostedGlassEffectUniform(CShaderProgram *pShaderProgram){
     m_textures[2]->BindTexture2DToTextureType(); // noiseTex
     
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("width", m_gameWindow->GetWidth());
-    pShaderProgram->SetUniform("height", m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
     pShaderProgram->SetUniform("PixelX", m_frostedGlassPixelX); // 4 = 0 to 20
     pShaderProgram->SetUniform("PixelY", m_frostedGlassPixelY); // 4 = 0 to 20
@@ -204,8 +203,8 @@ void Game::SetFrostedGlassEffectUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetFrostedGlassUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("width", m_gameWindow->GetWidth());
-    pShaderProgram->SetUniform("height", m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("randomFactor", m_frostedGlassRandomFactor); // effect param, default value: 0.05
     pShaderProgram->SetUniform("randomScale", m_frostedGlassRandomScale);  // effect param, default value: 5.1
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
@@ -213,8 +212,8 @@ void Game::SetFrostedGlassUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetCrosshatchingUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("width", m_gameWindow->GetWidth());
-    pShaderProgram->SetUniform("height", m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("hatch_y_offset", m_crosshatchingOffset); // between 0 and 10.0f
     pShaderProgram->SetUniform("lum_threshold_1", m_crosshatchingThreshold_1); // between 0 and 1.0f
     pShaderProgram->SetUniform("lum_threshold_2", m_crosshatchingThreshold_2); // between 0 and 1.0f
@@ -298,7 +297,6 @@ void Game::SetFishEyeAntiFishEyeUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->SetUniform("isTwoScreens", false);
     pShaderProgram->SetUniform("isOneScreen", true);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
-    
 }
 
 void Game::SetGaussianBlurUniform(CShaderProgram *pShaderProgram, const GLboolean &horizontal){
@@ -310,8 +308,8 @@ void Game::SetGaussianBlurUniform(CShaderProgram *pShaderProgram, const GLboolea
 
 void Game::SetBlurUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("width", m_gameWindow->GetWidth());
-    pShaderProgram->SetUniform("height", m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
+    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
     pShaderProgram->SetUniform("blurColor", glm::vec4(1.0f));
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
@@ -481,7 +479,6 @@ void Game::SetScreenSpaceAmbientOcclusionUniform(CShaderProgram *pShaderProgram)
 void Game::SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("noiseSize", m_ssaoNoiseSize);
-    
 }
 
 void Game::SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) {
@@ -594,7 +591,6 @@ void Game::SetCubicLensDistortionUniform(CShaderProgram *pShaderProgram) {
 
 void Game::SetCelShaderishUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("threshold", m_cellThreshold); // between 0 and 1
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 

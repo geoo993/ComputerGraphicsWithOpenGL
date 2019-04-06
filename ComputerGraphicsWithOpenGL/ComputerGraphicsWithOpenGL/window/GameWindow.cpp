@@ -569,7 +569,7 @@ void CGameWindow::ClearBuffers(){
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     //// CLEAR Buffers, The default clear value for the depth is 1.0f, which is equal to the depth of your far clipping plane
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); ////<-- CLEAR WINDOW
-    //glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer
+    glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer
 
 }
 

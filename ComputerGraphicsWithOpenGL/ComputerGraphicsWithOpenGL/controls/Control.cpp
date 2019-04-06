@@ -60,6 +60,15 @@ void CControl::SetSize(GLint width, GLint height){
     m_height = height;
 }
 
+void CControl::SetIsInside(const GLboolean &inside) {
+    m_isInside = inside;
+}
+
+
+void CControl::SetIsActive(const GLboolean &active) {
+    m_isActive = active;
+}
+
 GLint CControl::GetWidth() const {
     return m_width;
 }

@@ -35,10 +35,9 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform int width;   // width of the current render target
-uniform int height;  // height of the current render target
-
 // Swirl effect parameters
+uniform float width;   // width of the current render target
+uniform float height;  // height of the current render target
 uniform float radius = 350.0f;
 uniform float angle = 0.8f;
 uniform float coverage;        // between (0.0f and 1.0f)

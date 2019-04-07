@@ -14,7 +14,8 @@
 // https://docs.microsoft.com/en-us/cpp/windows/enum-class-cpp-component-extensions?view=vs-2017
 // shader types
 enum class PostProcessingEffectMode {
-    DefaultFrameBuffer,
+    PBR,
+    BlinnPhong,
     ColorInversion,
     GrayScale,
     Kernel,

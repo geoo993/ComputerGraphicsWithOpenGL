@@ -32,10 +32,15 @@ Game::Game()
     
     // materials
     m_parallaxHeightScale = 1.0f;
-    m_materialShininess = 30.0f;
+    m_materialShininess = 10.0f;
     m_uvTiling = 1.4f;
     m_magnitude = 0.3f;
-    m_albedo, m_metallic, m_roughness, m_fresnel = 0.0f;
+    
+    m_albedo = 0.5f;
+    m_metallic = 0.9f;
+    m_roughness = 0.1f;
+    m_fresnel = 0.0f;
+    m_ao = 0.3f;
     
     //textures settings
     m_textures.reserve(50);

@@ -56,11 +56,15 @@ void Game::LoadResources(const std::string &path)
     m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, m_skyboxNumber);
     
     // Create the planar terrain
-    m_pPlanarTerrain->Create(path+"/textures/terrain/", { // http://www.crazyrobinhood.org/textures/
-        {"Grass7/diffuse.png", TextureType::DIFFUSE},
-        {"Grass7/normal.png", TextureType::NORMAL},
-        {"Grass7/specular.png", TextureType::SPECULAR}
-    }, m_mapSize, m_mapSize, 50.0f, 50); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    m_pPlanarTerrain->Create(path+"/textures/pbr/metalpainted/", { // http://www.crazyrobinhood.org/textures/
+        { "Metal_Painted_001_albedo.jpg", TextureType::ALBEDO},              // albedo map
+        { "Metal_Painted_001_diffuse.jpg", TextureType::DIFFUSE},
+        { "Metal_Painted_001_metallic.jpg",  TextureType::METALNESS },           // metallic map
+        { "Metal_Painted_001_roughness.jpg",   TextureType::ROUGHNESS},         // roughness map
+        { "Metal_Painted_001_normal.jpg", TextureType::NORMAL},                  // normalMap 3
+        { "Metal_Painted_001_ambientOcclusion.jpg",   TextureType::AO },           // aoMap 4
+        { "Metal_Painted_001_specular.jpg",   TextureType::SPECULAR }
+    }, m_mapSize, m_mapSize, 5.0f, 50); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
     
     // Create the heightmap terrain
     m_pHeightmapTerrain->Create((path+"/textures/terrain/HeightMap/heightmap4.bmp").c_str(),
@@ -101,10 +105,14 @@ void Game::LoadResources(const std::string &path)
         { "Standard_red_pxr128_normal.tif", TextureType::NORMAL},
         { "Standard_red_pxr128_bmp.tif", TextureType::SPECULAR}
     } );
-    m_pInteriorBox->Create(path+"/textures/pixarLibrary/brick/", {
-        { "Orange_glazed_pxr128.tif", TextureType::DIFFUSE},
-        { "Orange_glazed_pxr128_normal.tif", TextureType::NORMAL},
-        { "Orange_glazed_pxr128_bmp.tif", TextureType::SPECULAR}
+    m_pInteriorBox->Create(path+"/textures/pbr/harshbricks/", {
+        { "harshbricks-albedo.png", TextureType::ALBEDO},              // albedo map
+        { "harshbricks-diffuse.png", TextureType::DIFFUSE},
+        { "harshbricks-metal.png",  TextureType::METALNESS },           // metallic map
+        { "harshbricks-roughness.png",   TextureType::ROUGHNESS},         // roughness map
+        { "harshbricks-normal.png", TextureType::NORMAL},                  // normalMap 3
+        { "harshbricks-ao.png",   TextureType::AO },            // aoMap 4
+        { "harshbricks-specular.png",   TextureType::SPECULAR }
     } );
     
     m_pParallaxCube->Create(path+"/textures/pixarLibrary/brick/", {
@@ -128,11 +136,13 @@ void Game::LoadResources(const std::string &path)
     // Create a sphere
     // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
     m_pSphere->Create(path+"/textures/pbr/chippedpaintmetal/",
-                      {   { "chipped-paint-metal-albedo.png", TextureType::AMBIENT },           // ambient map (albedo map)
-                          { "chipped-paint-metal-metal.png",  TextureType::DIFFUSE },           // diffuse map (metallic map)
-                          { "chipped-paint-metal-rough2.png",   TextureType::SPECULAR},         // specular map (roughness map)
-                          { "chipped-paint-metal-normal-dx.png", TextureType::NORMAL},          // normalMap 3
-                          { "chipped-paint-ao.png",   TextureType::AO }                          // aoMap 4
+                      {   { "chipped-paint-metal-albedo.png", TextureType::ALBEDO },           // albedo map
+                          { "chipped-paint-metal-diffuse.png", TextureType::DIFFUSE },
+                          { "chipped-paint-metal-metal.png",  TextureType::METALNESS },           // metallic map
+                          { "chipped-paint-metal-rough.png",   TextureType::ROUGHNESS},         // roughness map
+                          { "chipped-paint-metal-normal.png", TextureType::NORMAL},          // normalMap 3
+                          { "chipped-paint-ao.png",   TextureType::AO },                          // aoMap 4
+                          { "chipped-paint-specular.png",   TextureType::SPECULAR}
                       }, 50, 50);
     m_pFireBallSphere->Create(path+"/textures/",
                               //{   { "explosion.png", TextureType::NOISE }

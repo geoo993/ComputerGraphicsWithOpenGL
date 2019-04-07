@@ -147,7 +147,8 @@ protected:
                             const glm::vec4 &color = glm::vec4(1.0f), const GLfloat &shininess = 32.0f,
                             const GLboolean &useAO = false) override;
     void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                               const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) override;
+                               const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness,
+                               const GLfloat &fresnel, const GLfloat &ao) override;
     
     /// Textures
     void LoadTextures(const std::string &path) override;
@@ -234,7 +235,8 @@ protected:
     /// Lights
     void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
                          const GLboolean &useSpot, const GLboolean &useSmoothSpot, const GLboolean& useBlinn) override;
-    void SetBaseLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const BaseLight & baseLight) override;
+    void SetHRDLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                            const GLfloat & exposure, const GLfloat & gamma, const GLboolean &useHDR) override;
     void SetDirectionalLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const DirectionalLight& directionalLight, const glm::vec3& direction) override;
     void SetPointLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const PointLight& pointLight) override;

@@ -26,42 +26,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
     SetMaterialUniform(pSkyBoxProgram, "material");
     RenderSkyBox(pSkyBoxProgram);
-/*
-    /// Render terrain
-    CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 2];
-    SetMaterialUniform(pTerrainProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
-    RenderTerrain(pTerrainProgram, true, true);
-    */
     
-    /*
-    ///  Physically Based Rendering
-    CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
-    SetCameraUniform(pPBRProgram, "camera", m_pCamera);
-    SetLightUniform(pPBRProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-    
-    // Render Spheres
-    GLfloat gap = 100.0f;
-    GLuint numRows = 5;
-    GLuint numCol = 5;
-    
-    glm::vec3 albedo = glm::vec3(0.5f, 0.0f, 0.0f);
-    for (GLuint row = 0; row < numRows; row++) {
-        GLfloat metallic = (GLfloat)row / (GLfloat)numRows;
-        for (GLuint col = 0; col < numCol; col++) {
-            GLfloat roughness = glm::clamp((GLfloat)col / (GLfloat)numCol, 0.05f, 1.0f);
-            glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
-            SetMaterialUniform(pPBRProgram, "material", m_woodenBoxesColor, m_materialShininess, useAO);
-            //m_albedo, m_metallic, m_roughness, m_fresnel;
-            SetPBRMaterialUniform(pPBRProgram, "pbr", albedo, metallic, roughness);
-            RenderSphere(pPBRProgram, position, 30.0f, m_woodenBoxesUseTexture);
-        }
-    }
-    //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
-    
-    // Add Physically Based Rendering Lights
-    RenderLight(pPBRProgram, m_pCamera);
-    */
-
     /// Render Lamps
     CShaderProgram *pLampProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 4];
     for (unsigned int i = 0; i < m_pointLightPositions.size(); i++) {
@@ -69,39 +34,64 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f);
     }
 
-    /// Render Lights
+    /// Blinn Phong Lighting
     CShaderProgram *pLightProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 5];
-    SetCameraUniform(pLightProgram, "camera", m_pCamera);
-    SetLightUniform(pLightProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-    SetMaterialUniform(pLightProgram, "material", m_woodenBoxesColor, m_materialShininess, useAO);
     
+    ///  Physically Based Rendering
+    CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
     
+    GLboolean isPBR = m_currentPPFXMode == PostProcessingEffectMode::PBR;
+    CShaderProgram *mainProgram = isPBR ? pPBRProgram : pLightProgram;
+    SetCameraUniform(mainProgram, "camera", m_pCamera);
+    SetLightUniform(mainProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+    SetMaterialUniform(mainProgram, "material", m_woodenBoxesColor, m_materialShininess, useAO);
+    
+    /*
     // Render Wooden Boxes
     for ( GLuint i = 0; i < m_woodenBoxesPosition.size(); ++i){
         GLfloat angle = 20.0f * (GLfloat)i;
-        RenderWoodenBox(pLightProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_woodenBoxesUseTexture);
+        RenderWoodenBox(mainProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_woodenBoxesUseTexture);
     }
+    */
     
-    
-    GLfloat objGap = 100.0f;
-    GLuint objRows = 2;
-    GLuint objCols = 2;
-    for (GLuint row = 0; row < objRows; row++) {
-        for (GLuint col = 0; col < objCols; col++) {
-            glm::vec3 position = glm::vec3(((GLfloat)row * objGap) - 100.0f, 100.0f, ((GLfloat)col * objGap) -100.0f);
-            RenderSphere(pLightProgram, position, 30.0f, m_woodenBoxesUseTexture);
+    GLfloat gap = 100.0f;
+    GLuint numRows = 5;
+    GLuint numCol = 5;
+    if (isPBR) {
+        
+        glm::vec3 albedo = glm::vec3(m_albedo, 0.0f, 0.0f);
+        for (GLuint row = 0; row < numRows; row++) {
+            GLfloat metallic = (GLfloat)row / (GLfloat)numRows;
+            for (GLuint col = 0; col < numCol; col++) {
+                GLfloat roughness = glm::clamp((GLfloat)col / (GLfloat)numCol, 0.05f, 1.0f);
+                glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
+                SetPBRMaterialUniform(mainProgram, "material", albedo, metallic, roughness, m_fresnel, m_ao);
+                RenderSphere(mainProgram, position, 30.0f, m_woodenBoxesUseTexture);
+            }
+        }
+        
+        SetPBRMaterialUniform(mainProgram, "material", albedo, m_metallic, m_roughness, m_fresnel, m_ao);
+    } else {
+        for (GLuint row = 0; row < numRows; row++) {
+            for (GLuint col = 0; col < numCol; col++) {
+                glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
+                RenderSphere(mainProgram, position, 30.0f, m_woodenBoxesUseTexture);
+            }
         }
     }
     
-    // RenderTerrain
-    RenderTerrain(pLightProgram, false, true);
+    //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
+    
     
     // Render Big cube underneath
-    RenderInteriorBox(pLightProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, true, true);
+    RenderInteriorBox(mainProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_woodenBoxesUseTexture, true);
     
-    // Add Default Lights
-    RenderLight(pLightProgram, m_pCamera);
+    // RenderTerrain
+    RenderTerrain(mainProgram, false, m_woodenBoxesUseTexture);
     
+    // Render Lights
+    RenderLight(mainProgram, m_pCamera);
+
     /*
     /// Normal Mapping
     CShaderProgram *pNormalMappingProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 6];

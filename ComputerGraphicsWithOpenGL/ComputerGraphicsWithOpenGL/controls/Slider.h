@@ -16,7 +16,7 @@ class CSlider: public CControl {
 public:
     CSlider(std::string label, GLfloat min, GLfloat max, GLuint tickSize, GUIBoxData *data,
             const GUIMode &mode = GUIMode::STATIC, const GLboolean & create = true,
-            const PostProcessingEffectMode &ppfxMode = PostProcessingEffectMode::DefaultFrameBuffer);
+            const PostProcessingEffectMode &ppfxMode = PostProcessingEffectMode::PBR);
     
     virtual void Create();
     GLboolean Update(const MouseState &state) override;

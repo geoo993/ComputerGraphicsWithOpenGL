@@ -30,6 +30,9 @@ enum class TextureType {
     NOISE,
     MASK,
     LENS,
+    ALBEDO,
+    METALNESS,
+    ROUGHNESS,
     CUBEMAP,
     UNKNOWN
 };

@@ -108,33 +108,14 @@ uniform struct Camera
     bool isMoving;
 } camera;
 
-// Structure holding material information:  its ambient, diffuse, specular, etc...
+// Structure holding PBR material information:  its albedo, metallic, roughness, etc...
 uniform struct Material
 {
-    sampler2D ambientMap;           // 0.   ambient map (albedo map)
-    sampler2D diffuseMap;           // 1.   diffuse map (metallic map)
-    sampler2D specularMap;          // 2.   specular map (roughness map)
+    sampler2D albedoMap;            // 15.  albedo map
+    sampler2D metalnessMap;         // 16.  metalness map
+    sampler2D roughnessMap;         // 17.  roughness map
     sampler2D normalMap;            // 3.   normal map
-    sampler2D heightMap;            // 4.   height map
-    sampler2D emissionMap;          // 5.   emission map
-    sampler2D displacementMap;      // 6.   displacment map
     sampler2D aoMap;                // 7.   ambient oclusion map
-    sampler2D glossinessMap;        // 8.   glossiness map
-    sampler2D opacityMap;           // 9.   opacity map
-    sampler2D reflectionMap;        // 10.  reflection map
-    sampler2D depthMap;             // 11.  depth map
-    sampler2D noiseMap;             // 12.  noise map
-    sampler2D maskMap;              // 13.  mask map
-    sampler2D lensMap;              // 14.  lens map
-    samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
-    vec4 color;
-    float shininess;
-    bool bUseAO;
-} material;
-
-// Structure holding PBR material information:  its albedo, metallic, roughness, etc...
-uniform struct PBR
-{
     // for more info look at https://marmoset.co/posts/physically-based-rendering-and-you-can-too/
     vec3  albedo;           // Albedo is the base color input, commonly known as a diffuse map.
     // all values below are between 0 and 1
@@ -142,13 +123,35 @@ uniform struct PBR
     float roughness;        // Microsurface defines how rough or smooth the surface of a material is. between 0 and 1
     float fresnel;          // Fresnel is the percentage of light that a surface reflects at grazing angles.
     float ao;               // Ambient occlusion(AO) represents large scale occluded light and is generally baked from a 3d model.
-} pbr;
+    float shininess;
+    bool bUseAO;
+} material;
 
 // Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
 {
     vec3 color;
     float intensity;
+    float ambient;
+    float diffuse;
+    float specular;
+    float exposure;
+    float gamma;
+};
+
+// Structure holding hrd light information
+struct HRDLight
+{
+    float exposure;
+    float gamma;
+    bool bHDR;
+};
+
+struct Attenuation
+{
+    float constant;
+    float linear;
+    float exponent;
 };
 
 struct DirectionalLight
@@ -160,7 +163,9 @@ struct DirectionalLight
 struct PointLight
 {
     BaseLight base;
+    Attenuation attenuation;
     vec3 position;
+    float range; // This returns a radius between roughly 1.0 and 5.0 based on the light's maximum intensity.
 };
 
 struct SpotLight
@@ -171,10 +176,11 @@ struct SpotLight
     float outerCutOff;
 };
 
+uniform HRDLight R_hrdlight;
 uniform DirectionalLight R_directionallight;
 uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
-uniform bool bUseTexture;
+uniform bool bUseTexture, bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
 
 in VS_OUT
@@ -212,11 +218,13 @@ vec3 getNormalFromMap(vec3 normal, vec3 worldPos)
 
 // http://graphicrants.blogspot.com/2013/08/specular-brdf-reference.html
 // Normal distribution function
-float DistributionGGX(vec3 N, vec3 H, float roughness)
+float DistributionGGX(vec3 N, vec3 V, vec3 H, vec3 R, float roughness)
 {
     float a      = roughness * roughness;
     float a2     = a * a;
-    float NdotH  = max(dot(N, H), 0.0f);
+    float NdotH  = bUseBlinn
+    ? max(dot(N, H), 0.0f)
+    : max(dot(V, R), 0.0f);
     float NdotH2 = NdotH * NdotH;
     
     float num   = a2;
@@ -254,6 +262,109 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0f - F0) * pow(1.0f - cosTheta, 5.0f);
 }
 
+// ----------------------------------------------------------------------------
+//Lights
+vec3 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
+{
+    
+    vec3 albedo     = bUseTexture ? pow(texture(material.albedoMap, fs_in.vTexCoord).rgb, vec3(2.2f)) : material.albedo;       // albedo map
+    float metallic  = bUseTexture ? texture(material.metalnessMap, fs_in.vTexCoord).r : material.metallic;                          // metallic map
+    float roughness = bUseTexture ? texture(material.roughnessMap, fs_in.vTexCoord).r : material.roughness;                         // roughness map
+    float ao        = bUseTexture ? texture(material.aoMap, fs_in.vTexCoord).r : material.ao;                               // ambient oclusion map
+    
+    
+    /// The F0 varies per material and is tinted on metals as we find in large material databases.
+    // for non-metallic surfaces F0 is always 0.04, while we do vary F0 based on the metalness of a surface
+    // by linearly interpolating between the original F0 and the albedo value given the metallic property.
+    vec3 F0         = vec3(0.04f); // glass
+    F0              = mix(F0, albedo, metallic);
+    
+    // ambient lighting (note that the IBL tutorial will replace this ambient lighting with environment lighting).
+    vec3 ambient = vec3(base.ambient) * albedo * ao; // ambient light
+    
+    float diffuseFactor = max(dot(normal, direction), 0.0f); // diffuse light
+    vec3 diffuse = vec3(base.diffuse) * diffuseFactor;
+    
+    vec3 view =  camera.position + camera.front;
+    vec3 directionToEye = normalize(view - vertexPosition); // viewDirection
+    vec3 reflectDirection = reflect(-direction, normal);    // specular reflection
+    vec3 halfDirection = normalize(direction + directionToEye); // halfway vector
+    
+    // calculating the NDF and the G term in the reflectance loop, and also the fresnel value
+    float NDF       = DistributionGGX(normal, directionToEye, halfDirection, reflectDirection, roughness);
+    float G         = GeometrySmith(normal, directionToEye, direction, roughness);
+    vec3 F          = fresnelSchlick(max(dot(halfDirection, directionToEye), 0.0f), F0); // fresnel value
+    
+    //  calculate the Cook-Torrance BRDF
+    vec3 cookTorrance    = NDF * G * F;
+    float specularFactor = material.shininess * max(dot(normal, directionToEye), 0.0f) * max(dot(normal, direction), 0.0f);
+    //vec3 specular     =  numerator / max(denominator, 0.001f); // specular light
+    
+    // calculate each light's contribution to the reflectance equation.
+    // kS is equal to Fresnel
+    vec3 kS = F;// the Fresnel value directly corresponds to kS we can use F to denote the specular contribution of any light that hits the surface.
+    // for energy conservation, the diffuse and specular light can't
+    // be above 1.0 (unless the surface emits light); to preserve this
+    // relationship the diffuse component (kD) should equal 1.0 - kS.
+    vec3 kD = vec3(1.0f) - kS;
+    // multiply kD by the inverse metalness such that only non-metals
+    // have diffuse lighting, or a linear blend if partly metal (pure metals have no diffuse light).
+    kD *= 1.0f - metallic; // calculate the ratio of refraction kD:
+    
+    vec3 specular     = base.specular * (kD * albedo / PI + (cookTorrance / max(specularFactor, 0.001f))); // specular light
+    
+    // calculate each light's outgoing reflectance value
+    // The resulting Lo value, or the outgoing radiance, is effectively the result of the reflectance equation's integral ∫ over Ω.
+    return (ambient + diffuse + specular) * base.intensity * base.color;
+}
+
+vec3 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 vertexPosition)
+{
+    return CalcLight(directionalLight.base, normalize(-directionalLight.direction), normal, vertexPosition);
+}
+
+vec3 CalcPointLight(PointLight pointLight, vec3 normal, vec3 vertexPosition)
+{
+    vec3 lightDirection = normalize(pointLight.position - vertexPosition);
+    float distanceToPoint = length(pointLight.position - vertexPosition);
+    
+    if(distanceToPoint > pointLight.range) {
+        return vec3(0.0f, 0.0f, 0.0f);
+    }
+    
+    vec3 color = CalcLight(pointLight.base, lightDirection, normal, vertexPosition);
+    
+    // attenuation
+    
+    float attenuation = 1.0f / (pointLight.attenuation.constant + pointLight.attenuation.linear * distanceToPoint +
+                                pointLight.attenuation.exponent * (distanceToPoint * distanceToPoint));
+    return color * attenuation;
+    
+    
+    //float attenuation = (pointLight.attenuation.constant +
+    //                     pointLight.attenuation.linear * distanceToPoint +
+    //                     pointLight.attenuation.exponent * (distanceToPoint * distanceToPoint) + 0.0001f);
+    //return color / attenuation;
+}
+
+
+vec3 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 vertexPosition)
+{
+    vec3 lightDirection = normalize(spotLight.pointLight.position - vertexPosition);
+    float theta = max(dot(lightDirection, normalize(-spotLight.direction)), 0.0f);
+    vec3 color = vec3( 0.0f, 0.0f, 0.0f);
+    
+    if(theta > spotLight.cutOff)
+    {
+        float epsilon = spotLight.cutOff - spotLight.outerCutOff;
+        float intensity = bUseSmoothSpot
+        ? (1.0f - (1.0f - theta) / (1.0f - spotLight.cutOff))
+        : clamp((theta - spotLight.outerCutOff) / epsilon, 0.0f, 1.0f);
+        color = CalcPointLight(spotLight.pointLight, normal, vertexPosition) * intensity;
+    }
+    return color;
+}
+
 //When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
 layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
 layout (location = 1) out vec4 vBrightColor;
@@ -263,84 +374,29 @@ layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
-    vec3 albedo     = bUseTexture ? pow(texture(material.ambientMap, fs_in.vTexCoord).rgb, vec3(2.2f)) : pbr.albedo;       // ambient map (albedo map)
-    float metallic  = bUseTexture ? texture(material.diffuseMap, fs_in.vTexCoord).r : pbr.metallic;                          // diffuse map (metallic map)
-    float roughness = bUseTexture ? texture(material.specularMap, fs_in.vTexCoord).r : pbr.roughness;                         // specular map (roughness map)
     vec3 normal     = bUseTexture ? getNormalFromMap(fs_in.vWorldNormal, fs_in.vWorldPosition) : normalize(fs_in.vWorldNormal);    // normal map
-    float ao        = bUseTexture ? texture(material.aoMap, fs_in.vTexCoord).r : pbr.ao;                               // ambient oclusion map
-    
     vec3 worldPos   = fs_in.vWorldPosition;
-    vec3 view       =  camera.position + camera.front;
-    vec3 directionToEye = normalize(view - worldPos); // viewDirection
-
-    /// The F0 varies per material and is tinted on metals as we find in large material databases.
-    // for non-metallic surfaces F0 is always 0.04, while we do vary F0 based on the metalness of a surface
-    // by linearly interpolating between the original F0 and the albedo value given the metallic property.
-    vec3 F0         = vec3(0.04f);
-    F0              = mix(F0, albedo, metallic);
+    vec3 color = vec3(0.0f, 0.0f, 0.0f);
     
-    // the reflectance equation result
-    vec3 Lo = vec3(0.0f);
-    
-    // Using Point lights
-    for (int i = 0; i < NUMBER_OF_POINT_LIGHTS; i++) {
-        
-        // calculate per-light radiance
-        PointLight light            = R_pointlight[i];
-        vec3  lightColor            = light.base.color;
-        vec3  lightDirection        = normalize(light.position - worldPos);
-        vec3  halfDirection         = normalize(directionToEye + lightDirection); // halfway vector
-        //float cosTheta              = max(dot(normal, lightDirection), 0.0f);
-        float distanceToPoint       = length(light.position - worldPos);
-        float attenuation           = 1.0f / (distanceToPoint * distanceToPoint);
-        vec3 radiance               = lightColor * attenuation;
-        
-        // calculating the NDF and the G term in the reflectance loop, and also the fresnel value
-        float NDF       = DistributionGGX(normal, halfDirection, roughness);
-        float G         = GeometrySmith(normal, directionToEye, lightDirection, roughness);
-        vec3 F          = fresnelSchlick(max(dot(halfDirection, directionToEye), 0.0f), F0); // fresnel value
-        
-        //  calculate the Cook-Torrance BRDF
-        vec3 numerator    = NDF * G * F;
-        float denominator = 4.0f * max(dot(normal, directionToEye), 0.0f) * max(dot(normal, lightDirection), 0.0f);
-        vec3 specular     = numerator / max(denominator, 0.001f); // specular light
-        
-        
-        // calculate each light's contribution to the reflectance equation.
-        // kS is equal to Fresnel
-        vec3 kS = F;// the Fresnel value directly corresponds to kS we can use F to denote the specular contribution of any light that hits the surface.
-        // for energy conservation, the diffuse and specular light can't
-        // be above 1.0 (unless the surface emits light); to preserve this
-        // relationship the diffuse component (kD) should equal 1.0 - kS.
-        vec3 kD = vec3(1.0f) - kS;
-        // multiply kD by the inverse metalness such that only non-metals
-        // have diffuse lighting, or a linear blend if partly metal (pure metals have no diffuse light).
-        kD *= 1.0f - metallic; // calculate the ratio of refraction kD:
-        
-        // calculate each light's outgoing reflectance value
-        // The resulting Lo value, or the outgoing radiance, is effectively the result of the reflectance equation's integral ∫ over Ω.
-        float NdotL = max(dot(normal, lightDirection), 0.0f); // diffuse light
-        //// add to outgoing radiance Lo
-        Lo += (kD * albedo / PI + specular) * radiance * NdotL * light.base.intensity;
+    if (bUseDirectionalLight){
+        // Directional lighting
+        vec3 directionalLight = CalcDirectionalLight(R_directionallight, normal, worldPos);
+        color += directionalLight;
     }
     
-    // What's left is to add an (improvised) ambient term to the direct lighting result Lo.
-    // ambient lighting (note that the IBL tutorial will replace this ambient lighting with environment lighting).
-    vec3 ambient = vec3(0.03f) * albedo * ao; // ambient light
-    vec3 color   = ambient + Lo;
+    if (bUsePointLight){
+        // Point lights
+        for (int i = 0; i < NUMBER_OF_POINT_LIGHTS; i++){
+            vec3 pointL = CalcPointLight(R_pointlight[i], normal, worldPos);
+            color += pointL;
+        }
+    }
+    if (bUseSpotlight){
+        // Spot light
+        vec3 spotL = CalcSpotLight(R_spotlight, normal, worldPos);
+        color += spotL;
+    }
     
-    /*
-     Linear and HDR rendering (HDR tonemapping)
-     So far we've assumed all our calculations to be in linear color space and to account for this we need to gamma correct at the end of the shader.
-     Calculating lighting in linear space is incredibly important as PBR requires all inputs to be linear,
-     not taking this into account will result in incorrect lighting. Additionally, we want light inputs to be close to their physical equivalents
-     such that their radiance or color values can vary wildly over a high spectrum of values.
-     As a result Lo can rapidly grow really high which then gets clamped between 0.0 and 1.0 due to the default low dynamic range (LDR) output.
-     We fix this by taking Lo and tone or exposure map the high dynamic range (HDR) value correctly to LDR before gamma correction:
-     */
-    color = color / (color + vec3(1.0f));
-    /// gamma correct
-    color = pow(color, vec3(1.0f/2.2f));
      /*
      Here we tone map the HDR color using the Reinhard operator, preserving the high dynamic range of possibly highly
      varying irradiance after which we gamma correct the color.
@@ -351,6 +407,20 @@ void main()
      Without these it's impossible to properly capture the high and low details of varying light intensities and
      your calculations end up incorrect and thus visually unpleasing.
      */
+    
+    if(R_hrdlight.bHDR)
+    {
+        // tone mapping with exposure
+        color = vec3(1.0f) - exp(-color * R_hrdlight.exposure);
+        // also gamma correct while we're at it
+        color = pow(color, vec3(1.0f / R_hrdlight.gamma));
+    } else {
+        color = color / (color + vec3(1.0f));
+        /// gamma correct
+        //color = pow(color, vec3(1.0f/2.2f));
+         color = pow(color, vec3(1.0f / R_hrdlight.gamma));
+    }
+    
     
     vOutputColour = vec4(color, 1.0f);
     
@@ -365,9 +435,10 @@ void main()
     // store the fragment position vector in the first gbuffer texture
     vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
     // also store the per-fragment normals into the gbuffer
-    vNormal = normalize(fs_in.vWorldNormal);
+    vNormal = normal;
     // and the diffuse per-fragment color
-    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, fs_in.vTexCoord).rgb;
+    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.albedoMap, fs_in.vTexCoord).rgb;
     // store specular intensity in gAlbedoSpec's alpha component
-    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, fs_in.vTexCoord).r;
+    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.aoMap, fs_in.vTexCoord).r;
+    
 }

@@ -99,11 +99,11 @@
 		C77673B12209F69500BA7062 /* Metal_007_Normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C77673982209F69400BA7062 /* Metal_007_Normal.jpg */; };
 		C77673B22209F69500BA7062 /* Metal_007_Roughness.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C77673992209F69400BA7062 /* Metal_007_Roughness.jpg */; };
 		C77673B32209F69500BA7062 /* Metal_007_Height.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C776739A2209F69400BA7062 /* Metal_007_Height.jpg */; };
-		C77673B42209F69500BA7062 /* chipped-paint-metal-rough2.png in Resources */ = {isa = PBXBuildFile; fileRef = C776739C2209F69400BA7062 /* chipped-paint-metal-rough2.png */; };
+		C77673B42209F69500BA7062 /* chipped-paint-metal-rough.png in Resources */ = {isa = PBXBuildFile; fileRef = C776739C2209F69400BA7062 /* chipped-paint-metal-rough.png */; };
 		C77673B52209F69500BA7062 /* chipped-paint-ao.png in Resources */ = {isa = PBXBuildFile; fileRef = C776739D2209F69400BA7062 /* chipped-paint-ao.png */; };
 		C77673B62209F69500BA7062 /* chipped-paint-metal-metal.png in Resources */ = {isa = PBXBuildFile; fileRef = C776739E2209F69400BA7062 /* chipped-paint-metal-metal.png */; };
 		C77673B72209F69500BA7062 /* chipped-paint-metal-albedo.png in Resources */ = {isa = PBXBuildFile; fileRef = C776739F2209F69400BA7062 /* chipped-paint-metal-albedo.png */; };
-		C77673B82209F69500BA7062 /* chipped-paint-metal-normal-dx.png in Resources */ = {isa = PBXBuildFile; fileRef = C77673A02209F69400BA7062 /* chipped-paint-metal-normal-dx.png */; };
+		C77673B82209F69500BA7062 /* chipped-paint-metal-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C77673A02209F69400BA7062 /* chipped-paint-metal-normal.png */; };
 		C77673BA2209F69500BA7062 /* rust-panel-normal-ue.png in Resources */ = {isa = PBXBuildFile; fileRef = C77673A32209F69400BA7062 /* rust-panel-normal-ue.png */; };
 		C77673BB2209F69500BA7062 /* rust-panel-metalness.png in Resources */ = {isa = PBXBuildFile; fileRef = C77673A42209F69400BA7062 /* rust-panel-metalness.png */; };
 		C77673BC2209F69500BA7062 /* rust-panel-roughness.png in Resources */ = {isa = PBXBuildFile; fileRef = C77673A52209F69400BA7062 /* rust-panel-roughness.png */; };
@@ -211,6 +211,18 @@
 		C78DDCF52224B4800010A5D9 /* Slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78DDCF32224B4800010A5D9 /* Slider.cpp */; };
 		C78F395E2215C81C006163EC /* LightSpaceShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C78F395C2215C819006163EC /* LightSpaceShader.vert */; };
 		C78F395F2215C81C006163EC /* LightSpaceShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C78F395D2215C81A006163EC /* LightSpaceShader.frag */; };
+		C79C6633225A298100705D64 /* Metal_Painted_001_normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C79C662D225A298000705D64 /* Metal_Painted_001_normal.jpg */; };
+		C79C6634225A298100705D64 /* Metal_Painted_001_roughness.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C79C662E225A298100705D64 /* Metal_Painted_001_roughness.jpg */; };
+		C79C6635225A298100705D64 /* Metal_Painted_001_height.png in Resources */ = {isa = PBXBuildFile; fileRef = C79C662F225A298100705D64 /* Metal_Painted_001_height.png */; };
+		C79C6636225A298100705D64 /* Metal_Painted_001_ambientOcclusion.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C79C6630225A298100705D64 /* Metal_Painted_001_ambientOcclusion.jpg */; };
+		C79C6638225A298100705D64 /* Metal_Painted_001_metallic.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C79C6632225A298100705D64 /* Metal_Painted_001_metallic.jpg */; };
+		C79C663C225A6FA000705D64 /* Metal_Painted_001_specular.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C79C6639225A6F9F00705D64 /* Metal_Painted_001_specular.jpg */; };
+		C79C663D225A6FA000705D64 /* Metal_Painted_001_albedo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C79C663A225A6F9F00705D64 /* Metal_Painted_001_albedo.jpg */; };
+		C79C663E225A6FA000705D64 /* Metal_Painted_001_diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C79C663B225A6F9F00705D64 /* Metal_Painted_001_diffuse.jpg */; };
+		C79C6641225A6FD800705D64 /* harshbricks-diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = C79C663F225A6FD700705D64 /* harshbricks-diffuse.png */; };
+		C79C6642225A6FD800705D64 /* harshbricks-specular.png in Resources */ = {isa = PBXBuildFile; fileRef = C79C6640225A6FD800705D64 /* harshbricks-specular.png */; };
+		C79C6645225A703B00705D64 /* chipped-paint-specular.png in Resources */ = {isa = PBXBuildFile; fileRef = C79C6643225A703B00705D64 /* chipped-paint-specular.png */; };
+		C79C6646225A703B00705D64 /* chipped-paint-metal-diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = C79C6644225A703B00705D64 /* chipped-paint-metal-diffuse.png */; };
 		C7A6EE912208F6BC005D5161 /* MK2.FBX in Resources */ = {isa = PBXBuildFile; fileRef = C7A6EE7A2208F6BC005D5161 /* MK2.FBX */; };
 		C7A6EE922208F6BC005D5161 /* MK2.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7A6EE7B2208F6BC005D5161 /* MK2.obj */; };
 		C7A6EE9E2208F6BC005D5161 /* SchofieldNo3NickelCO2BBRevolver.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7A6EE8A2208F6BC005D5161 /* SchofieldNo3NickelCO2BBRevolver.obj */; };
@@ -1119,11 +1131,11 @@
 		C77673982209F69400BA7062 /* Metal_007_Normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_007_Normal.jpg; sourceTree = "<group>"; };
 		C77673992209F69400BA7062 /* Metal_007_Roughness.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_007_Roughness.jpg; sourceTree = "<group>"; };
 		C776739A2209F69400BA7062 /* Metal_007_Height.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_007_Height.jpg; sourceTree = "<group>"; };
-		C776739C2209F69400BA7062 /* chipped-paint-metal-rough2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chipped-paint-metal-rough2.png"; sourceTree = "<group>"; };
+		C776739C2209F69400BA7062 /* chipped-paint-metal-rough.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chipped-paint-metal-rough.png"; sourceTree = "<group>"; };
 		C776739D2209F69400BA7062 /* chipped-paint-ao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chipped-paint-ao.png"; sourceTree = "<group>"; };
 		C776739E2209F69400BA7062 /* chipped-paint-metal-metal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chipped-paint-metal-metal.png"; sourceTree = "<group>"; };
 		C776739F2209F69400BA7062 /* chipped-paint-metal-albedo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chipped-paint-metal-albedo.png"; sourceTree = "<group>"; };
-		C77673A02209F69400BA7062 /* chipped-paint-metal-normal-dx.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chipped-paint-metal-normal-dx.png"; sourceTree = "<group>"; };
+		C77673A02209F69400BA7062 /* chipped-paint-metal-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chipped-paint-metal-normal.png"; sourceTree = "<group>"; };
 		C77673A32209F69400BA7062 /* rust-panel-normal-ue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rust-panel-normal-ue.png"; sourceTree = "<group>"; };
 		C77673A42209F69400BA7062 /* rust-panel-metalness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rust-panel-metalness.png"; sourceTree = "<group>"; };
 		C77673A52209F69400BA7062 /* rust-panel-roughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rust-panel-roughness.png"; sourceTree = "<group>"; };
@@ -1234,6 +1246,18 @@
 		C78DDCF62224B80D0010A5D9 /* ControlType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlType.h; sourceTree = "<group>"; };
 		C78F395C2215C819006163EC /* LightSpaceShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightSpaceShader.vert; sourceTree = "<group>"; };
 		C78F395D2215C81A006163EC /* LightSpaceShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightSpaceShader.frag; sourceTree = "<group>"; };
+		C79C662D225A298000705D64 /* Metal_Painted_001_normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_Painted_001_normal.jpg; sourceTree = "<group>"; };
+		C79C662E225A298100705D64 /* Metal_Painted_001_roughness.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_Painted_001_roughness.jpg; sourceTree = "<group>"; };
+		C79C662F225A298100705D64 /* Metal_Painted_001_height.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Metal_Painted_001_height.png; sourceTree = "<group>"; };
+		C79C6630225A298100705D64 /* Metal_Painted_001_ambientOcclusion.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_Painted_001_ambientOcclusion.jpg; sourceTree = "<group>"; };
+		C79C6632225A298100705D64 /* Metal_Painted_001_metallic.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_Painted_001_metallic.jpg; sourceTree = "<group>"; };
+		C79C6639225A6F9F00705D64 /* Metal_Painted_001_specular.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_Painted_001_specular.jpg; sourceTree = "<group>"; };
+		C79C663A225A6F9F00705D64 /* Metal_Painted_001_albedo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_Painted_001_albedo.jpg; sourceTree = "<group>"; };
+		C79C663B225A6F9F00705D64 /* Metal_Painted_001_diffuse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Metal_Painted_001_diffuse.jpg; sourceTree = "<group>"; };
+		C79C663F225A6FD700705D64 /* harshbricks-diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "harshbricks-diffuse.png"; sourceTree = "<group>"; };
+		C79C6640225A6FD800705D64 /* harshbricks-specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "harshbricks-specular.png"; sourceTree = "<group>"; };
+		C79C6643225A703B00705D64 /* chipped-paint-specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chipped-paint-specular.png"; sourceTree = "<group>"; };
+		C79C6644225A703B00705D64 /* chipped-paint-metal-diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chipped-paint-metal-diffuse.png"; sourceTree = "<group>"; };
 		C7A6EE7A2208F6BC005D5161 /* MK2.FBX */ = {isa = PBXFileReference; lastKnownFileType = file; path = MK2.FBX; sourceTree = "<group>"; };
 		C7A6EE7B2208F6BC005D5161 /* MK2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MK2.obj; sourceTree = "<group>"; };
 		C7A6EE8A2208F6BC005D5161 /* SchofieldNo3NickelCO2BBRevolver.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SchofieldNo3NickelCO2BBRevolver.obj; sourceTree = "<group>"; };
@@ -2251,11 +2275,13 @@
 		C776739B2209F69400BA7062 /* chippedpaintmetal */ = {
 			isa = PBXGroup;
 			children = (
-				C776739C2209F69400BA7062 /* chipped-paint-metal-rough2.png */,
+				C79C6644225A703B00705D64 /* chipped-paint-metal-diffuse.png */,
+				C79C6643225A703B00705D64 /* chipped-paint-specular.png */,
+				C776739C2209F69400BA7062 /* chipped-paint-metal-rough.png */,
 				C776739D2209F69400BA7062 /* chipped-paint-ao.png */,
 				C776739E2209F69400BA7062 /* chipped-paint-metal-metal.png */,
 				C776739F2209F69400BA7062 /* chipped-paint-metal-albedo.png */,
-				C77673A02209F69400BA7062 /* chipped-paint-metal-normal-dx.png */,
+				C77673A02209F69400BA7062 /* chipped-paint-metal-normal.png */,
 			);
 			path = chippedpaintmetal;
 			sourceTree = "<group>";
@@ -2347,6 +2373,21 @@
 			path = musket;
 			sourceTree = "<group>";
 		};
+		C79C662C225A295D00705D64 /* metalpainted */ = {
+			isa = PBXGroup;
+			children = (
+				C79C663A225A6F9F00705D64 /* Metal_Painted_001_albedo.jpg */,
+				C79C663B225A6F9F00705D64 /* Metal_Painted_001_diffuse.jpg */,
+				C79C6639225A6F9F00705D64 /* Metal_Painted_001_specular.jpg */,
+				C79C6630225A298100705D64 /* Metal_Painted_001_ambientOcclusion.jpg */,
+				C79C662F225A298100705D64 /* Metal_Painted_001_height.png */,
+				C79C6632225A298100705D64 /* Metal_Painted_001_metallic.jpg */,
+				C79C662D225A298000705D64 /* Metal_Painted_001_normal.jpg */,
+				C79C662E225A298100705D64 /* Metal_Painted_001_roughness.jpg */,
+			);
+			path = metalpainted;
+			sourceTree = "<group>";
+		};
 		C7A6EE582208EF4A005D5161 /* pbr */ = {
 			isa = PBXGroup;
 			children = (
@@ -2363,6 +2404,7 @@
 				C7B4D35B22146E2700BCE130 /* haystack */,
 				C7B4D32C22146E2600BCE130 /* iron */,
 				C7B4D32022146E2500BCE130 /* metalgrid */,
+				C79C662C225A295D00705D64 /* metalpainted */,
 				C7B4D36722146E2700BCE130 /* oakfloor2 */,
 				C7B4D33B22146E2600BCE130 /* octostone */,
 				C7B4D36B22146E2700BCE130 /* oldplywood */,
@@ -2649,6 +2691,8 @@
 		C7B4D38F22146E2800BCE130 /* harshbricks */ = {
 			isa = PBXGroup;
 			children = (
+				C79C663F225A6FD700705D64 /* harshbricks-diffuse.png */,
+				C79C6640225A6FD800705D64 /* harshbricks-specular.png */,
 				C7B4D39022146E2800BCE130 /* harshbricks-ao.png */,
 				C7B4D39122146E2800BCE130 /* harshbricks-height.png */,
 				C7B4D39222146E2800BCE130 /* harshbricks-normal.png */,
@@ -4696,6 +4740,7 @@
 				C7C8F4AA21FFC92900AB865A /* TerrainShader.frag in Resources */,
 				C7B759E92204E32C00E54C30 /* Brown_dirt_pxr128_normal.tif in Resources */,
 				C7B75A8A2204E32D00E54C30 /* Herringbone_pxr128.tif in Resources */,
+				C79C663E225A6FA000705D64 /* Metal_Painted_001_diffuse.jpg in Resources */,
 				C7B4D3E122146E2900BCE130 /* rustediron-streaks-roughness.png in Resources */,
 				C7B759342204E32C00E54C30 /* White_maple_pxr128_bmp.tif in Resources */,
 				C7B75A622204E32D00E54C30 /* Blue_marble_pxr128_normal.tif in Resources */,
@@ -4756,6 +4801,7 @@
 				C7DE39DB221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B75A2E2204E32C00E54C30 /* Stone_and_brick_pxr128.tif in Resources */,
 				C7DE39D7221E25D600595556 /* normal.jpg in Resources */,
+				C79C663D225A6FA000705D64 /* Metal_Painted_001_albedo.jpg in Resources */,
 				C7B4D3F022146E2900BCE130 /* titanium-albedo.png in Resources */,
 				C7C8F48D21FFBA8300AB865A /* _bk.jpg in Resources */,
 				C7B75A212204E32C00E54C30 /* Blue_glazed_pxr128.tif in Resources */,
@@ -4764,6 +4810,7 @@
 				C7B759D42204E32C00E54C30 /* Peetmoss_pxr128_bmp.tif in Resources */,
 				C7B759512204E32C00E54C30 /* Burled_ash_pxr128.tif in Resources */,
 				C7B759352204E32C00E54C30 /* Honduran_mahogany_pxr128_normal.tif in Resources */,
+				C79C6634225A298100705D64 /* Metal_Painted_001_roughness.jpg in Resources */,
 				C7C8F47821FFBA6F00AB865A /* _ft.jpg in Resources */,
 				C7B75A5B2204E32D00E54C30 /* Black_granite_pxr128_bmp.tif in Resources */,
 				C785F94B2212D2BD00F1F8FD /* ScreenWaveShader.vert in Resources */,
@@ -4779,6 +4826,7 @@
 				C7B759A22204E32C00E54C30 /* Rattan_pxr128.tif in Resources */,
 				C7B75A452204E32C00E54C30 /* Tar_paper_pxr128_bmp.tif in Resources */,
 				C7B75A742204E32D00E54C30 /* Blue_marble_pxr128.tif in Resources */,
+				C79C6645225A703B00705D64 /* chipped-paint-specular.png in Resources */,
 				C7C8F4AD21FFC92900AB865A /* SkyBoxShader.vert in Resources */,
 				C776740F220A22B500BA7062 /* Crossbow_D180227_Metallic.png in Resources */,
 				C7B75A1F2204E32C00E54C30 /* Shiny_red_glazed_pxr128.tif in Resources */,
@@ -4906,6 +4954,7 @@
 				C7CEE2ED2212435600895F5D /* KernelBlurShader.vert in Resources */,
 				C75C9732220E01A200420DF6 /* thefog_bk.tga in Resources */,
 				C7B75A802204E32D00E54C30 /* Blue_cotton_tweed_pxr128_normal.jpg in Resources */,
+				C79C6638225A298100705D64 /* Metal_Painted_001_metallic.jpg in Resources */,
 				C7B759AC2204E32C00E54C30 /* Black_mesh_pxr128_bmp.tif in Resources */,
 				C77673B22209F69500BA7062 /* Metal_007_Roughness.jpg in Resources */,
 				C7DE39D9221E25D600595556 /* diffuse.jpg in Resources */,
@@ -4969,6 +5018,7 @@
 				C785F99922134CAE00F1F8FD /* FishEyeAntiFishEyeShader.vert in Resources */,
 				C7C8F47721FFBA6700AB865A /* _up.jpg in Resources */,
 				C7767414220A22B500BA7062 /* horn.mtl in Resources */,
+				C79C6633225A298100705D64 /* Metal_Painted_001_normal.jpg in Resources */,
 				C7B75A952204E32D00E54C30 /* Checked_cotton_pxr128_normal.tif in Resources */,
 				C7B759BF2204E32C00E54C30 /* Dirt_and_gravel_pxr128_normal.tif in Resources */,
 				C7DE39D2221E25D600595556 /* diffuse.jpg in Resources */,
@@ -5006,6 +5056,7 @@
 				C7724C9A223ABCC2008DDEE9 /* watercolor.png in Resources */,
 				C7C8F4A721FFBA9E00AB865A /* _up.jpg in Resources */,
 				C7B4D3A822146E2900BCE130 /* iron-roughness.png in Resources */,
+				C79C6636225A298100705D64 /* Metal_Painted_001_ambientOcclusion.jpg in Resources */,
 				C7B4D3A322146E2900BCE130 /* woodframe-albedo.png in Resources */,
 				C7C8F47B21FFBA6F00AB865A /* _bk.jpg in Resources */,
 				C7B759892204E32C00E54C30 /* Belgium_block_pxr128_bmp.tif in Resources */,
@@ -5013,7 +5064,7 @@
 				C7B759AB2204E32C00E54C30 /* Wire_screen_pxr128.tif in Resources */,
 				C7B4D3A522146E2900BCE130 /* woodframe-height.png in Resources */,
 				C7B75A012204E32C00E54C30 /* Weathered_vertical_pxr128_bmp.tif in Resources */,
-				C77673B42209F69500BA7062 /* chipped-paint-metal-rough2.png in Resources */,
+				C77673B42209F69500BA7062 /* chipped-paint-metal-rough.png in Resources */,
 				C7EEC50B22136AF700909E4C /* BlurShader.vert in Resources */,
 				C785F94D2212D2BD00F1F8FD /* SwirlShader.vert in Resources */,
 				C7767409220A22B500BA7062 /* Crossbow_D180227_Base_Color.png in Resources */,
@@ -5052,6 +5103,7 @@
 				C77673CE220A1BA800BA7062 /* MK2_Metallic.png in Resources */,
 				C776740E220A22B500BA7062 /* Crossbow_D180227_Normal_DirectX.png in Resources */,
 				C7DE39EB221E25D600595556 /* normal.jpg in Resources */,
+				C79C6641225A6FD800705D64 /* harshbricks-diffuse.png in Resources */,
 				C7767407220A22B500BA7062 /* MIPIM_D180606_Normal_DirectX.png in Resources */,
 				C7B75A7A2204E32D00E54C30 /* Red_velvet_pxr128_bmp.tif in Resources */,
 				C7B4D39F22146E2900BCE130 /* metalgrid-ao.png in Resources */,
@@ -5151,6 +5203,7 @@
 				C785F96B2212DA7E00F1F8FD /* ShockwaveShader.frag in Resources */,
 				C7090CAD2235CBF5006FE002 /* RainDropsShader.vert in Resources */,
 				C7B75A282204E32C00E54C30 /* Relief_building_block_pxr128.tif in Resources */,
+				C79C6646225A703B00705D64 /* chipped-paint-metal-diffuse.png in Resources */,
 				C7B75A312204E32C00E54C30 /* Orange_glazed_pxr128_bmp.tif in Resources */,
 				C7EED10C221105360079F5C0 /* ExplosionShader.geom in Resources */,
 				C7B759E72204E32C00E54C30 /* Pebbles_in_mortar_pxr128_normal.tif in Resources */,
@@ -5186,6 +5239,7 @@
 				C78F395E2215C81C006163EC /* LightSpaceShader.vert in Resources */,
 				C7C8F46721FFBA5A00AB865A /* _dn.jpg in Resources */,
 				C77673D7220A1BC200BA7062 /* Roughness.jpg in Resources */,
+				C79C6642225A6FD800705D64 /* harshbricks-specular.png in Resources */,
 				C7B75A242204E32C00E54C30 /* Thin_building_block_pxr128_bmp.tif in Resources */,
 				C7B75A752204E32D00E54C30 /* Pink_marble_pxr128_bmp.tif in Resources */,
 				C7DE39F8221F2D0700595556 /* ScreenSpaceAmbientOcclusionLightingShader.vert in Resources */,
@@ -5204,6 +5258,7 @@
 				C7B759B62204E32C00E54C30 /* Corrugated_steel_pxr128.tif in Resources */,
 				C7B75A512204E32D00E54C30 /* Red_shingle_pxr128_bmp.tif in Resources */,
 				C7C8F47321FFBA6700AB865A /* _dn.jpg in Resources */,
+				C79C6635225A298100705D64 /* Metal_Painted_001_height.png in Resources */,
 				C7B7592F2204E32C00E54C30 /* American_oak_pxr128.tif in Resources */,
 				C7B7593D2204E32C00E54C30 /* Quartered_sepele_pxr128_bmp.tif in Resources */,
 				C70A1F93220EEED100170280 /* BumpMappingShader.vert in Resources */,
@@ -5226,7 +5281,7 @@
 				C7EEC50F22136AF700909E4C /* GaussianBlurShader.frag in Resources */,
 				C7767410220A22B500BA7062 /* Crossbow_D180227_Height.png in Resources */,
 				C7B759772204E32C00E54C30 /* Silver_paper_cilps_pxr128_bmp.tif in Resources */,
-				C77673B82209F69500BA7062 /* chipped-paint-metal-normal-dx.png in Resources */,
+				C77673B82209F69500BA7062 /* chipped-paint-metal-normal.png in Resources */,
 				C7090CC12235E666006FE002 /* HeartBlendShader.vert in Resources */,
 				C7C8F48621FFBA7C00AB865A /* _rt.jpg in Resources */,
 				C7DE39EF221E25D600595556 /* normal.jpg in Resources */,
@@ -5323,6 +5378,7 @@
 				C7C8F45021FFBA3A00AB865A /* _rt.jpg in Resources */,
 				C75C9736220E01A200420DF6 /* _dn.jpg in Resources */,
 				C7EED11222111ECC0079F5C0 /* clean-gray-paper.png in Resources */,
+				C79C663C225A6FA000705D64 /* Metal_Painted_001_specular.jpg in Resources */,
 				C7B75A552204E32D00E54C30 /* Gray_granite_pxr128_normal.tif in Resources */,
 				C7B4D3F622146E2900BCE130 /* paint-peeling-metal.png in Resources */,
 				C7B75A6E2204E32D00E54C30 /* Tan_marble_pxr128.tif in Resources */,

@@ -127,7 +127,7 @@ void Game::LoadControls() {
     matTexture->SetValue(&m_woodenBoxesUseTexture);
     guiBox->y += guiBox->height;
     
-    CSlider *matShiniess = (CSlider *)AddControl(new CSlider("Material Shininess", 0.0f, 50.0f, 5, guiBox));
+    CSlider *matShiniess = (CSlider *)AddControl(new CSlider("Material Shininess", 0.0f, 30.0f, 5, guiBox));
     matShiniess->SetValue(&m_materialShininess);
     guiBox->y += guiBox->height;
     
@@ -158,6 +158,11 @@ void Game::LoadControls() {
     CSlider *fresnel = (CSlider *)AddControl(new CSlider("Fresnel", 0.0f, 1.0f, 5, guiBox));
     fresnel->SetValue(&m_fresnel);
     guiBox->y += guiBox->height;
+    
+    CSlider *ao = (CSlider *)AddControl(new CSlider("AO", 0.0f, 1.0f, 5, guiBox));
+    ao->SetValue(&m_ao);
+    guiBox->y += guiBox->height;
+    
     /// RIGHT SCREEN
     GLint rightStartingY = 10;
     guiBox->x = SCREEN_WIDTH - guiBox->width - 10;
@@ -188,6 +193,22 @@ void Game::LoadControls() {
     
     CSlider *coverage = (CSlider *)AddControl(new CSlider("PPFX Coverage", 0.0f, 1.0f, 5, guiBox));
     coverage->SetValue(&m_coverage);
+    
+    // PBR
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * pbruseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::PBR));
+    pbruseHDR->SetValue(&m_HDR);
+    guiBox->y += guiBox->height;
+    
+    CSlider *pbrlightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", 0.0f, 1.0f, 5,
+                                                                  guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::PBR));
+    pbrlightExposure->SetValue(&m_exposure);
+    guiBox->y += guiBox->height;
+    
+    CSlider *pbrGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", 0.0f, 3.0f, 5,
+                                                          guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::PBR));
+    pbrGamma->SetValue(&m_gama);
     
     // Screen wave
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;

@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::DefaultFrameBuffer;
+    m_currentPPFXMode = PostProcessingEffectMode::PBR;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -85,7 +85,13 @@ void Game::ActivateFBO(const PostProcessingEffectMode &mode) {
 void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
     
     switch(mode) {
-        case PostProcessingEffectMode::DefaultFrameBuffer: {
+        case PostProcessingEffectMode::PBR: {
+            
+            CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+            RenderToScreen(pImageProcessingProgram);
+            return;
+        }
+        case PostProcessingEffectMode::BlinnPhong: {
             
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
@@ -744,8 +750,11 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
     //  Post Processing Effects
     // render the result on the default frame buffer using a full screen quad with post proccessing effects
     switch(mode) {
-        case PostProcessingEffectMode::DefaultFrameBuffer:
-            RenderPPFXScene(PostProcessingEffectMode::DefaultFrameBuffer);
+        case PostProcessingEffectMode::PBR:
+            RenderPPFXScene(PostProcessingEffectMode::PBR);
+            break;
+        case PostProcessingEffectMode::BlinnPhong:
+            RenderPPFXScene(PostProcessingEffectMode::BlinnPhong);
             break;
         case PostProcessingEffectMode::ColorInversion:
             RenderPPFXScene(PostProcessingEffectMode::ColorInversion);
@@ -919,8 +928,10 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
     //  Post Processing Effects
     // render the result on the default frame buffer using a full screen quad with post proccessing effects
     switch(mode) {
-        case PostProcessingEffectMode::DefaultFrameBuffer:
-        return "Default Frame Buffer";
+        case PostProcessingEffectMode::PBR:
+        return "Physically Based Rendering";
+        case PostProcessingEffectMode::BlinnPhong:
+            return "Blinn-Phong Lighting";
         case PostProcessingEffectMode::ColorInversion:
         return "Color Inversion";
         case PostProcessingEffectMode::GrayScale:

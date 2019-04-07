@@ -16,7 +16,7 @@ class CListBox: public CControl {
 public:
     CListBox(GUIBoxData *data, GLint itemHeight,
              const GUIMode &mode = GUIMode::STATIC, const GLboolean & create = true,
-             const PostProcessingEffectMode &ppfxMode = PostProcessingEffectMode::DefaultFrameBuffer);
+             const PostProcessingEffectMode &ppfxMode = PostProcessingEffectMode::PBR);
     
     virtual void Create();
     GLboolean Update(const MouseState &state) override;

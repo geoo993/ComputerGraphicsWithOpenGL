@@ -17,16 +17,17 @@ void Game::SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useD
     pShaderProgram->SetUniform("bUseSmoothSpot", useSmoothSpot);
     pShaderProgram->SetUniform("bUseBlinn", useBlinn);
 }
-
-void Game::SetBaseLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const BaseLight & baseLight) {
-    pShaderProgram->SetUniform(uniformName + ".color", baseLight.color);
-    pShaderProgram->SetUniform(uniformName + ".intensity", baseLight.intensity);
-    
+void Game::SetHRDLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                        const GLfloat & exposure, const GLfloat & gamma, const GLboolean &useHDR) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform(uniformName + ".exposure", exposure);
+    pShaderProgram->SetUniform(uniformName + ".gamma", gamma);
+    pShaderProgram->SetUniform(uniformName + ".bHDR", useHDR);
 }
 
 void Game::SetDirectionalLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                      const DirectionalLight& directionalLight, const glm::vec3& direction)
-{
+                                      const DirectionalLight& directionalLight, const glm::vec3& direction) {
+    pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName + ".base.color", directionalLight.color);
     pShaderProgram->SetUniform(uniformName + ".base.intensity", directionalLight.intensity);
     pShaderProgram->SetUniform(uniformName + ".base.ambient", m_ambient);
@@ -39,12 +40,12 @@ void Game::SetDirectionalLightUniform(CShaderProgram *pShaderProgram, const std:
 void Game::SetPointLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const PointLight& pointLight)
 {
     // POINT LIGHT
+    pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName + ".base.color", pointLight.color);
     pShaderProgram->SetUniform(uniformName + ".base.intensity", pointLight.intensity);
     pShaderProgram->SetUniform(uniformName + ".base.ambient", m_ambient);
     pShaderProgram->SetUniform(uniformName + ".base.diffuse", m_diffuse);
     pShaderProgram->SetUniform(uniformName + ".base.specular", m_specular);
-    
     pShaderProgram->SetUniform(uniformName + ".attenuation.constant", pointLight.attenuation.constant);
     pShaderProgram->SetUniform(uniformName + ".attenuation.linear", pointLight.attenuation.linear);
     pShaderProgram->SetUniform(uniformName + ".attenuation.exponent", pointLight.attenuation.exponent);
@@ -56,6 +57,7 @@ void Game::SetPointLightUniform(CShaderProgram *pShaderProgram, const std::strin
 void Game::SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const SpotLight& spotLight, CCamera *camera)
 {
     // SPOT LIGHT
+    pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName + ".pointLight.base.color", spotLight.color);
     pShaderProgram->SetUniform(uniformName + ".pointLight.base.intensity", spotLight.intensity);
     pShaderProgram->SetUniform(uniformName + ".pointLight.base.ambient", m_ambient);
@@ -77,6 +79,9 @@ void Game::SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string
 void Game::RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) {
     pShaderProgram->UseProgram();
 
+    // HDR Light
+    SetHRDLightUniform(pShaderProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
+    
     // Directional light
     DirectionalLight dirLight(m_dirColor, m_dirIntensity);
     SetDirectionalLightUniform(pShaderProgram, "R_directionallight", dirLight, m_directionalLightDirection);

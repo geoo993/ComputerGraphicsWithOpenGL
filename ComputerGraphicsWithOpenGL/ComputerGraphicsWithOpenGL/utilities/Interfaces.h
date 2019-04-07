@@ -62,12 +62,13 @@ struct ICamera {
 };
 
 struct IMaterials {
-    GLfloat m_materialShininess, m_albedo, m_metallic, m_roughness, m_fresnel;
+    GLfloat m_materialShininess, m_albedo, m_metallic, m_roughness, m_fresnel, m_ao;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec4 &color, const GLfloat &shininess,
                                     const GLboolean &useAO) = 0;
     virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                       const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) = 0;
+                                       const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness,
+                                       const GLfloat &fresnel, const GLfloat &ao) = 0;
 };
 
 struct ITextures {
@@ -196,7 +197,8 @@ struct ILights
     GLfloat m_spotOuterCutOff;
     virtual void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
                                  const GLboolean &useSpot, const GLboolean &useSmoothSpot, const GLboolean& useBlinn) = 0;
-    virtual void SetBaseLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const BaseLight & baseLight) = 0;
+    virtual void SetHRDLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                                    const GLfloat & exposure, const GLfloat & gamma, const GLboolean &useHDR) = 0;
     virtual void SetDirectionalLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                             const DirectionalLight& directionalLight, const glm::vec3& direction) = 0;
     virtual void SetPointLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const PointLight& pointLight) = 0;

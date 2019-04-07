@@ -12,9 +12,9 @@ void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string 
                               const glm::vec4 &color, const GLfloat &shininess,
                               const GLboolean &useAO) {
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform(uniformName+".ambientMap", 0);           // ambient map (albedo map)
-    pShaderProgram->SetUniform(uniformName+".diffuseMap", 1);           // diffuse map (metallic map)
-    pShaderProgram->SetUniform(uniformName+".specularMap", 2);          // specular map (roughness map)
+    pShaderProgram->SetUniform(uniformName+".ambientMap", 0);           // ambient map
+    pShaderProgram->SetUniform(uniformName+".diffuseMap", 1);           // diffuse map
+    pShaderProgram->SetUniform(uniformName+".specularMap", 2);          // specular map
     pShaderProgram->SetUniform(uniformName+".normalMap", 3);            // normal map
     pShaderProgram->SetUniform(uniformName+".heightMap", 4);            // height map
     pShaderProgram->SetUniform(uniformName+".emissionMap", 5);          // emission map
@@ -27,19 +27,22 @@ void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string 
     pShaderProgram->SetUniform(uniformName+".noiseMap", 12);            // noise map
     pShaderProgram->SetUniform(uniformName+".maskMap", 13);             // mask map
     pShaderProgram->SetUniform(uniformName+".lensMap", 14);             // lens map
-    pShaderProgram->SetUniform(uniformName+".cubeMap", 15);             // sky box or environment mapping cube map
+    pShaderProgram->SetUniform(uniformName+".albedoMap", 15);           // albedo map
+    pShaderProgram->SetUniform(uniformName+".metalnessMap", 16);        // metallic map
+    pShaderProgram->SetUniform(uniformName+".roughnessMap", 17);        // roughness, smoothness map
+    pShaderProgram->SetUniform(uniformName+".cubeMap", 18);             // sky box or environment mapping cube map
     pShaderProgram->SetUniform(uniformName+".color", color);
     pShaderProgram->SetUniform(uniformName+".shininess", shininess);
     pShaderProgram->SetUniform(uniformName+".bUseAO", useAO);
 }
 
 void Game::SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                 const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness) {
+                                 const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness,
+                                 const GLfloat &fresnel, const GLfloat &ao) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName+".albedo", albedo);
     pShaderProgram->SetUniform(uniformName+".metallic", metallic);
     pShaderProgram->SetUniform(uniformName+".roughness", roughness);
-    pShaderProgram->SetUniform(uniformName+".fresnel", 0.6f);
-    pShaderProgram->SetUniform(uniformName+".ao", 1.0f);
-    
+    pShaderProgram->SetUniform(uniformName+".fresnel", fresnel); // 0.6f
+    pShaderProgram->SetUniform(uniformName+".ao", ao);    // 1.0f
 }

@@ -16,7 +16,7 @@ class CButton: public CControl {
 public:
     CButton(std::string label, GUIBoxData *data,
             const GUIMode &mode = GUIMode::STATIC, const GLboolean & create = true,
-            const PostProcessingEffectMode &ppfxMode = PostProcessingEffectMode::DefaultFrameBuffer);
+            const PostProcessingEffectMode &ppfxMode = PostProcessingEffectMode::PBR);
     
     virtual void Create();
     GLboolean Update(const MouseState &state) override;

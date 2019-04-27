@@ -38,7 +38,8 @@
 */
 #include "game/Game.h"
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char * argv[])
+{
     
     srand((unsigned)time(nullptr));//time should write like this .
     //srand(glfwGetTime()); // initialize random seed

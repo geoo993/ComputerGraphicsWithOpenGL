@@ -171,18 +171,11 @@ void Game::LoadControls() {
     GLint itemHeight = guiBox->height;
     
     guiBox->height = itemHeight * m_pSkybox->GetNumberOfSkyboxes();
-    CListBox * skyboxeNames = (CListBox *)AddControl(new CListBox(guiBox, itemHeight ));
-    skyboxeNames->AddItem("Color Basement");
-    skyboxeNames->AddItem("Common Room");
-    skyboxeNames->AddItem("Dining Room");
-    skyboxeNames->AddItem("Dark Land");
-    skyboxeNames->AddItem("Valley");
-    skyboxeNames->AddItem("Sky Water");
-    skyboxeNames->AddItem("Peninsula Tokyo");
-    skyboxeNames->AddItem("Petrol Station");
-    skyboxeNames->AddItem("Yokohama Night");
-    skyboxeNames->AddItem("Yokohama Day");
-    skyboxeNames->AddItem("Fog");
+    CListBox * skyboxeNames = (CListBox *)AddControl(new CListBox(guiBox, itemHeight));
+    for (auto it = m_pSkybox->GetSkyboxes().begin(); it != m_pSkybox->GetSkyboxes().end(); ++it) {
+        std::string skybox = *it;
+        skyboxeNames->AddItem(skybox);
+    }
     skyboxeNames->SetValue(&m_skyboxNumber, &m_changeSkybox);
     
     guiBox->height = itemHeight;

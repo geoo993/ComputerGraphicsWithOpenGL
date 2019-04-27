@@ -44,7 +44,7 @@ GLboolean CCubemap::LoadTexture(std::string filename, BYTE **bmpBytes, GLint &iW
 	int test = FreeImage_GetDIBSize(dib);
 	*bmpBytes = new BYTE [iWidth*iHeight*bpp/8];
     
-	memcpy(*bmpBytes, bDataPointer, iWidth * iHeight * bpp /8);
+	memcpy(*bmpBytes, bDataPointer, iWidth * iHeight * bpp / 8);
 	
 	/*
 	GLenum format;
@@ -84,14 +84,14 @@ void CCubemap::Create(const std::vector<std::string> &cubemapFaces, const Textur
     glGenTextures(1, &m_uiTexture);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_uiTexture);
     
-    GLint iWidth, iHeight;
+    GLint iWidth, iHeight, iChannels;
     BYTE *data = nullptr;
     for (GLuint i = 0; i < cubemapFaces.size(); i++)
     {
         std::string face = cubemapFaces[i];
         LoadTexture(face, &data, iWidth, iHeight);
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, iWidth, iHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
-    
+
         if (data != NULL) delete[] data;
     }
 

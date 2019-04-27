@@ -53,14 +53,13 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
         "colorbasement",
         "commonroom",
         "diningroom",
-        "darkland",
-        "valley",
-        "skywater",
-        "peninsulatokyo",
+        "fog",
         "petrolstation",
-        "yokohamanight",
+        "skywater",
+        "valley",
+        "winterseashore",
         "yokohamaday",
-        "fog"
+        "yokohamanight",
     };
     
     unsigned int ind = skyboxNumber % m_skyboxes.size();
@@ -166,8 +165,12 @@ void CSkybox::BindSkyboxTo(const GLint &textureUnit){
     m_cubemapTexture.Bind(textureUnit);	
 }
 
-GLuint CSkybox::GetNumberOfSkyboxes() {
+GLuint CSkybox::GetNumberOfSkyboxes() const{
     return m_skyboxes.size();
+}
+
+std::vector<std::string> CSkybox::GetSkyboxes() const {
+    return m_skyboxes;
 }
 
 // Release the storage assocaited with the skybox

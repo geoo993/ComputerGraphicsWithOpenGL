@@ -146,7 +146,7 @@ Game::Game()
     // skybox
     m_pSkybox = nullptr;
     m_mapSize = 3000.0f;
-    m_skyboxNumber = 0;
+    m_skyboxNumber = 5;
     m_changeSkybox = false;
     
     // terrain

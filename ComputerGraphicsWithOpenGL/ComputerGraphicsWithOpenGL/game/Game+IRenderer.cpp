@@ -84,10 +84,10 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     
     
     // Render Big cube underneath
-    RenderInteriorBox(mainProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_woodenBoxesUseTexture, true);
+    //RenderInteriorBox(mainProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_woodenBoxesUseTexture, true);
     
     // RenderTerrain
-    RenderTerrain(mainProgram, false, m_woodenBoxesUseTexture);
+    //RenderTerrain(mainProgram, false, m_woodenBoxesUseTexture);
     
     // Render Lights
     RenderLight(mainProgram, m_pCamera);
@@ -125,7 +125,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     
     // Add Parallax Normal mapping Lights
     RenderLight(pParallaxNormalMappingProgram, m_pCamera);
-    
+    */
     /// Environment Mapping
     CShaderProgram *pEnvironmentMapProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 9];
     SetCameraUniform(pEnvironmentMapProgram, "camera", m_pCamera);
@@ -140,7 +140,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetCameraUniform(pChromaticAberrationProgram, "camera", m_pCamera);
     SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
     RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_woodenBoxesUseTexture);
-    */
+    
     /*
     /// Explosion Program
     CShaderProgram *pExplosionProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 11];
@@ -181,11 +181,4 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     RenderFireBallSphere(pFireBallProgram, glm::vec3(-500.0f, 470.0f, -1000.0f), 50.0f);
      */
     
-    /*
-    /// Jupiter Program
-    CShaderProgram *pJupiterProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 60];
-    SetMaterialUniform(pJupiterProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
-    SetJupiterColorUniform(pJupiterProgram);
-    RenderSphere(pJupiterProgram, m_spherePosition, 30.0f, false);
-    */
 }

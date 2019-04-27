@@ -68,11 +68,6 @@
 #include <FMOD/fmod_errors.h>
 #include <FMOD/fmod_studio_common.h>
 
-//STB Image
-#include <stb/stb_image.h>
-
-// Color
-#include "utilities/Colours.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>

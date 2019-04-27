@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "vertexBufferObject.h"
 #include "Common.h"
 #include "TextureType.h"
 

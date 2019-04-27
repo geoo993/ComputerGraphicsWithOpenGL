@@ -12,6 +12,7 @@
 #define Extensions_h
 
 #include "Common.h"
+#include "Colours.h"
 
 template<typename T>
 glm::tvec4<T> tvec4_from_t(const T *arr) {

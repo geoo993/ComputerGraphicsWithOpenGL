@@ -20,7 +20,8 @@ public:
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     void Release();
     void Render(const GLboolean &useTexture = true);
-    GLuint GetNumberOfSkyboxes();
+    GLuint GetNumberOfSkyboxes() const;
+    std::vector<std::string> GetSkyboxes() const;
 private:
 	GLuint m_vao;
 	CVertexBufferObject m_vbo;

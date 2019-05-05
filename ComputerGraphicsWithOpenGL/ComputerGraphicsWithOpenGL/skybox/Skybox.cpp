@@ -8,7 +8,10 @@
 // http://www.zbrushcentral.com/showthread.php?192249-100-Free-Spherical-Environment-Maps-amp-200-Sky-Backgrounds-amp-1000-Textures
 
 CSkybox::CSkybox()
-{}
+{
+    m_vao = 0;
+    m_skyboxes = {};
+}
 
 CSkybox::~CSkybox()
 {
@@ -50,28 +53,30 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
     
     /// http://www.custommapmakers.org/skyboxes.php
     m_skyboxes = {
-        "colorbasement",
-        "commonroom",
-        "diningroom",
-        "fog",
-        "petrolstation",
-        "skywater",
-        "valley",
-        "winterseashore",
-        "yokohamaday",
-        "yokohamanight",
+        //"colorbasement",
+        //"commonroom",
+        //"deserthighway",
+        //"diningroom",
+        //"fog",
+        //"petrolstation",
+        //"skywater",
+        //"tokyobigsight",
+        //"valley",
+        "winterseashore"
+        //"yokohamaday",
+        //"yokohamanight"
     };
     
     unsigned int ind = skyboxNumber % m_skyboxes.size();
     
-    m_cubemapTexture.Create({
-                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_rt.jpg", //right
-                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_lf.jpg", //left
-                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_up.jpg", //up
-                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_dn.jpg", //down
-                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_bk.jpg", //back
-                            path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_ft.jpg",  //front
-                            }, type);
+    m_cubemapTexture.LoadCubemap({
+                                path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_rt.jpg", //right
+                                path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_lf.jpg", //left
+                                path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_up.jpg", //up
+                                path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_dn.jpg", //down
+                                path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_bk.jpg", //back
+                                path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_ft.jpg",  //front
+                                }, type);
 	
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);

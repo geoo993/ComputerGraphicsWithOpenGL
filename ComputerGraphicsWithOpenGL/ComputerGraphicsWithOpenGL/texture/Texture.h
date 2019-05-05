@@ -7,13 +7,16 @@
 class CTexture
 {
 public:
-	void CreateFromData(BYTE* data, GLint width, GLint height, GLint bpp, GLenum format, const TextureType &type,
+    void CreateFromData(BYTE* data, GLint width, GLint height, GLint bpp, GLenum format, const TextureType &type,
                         GLboolean generateMipMaps = true, GLboolean gammaCorrection = false);
-    GLboolean Load(const std::string &path, const TextureType &type = TextureType::AMBIENT, const GLboolean &generateMipMaps = true);
-    GLuint CreateTexture(std::string path, GLboolean generateMipMaps = true, GLint textureUnitAt = 0, GLboolean gammaCorrection = false);
-    GLuint CreateTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
-                         const TextureType &type = TextureType::AMBIENT, const GLvoid * data = nullptr);
-    
+    GLboolean LoadTexture(const std::string &path, const TextureType &type, const GLboolean &generateMipMaps);
+    GLuint LoadTexture(char const * path, const TextureType &type = TextureType::AMBIENT,
+                       const GLboolean &generateMipMaps = true, GLboolean gammaCorrection = false);
+    GLuint LoadTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
+                       const TextureType &type = TextureType::AMBIENT, const GLvoid * data = nullptr);
+    GLuint LoadHDREnvironmentTexture(char const * path, const TextureType &type = TextureType::AMBIENT,
+                                     const GLboolean &generateMipMaps = true);
+
 	void BindTexture2D(GLint textureUnit = 0) const;
     void BindTexture2DToTextureType() const;
     void BindTexture3D(GLint textureUnit = 0);
@@ -21,7 +24,7 @@ public:
 
 	void SetSamplerObjectParameter(GLenum parameter, GLenum value);
 	void SetSamplerObjectParameterf(GLenum parameter, GLfloat value);
-
+    
 	GLint GetWidth();
     GLint GetHeight();
     GLint GetBPP();

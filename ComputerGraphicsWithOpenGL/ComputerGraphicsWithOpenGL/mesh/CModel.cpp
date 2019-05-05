@@ -341,7 +341,7 @@ CTexture*  CModel::LoadTexture(const aiMaterial *pMaterial,
         if(skip == false)
         {
             std::string fullPath = directory + path.data;
-            GLboolean load = texture->Load(fullPath.c_str(), typeName, true);
+            GLboolean load = texture->LoadTexture(fullPath.c_str(), typeName, true);
             
             if (load == false) {
                 delete texture;

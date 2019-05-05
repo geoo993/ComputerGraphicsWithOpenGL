@@ -221,6 +221,9 @@
 		C785F99B22134CAE00F1F8FD /* MultiScreenFishEyeShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C785F99122134CA700F1F8FD /* MultiScreenFishEyeShader.frag */; };
 		C785F99C22134CAE00F1F8FD /* BarrelDistortionPixelShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C785F99222134CA900F1F8FD /* BarrelDistortionPixelShader.vert */; };
 		C785F99D22134CAE00F1F8FD /* FishEyeAntiFishEyeShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C785F99322134CAB00F1F8FD /* FishEyeAntiFishEyeShader.frag */; };
+		C78A40D1227F738700855331 /* EquirectangularToCubemapShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C78A40CF227F738600855331 /* EquirectangularToCubemapShader.vert */; };
+		C78A40D2227F738700855331 /* EquirectangularToCubemapShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C78A40D0227F738600855331 /* EquirectangularToCubemapShader.frag */; };
+		C78A40D5227F776400855331 /* EquirectangularCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78A40D3227F776400855331 /* EquirectangularCube.cpp */; };
 		C78DDCF2222498B20010A5D9 /* ListBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78DDCF0222498B20010A5D9 /* ListBox.cpp */; };
 		C78DDCF52224B4800010A5D9 /* Slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78DDCF32224B4800010A5D9 /* Slider.cpp */; };
 		C78F395E2215C81C006163EC /* LightSpaceShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C78F395C2215C819006163EC /* LightSpaceShader.vert */; };
@@ -1060,7 +1063,6 @@
 		C71650422274FB74000B2295 /* Road_to_MonumentValley_Ref.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Road_to_MonumentValley_Ref.hdr; sourceTree = "<group>"; };
 		C71650432274FB74000B2295 /* Road_to_MonumentValley_Env.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Road_to_MonumentValley_Env.hdr; sourceTree = "<group>"; };
 		C71650442274FB74000B2295 /* Road_to_MonumentValley_8k.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Road_to_MonumentValley_8k.jpg; sourceTree = "<group>"; };
-		C71650492274FFD4000B2295 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		C71E7E81223ADB9500336C6C /* JupiterColorShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = JupiterColorShader.frag; sourceTree = "<group>"; };
 		C71E7E82223ADB9500336C6C /* JupiterColorShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = JupiterColorShader.vert; sourceTree = "<group>"; };
 		C7332975221775D300BFE37B /* ToneMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.vert; sourceTree = "<group>"; };
@@ -1211,6 +1213,10 @@
 		C785F99122134CA700F1F8FD /* MultiScreenFishEyeShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = MultiScreenFishEyeShader.frag; sourceTree = "<group>"; };
 		C785F99222134CA900F1F8FD /* BarrelDistortionPixelShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BarrelDistortionPixelShader.vert; sourceTree = "<group>"; };
 		C785F99322134CAB00F1F8FD /* FishEyeAntiFishEyeShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FishEyeAntiFishEyeShader.frag; sourceTree = "<group>"; };
+		C78A40CF227F738600855331 /* EquirectangularToCubemapShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EquirectangularToCubemapShader.vert; sourceTree = "<group>"; };
+		C78A40D0227F738600855331 /* EquirectangularToCubemapShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EquirectangularToCubemapShader.frag; sourceTree = "<group>"; };
+		C78A40D3227F776400855331 /* EquirectangularCube.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EquirectangularCube.cpp; sourceTree = "<group>"; };
+		C78A40D4227F776400855331 /* EquirectangularCube.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EquirectangularCube.h; sourceTree = "<group>"; };
 		C78DDCF0222498B20010A5D9 /* ListBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ListBox.cpp; sourceTree = "<group>"; };
 		C78DDCF1222498B20010A5D9 /* ListBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListBox.h; sourceTree = "<group>"; };
 		C78DDCF32224B4800010A5D9 /* Slider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Slider.cpp; sourceTree = "<group>"; };
@@ -3155,7 +3161,6 @@
 		C7B932B921FE863000979C04 /* ComputerGraphicsWithOpenGL */ = {
 			isa = PBXGroup;
 			children = (
-				C71650492274FFD4000B2295 /* stb_image.h */,
 				C7B932DA21FE8C2200979C04 /* Common.h */,
 				C7B932BA21FE863000979C04 /* main.cpp */,
 				C7C8F2DB21FF6DB200AB865A /* audio */,
@@ -3298,6 +3303,8 @@
 				C7090CBA2235E465006FE002 /* EMInterferenceShader.vert */,
 				C75C971E220DD69E00420DF6 /* EnvironmentMappingShader.frag */,
 				C75C971D220DD69E00420DF6 /* EnvironmentMappingShader.vert */,
+				C78A40D0227F738600855331 /* EquirectangularToCubemapShader.frag */,
+				C78A40CF227F738600855331 /* EquirectangularToCubemapShader.vert */,
 				C7EED0FD221105330079F5C0 /* ExplosionShader.frag */,
 				C7EED103221105350079F5C0 /* ExplosionShader.geom */,
 				C7EED104221105350079F5C0 /* ExplosionShader.vert */,
@@ -3457,14 +3464,14 @@
 		C7C8F2CC21FF5F6000AB865A /* skyboxes */ = {
 			isa = PBXGroup;
 			children = (
-				C71650382274FB38000B2295 /* tokyobigsight */,
-				C71650372274FB2D000B2295 /* deserthighway */,
 				C7C8F3AA21FFA73600AB865A /* colorbasement */,
 				C7C8F3C621FFA73600AB865A /* commonroom */,
+				C71650372274FB2D000B2295 /* deserthighway */,
 				C7C8F39C21FFA73500AB865A /* diningroom */,
 				C75C9721220E01A200420DF6 /* fog */,
 				C7C8F3F021FFA73600AB865A /* petrolstation */,
 				C7C8F38E21FFA73500AB865A /* skywater */,
+				C71650382274FB38000B2295 /* tokyobigsight */,
 				C7C8F35021FFA73500AB865A /* valley */,
 				C71650202274E5C6000B2295 /* winterseashore */,
 				C7C8F33421FFA73500AB865A /* yokohamaday */,
@@ -3478,6 +3485,8 @@
 			children = (
 				C71379852203CEDE00E9A0F2 /* Cube.cpp */,
 				C71379862203CEDE00E9A0F2 /* Cube.h */,
+				C78A40D3227F776400855331 /* EquirectangularCube.cpp */,
+				C78A40D4227F776400855331 /* EquirectangularCube.h */,
 				C7F98BDC2201143E0079CE80 /* GameObject.h */,
 				C7C8F2FB21FF6FF600AB865A /* Grid.cpp */,
 				C7C8F2FA21FF6FF600AB865A /* Grid.h */,
@@ -4616,6 +4625,7 @@
 				C7B75A3E2204E32C00E54C30 /* Blue_shingle_pxr128_bmp.tif in Resources */,
 				C7C8F47121FFBA6000AB865A /* _up.jpg in Resources */,
 				C7090CCD22365F4C006FE002 /* KnittedPixelationShader.vert in Resources */,
+				C78A40D2227F738700855331 /* EquirectangularToCubemapShader.frag in Resources */,
 				C7B759AD2204E32C00E54C30 /* Louvered_steel_pxr128.tif in Resources */,
 				C75C971F220DD69F00420DF6 /* EnvironmentMappingShader.vert in Resources */,
 				C7B4D3B822146E2900BCE130 /* granitesmooth-albedo3.png in Resources */,
@@ -4975,6 +4985,7 @@
 				C7B7598E2204E32C00E54C30 /* Small_black_tile_pxr128.tif in Resources */,
 				C7B759262204E32C00E54C30 /* Figured_lacewood_pxr128_bmp.tif in Resources */,
 				C7B4D3FA22146E2900BCE130 /* harshbricks-metal.png in Resources */,
+				C78A40D1227F738700855331 /* EquirectangularToCubemapShader.vert in Resources */,
 				C7B75A942204E32D00E54C30 /* Wild_flowers_pxr128_normal.tif in Resources */,
 				C7B759F02204E32C00E54C30 /* Board_and_batten_pxr128_normal.tif in Resources */,
 				C7B759252204E32C00E54C30 /* American_walnut_pxr128.tif in Resources */,
@@ -5052,6 +5063,7 @@
 				C7C8F2F621FF6FC600AB865A /* Texture.cpp in Sources */,
 				C7B932E721FE8E4A00979C04 /* Game.cpp in Sources */,
 				C75C4CCF22208EA500C1F836 /* Control.cpp in Sources */,
+				C78A40D5227F776400855331 /* EquirectangularCube.cpp in Sources */,
 				C7C8F2FF21FF6FFF00AB865A /* Shaders.cpp in Sources */,
 				C7C8F30721FF700F00AB865A /* Vector.cpp in Sources */,
 				C7CEE2DC221209CF00895F5D /* Quad.cpp in Sources */,

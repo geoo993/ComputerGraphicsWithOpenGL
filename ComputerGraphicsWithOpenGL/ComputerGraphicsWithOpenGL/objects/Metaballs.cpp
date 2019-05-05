@@ -46,15 +46,13 @@ void CMetaballs::Create(const float &level, const int &numberOfBalls, const int 
         
         // access element as *it
         m_textures.push_back(new CTexture);
-        m_textures[i]->Load(it->first, it->second, true);
+        m_textures[i]->LoadTexture(it->first, it->second, true);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
         // any code including continue, break, return
     }
-    
-    
     
     //srand ( time(nullptr) );
     srand(glfwGetTime());

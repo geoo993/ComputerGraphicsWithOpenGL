@@ -172,9 +172,8 @@ void Game::LoadControls() {
     
     guiBox->height = itemHeight * m_pSkybox->GetNumberOfSkyboxes();
     CListBox * skyboxeNames = (CListBox *)AddControl(new CListBox(guiBox, itemHeight));
-    for (auto it = m_pSkybox->GetSkyboxes().begin(); it != m_pSkybox->GetSkyboxes().end(); ++it) {
-        std::string skybox = *it;
-        skyboxeNames->AddItem(skybox);
+    for(auto const& value: m_pSkybox->GetSkyboxes()) {
+        skyboxeNames->AddItem(value);
     }
     skyboxeNames->SetValue(&m_skyboxNumber, &m_changeSkybox);
     

@@ -40,6 +40,7 @@ void Game::InitialiseResources()
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
     m_pMetaballs = new CMetaballs;
+    m_pEquirectangularCube = new CEquirectangularCube(1.0f);
 }
 
 void Game::LoadResources(const std::string &path)
@@ -125,6 +126,10 @@ void Game::LoadResources(const std::string &path)
     m_pChromaticAberrationCube->Create(path+"/textures/", {
         { "clean-gray-paper.png", TextureType::DIFFUSE},
         { "moon_surface.jpg", TextureType::GLOSSINESS}
+    } );
+   
+    m_pEquirectangularCube->Create(path+"/skyboxes/deserthighway/", {
+        { "Road_to_MonumentValley_Ref.hdr", TextureType::EMISSION},
     } );
     
     m_pWoodenBox->Create(path+"/textures/woodenBox/",

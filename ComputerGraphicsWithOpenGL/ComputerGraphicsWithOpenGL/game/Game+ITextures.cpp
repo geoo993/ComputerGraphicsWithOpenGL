@@ -25,20 +25,19 @@ void Game::LoadTextures(const std::string &path)
 CTexture * Game::AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection) {
     
     CTexture *texture = new CTexture;
-    //texture->CreateTexture(textureFile, true, textureUnit, gammaCorrection);
+    //texture->LoadTexture(textureFile, true, type, gammaCorrection);
     //texture->BindTexture2D(textureUnit);
     
-    texture->Load(textureFile, type, true);
+    texture->LoadTexture(textureFile, type, true);
     texture->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     texture->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
     texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-    
     return texture;
 }
 
 CTexture * Game::AddTexture(const GLfloat &width, const GLfloat &height, const TextureType &type, const GLvoid * data) {
     CTexture *texture = new CTexture;
-    texture->CreateTexture(width, width, true, type, data);
+    texture->LoadTexture(width, width, true, type, data);
     return texture;
 }

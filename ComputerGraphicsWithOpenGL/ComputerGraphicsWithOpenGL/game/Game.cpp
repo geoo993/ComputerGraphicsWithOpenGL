@@ -95,7 +95,7 @@ Game::Game()
         glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f      ),
         glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f       ),
         glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f      ),
-        glm::vec4(  10.0f,  10.0f, 10.0f  , 1.0f      )
+        glm::vec4(  200.0f,  200.0f, 200.0f  , 1.0f      )
     };
     
     // Spot Light
@@ -146,7 +146,7 @@ Game::Game()
     // skybox
     m_pSkybox = nullptr;
     m_mapSize = 3000.0f;
-    m_skyboxNumber = 5;
+    m_skyboxNumber = 0;
     m_changeSkybox = false;
     
     // terrain
@@ -209,6 +209,9 @@ Game::Game()
     // inputs
     m_mouseButtonDown = false;
     m_mouseX, m_mouseY = 0.0;
+    
+    // Equirectangular To Cubemap Cube
+    m_pEquirectangularCube = nullptr;
 }
 
 // Destructor
@@ -239,6 +242,7 @@ Game::~Game()
     delete m_pMetaballs;
     delete m_pQuad;
     delete m_pFireBallSphere;
+    delete m_pEquirectangularCube;
     
     for (GLuint i = 0; i < m_pFBOs.size(); i++) {
         // delete current buffers

@@ -141,6 +141,12 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
     RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_woodenBoxesUseTexture);
     
+    
+    /// Equirectangular Cube Mapping
+    CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 77];
+    SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
+    RenderEquirectangularCube(pEquirectangularCubeProgram, glm::vec3(0.0f, 0.0f, 0.0f), 100.0f, true);
+    
     /*
     /// Explosion Program
     CShaderProgram *pExplosionProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 11];

@@ -234,6 +234,8 @@ struct IRenderObject
                                     const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                                const GLfloat & scale, const GLboolean &useTexture) = 0;
+    virtual void RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                                           const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
                                  const GLfloat & angle, const GLboolean &useTexture) = 0;
     virtual void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,

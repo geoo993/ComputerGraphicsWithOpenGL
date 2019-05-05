@@ -29,6 +29,9 @@
 #include <iomanip>
 #include <algorithm>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 //GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -67,10 +70,6 @@
 #include <FMOD/fmod.hpp>
 #include <FMOD/fmod_errors.h>
 #include <FMOD/fmod_studio_common.h>
-
-
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 880

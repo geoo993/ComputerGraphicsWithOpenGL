@@ -233,6 +233,30 @@ void Game::RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const g
     m_pChromaticAberrationCube->Render();
 }
 
+void Game::RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                                     const GLfloat & scale, const GLboolean &useTexture) {
+    glm::vec3 translation = position;
+    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
+        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
+    }
+    
+    m_pEquirectangularCube->Transform(translation, glm::vec3(0.0f), glm::vec3(scale));
+    glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseTexture", useTexture);
+    pShaderProgram->SetUniform("matrices.projMatrix", captureProjection);
+    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
+    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
+    
+    glm::mat4 model = m_pEquirectangularCube->Model();
+    pShaderProgram->SetUniform("matrices.modelMatrix", model);
+    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
+    m_pEquirectangularCube->Render();
+}
+
 void Game::RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
                            const GLfloat & angle, const GLboolean &useTexture) {
     glm::vec3 translation = position;

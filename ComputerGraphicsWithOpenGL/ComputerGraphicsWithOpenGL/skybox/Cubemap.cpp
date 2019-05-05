@@ -75,7 +75,7 @@ void CCubemap::Bind(GLint iTextureUnit)
 // +Z (front)
 // -Z (back)
 // -------------------------------------------------------
-void CCubemap::Create(const std::vector<std::string> &cubemapFaces, const TextureType &type) {
+void CCubemap::LoadCubemap(const std::vector<std::string> &cubemapFaces, const TextureType &type) {
 
     m_faces = cubemapFaces;
     m_type = type;
@@ -104,6 +104,33 @@ void CCubemap::Create(const std::vector<std::string> &cubemapFaces, const Textur
     glSamplerParameteri(m_uiSampler, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+    
+}
+
+void CCubemap::LoadHRDCubemap(const std::vector<std::string> &cubemapFaces, const TextureType &type) {
+    
+    m_faces = cubemapFaces;
+    m_type = type;
+    
+    // Generate an OpenGL texture ID for this texture
+    glGenTextures(1, &m_uiTexture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_uiTexture);
+    
+    GLint iWidth, iHeight, iChannels;
+    BYTE *data = nullptr;
+    for (GLuint i = 0; i < cubemapFaces.size(); i++)
+    {
+        // note that we store each face with 16 bit floating point values
+        std::string face = cubemapFaces[i];
+        LoadTexture(face, &data, iWidth, iHeight);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, iWidth, iHeight, 0, GL_RGB, GL_FLOAT, data);
+        if (data != NULL) delete[] data;
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
 }
 

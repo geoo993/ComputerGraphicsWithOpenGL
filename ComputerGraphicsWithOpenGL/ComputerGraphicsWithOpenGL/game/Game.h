@@ -30,6 +30,7 @@
 #include "TorusKnot.h"
 #include "Metaballs.h"
 #include "Quad.h"
+#include "EquirectangularCube.h"
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp,
 // include the header.  In the Game constructor, set the pointer to NULL and in Game::Initialise, create a new object.  Don't forget to
@@ -44,6 +45,7 @@ class CTorus;
 class CTorusKnot;
 class CMetaballs;
 class CQuad;
+class CEquirectangularCube;
 
 class Game: IGameWindow, IResources, IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
 ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IControls {
@@ -107,6 +109,9 @@ private:
     // metal ball
     CMetaballs *m_pMetaballs;
     glm::vec3 m_metalballsPosition;
+    
+    // EquirectangularCube
+    CEquirectangularCube *m_pEquirectangularCube;
 
 public:
     Game();
@@ -268,6 +273,8 @@ protected:
                             const GLfloat & scale, const GLboolean &useTexture);
     void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                        const GLfloat & scale, const GLboolean &useTexture) override;
+    void RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                                   const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
                          const GLfloat & angle, const GLboolean &useTexture) override;
     void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,

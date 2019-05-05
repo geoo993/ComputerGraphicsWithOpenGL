@@ -1,4 +1,10 @@
+
 #include "Texture.h"
+
+// STB image
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_ASSERT(x)
+#include <stb/stb_image.h>
 
 CTexture::CTexture()
 {
@@ -49,7 +55,7 @@ void CTexture::CreateFromData(BYTE* data, GLint width, GLint height, GLint bpp, 
 }
 
 // Loads a 2D texture given the filename (sPath).  bGenerateMipMaps will generate a mipmapped texture if true
-GLboolean CTexture::Load(const std::string &path, const TextureType &type, const GLboolean &generateMipMaps)
+GLboolean CTexture::LoadTexture(const std::string &path, const TextureType &type, const GLboolean &generateMipMaps)
 {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	FIBITMAP* dib(0);
@@ -93,102 +99,56 @@ GLboolean CTexture::Load(const std::string &path, const TextureType &type, const
 	return true; // Success
 }
 
-// loads the file "hazard.png" into gTexture
-GLuint CTexture::CreateTexture(std::string path, GLboolean generateMipMaps, GLint textureUnitAt, GLboolean gammaCorrection) {
-    
-    //    Bitmap img(filePath.c_str());
-    //    ////*-----------------------------------------------------------------------------
-    //    ////*  Make some rgba data (can also load a file here)
-    //    ////*-----------------------------------------------------------------------------
-    
-    //    int tw = img.width; 
-    //    int th = img.height;
-    FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
-    FIBITMAP* dib(0);
-    
-    fif = FreeImage_GetFileType(path.c_str(), 0); // Check the file signature and deduce its format
-    
-    if(fif == FIF_UNKNOWN) // If still unknown, try to guess the file format from the file extension
-        fif = FreeImage_GetFIFFromFilename(path.c_str());
-    
-    if(fif == FIF_UNKNOWN) // If still unknown, return failure
-        return -1;
-    
-    if(FreeImage_FIFSupportsReading(fif)) // Check if the plugin has reading capabilities and load the file
-        dib = FreeImage_Load(fif, path.c_str());
-    
-    if(!dib) {
-        char message[1024];
-        sprintf(message, "Cannot load image\n%s\n",path.c_str());
-        return -1;
-    }
-    
-    BYTE* pData = FreeImage_GetBits(dib); // Retrieve the image data
-    
-    // If somehow one of these failed (they shouldn't), return failure
-    if (pData == nullptr || FreeImage_GetWidth(dib) == 0 || FreeImage_GetHeight(dib) == 0) {
-        return -1;
-    }
-    
-    GLint width = FreeImage_GetWidth(dib); 
-    GLint height = FreeImage_GetHeight(dib);
-    GLint bpp = FreeImage_GetBPP(dib);// bytes per pixel
-    
-    GLenum internalFormat;
-    GLenum dataFormat;
-    if(FreeImage_GetBPP(dib) == 32)dataFormat = GL_BGRA;
-    if(FreeImage_GetBPP(dib) == 24)dataFormat = GL_BGR;
-    if(FreeImage_GetBPP(dib) == 8)dataFormat = GL_LUMINANCE;
-    
-    // Generate an OpenGL texture ID for this texture
-    //GLuint texture;
-    m_textureID = textureUnitAt;
+// utility function for loading a 2D texture from file
+// ---------------------------------------------------
+GLuint CTexture::LoadTexture(char const * path, const TextureType &type,
+                             const GLboolean &generateMipMaps, GLboolean gammaCorrection) {
     glGenTextures(1, &m_textureID);
-    glBindTexture(GL_TEXTURE_2D, m_textureID);
     
-    // set wrap mode
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    //glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-    //glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    
-    float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
-    
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
- 
-    
-    // We must handle this because of internal format parameter
-    if(dataFormat == GL_RGBA || dataFormat == GL_BGRA){
-        internalFormat = gammaCorrection ? GL_SRGB_ALPHA : GL_RGBA;
-        if(gammaCorrection)dataFormat=GL_RGBA;
+    GLint width, height, nrComponents;
+    unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
+    if (data)
+    {
+        GLenum internalFormat;
+        // We must handle this because of internal format parameter
+        if(nrComponents == 4){
+            internalFormat = gammaCorrection ? GL_SRGB_ALPHA : GL_RGBA;
+        }
+        else if(nrComponents == 3){
+            internalFormat = gammaCorrection ? GL_SRGB : GL_RGB;
+        }
+        else if(nrComponents == 1){
+            internalFormat = GL_RED;
+        }
+        else{
+            internalFormat = GL_RGB;
+        }
+        
+        glBindTexture(GL_TEXTURE_2D, m_textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, data);
+        
+        if(generateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
+        glGenSamplers(1, &m_samplerObjectID);
+        
+        stbi_image_free(data);
     }
-    else if(dataFormat == GL_RGB || dataFormat == GL_BGR){
-        internalFormat = gammaCorrection ? GL_SRGB : GL_RGB;
-        if(gammaCorrection)dataFormat=GL_RGB;
-    }
-    else if(dataFormat == GL_RED ){
-        internalFormat = GL_RED;
-    }
-    else{
-        internalFormat = dataFormat;
+    else
+    {
+        std::cout << "Texture failed to load at path: " << path << std::endl;
+        stbi_image_free(data);
     }
     
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, pData);
-    
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, dataFormat,GL_UNSIGNED_BYTE, pData);
-    
-    if(generateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
-    
-    //GLuint m_samplerObject;
-    m_samplerObjectID = textureUnitAt;
-    glGenSamplers(1, &m_samplerObjectID);
+    m_path = path;
+    m_type = type;
+    m_mipMapsGenerated = generateMipMaps;
+    m_width = width;
+    m_height = height;
+    m_bpp = 0;
     
     return m_textureID;
 }
 
-GLuint CTexture::CreateTexture(GLint width, GLint height, GLboolean generateMipMaps, const TextureType &type, const GLvoid * data){
+GLuint CTexture::LoadTexture(GLint width, GLint height, GLboolean generateMipMaps, const TextureType &type, const GLvoid * data) {
     
     m_path = "";
     m_type = type;
@@ -212,6 +172,39 @@ GLuint CTexture::CreateTexture(GLint width, GLint height, GLboolean generateMipM
     if(generateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
     glGenSamplers(1, &m_samplerObjectID);
     
+    return m_textureID;
+}
+
+GLuint CTexture::LoadHDREnvironmentTexture(char const * path, const TextureType &type, const GLboolean &generateMipMaps) {
+    // pbr: load the HDR environment map
+    // ---------------------------------
+    stbi_set_flip_vertically_on_load(true);
+    int width, height, nrComponents;
+    float *data = stbi_loadf(path, &width, &height, &nrComponents, 0);
+    if (data)
+    {
+        glGenTextures(1, &m_textureID);
+        glBindTexture(GL_TEXTURE_2D, m_textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, data); // note how we specify the texture's data value to be float
+        
+        if(generateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
+        glGenSamplers(1, &m_samplerObjectID);
+        
+        stbi_image_free(data);
+    }
+    else
+    {
+        std::cout << "Failed to load HDR image." << std::endl;
+        stbi_image_free(data);
+    }
+    
+    m_path = path;
+    m_type = type;
+    m_mipMapsGenerated = generateMipMaps;
+    m_width = width;
+    m_height = height;
+    m_bpp = 0;
+
     return m_textureID;
 }
 

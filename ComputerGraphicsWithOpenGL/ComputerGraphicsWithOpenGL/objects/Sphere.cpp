@@ -27,7 +27,7 @@ void CSphere::Create(const std::string &directory, const std::map<std::string, T
         
         // access element as *it
         m_textures.push_back(new CTexture);
-        m_textures[i]->Load(m_directory+it->first, it->second, true);
+        m_textures[i]->LoadTexture(m_directory+it->first, it->second, true);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);

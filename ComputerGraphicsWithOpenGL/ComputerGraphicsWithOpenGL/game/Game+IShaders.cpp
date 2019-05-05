@@ -138,8 +138,6 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("RainDropsShader.frag");
     sShaderFileNames.push_back("JupiterColorShader.vert");// 60
     sShaderFileNames.push_back("JupiterColorShader.frag");
-    
-    
     sShaderFileNames.push_back("PaletteQuantizationAndDitheringShader.vert");// 61
     sShaderFileNames.push_back("PaletteQuantizationAndDitheringShader.frag");
     sShaderFileNames.push_back("DistortedTVShader.vert");// 62
@@ -172,6 +170,8 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("CelShaderishShader.frag");
     sShaderFileNames.push_back("CartoonVideoShader.vert");// 76
     sShaderFileNames.push_back("CartoonVideoShader.frag");
+    sShaderFileNames.push_back("EquirectangularToCubemapShader.vert");// 77
+    sShaderFileNames.push_back("EquirectangularToCubemapShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -806,6 +806,14 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pCartoonVideoProgram->AddShaderToProgram(&shShaders[156]);
     pCartoonVideoProgram->LinkProgram();
     m_pShaderPrograms->push_back(pCartoonVideoProgram);
+    
+    // Create the EquirectangularToCubemap Shader
+    CShaderProgram *pEquirectangularToCubemapProgram = new CShaderProgram;
+    pEquirectangularToCubemapProgram->CreateProgram();
+    pEquirectangularToCubemapProgram->AddShaderToProgram(&shShaders[157]);
+    pEquirectangularToCubemapProgram->AddShaderToProgram(&shShaders[158]);
+    pEquirectangularToCubemapProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pEquirectangularToCubemapProgram);
 }
 
 

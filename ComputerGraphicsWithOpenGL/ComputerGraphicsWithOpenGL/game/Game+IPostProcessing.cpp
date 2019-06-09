@@ -723,7 +723,6 @@ void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType 
         default: break;
     }
                               
-    //m_textures[8]->BindHDRTexture2DToTextureType();
     SetMaterialUniform(pShaderProgram, "material", m_woodenBoxesColor, m_materialShininess);
     SetImageProcessingUniform(pShaderProgram, true);
     m_pQuad->Render(false);

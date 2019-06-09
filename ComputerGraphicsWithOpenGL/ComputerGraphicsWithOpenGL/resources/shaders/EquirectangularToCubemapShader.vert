@@ -33,5 +33,4 @@ void main() {
     
     // Transform the vertex spatial position using
     gl_Position = matrices.projMatrix * matrices.viewMatrix * position;
-    //gl_Position = matrices.projMatrix * matrices.viewMatrix * matrices.modelMatrix * position;
 }

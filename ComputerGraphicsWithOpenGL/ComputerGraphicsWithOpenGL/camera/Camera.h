@@ -9,7 +9,7 @@ public:
 	~CCamera();										// Destructor
 
     void Create(
-                const glm::vec3 &position = glm::vec3( 0.0f, 0.0f, -15.0f ),
+                const glm::vec3 &position = glm::vec3( 0.0f, 0.0f, -20.0f ),
                 const glm::vec3 &front = glm::vec3( 0.0f, 0.0f, -1.0f ),
                 const glm::vec3 &up = glm::vec3( 0.0f, 1.0f, 0.0f ),
                 const glm::vec3 &worldUp = glm::vec3( 0.0f, 1.0f, 0.0f ),

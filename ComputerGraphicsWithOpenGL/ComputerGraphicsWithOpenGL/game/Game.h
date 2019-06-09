@@ -255,7 +255,7 @@ protected:
     void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),
                     const GLfloat & scale = 1.0f, const GLboolean &useTexture = true,
                     const GLboolean &bindTexture = false) override;
-    void RenderSkyBox(CShaderProgram *pShaderProgram, const GLboolean &useEnvCubemap) override;
+    void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
     void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                         const GLfloat & scale, const GLboolean &useTexture) override;

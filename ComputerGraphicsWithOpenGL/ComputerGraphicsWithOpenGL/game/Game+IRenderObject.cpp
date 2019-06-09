@@ -23,7 +23,7 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
     m_pQuad->Render(bindTexture);
 }
 
-void Game::RenderSkyBox(CShaderProgram *pShaderProgram, const GLboolean &useEnvCubemap) {
+void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
 
     // start by deleting current skybox and create new one
 //    if (m_changeSkybox) {
@@ -34,11 +34,11 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram, const GLboolean &useEnvC
     // draw skybox as last
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bUseEnvCubemap", useEnvCubemap);
+    pShaderProgram->SetUniform("bUseEnvCubemap", m_pSkybox->IsEnvCubemap());
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
     
-    m_pSkybox->Render(useEnvCubemap);
+    m_pSkybox->Render();
     glDepthFunc(GL_LESS); // // set depth function back to default
     
 }
@@ -64,7 +64,7 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHei
         pShaderProgram->SetUniform("matrices.modelMatrix", model);
         pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
         m_pHeightmapTerrain->Render();
-    }else {
+    } else {
         // Render the planar terrain
         //glEnable (GL_BLEND);
         //glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

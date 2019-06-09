@@ -19,7 +19,6 @@ void Game::LoadTextures(const std::string &path)
     m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensDirt.png", TextureType::NOISE)); // Lens Flare
     m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensStarburst.png", TextureType::GLOSSINESS)); // Lens Flare
     m_textures.push_back(AddTexture(4, 4, TextureType::NOISE, &m_ssaoNoise[0])); // SSAO Noise
-    m_textures.push_back(AddHDRTexture(path+"/skyboxes/deserthighway/Road_to_MonumentValley_Ref.hdr", TextureType::AMBIENT));
 }
 
 CTexture * Game::AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection) {

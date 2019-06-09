@@ -279,23 +279,23 @@ void Game::PreRendering() {
 // Render scene method runs
 void Game::Render()
 {
-    //ActivateFBO( m_currentPPFXMode );
+    ActivateFBO( m_currentPPFXMode );
     
     // Clear buffers before rendering
     m_gameWindow->ClearBuffers();
     
     RenderScene();
     
-    //ResetFrameBuffer();
+    ResetFrameBuffer();
     
     // Post Processing Effects
-    //RenderPPFX( m_currentPPFXMode );
+    RenderPPFX( m_currentPPFXMode );
     
     // Draw the 2D graphics after the 3D graphics
-    //RenderHUD();
+    RenderHUD();
     
     // Draw controls GUI objects
-    //RenderControls();
+    RenderControls();
     
 }
 
@@ -320,7 +320,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
 
     InitialiseResources();
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
-    //InitialiseFrameBuffers(width, height);
+    InitialiseFrameBuffers(width, height);
     InitialiseCamera(width, height, glm::vec3(0.0f, 0.0f, 0.0f));
     InitialiseAudio(filepath);
     

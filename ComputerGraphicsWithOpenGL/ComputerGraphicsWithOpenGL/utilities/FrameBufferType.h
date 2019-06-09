@@ -16,6 +16,7 @@ enum class FrameBufferType {
     PingPongRendering,
     GeometryBuffer,
     SSAO,
+    HDREnvironmentMap,
 };
 
 

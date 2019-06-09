@@ -14,6 +14,7 @@ CFrameBufferObject::CFrameBufferObject()
     m_uiAlbedoSpecTexture = 0;
     m_uiRboDepthStencil = 0;
     m_uiRboDepth = 0;
+    m_uiEnvCubemapID = 0;
     
     for (unsigned int i = 0; i < 2; i++){
         m_uiHdrColorTextures[i] = 0;
@@ -289,6 +290,48 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             
             return deferredRenderingFramebufferComplete;
         }
+            
+        case FrameBufferType::HDREnvironmentMap: {
+          
+            /// Create a framebuffer object and bind it with
+            glGenFramebuffers(1, &m_uiFramebuffer);
+            
+            // To bind the framebuffer we use glBindFramebuffer:
+            glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
+          
+            // pbr: setup cubemap to render to and attach to framebuffer
+            // ---------------------------------------------------------
+            //GLuint m_envCubemapID;
+            glGenTextures(1, &m_uiEnvCubemapID);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, m_uiEnvCubemapID);
+            for (unsigned int i = 0; i < 6; ++i)
+            {
+                glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, m_iWidth, m_iHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+            }
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            
+            
+            // Creating a renderbuffer object looks similar to the framebuffer's code:
+            glGenRenderbuffers(1, &m_uiRboDepthStencil);
+            
+            // And similarly we want to bind the renderbuffer object so all subsequent renderbuffer operations affect the current rbo:
+            glBindRenderbuffer(GL_RENDERBUFFER, m_uiRboDepthStencil);
+           
+            // Creating a depth and stencil renderbuffer object is done by calling the glRenderbufferStorage function:
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_iWidth, m_iHeight);
+            
+            // Once we've allocated enough memory for the renderbuffer object we can unbind the renderbuffer.
+            glBindRenderbuffer(GL_RENDERBUFFER, 0);
+            
+            // Last thing left to do is actually attach the renderbuffer object:
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_uiRboDepthStencil);
+            
+            return true;
+        }
     
         case FrameBufferType::Default: {
      
@@ -428,7 +471,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             // Last thing left to do is actually attach the renderbuffer object:
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_uiRboDepthStencil);
             
-            // Tell OpenGL that we want to draw into the frambuffer's colour attachment
+            // Tell OpenGL that we want to draw into the framebuffer's colour attachment
             // - tell OpenGL which color attachments we'll use (of this framebuffer) for rendering
             GLuint attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_DEPTH_ATTACHMENT };
             glDrawBuffers(4, attachments);
@@ -458,6 +501,18 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             }
     }
     return false;
+}
+// Attach frame buffer texture2D to index
+void CFrameBufferObject::AttachEnvironmentCubemapAt(const GLuint &index) {
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + index, m_uiEnvCubemapID, 0);
+}
+
+
+// Binding the framebuffer of environment cubemap
+void CFrameBufferObject::BindEnvironmentCubemap(GLuint iTextureUnit)
+{
+    glActiveTexture(GL_TEXTURE0+iTextureUnit);
+    glBindTexture(GL_TEXTURE_2D, m_uiEnvCubemapID);
 }
 
 // Bind the FBO so we can render to it
@@ -599,6 +654,7 @@ void CFrameBufferObject::Release()
     glDeleteTextures(1, &m_uiNormalTexture);
 	glDeleteTextures(1, &m_uiDepthTexture);
     glDeleteTextures(1, &m_uiDepthCubeMap);
+    glDeleteTextures(1, &m_uiEnvCubemapID);
     glDeleteTextures(2, m_uiHdrColorTextures);
     glDeleteTextures(2, m_uiPingpongColorTextures);
     

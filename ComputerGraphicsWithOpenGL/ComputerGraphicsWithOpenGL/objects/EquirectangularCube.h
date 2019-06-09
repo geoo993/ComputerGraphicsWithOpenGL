@@ -1,17 +1,10 @@
-//
-//  EquirectangularCube.hpp
-//  ComputerGraphicsWithOpenGL
-//
-//  Created by GEORGE QUENTIN on 05/05/2019.
-//  Copyright © 2019 GEORGE QUENTIN. All rights reserved.
-//
 
 #pragma once
-#ifndef EquirectangularCube_h
-#define EquirectangularCube_h
+
+#ifndef CEquirectangularCube_h
+#define CEquirectangularCube_h
 
 #include "Texture.h"
-#include "VertexBufferObject.h"
 #include "GameObject.h"
 
 
@@ -21,7 +14,7 @@ class CEquirectangularCube: public GameObject
 public:
     CEquirectangularCube(const GLfloat & size = 1.0f);
     ~CEquirectangularCube();
-    
+
     void Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames);
     void Transform(const glm::vec3 & position,
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
@@ -33,8 +26,7 @@ public:
     
 private:
     
-    GLuint m_vao, m_numTriangles;
-    CVertexBufferObject m_vbo;
+    GLuint m_vao, m_vbo, m_numTriangles;
     
     std::map<std::string, TextureType> m_textureNames;
     std::vector<CTexture*> m_textures;
@@ -46,4 +38,5 @@ private:
     std::vector<glm::vec3> m_cubeBitangent;
 };
 
-#endif /* EquirectangularCube_h */
+
+#endif /* CEquirectangularCube_h */

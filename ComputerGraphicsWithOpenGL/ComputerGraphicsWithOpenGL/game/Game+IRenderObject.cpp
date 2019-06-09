@@ -23,30 +23,26 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
     m_pQuad->Render(bindTexture);
 }
 
-void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
+void Game::RenderSkyBox(CShaderProgram *pShaderProgram, const GLboolean &useEnvCubemap) {
 
-//    // start by deleting current skybox and create new one
-    if (m_changeSkybox) {
-        m_pSkybox->Release();
-        m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, m_skyboxNumber);
-    }
+    // start by deleting current skybox and create new one
+//    if (m_changeSkybox) {
+//        m_pSkybox->Release();
+//        m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, m_skyboxNumber);
+//    }
     
     // draw skybox as last
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
     pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseEnvCubemap", useEnvCubemap);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
-    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
-    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
-    m_pSkybox->Transform(m_pCamera->GetPosition());
-    glm::mat4 skyBoxModel = m_pSkybox->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", skyBoxModel);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(skyBoxModel));
-    m_pSkybox->Render();
+    if (useEnvCubemap) {
+        m_pSkybox->RenderHDR();
+    } else {
+        m_pSkybox->Render();
+    }
     glDepthFunc(GL_LESS); // // set depth function back to default
     
 }
@@ -153,6 +149,27 @@ void Game::RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position
     m_pCube->Render();
 }
 
+void Game::RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale, const GLboolean &useTexture) {
+    glm::vec3 translation = position;
+    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
+        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
+    }
+    
+    m_pEquirectangularCube->Transform(translation, glm::vec3(0.0f), glm::vec3(scale));
+    
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseTexture", useTexture);
+    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
+    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
+    
+    glm::mat4 model = m_pEquirectangularCube->Model();
+    pShaderProgram->SetUniform("matrices.modelMatrix", model);
+    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
+    m_pEquirectangularCube->Render();
+}
+
 void Game::RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
                        const float & scale, const bool &useTexture, const bool &bindTexture) {
     glm::vec3 translation = position;
@@ -231,30 +248,6 @@ void Game::RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const g
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
     pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
     m_pChromaticAberrationCube->Render();
-}
-
-void Game::RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                     const GLfloat & scale, const GLboolean &useTexture) {
-    glm::vec3 translation = position;
-    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
-        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
-    }
-    
-    m_pEquirectangularCube->Transform(translation, glm::vec3(0.0f), glm::vec3(scale));
-    glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bUseTexture", useTexture);
-    pShaderProgram->SetUniform("matrices.projMatrix", captureProjection);
-    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
-    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
-    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
-    
-    glm::mat4 model = m_pEquirectangularCube->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", model);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    m_pEquirectangularCube->Render();
 }
 
 void Game::RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,

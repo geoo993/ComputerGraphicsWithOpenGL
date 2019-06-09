@@ -11,8 +11,6 @@
 
 #pragma once
 
-#include "Common.h"
-
 // Setup includes
 #include "Extensions.h"
 #include "MatrixStack.h"
@@ -25,12 +23,12 @@
 #include "Plane.h"
 #include "HeightMapTerrain.h"
 #include "Cube.h"
+#include "EquirectangularCube.h"
 #include "Sphere.h"
 #include "Torus.h"
 #include "TorusKnot.h"
 #include "Metaballs.h"
 #include "Quad.h"
-#include "EquirectangularCube.h"
 
 // Classes used in game.  For a new class, declare it here and provide a pointer to an object of this class below.  Then, in Game.cpp,
 // include the header.  In the Game constructor, set the pointer to NULL and in Game::Initialise, create a new object.  Don't forget to
@@ -45,7 +43,6 @@ class CTorus;
 class CTorusKnot;
 class CMetaballs;
 class CQuad;
-class CEquirectangularCube;
 
 class Game: IGameWindow, IResources, IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
 ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IControls {
@@ -84,6 +81,7 @@ private:
     
     //cube object
     CCube * m_pCube;
+    CEquirectangularCube * m_pEquirectangularCube;
     CCube * m_pChromaticAberrationCube;
     CCube * m_pParallaxCube;
     CCube * m_pInteriorBox;
@@ -109,9 +107,6 @@ private:
     // metal ball
     CMetaballs *m_pMetaballs;
     glm::vec3 m_metalballsPosition;
-    
-    // EquirectangularCube
-    CEquirectangularCube *m_pEquirectangularCube;
 
 public:
     Game();
@@ -158,6 +153,7 @@ protected:
     /// Textures
     void LoadTextures(const std::string &path) override;
     CTexture * AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection = false) override;
+    CTexture * AddHDRTexture(const std::string &textureFile, const TextureType &type) override;
     CTexture * AddTexture(const GLfloat &width, const GLfloat &height, const TextureType &type, const GLvoid * data) override;
     
     /// Shaders
@@ -259,7 +255,7 @@ protected:
     void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),
                     const GLfloat & scale = 1.0f, const GLboolean &useTexture = true,
                     const GLboolean &bindTexture = false) override;
-    void RenderSkyBox(CShaderProgram *pShaderProgram) override;
+    void RenderSkyBox(CShaderProgram *pShaderProgram, const GLboolean &useEnvCubemap) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
     void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                         const GLfloat & scale, const GLboolean &useTexture) override;
@@ -267,14 +263,14 @@ protected:
                        const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                     const GLfloat & scale, const GLboolean &useTexture) override;
+    void RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                                   const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
                            const float & scale, const bool &useTexture, const bool &bindTexture) override;
     void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture);
     void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                        const GLfloat & scale, const GLboolean &useTexture) override;
-    void RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                   const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
                          const GLfloat & angle, const GLboolean &useTexture) override;
     void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,

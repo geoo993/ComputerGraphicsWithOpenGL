@@ -10,6 +10,10 @@
 CSkybox::CSkybox()
 {
     m_vao = 0;
+    cubeVAO = 0;
+    cubeVBO = 0;
+    m_envCubemap = 0;
+    m_fbo = nullptr;
     m_skyboxes = {};
 }
 
@@ -77,7 +81,7 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
                                 path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_bk.jpg", //back
                                 path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_ft.jpg",  //front
                                 }, type);
-	
+ 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
@@ -139,6 +143,132 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
 	
 }
 
+void CSkybox::Create(const GLfloat &size, const std::string &hrdPath, const TextureType &type, CShaderProgram *equirectangularProgram, const GLuint &skyboxNumber) {
+    
+    GLint width, height = (int)size;
+    
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+    
+    /*
+     To convert an equirectangular image into a cubemap we need to render a (unit) cube and project the equirectangular map on all of the cube's faces from the inside and take 6 images of each of the cube's sides as a cubemap face. The vertex shader of this cube simply renders the cube as is and passes its local position to the fragment shader as a 3D sample vector:
+     
+     */
+    
+    
+    
+    
+    
+    
+    // pbr: setup framebuffer and setup cubemap to render to and attach to framebuffer
+    // ----------------------
+    //m_fbo = new CFrameBufferObject;
+    //m_fbo->CreateFramebuffer(width, height, FrameBufferType::HDREnvironmentMap);
+    
+    // pbr: setup framebuffer
+    // ----------------------
+    unsigned int captureFBO;
+    unsigned int captureRBO;
+    glGenFramebuffers(1, &captureFBO);
+    glGenRenderbuffers(1, &captureRBO);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+    glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, captureRBO);
+    
+    
+    // pbr: load the HDR environment map
+    // ---------------------------------
+    //std::string hrdPath = hdrpath+"/skyboxes/deserthighway/Road_to_MonumentValley_Ref.hdr"; // EquiRectangular Map
+    CTexture *hdrTexture = new CTexture;
+    hdrTexture->LoadHDRTexture(hrdPath.c_str(), TextureType::EMISSION, true);
+    hdrTexture->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    hdrTexture->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    hdrTexture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    hdrTexture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    // pbr: setup cubemap to render to and attach to framebuffer
+    // ---------------------------------------------------------
+    glGenTextures(1, &m_envCubemap);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_envCubemap);
+    for (unsigned int i = 0; i < 6; ++i)
+    {
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, nullptr);
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    /*
+     
+     setting up 6 different view matrices facing each side of the cube, given a projection matrix with a fov of 90 degrees to capture the entire face, and render a cube 6 times storing the results in a floating point framebuffer:
+     */
+    // pbr: set up projection and view matrices for capturing data onto the 6 cubemap face directions
+    // ----------------------------------------------------------------------------------------------
+    glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
+    glm::mat4 captureViews[] =
+    {
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
+    };
+    
+   
+//    equirectangularToCubemapShader.use();
+//    equirectangularToCubemapShader.setInt("equirectangularMap", 0);
+//    equirectangularToCubemapShader.setMat4("projection", captureProjection);
+    equirectangularProgram->UseProgram();
+    int iTextureUnit = static_cast<int>(TextureType::EMISSION); // cubemap
+    equirectangularProgram->SetUniform("material.emissionMap", iTextureUnit);
+    equirectangularProgram->SetUniform("matrices.projMatrix", captureProjection);
+    
+    // bind texture on framebuffer
+    //glActiveTexture(GL_TEXTURE0);
+    //glBindTexture(GL_TEXTURE_2D, hdrTexture);
+    hdrTexture->BindHDRTexture2DToTextureType();
+    
+     
+    //glViewport(0, 0, 512, 512); // don't forget to configure the viewport to the capture dimensions.
+    //glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+    //m_fbo->Bind(true);
+    glViewport(0, 0, width, height); // don't forget to configure the viewport to the capture dimensions.
+    glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
+    
+    for (unsigned int i = 0; i < 6; ++i)
+    {
+        //equirectangularToCubemapShader.setMat4("view", captureViews[i]);
+        equirectangularProgram->SetUniform("matrices.viewMatrix", captureViews[i]);
+        
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_envCubemap, 0);
+        //m_fbo->AttachEnvironmentCubemapAt(i);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        
+        RenderCube();
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    glDepthFunc(GL_LESS); // // set depth function back to default
+    glDisable(GL_DEPTH_TEST);
+    
+    //delete hdrTexture;
+    
+    /*
+     
+     We take the color attachment of the framebuffer and switch its texture target around for every face of the cubemap, directly rendering the scene into one of the cubemap's faces. Once this routine has finished (which we only have to do once) the cubemap envCubemap should be the cubemapped environment version of our original HDR image.
+     
+     We sample the environment map using its interpolated vertex cube positions that directly correspond to the correct direction vector to sample. Seeing as the camera's translation components are ignored, rendering this shader over a cube should give you the environment map as a non-moving background. Also, note that as we directly output the environment map's HDR values to the default LDR framebuffer we want to properly tone map the color values. Furthermore, almost all HDR maps are in linear color space by default so we need to apply gamma correction before writing to the default framebuffer.
+     
+     
+     Well... it took us quite a bit of setup to get here, but we successfully managed to read an HDR environment map, convert it from its equirectangular mapping to a cubemap and render the HDR cubemap into the scene as a skybox. Furthermore, we set up a small system to render onto all 6 faces of a cubemap which we'll need again when convoluting the environment map.
+     */
+}
+
 void CSkybox::Transform(const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale) {
     // Render the planar terrain
     transform.SetIdentity();
@@ -155,15 +285,22 @@ void CSkybox::Render(const GLboolean &useTexture) {
     glDepthMask(GL_FALSE);
     glBindVertexArray(m_vao);
     
-    GLint textureUnit = static_cast<GLint>(m_cubemapTexture.GetType());
+    GLint textureUnit = static_cast<GLint>(m_cubemapTexture.GetType()); // cubemap
     m_cubemapTexture.Bind(textureUnit);
     
     for (int i = 0; i < 6; i++) {
-        //m_textures[i].Bind();
         glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);
     }
     
     glDepthMask(GL_TRUE);
+}
+
+// Render the skybox
+void CSkybox::RenderHDR() {
+    GLint iTextureUnit = static_cast<GLint>(TextureType::CUBEMAP); // cubemap
+    glActiveTexture(GL_TEXTURE0+iTextureUnit);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_envCubemap);
+    RenderCube();
 }
 
 void CSkybox::BindSkyboxTo(const GLint &textureUnit){
@@ -184,6 +321,89 @@ void CSkybox::Release()
 	//for (int i = 0; i < 6; i++)
 		//m_textures[i].Release();
 	m_cubemapTexture.Release();
+    glDeleteTextures(1, &m_envCubemap);
 	glDeleteVertexArrays(1, &m_vao);
+    glDeleteVertexArrays(1, &cubeVAO);
+    glDeleteVertexArrays(1, &cubeVBO);
 	m_vbo.Release();
+    
+    delete m_fbo;
+}
+
+// renderCube() renders a 1x1 3D cube in NDC.
+// -------------------------------------------------
+void CSkybox::RenderCube()
+{
+    // initialize (if necessary)
+    if (cubeVAO == 0)
+    {
+        float vertices[] = {
+            // back face
+            -1.0f, -1.0f, -1.0f,  0.0f, 0.0f, 0.0f,  0.0f, -1.0f,// bottom-left
+            1.0f,  1.0f, -1.0f,   1.0f, 1.0f, 0.0f,  0.0f, -1.0f,// top-right
+            1.0f, -1.0f, -1.0f,   1.0f, 0.0f, 0.0f,  0.0f, -1.0f,// bottom-right
+            1.0f,  1.0f, -1.0f,   1.0f, 1.0f, 0.0f,  0.0f, -1.0f,// top-right
+            -1.0f, -1.0f, -1.0f,  0.0f, 0.0f, 0.0f,  0.0f, -1.0f,// bottom-left
+            -1.0f,  1.0f, -1.0f,  0.0f, 1.0f, 0.0f,  0.0f, -1.0f,// top-left
+            // front face
+            -1.0f, -1.0f,  1.0f,  0.0f, 0.0f, 0.0f,  0.0f,  1.0f,// bottom-left
+            1.0f, -1.0f,  1.0f,   1.0f, 0.0f, 0.0f,  0.0f,  1.0f,// bottom-right
+            1.0f,  1.0f,  1.0f,   1.0f, 1.0f, 0.0f,  0.0f,  1.0f,// top-right
+            1.0f,  1.0f,  1.0f,   1.0f, 1.0f, 0.0f,  0.0f,  1.0f,// top-right
+            -1.0f,  1.0f,  1.0f,   0.0f, 1.0f, 0.0f,  0.0f,  1.0f,// top-left
+            -1.0f, -1.0f,  1.0f,   0.0f, 0.0f, 0.0f,  0.0f,  1.0f,// bottom-left
+            // left face
+            -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f,// top-right
+            -1.0f,  1.0f, -1.0f,  1.0f, 1.0f, -1.0f,  0.0f,  0.0f,// top-left
+            -1.0f, -1.0f, -1.0f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f,// bottom-left
+            -1.0f, -1.0f, -1.0f,  0.0f, 1.0f, -1.0f,  0.0f,  0.0f,// bottom-left
+            -1.0f, -1.0f,  1.0f,  0.0f, 0.0f, -1.0f,  0.0f,  0.0f,// bottom-right
+            -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, -1.0f,  0.0f,  0.0f,// top-right
+            // right face
+            1.0f,  1.0f,  1.0f,   1.0f, 0.0f, 1.0f,  0.0f,  0.0f,// top-left
+            1.0f, -1.0f, -1.0f,   0.0f, 1.0f, 1.0f,  0.0f,  0.0f,// bottom-right
+            1.0f,  1.0f, -1.0f,   1.0f, 1.0f, 1.0f,  0.0f,  0.0f,// top-right
+            1.0f, -1.0f, -1.0f,   0.0f, 1.0f, 1.0f,  0.0f,  0.0f,// bottom-right
+            1.0f,  1.0f,  1.0f,   1.0f, 0.0f, 1.0f,  0.0f,  0.0f,// top-left
+            1.0f, -1.0f,  1.0f,   0.0f, 0.0f, 1.0f,  0.0f,  0.0f,// bottom-left
+            // bottom face
+            -1.0f, -1.0f, -1.0f,  0.0f, 1.0f, 0.0f, -1.0f,  0.0f,// top-right
+            1.0f, -1.0f, -1.0f,   1.0f, 1.0f, 0.0f, -1.0f,  0.0f,// top-left
+            1.0f, -1.0f,  1.0f,   1.0f, 0.0f, 0.0f, -1.0f,  0.0f,// bottom-left
+            1.0f, -1.0f,  1.0f,   1.0f, 0.0f, 0.0f, -1.0f,  0.0f,// bottom-left
+            -1.0f, -1.0f,  1.0f,   0.0f, 0.0f, 0.0f, -1.0f,  0.0f,// bottom-right
+            -1.0f, -1.0f, -1.0f,   0.0f, 1.0f, 0.0f, -1.0f,  0.0f,// top-right
+            // top face
+            -1.0f,  1.0f, -1.0f,  0.0f, 1.0f, 0.0f,  1.0f,  0.0f,// top-left
+            1.0f,  1.0f , 1.0f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f,// bottom-right
+            1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f,  1.0f,  0.0f,// top-right
+            1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f,// bottom-right
+            -1.0f,  1.0f, -1.0f,  0.0f, 1.0f, 0.0f,  1.0f,  0.0f,// top-left
+            -1.0f,  1.0f,  1.0f,  0.0f, 0.0f,  0.0f,  1.0f,  0.0f,// bottom-left
+        };
+        glGenVertexArrays(1, &cubeVAO);
+        glGenBuffers(1, &cubeVBO);
+        // fill buffer
+        glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        // link vertex attributes
+        // Vertex positions
+        glBindVertexArray(cubeVAO);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        
+        // Texture coordinates
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        
+        // Normal vectors
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+    }
+    // render Cube
+    glBindVertexArray(cubeVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindVertexArray(0);
 }

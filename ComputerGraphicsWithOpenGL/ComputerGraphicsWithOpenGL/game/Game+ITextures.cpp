@@ -19,20 +19,28 @@ void Game::LoadTextures(const std::string &path)
     m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensDirt.png", TextureType::NOISE)); // Lens Flare
     m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensStarburst.png", TextureType::GLOSSINESS)); // Lens Flare
     m_textures.push_back(AddTexture(4, 4, TextureType::NOISE, &m_ssaoNoise[0])); // SSAO Noise
-    
+    m_textures.push_back(AddHDRTexture(path+"/skyboxes/deserthighway/Road_to_MonumentValley_Ref.hdr", TextureType::AMBIENT));
 }
 
 CTexture * Game::AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection) {
     
     CTexture *texture = new CTexture;
-    //texture->LoadTexture(textureFile, true, type, gammaCorrection);
-    //texture->BindTexture2D(textureUnit);
-    
     texture->LoadTexture(textureFile, type, true);
     texture->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     texture->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
     texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+    return texture;
+}
+
+CTexture * Game::AddHDRTexture(const std::string &textureFile, const TextureType &type) {
+    
+    CTexture *texture = new CTexture;
+    texture->LoadHDRTexture(textureFile.c_str(), type, true);
+    texture->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    texture->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     return texture;
 }
 

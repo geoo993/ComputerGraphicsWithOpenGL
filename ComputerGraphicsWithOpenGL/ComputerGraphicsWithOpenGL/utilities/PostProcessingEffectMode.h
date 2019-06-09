@@ -15,6 +15,7 @@
 // shader types
 enum class PostProcessingEffectMode {
     PBR,
+    IBL,
     BlinnPhong,
     ColorInversion,
     GrayScale,

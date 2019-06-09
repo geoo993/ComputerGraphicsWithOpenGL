@@ -44,9 +44,8 @@ void Game::RenderLabels(CFreeTypeFont *font, CShaderProgram *fontProgram, const 
             fontProgram->SetUniform("bUseScreenQuad", false);
             fontProgram->SetUniform("bUseTexture", true);
             font->Render(fontProgram, 20, 20, 20, "FPS: %d", framesPerSecond);
-            font->Render(fontProgram, (width / 2) - 100, height - 20, 20, "PPFX: %s", PostProcessingEffectToString(m_currentPPFXMode));
+            font->Render(fontProgram, (width / 2) - 100, height - 20, 20, "%s", PostProcessingEffectToString(m_currentPPFXMode));
         }
-        
     }
     
 }

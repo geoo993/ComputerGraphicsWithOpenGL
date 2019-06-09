@@ -40,7 +40,6 @@ in VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
-    vec3 vWorldTangent;
     vec4 vEyePosition;
     mat4 vInverseViewMatrix;
 } fs_in;
@@ -76,7 +75,6 @@ void main()
 
     
     vec3 normal = normalize(fs_in.vWorldNormal);
-    vec3 tangent = normalize(fs_in.vWorldTangent);
     vec3 worldPos = fs_in.vWorldPosition;
     vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     

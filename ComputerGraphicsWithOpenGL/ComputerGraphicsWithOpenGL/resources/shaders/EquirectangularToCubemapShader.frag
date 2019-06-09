@@ -28,10 +28,6 @@ in VS_OUT
 {
     vec2 vTexCoord;    // Texture coordinate
     vec3 vLocalPosition;
-    vec3 vLocalNormal;
-    vec3 vWorldPosition;
-    vec3 vWorldNormal;
-    vec4 vEyePosition;
 } fs_in;
 
 const vec2 invAtan = vec2(0.1591f, 0.3183f);
@@ -39,40 +35,17 @@ vec2 SampleSphericalMap(vec3 v)
 {
     vec2 uv = vec2(atan(v.z, v.x), asin(v.y));
     uv *= invAtan;
-    uv += 0.5;
+    uv += 0.5f;
     return uv;
 }
 
 layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
-layout (location = 1) out vec4 vBrightColor;
-layout (location = 2) out vec3 vPosition;
-layout (location = 3) out vec3 vNormal;
-layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
     
-    vec3 worldPos = fs_in.vLocalPosition;
-    vec2 uv = SampleSphericalMap(normalize(worldPos)); // make sure to normalize localPos
+    vec2 uv = SampleSphericalMap(normalize(fs_in.vLocalPosition)); // make sure to normalize localPos
     vec3 color = texture(material.emissionMap, uv).rgb;
     
-    //vOutputColour = texture(material.glossinessMap, fs_in.vTexCoord);//vec4(color, 1.0f);
     vOutputColour = vec4(color, 1.0f);
-    
-    // Retrieve bright parts
-    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
-    if(brightness > 1.0f) {
-        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
-    } else {
-        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    }
-
-    // store the fragment position vector in the first gbuffer texture
-    vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
-    // also store the per-fragment normals into the gbuffer
-    vNormal = normalize(fs_in.vWorldNormal);
-    // and the diffuse per-fragment color
-    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, fs_in.vTexCoord).rgb;
-    // store specular intensity in gAlbedoSpec's alpha component
-    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, fs_in.vTexCoord).r;
 }

@@ -20,8 +20,7 @@ CCube::~CCube()
     Release();
 }
 
-void CCube::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames)
-{
+void CCube::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames) {
     m_directory = directory;
     m_textureNames = textureNames;
     m_textures.reserve(textureNames.size());
@@ -347,6 +346,9 @@ void CCube::Render(const GLboolean &useTexture)
         }
     }
     glDrawArrays( GL_TRIANGLES, 0, m_numTriangles ); // draw the vertixes
+    
+    glBindVertexArray(0);
+    
 }
 
 // Release memory on the GPU 

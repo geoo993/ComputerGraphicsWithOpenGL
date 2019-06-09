@@ -30,10 +30,9 @@ public:
     std::vector<std::string> GetSkyboxes() const;
     
 private:
-    GLboolean m_useEnvCubemap;
     GLuint m_vao;
     CVertexBufferObject m_vbo;
-    CCubemap m_cubemapTexture;
+    CCubemap *m_cubemapTexture;
+    GLboolean m_useHDRTexture;
     std::vector<std::string> m_skyboxes;
-    GLuint m_envFramebuffer, m_envCubemap, m_envRenderbuffer;
 };

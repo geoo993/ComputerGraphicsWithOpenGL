@@ -81,6 +81,7 @@
 #define FOV 90.0
 #define ZNEAR 0.1
 #define ZFAR 4000.0
+#define SKYBOXIMAGE 1000
 //#define CUBEMAPTEXTUREUNIT 10 //cube map texture of the skyBox is at 10 texture unit
 
 // Default camera values

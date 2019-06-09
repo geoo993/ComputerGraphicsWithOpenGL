@@ -9,11 +9,9 @@
 
 CSkybox::CSkybox()
 {
+    m_useHDRTexture = false;
+    m_cubemapTexture = new CCubemap();
     m_vao = 0;
-    m_envFramebuffer = 0;
-    m_envCubemap = 0;
-    m_envRenderbuffer = 0;
-    m_useEnvCubemap = false;
     m_skyboxes = {};
 }
 
@@ -25,8 +23,8 @@ CSkybox::~CSkybox()
 // Create a skybox
 void CSkybox::Create(const GLfloat &size, const std::string &path, const TextureType &type, const GLboolean &useEnvCubemap, CShaderProgram *equirectangularProgram, const TextureType &equirectangularTexturetype, const GLuint &skyboxNumber)
 {
-    m_useEnvCubemap = useEnvCubemap;
-    if (useEnvCubemap == false) {
+    m_useHDRTexture = useEnvCubemap;
+    if (m_useHDRTexture == false) {
     /*
          A skybox is a (large) cube that encompasses the entire scene and contains 6 images of a surrounding environment, giving the player the illusion that the environment he's in is actually much larger than it actually is. Some examples of skyboxes used in videogames are images of mountains, of clouds or of a starry night sky. 
      
@@ -75,7 +73,7 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
         
         unsigned int ind = skyboxNumber % m_skyboxes.size();
         
-        m_cubemapTexture.LoadCubemap({
+        m_cubemapTexture->LoadCubemap({
                                     path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_rt.jpg", //right
                                     path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_lf.jpg", //left
                                     path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_up.jpg", //up
@@ -83,135 +81,13 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
                                     path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_bk.jpg", //back
                                     path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_ft.jpg",  //front
                                     }, type);
-    
-    
-    
     } else {
     
-        /*
-         To convert an equirectangular image into a cubemap we need to render a (unit) cube and project the equirectangular map on all of the cube's faces from the inside and take 6 images of each of the cube's sides as a cubemap face. The vertex shader of this cube simply renders the cube as is and passes its local position to the fragment shader as a 3D sample vector:
-         
-         */
+        int width = SKYBOXIMAGE;
+        int height = SKYBOXIMAGE;
         
-        
-        int width = (int)size;
-        int height = (int)size;
-        
-        /// Create a framebuffer object and bind it with
-        glGenFramebuffers(1, &m_envFramebuffer);
-        
-        // To bind the framebuffer we use glBindFramebuffer:
-        glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
-        
-        // pbr: setup cubemap to render to and attach to framebuffer
-        // ---------------------------------------------------------
-        //unsigned int envCubemap;
-        glGenTextures(1, &m_envCubemap);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, m_envCubemap);
-        for (unsigned int i = 0; i < 6; ++i)
-        {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, nullptr);
-        }
-        
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        
-        glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-        
-        
-        /*
-         setting up 6 different view matrices facing each side of the cube, given a projection matrix with a fov of 90 degrees to capture the entire face, and render a cube 6 times storing the results in a floating point framebuffer:
-         */
-        // pbr: set up projection and view matrices for capturing data onto the 6 cubemap face directions
-        // ----------------------------------------------------------------------------------------------
-        glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
-        glm::mat4 captureViews[] =
-        {
-            glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
-            glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
-            glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
-            glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
-            glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
-            glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
-        };
-        
-        
-        
-        // Creating a renderbuffer object looks similar to the framebuffer's code:
-        glGenRenderbuffers(1, &m_envRenderbuffer);
-        
-        // And similarly we want to bind the renderbuffer object so all subsequent renderbuffer operations affect the current rbo:
-        glBindRenderbuffer(GL_RENDERBUFFER, m_envRenderbuffer);
-        
-        // Creating a depth and stencil renderbuffer object is done by calling the glRenderbufferStorage function:
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
-        
-        // Once we've allocated enough memory for the renderbuffer object we can unbind the renderbuffer.
-        glBindRenderbuffer(GL_RENDERBUFFER, 0);
-        
-        // Last thing left to do is actually attach the renderbuffer object:
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_envRenderbuffer);
-        
-        //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        
-        
-        glViewport(0, 0, width, height);
-        glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
-        
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearDepth(1.0f);
-        
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL); // set depth function to less than AND equal for skybox depth trick.
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
-        
-        for (unsigned int i = 0; i < 6; ++i)
-        {
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_envCubemap, 0);
-            
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glClearDepth(1.0f);
-            
-            glm::mat4 projection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
-            glm::mat4 view = captureViews[i];
-            
-            equirectangularProgram->UseProgram();
-            int iTextureUnit = static_cast<int>(equirectangularTexturetype); // cubemap
-            equirectangularProgram->SetUniform("material.emissionMap", iTextureUnit);
-            equirectangularProgram->SetUniform("matrices.projMatrix", projection);
-            equirectangularProgram->SetUniform("matrices.viewMatrix", view);
-            
-            CEquirectangularCube * m_pEquirectangularCube = new CEquirectangularCube(1.0f);
-            m_pEquirectangularCube->Create(path+"/skyboxes/deserthighway/", {
-                { "Road_to_MonumentValley_Ref.hdr", equirectangularTexturetype }
-            } );
-            m_pEquirectangularCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
-            m_pEquirectangularCube->Render();
-            
-        }
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glDepthFunc(GL_LESS);
-        glCullFace(GL_BACK);
-        glDisable(GL_DEPTH_TEST);
-    
-        /*
-         
-         We take the color attachment of the framebuffer and switch its texture target around for every face of the cubemap, directly rendering the scene into one of the cubemap's faces. Once this routine has finished (which we only have to do once) the cubemap envCubemap should be the cubemapped environment version of our original HDR image.
-         
-         We sample the environment map using its interpolated vertex cube positions that directly correspond to the correct direction vector to sample. Seeing as the camera's translation components are ignored, rendering this shader over a cube should give you the environment map as a non-moving background. Also, note that as we directly output the environment map's HDR values to the default LDR framebuffer we want to properly tone map the color values. Furthermore, almost all HDR maps are in linear color space by default so we need to apply gamma correction before writing to the default framebuffer.
-         
-         
-         Well... it took us quite a bit of setup to get here, but we successfully managed to read an HDR environment map, convert it from its equirectangular mapping to a cubemap and render the HDR cubemap into the scene as a skybox. Furthermore, we set up a small system to render onto all 6 faces of a cubemap which we'll need again when convoluting the environment map.
-         */
-    
+        m_cubemapTexture->LoadHRDCubemap(width, height, type, equirectangularProgram, path+"/skyboxes/deserthighway/", "Road_to_MonumentValley_Ref.hdr", equirectangularTexturetype);
     }
-    
-    
     
     CreateAttributes(size);
 }
@@ -296,14 +172,8 @@ void CSkybox::Render(const GLboolean &useTexture) {
     glDepthMask(GL_FALSE);
     glBindVertexArray(m_vao);
     
-    if (m_useEnvCubemap) {
-        glActiveTexture(GL_TEXTURE0+static_cast<GLint>(TextureType::CUBEMAP));
-        glBindTexture(GL_TEXTURE_CUBE_MAP, m_envCubemap);
-        //glBindSampler(textureUnit, m_uiSampler);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else {
-        m_cubemapTexture.Bind(static_cast<GLint>(m_cubemapTexture.GetType()));
-    }
+    GLint iTextureUnit = static_cast<GLint>(m_cubemapTexture->GetType());
+    m_cubemapTexture->BindCubemapTexture(iTextureUnit);
     
     for (int i = 0; i < 6; i++) {
         glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);
@@ -314,29 +184,27 @@ void CSkybox::Render(const GLboolean &useTexture) {
 }
 
 void CSkybox::BindSkyboxTo(const GLint &textureUnit){
-    m_cubemapTexture.Bind(textureUnit);	
+    m_cubemapTexture->BindCubemapTexture(textureUnit);
 }
 
 GLuint CSkybox::GetNumberOfSkyboxes() const{
     return m_skyboxes.size();
-}
-GLboolean CSkybox::IsEnvCubemap() const {
-    return m_useEnvCubemap;
 }
 
 std::vector<std::string> CSkybox::GetSkyboxes() const {
     return m_skyboxes;
 }
 
+GLboolean CSkybox::IsEnvCubemap() const {
+    return m_useHDRTexture;
+}
+
 // Release the storage assocaited with the skybox
 void CSkybox::Release()
 {
-	m_cubemapTexture.Release();
-   
-    glDeleteTextures(1, &m_envFramebuffer);
-    glDeleteTextures(1, &m_envCubemap);
-    glDeleteTextures(1, &m_envRenderbuffer);
+    glDeleteVertexArrays(1, &m_vao);
+    m_vbo.Release();
     
-	glDeleteVertexArrays(1, &m_vao);
-	m_vbo.Release();
+    m_cubemapTexture->Release();
+    delete m_cubemapTexture;
 }

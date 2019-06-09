@@ -26,10 +26,15 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
 void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
 
     // start by deleting current skybox and create new one
-//    if (m_changeSkybox) {
-//        m_pSkybox->Release();
-//        m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, m_skyboxNumber);
-//    }
+    if (m_changeSkybox) {
+        m_pSkybox->Release();
+        
+        m_pSkybox = new CSkybox;
+        
+        CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
+        SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
+        m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, m_currentPPFXMode == PostProcessingEffectMode::IBL, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+    }
     
     // draw skybox as last
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content

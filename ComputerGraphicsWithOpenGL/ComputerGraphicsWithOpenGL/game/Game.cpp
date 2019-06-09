@@ -145,7 +145,7 @@ Game::Game()
     
     // skybox
     m_pSkybox = nullptr;
-    m_mapSize = 512;//3000.0f;
+    m_mapSize = (GLfloat)ZFAR;
     m_skyboxNumber = 0;
     m_changeSkybox = false;
     
@@ -273,7 +273,7 @@ void Game::PreRendering() {
     UpdateControls();
     
     // update audio
-    UpdateAudio();
+    //UpdateAudio();
 }
 
 // Render scene method runs
@@ -321,8 +321,8 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     InitialiseResources();
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
     InitialiseFrameBuffers(width, height);
-    InitialiseCamera(width, height, glm::vec3(0.0f, 0.0f, 0.0f));
-    InitialiseAudio(filepath);
+    InitialiseCamera(width, height, glm::vec3(0.0f, 500.0f, -100.0f));
+    //InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
     LoadResources(filepath);

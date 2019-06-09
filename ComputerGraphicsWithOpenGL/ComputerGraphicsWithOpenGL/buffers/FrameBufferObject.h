@@ -12,12 +12,6 @@ public:
 	// Create a framebuffer object with a texture of a given size
 	bool CreateFramebuffer(const int &a_iWidth, const int &a_iHeight, const FrameBufferType &fboType = FrameBufferType::Default);
 
-    // Attach frame buffer texture2D to index
-    void AttachEnvironmentCubemapAt(const GLuint &index);
-    
-    // Binding the framebuffer of environment cubemap
-    void BindEnvironmentCubemap(GLuint iTextureUnit);
-    
 	// Bind the FBO for rendering to texture
 	void Bind(bool bSetFullViewport = true);
     
@@ -81,7 +75,6 @@ private:
     GLuint m_uiRboDepth;
     GLuint m_uiRboDepthStencil;
 	GLuint m_uiSampler;
-    GLuint m_uiEnvCubemapID;
 
     GLuint m_uiHdrColorTextures[2];
     GLuint m_uiPingpongFramebuffers[2];

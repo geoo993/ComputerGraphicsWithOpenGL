@@ -135,7 +135,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
     RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_woodenBoxesUseTexture);
     
-    
+    /*
     /// Equirectangular Cube Mapping
     glDepthFunc(GL_LEQUAL); // set depth function to less than AND equal for skybox depth trick.
     glEnable(GL_CULL_FACE);
@@ -145,11 +145,12 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     RenderEquirectangularCube(pEquirectangularCubeProgram, glm::vec3(0.0f, 0.0f, 0.0f), 1.0f, true);
     glDepthFunc(GL_LESS);
     glCullFace(GL_BACK);
+    */
     
     /// Render skybox
-    //CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
-    //SetMaterialUniform(pSkyBoxProgram, "material");
-    //RenderSkyBox(pSkyBoxProgram, false);
+    CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
+    SetMaterialUniform(pSkyBoxProgram, "material");
+    RenderSkyBox(pSkyBoxProgram, false);
     
     
     /*

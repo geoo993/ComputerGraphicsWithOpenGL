@@ -150,7 +150,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     /// Render skybox
     CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
     SetMaterialUniform(pSkyBoxProgram, "material");
-    RenderSkyBox(pSkyBoxProgram, false);
+    RenderSkyBox(pSkyBoxProgram);
     
     
     /*

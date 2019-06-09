@@ -93,7 +93,7 @@ void CCamera::UpdateCameraVectors( )
     this->m_back = glm::normalize(m_front) * -1.0f;
     
     // Also re-calculate the Right and Up vector
-    this->m_right = glm::normalize( glm::cross( this->m_front, this->m_up ) );  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+    this->m_right = glm::normalize( glm::cross( this->m_front, this->m_worldUp ) );  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     this->m_left = glm::normalize(m_right) * -1.0f;
     
     // Up vector : perpendicular to both direction and right

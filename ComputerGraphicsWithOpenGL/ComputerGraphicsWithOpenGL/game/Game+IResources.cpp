@@ -43,6 +43,15 @@ void Game::InitialiseResources()
     m_pMetaballs = new CMetaballs;
 }
 
+//void Game::Setup(const std::string &path) {
+//
+//    CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
+//    //std::string hrdPath = path+"/skyboxes/deserthighway/Road_to_MonumentValley_Ref.hdr"; // EquiRectangular Map
+//    SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
+//    //m_pSkybox->Create(m_mapSize, hrdPath, TextureType::CUBEMAP, pEquirectangularCubeProgram, m_skyboxNumber);
+//    m_pSkybox->LoadHRDFramebufferTexture(m_mapSize, path, TextureType::CUBEMAP, pEquirectangularCubeProgram);
+//}
+
 void Game::LoadResources(const std::string &path)
 {
     
@@ -54,12 +63,9 @@ void Game::LoadResources(const std::string &path)
     
     // Create the skybox
     // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
-    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, m_skyboxNumber);
-    
-    //CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
-    //std::string hrdPath = path+"/skyboxes/deserthighway/Road_to_MonumentValley_Ref.hdr"; // EquiRectangular Map
-    //SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
-    //m_pSkybox->Create(m_mapSize, hrdPath, TextureType::CUBEMAP, pEquirectangularCubeProgram, m_skyboxNumber);
+    CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
+    SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
+    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, true, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
     
     // Create the planar terrain
     m_pPlanarTerrain->Create(path+"/textures/pbr/metalpainted/", { // http://www.crazyrobinhood.org/textures/

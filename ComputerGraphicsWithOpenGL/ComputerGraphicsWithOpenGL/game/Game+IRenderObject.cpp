@@ -38,11 +38,7 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram, const GLboolean &useEnvC
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
     
-    if (useEnvCubemap) {
-        m_pSkybox->RenderHDR();
-    } else {
-        m_pSkybox->Render();
-    }
+    m_pSkybox->Render(useEnvCubemap);
     glDepthFunc(GL_LESS); // // set depth function back to default
     
 }

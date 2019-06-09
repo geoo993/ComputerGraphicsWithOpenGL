@@ -85,7 +85,7 @@
 
 // Default camera values
 #define SPEED 50.0f
-#define SPEEDRATIO 0.00025f
+#define SPEEDRATIO 0.025f
 #define SENSITIVTY 0.05f
 #define ZOOM 45.0f
 

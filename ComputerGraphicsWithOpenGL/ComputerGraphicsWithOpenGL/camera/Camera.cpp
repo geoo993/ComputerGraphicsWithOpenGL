@@ -46,7 +46,6 @@ void CCamera::Create(
     
     this->m_position = position;
     this->m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
-    this->m_view = front;
     this->m_front = front;
     this->m_up = up;
     this->m_worldUp = worldUp;
@@ -94,14 +93,14 @@ void CCamera::UpdateCameraVectors( )
     this->m_back = glm::normalize(m_front) * -1.0f;
     
     // Also re-calculate the Right and Up vector
-    this->m_right = glm::normalize( glm::cross( this->m_front, this->m_worldUp ) );  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+    this->m_right = glm::normalize( glm::cross( this->m_front, this->m_up ) );  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     this->m_left = glm::normalize(m_right) * -1.0f;
     
     // Up vector : perpendicular to both direction and right
     this->m_up = glm::normalize( glm::cross( this->m_right, this->m_front ) );
     this->m_down = glm::normalize(m_up) * -1.0f;
     
-    //this->m_view = m_position + m_front;
+    this->m_view = m_position + m_front;
     
     this->m_viewMatrix = glm::lookAt(
          m_position, // what position you want the camera to be at when looking at something in World Space
@@ -237,7 +236,6 @@ void CCamera::SetViewByMouse(const MouseState &state)
         front.y = sin(glm::radians(m_pitch));
         front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
         m_front = glm::normalize(front);
-        
         UpdateCameraVectors();
     }
 }
@@ -246,9 +244,7 @@ void CCamera::SetViewByMouse(const MouseState &state)
 // Update the camera to respond to key presses for translation
 void CCamera::TranslateByKeyboard(const double &dt, const KeyboardState &keyboardState)
 {
-    
-    if (keyboardState.m_arrowKeyDown != ControlType::UNKNOWN){
-        
+    if (keyboardState.m_arrowKeyDown != ControlType::UNKNOWN){        
         //if (keyPressed == GLFW_KEY_UP)// || keyPressed == GLFW_KEY_W )  // FORWARD
         if (keyboardState.m_arrowKeyDown == ControlType::KEYFORWARD)
         {

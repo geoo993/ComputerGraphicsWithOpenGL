@@ -334,8 +334,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     m_gameManager->SetActive(true); // game is now going to be active, or activate application
     
     // Set frame viewport at the beginning
-    //m_gameWindow->SetViewport();
-    m_gameWindow->SetViewport(512, 512);
+    m_gameWindow->SetViewport();
     
     while ( !m_gameWindow->ShouldClose() ){
         

@@ -33,6 +33,7 @@ void Game::InitialiseResources()
     m_pSphere = new CSphere;
     m_pFireBallSphere = new CSphere;
     m_pCube = new CCube(1.0f);
+    m_pEquirectangularCube = new CEquirectangularCube(1.0f);
     m_pInteriorBox = new CCube(10.0f);
     m_pParallaxCube = new CCube(1.0f);
     m_pChromaticAberrationCube = new CCube(1.0f);
@@ -40,7 +41,6 @@ void Game::InitialiseResources()
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
     m_pMetaballs = new CMetaballs;
-    m_pEquirectangularCube = new CEquirectangularCube(1.0f);
 }
 
 void Game::LoadResources(const std::string &path)
@@ -55,6 +55,11 @@ void Game::LoadResources(const std::string &path)
     // Create the skybox
     // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
     m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, m_skyboxNumber);
+    
+    //CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
+    //std::string hrdPath = path+"/skyboxes/deserthighway/Road_to_MonumentValley_Ref.hdr"; // EquiRectangular Map
+    //SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
+    //m_pSkybox->Create(m_mapSize, hrdPath, TextureType::CUBEMAP, pEquirectangularCubeProgram, m_skyboxNumber);
     
     // Create the planar terrain
     m_pPlanarTerrain->Create(path+"/textures/pbr/metalpainted/", { // http://www.crazyrobinhood.org/textures/
@@ -100,11 +105,13 @@ void Game::LoadResources(const std::string &path)
     /// https://www.cgtrader.com/free-3d-models/military/gun/mipim-d180606
     //m_pFlashlight
     
-    
     m_pCube->Create(path+"/textures/pixarLibrary/brick/", {
         { "Standard_red_pxr128.tif", TextureType::DIFFUSE},
         { "Standard_red_pxr128_normal.tif", TextureType::NORMAL},
         { "Standard_red_pxr128_bmp.tif", TextureType::SPECULAR}
+    } );
+    m_pEquirectangularCube->Create(path+"/skyboxes/deserthighway/", {
+        { "Road_to_MonumentValley_Ref.hdr", TextureType::EMISSION}
     } );
     m_pInteriorBox->Create(path+"/textures/pbr/harshbricks/", {
         { "harshbricks-albedo.png", TextureType::ALBEDO},              // albedo map
@@ -128,10 +135,6 @@ void Game::LoadResources(const std::string &path)
         { "moon_surface.jpg", TextureType::GLOSSINESS}
     } );
    
-    m_pEquirectangularCube->Create(path+"/skyboxes/deserthighway/", {
-        { "Road_to_MonumentValley_Ref.hdr", TextureType::EMISSION},
-    } );
-    
     m_pWoodenBox->Create(path+"/textures/woodenBox/",
                          {
                              { "woodenBoxDiffuse.png", TextureType::DIFFUSE},       // diffuseMap 1

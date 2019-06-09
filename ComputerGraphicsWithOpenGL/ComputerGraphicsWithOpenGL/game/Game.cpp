@@ -145,7 +145,7 @@ Game::Game()
     
     // skybox
     m_pSkybox = nullptr;
-    m_mapSize = 3000.0f;
+    m_mapSize = 512;//3000.0f;
     m_skyboxNumber = 0;
     m_changeSkybox = false;
     
@@ -170,6 +170,7 @@ Game::Game()
     
     //cube object
     m_pCube = nullptr;
+    m_pEquirectangularCube = nullptr;
     m_pInteriorBox = nullptr;
     m_pParallaxCube = nullptr;
     m_pChromaticAberrationCube = nullptr;
@@ -209,9 +210,6 @@ Game::Game()
     // inputs
     m_mouseButtonDown = false;
     m_mouseX, m_mouseY = 0.0;
-    
-    // Equirectangular To Cubemap Cube
-    m_pEquirectangularCube = nullptr;
 }
 
 // Destructor
@@ -233,6 +231,7 @@ Game::~Game()
     delete m_pFlashlight;
     delete m_pSphere;
     delete m_pCube;
+    delete m_pEquirectangularCube;
     delete m_pInteriorBox;
     delete m_pParallaxCube;
     delete m_pChromaticAberrationCube;
@@ -242,7 +241,6 @@ Game::~Game()
     delete m_pMetaballs;
     delete m_pQuad;
     delete m_pFireBallSphere;
-    delete m_pEquirectangularCube;
     
     for (GLuint i = 0; i < m_pFBOs.size(); i++) {
         // delete current buffers
@@ -281,23 +279,23 @@ void Game::PreRendering() {
 // Render scene method runs
 void Game::Render()
 {
-    ActivateFBO( m_currentPPFXMode );
+    //ActivateFBO( m_currentPPFXMode );
     
     // Clear buffers before rendering
     m_gameWindow->ClearBuffers();
     
     RenderScene();
     
-    ResetFrameBuffer();
+    //ResetFrameBuffer();
     
     // Post Processing Effects
-    RenderPPFX( m_currentPPFXMode );
+    //RenderPPFX( m_currentPPFXMode );
     
     // Draw the 2D graphics after the 3D graphics
-    RenderHUD();
+    //RenderHUD();
     
     // Draw controls GUI objects
-    RenderControls();
+    //RenderControls();
     
 }
 
@@ -322,8 +320,8 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
 
     InitialiseResources();
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
-    InitialiseFrameBuffers(width, height);
-    InitialiseCamera(width, height, glm::vec3(220.0f, 500.0f, -400.0f));
+    //InitialiseFrameBuffers(width, height);
+    InitialiseCamera(width, height, glm::vec3(0.0f, 0.0f, 0.0f));
     InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
@@ -335,8 +333,11 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     m_gameWindow->PreRendering();
     m_gameManager->SetActive(true); // game is now going to be active, or activate application
     
+    // Set frame viewport at the beginning
+    //m_gameWindow->SetViewport();
+    m_gameWindow->SetViewport(512, 512);
+    
     while ( !m_gameWindow->ShouldClose() ){
-        
         
         if (m_gameManager->IsActive()) {
             GameLoop();

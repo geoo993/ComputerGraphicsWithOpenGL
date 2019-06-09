@@ -74,8 +74,6 @@ void Game::ActivateFBO(const PostProcessingEffectMode &mode) {
             currentFBO = m_pFBOs[3];
             currentFBO->Bind(true);     // prepare frame buffer 3
             break;
-        case FrameBufferType::SSAO:
-            break;
         default: break;
     }
 
@@ -86,13 +84,18 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
     
     switch(mode) {
         case PostProcessingEffectMode::PBR: {
+          
+            CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+            RenderToScreen(pImageProcessingProgram);
             
+            return;
+        }
+        case PostProcessingEffectMode::IBL: {
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
             return;
         }
         case PostProcessingEffectMode::BlinnPhong: {
-            
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
             return;
@@ -704,7 +707,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
 /// render to screen with frame buffer
 void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType,
                           const GLuint &bufferIndex, const TextureType &textureType) {
-    
     switch(fboType) {
         case FrameBufferType::Default:
             currentFBO->BindTexture(static_cast<GLint>(textureType)); // ambient
@@ -718,11 +720,10 @@ void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType 
         case FrameBufferType::GeometryBuffer:
             currentFBO->BindHDRTexture(bufferIndex, static_cast<GLint>(textureType));
             break;
-        case FrameBufferType::SSAO:
-            currentFBO->BindTexture(static_cast<GLint>(textureType));
-            break;
         default: break;
     }
+                              
+    //m_textures[8]->BindHDRTexture2DToTextureType();
     SetMaterialUniform(pShaderProgram, "material", m_woodenBoxesColor, m_materialShininess);
     SetImageProcessingUniform(pShaderProgram, true);
     m_pQuad->Render(false);
@@ -752,6 +753,9 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
     switch(mode) {
         case PostProcessingEffectMode::PBR:
             RenderPPFXScene(PostProcessingEffectMode::PBR);
+            break;
+        case PostProcessingEffectMode::IBL:
+            RenderPPFXScene(PostProcessingEffectMode::IBL);
             break;
         case PostProcessingEffectMode::BlinnPhong:
             RenderPPFXScene(PostProcessingEffectMode::BlinnPhong);
@@ -930,8 +934,10 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
     switch(mode) {
         case PostProcessingEffectMode::PBR:
         return "Physically Based Rendering";
+        case PostProcessingEffectMode::IBL:
+        return "Image Based Lighting";
         case PostProcessingEffectMode::BlinnPhong:
-            return "Blinn-Phong Lighting";
+        return "Blinn-Phong Lighting";
         case PostProcessingEffectMode::ColorInversion:
         return "Color Inversion";
         case PostProcessingEffectMode::GrayScale:

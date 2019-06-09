@@ -75,6 +75,7 @@ struct ITextures {
     std::vector<CTexture*> m_textures;
     virtual void LoadTextures(const std::string &path) = 0;
     virtual CTexture *AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection) = 0;
+    virtual CTexture *AddHDRTexture(const std::string &textureFile, const TextureType &type) = 0;
     virtual CTexture *AddTexture(const GLfloat &width, const GLfloat &height, const TextureType &type, const GLvoid * data) = 0;
 };
 
@@ -220,7 +221,7 @@ struct IRenderObject
 {
     virtual void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture, const GLboolean &bindTexture) = 0;
-    virtual void RenderSkyBox(CShaderProgram *pShaderProgram) = 0;
+    virtual void RenderSkyBox(CShaderProgram *pShaderProgram, const GLboolean &useEnvCubemap) = 0;
     virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) = 0;
     virtual void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                 const GLfloat & scale, const GLboolean &useTexture) = 0;
@@ -228,14 +229,14 @@ struct IRenderObject
                                const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture) = 0;
+    virtual void RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                                           const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
                                    const float & scale, const bool &useTexture, const bool &bindTexture) = 0;
     virtual void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                     const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                                const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                           const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
                                  const GLfloat & angle, const GLboolean &useTexture) = 0;
     virtual void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,

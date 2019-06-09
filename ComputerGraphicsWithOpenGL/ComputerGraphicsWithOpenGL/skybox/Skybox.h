@@ -1,8 +1,11 @@
 #pragma once
 
+#include "Texture.h"
 #include "Cubemap.h"
+#include "ShaderProgram.h"
 #include "vertexBufferObject.h"
 #include "GameObject.h"
+#include "FrameBufferObject.h"
 
 class CCubemap;
 
@@ -12,6 +15,8 @@ class CSkybox: public GameObject
 public:
 	CSkybox();
 	~CSkybox();
+    void Create(const GLfloat &size, const std::string &hrdPath, const TextureType &type,
+                CShaderProgram *equirectangularProgram, const GLuint &skyboxNumber);
 	void Create(const GLfloat &size, const std::string &path, const TextureType &type, const GLuint &skyboxNumber);
     void BindSkyboxTo(const GLint &textureUnit);
 
@@ -20,10 +25,14 @@ public:
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     void Release();
     void Render(const GLboolean &useTexture = true);
+    void RenderHDR();
     GLuint GetNumberOfSkyboxes() const;
     std::vector<std::string> GetSkyboxes() const;
 private:
-	GLuint m_vao;
+    void RenderCube();
+private:
+	GLuint m_vao, cubeVAO, cubeVBO, m_envCubemap;
+    CFrameBufferObject *m_fbo;
 	CVertexBufferObject m_vbo;
 	CCubemap m_cubemapTexture;
     std::vector<std::string> m_skyboxes;

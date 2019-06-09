@@ -39,7 +39,6 @@ in VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
-    vec3 vWorldTangent;
     vec4 vEyePosition;
 } fs_in;
 

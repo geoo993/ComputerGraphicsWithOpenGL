@@ -22,11 +22,6 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     // Most of the cases you'll just be writing 0x00 or 0xFF as the stencil mask, but it's good to know there are options to set custom bit-masks.
     glStencilMask(0x00);
     
-    /// Render skybox
-    CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
-    SetMaterialUniform(pSkyBoxProgram, "material");
-    RenderSkyBox(pSkyBoxProgram);
-    
     /// Render Lamps
     CShaderProgram *pLampProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 4];
     for (unsigned int i = 0; i < m_pointLightPositions.size(); i++) {
@@ -40,7 +35,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     ///  Physically Based Rendering
     CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
     
-    GLboolean isPBR = m_currentPPFXMode == PostProcessingEffectMode::PBR;
+    GLboolean isPBR = m_currentPPFXMode == PostProcessingEffectMode::PBR || m_currentPPFXMode == PostProcessingEffectMode::IBL;
     CShaderProgram *mainProgram = isPBR ? pPBRProgram : pLightProgram;
     SetCameraUniform(mainProgram, "camera", m_pCamera);
     SetLightUniform(mainProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
@@ -58,7 +53,6 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     GLuint numRows = 5;
     GLuint numCol = 5;
     if (isPBR) {
-        
         glm::vec3 albedo = glm::vec3(m_albedo, 0.0f, 0.0f);
         for (GLuint row = 0; row < numRows; row++) {
             GLfloat metallic = (GLfloat)row / (GLfloat)numRows;
@@ -143,9 +137,20 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     
     
     /// Equirectangular Cube Mapping
+    glDepthFunc(GL_LEQUAL); // set depth function to less than AND equal for skybox depth trick.
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 77];
     SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
-    RenderEquirectangularCube(pEquirectangularCubeProgram, glm::vec3(0.0f, 0.0f, 0.0f), 100.0f, true);
+    RenderEquirectangularCube(pEquirectangularCubeProgram, glm::vec3(0.0f, 0.0f, 0.0f), 1.0f, true);
+    glDepthFunc(GL_LESS);
+    glCullFace(GL_BACK);
+    
+    /// Render skybox
+    //CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
+    //SetMaterialUniform(pSkyBoxProgram, "material");
+    //RenderSkyBox(pSkyBoxProgram, false);
+    
     
     /*
     /// Explosion Program

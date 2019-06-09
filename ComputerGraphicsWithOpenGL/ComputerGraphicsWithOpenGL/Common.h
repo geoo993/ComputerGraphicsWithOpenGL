@@ -78,14 +78,14 @@
 #define FPS 60
 
 // Settings
-#define FOV 45.0
+#define FOV 90.0
 #define ZNEAR 0.1
 #define ZFAR 4000.0
 //#define CUBEMAPTEXTUREUNIT 10 //cube map texture of the skyBox is at 10 texture unit
 
 // Default camera values
 #define SPEED 50.0f
-#define SPEEDRATIO 0.025f
+#define SPEEDRATIO 0.00025f
 #define SENSITIVTY 0.05f
 #define ZOOM 45.0f
 

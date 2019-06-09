@@ -35,6 +35,8 @@ CCamera::~CCamera()
  
 void CCamera::Create(
             const glm::vec3 &position,
+            const glm::vec3 &front,
+            const glm::vec3 &up,
             const glm::vec3 &worldUp,
             const GLfloat &fieldOfView,
             const GLfloat &width,
@@ -44,9 +46,10 @@ void CCamera::Create(
     
     this->m_position = position;
     this->m_velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+    this->m_view = front;
+    this->m_front = front;
+    this->m_up = up;
     this->m_worldUp = worldUp;
-    this->m_front = glm::vec3(0.0f, 0.0f, -1.0f);
-    this->m_up = glm::vec3(0.0f, 1.0f, 0.0f);
     this->m_fieldOfView = fieldOfView;
     this->m_zNear = zNear;
     this->m_zFar = zFar;
@@ -98,7 +101,7 @@ void CCamera::UpdateCameraVectors( )
     this->m_up = glm::normalize( glm::cross( this->m_right, this->m_front ) );
     this->m_down = glm::normalize(m_up) * -1.0f;
     
-    this->m_view = m_position + m_front;
+    //this->m_view = m_position + m_front;
     
     this->m_viewMatrix = glm::lookAt(
          m_position, // what position you want the camera to be at when looking at something in World Space

@@ -14,11 +14,13 @@ public:
                        const GLboolean &generateMipMaps = true, GLboolean gammaCorrection = false);
     GLuint LoadTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
                        const TextureType &type = TextureType::AMBIENT, const GLvoid * data = nullptr);
-    GLuint LoadHDREnvironmentTexture(char const * path, const TextureType &type = TextureType::AMBIENT,
-                                     const GLboolean &generateMipMaps = true);
+    GLuint LoadHDRTexture(char const * path, const TextureType &type = TextureType::AMBIENT,
+                          const GLboolean &generateMipMaps = true);
 
 	void BindTexture2D(GLint textureUnit = 0) const;
     void BindTexture2DToTextureType() const;
+    void BindHDRTexture2D(GLint textureUnit = 0) const;
+    void BindHDRTexture2DToTextureType() const;
     void BindTexture3D(GLint textureUnit = 0);
     void BindTextureCubeMap(GLint textureUnit = 0);
 
@@ -38,7 +40,7 @@ public:
 private:
     
 	GLint m_width, m_height, m_bpp; // Texture width, height, and bytes per pixel
-	GLuint m_textureID; // Texture id
+    GLuint m_textureID, m_hdrTextureID; // Texture id
 	GLuint m_samplerObjectID; // Sampler id
 	GLboolean m_mipMapsGenerated;
 

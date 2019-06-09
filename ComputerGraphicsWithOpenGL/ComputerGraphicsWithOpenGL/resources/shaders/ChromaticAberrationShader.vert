@@ -24,7 +24,6 @@ out VS_OUT
     vec3 vLocalNormal;
     vec3 vWorldPosition;
     vec3 vWorldNormal;
-    vec3 vWorldTangent;
     vec4 vEyePosition;
 } vs_out;
 
@@ -53,7 +52,6 @@ uniform bool bReverseNormals;
 void main() {
     
     vec4 position = vec4(inPosition, 1.0f);
-    vec3 tangent = bReverseNormals ? (-1.0f * inTangent) : inTangent;
     vec3 normal = bReverseNormals ? (-1.0f * inNormal) : inNormal;
     
     // Pass through the texture coordinate
@@ -64,7 +62,6 @@ void main() {
     //vs_out.vWorldNormal = matrices.normalMatrix * inNormal;
     mat3 ModelWorld3x3 = GetLinearPart( matrices.modelMatrix );
     vs_out.vWorldNormal  = ModelWorld3x3 * normal;
-    vs_out.vWorldTangent = matrices.normalMatrix * tangent;
     vs_out.vLocalNormal = normal;
     
     vs_out.vEyePosition = matrices.viewMatrix * matrices.modelMatrix * position;

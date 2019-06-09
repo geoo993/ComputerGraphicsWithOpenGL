@@ -12,12 +12,14 @@ void Game::InitialiseCamera(const GLuint &width, const GLuint &height, const glm
     
     // Set the orthographic and perspective projection matrices based on the image size
     m_pCamera->Create(position,                // position
+                      glm::vec3(-1.0f, 0.0f, 0.0f),      // front
+                      glm::vec3(0.0f, -1.0f, 0.0f),      // up
                       glm::vec3(0.0f, 1.0f, 0.0f),      // worldUp
                       (GLfloat)FOV,                     // fieldOfView
-                      (GLfloat)width,                   // width
-                      (GLfloat)height,                  // height
+                      1,//(GLfloat)width,                   // width
+                      1,//(GLfloat)height,                  // height
                       (GLfloat)ZNEAR,                   // zNear
-                      (GLfloat)ZFAR                     // zFar
+                      10//(GLfloat)ZFAR                     // zFar
                       );
 }
 

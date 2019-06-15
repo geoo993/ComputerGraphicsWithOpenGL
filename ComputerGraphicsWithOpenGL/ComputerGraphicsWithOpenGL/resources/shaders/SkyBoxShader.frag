@@ -35,15 +35,15 @@ layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl
 
 void main()
 {
-//    if (bUseEnvCubemap) {
-//        vec3 envColor = texture(material.cubeMap, fs_in.vLocalPosition).rgb;
-//
-//        envColor = envColor / (envColor + vec3(1.0f));
-//        envColor = pow(envColor, vec3(1.0f / 2.2f));
-//
-//        vOutputColour = vec4(envColor, 1.0f);
-//    } else {
+    if (bUseEnvCubemap) {
+        vec3 envColor = texture(material.cubeMap, fs_in.vLocalPosition).rgb;
+
+        envColor = envColor / (envColor + vec3(1.0f));
+        envColor = pow(envColor, vec3(1.0f / 2.2f));
+
+        vOutputColour = vec4(envColor, 1.0f);
+    } else {
         vOutputColour = texture(material.cubeMap, fs_in.vLocalPosition);
-//    }
+    }
     
 }

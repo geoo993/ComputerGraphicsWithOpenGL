@@ -31,60 +31,64 @@ void Game::RenderScene(const GLboolean &toLightSpace){
 
     /// Blinn Phong Lighting
     CShaderProgram *pLightProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 5];
+    SetCameraUniform(pLightProgram, "camera", m_pCamera);
+    SetLightUniform(pLightProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+    SetMaterialUniform(pLightProgram, "material", m_woodenBoxesColor, m_materialShininess, useAO);
     
-    ///  Physically Based Rendering
-    CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
-    
-    GLboolean isPBR = m_currentPPFXMode == PostProcessingEffectMode::PBR || m_currentPPFXMode == PostProcessingEffectMode::IBL;
-    CShaderProgram *mainProgram = isPBR ? pPBRProgram : pLightProgram;
-    SetCameraUniform(mainProgram, "camera", m_pCamera);
-    SetLightUniform(mainProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-    SetMaterialUniform(mainProgram, "material", m_woodenBoxesColor, m_materialShininess, useAO);
-    
-    /*
     // Render Wooden Boxes
     for ( GLuint i = 0; i < m_woodenBoxesPosition.size(); ++i){
         GLfloat angle = 20.0f * (GLfloat)i;
-        RenderWoodenBox(mainProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_woodenBoxesUseTexture);
+        RenderWoodenBox(pLightProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_woodenBoxesUseTexture);
     }
-    */
+    RenderLight(pLightProgram, m_pCamera);
     
+     
+    GLboolean isPBR = m_currentPPFXMode == PostProcessingEffectMode::PBR || m_currentPPFXMode == PostProcessingEffectMode::IBL;
     GLfloat gap = 100.0f;
     GLuint numRows = 5;
     GLuint numCol = 5;
     if (isPBR) {
+        ///  Physically Based Rendering
+        CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
+        SetCameraUniform(pPBRProgram, "camera", m_pCamera);
+        SetLightUniform(pPBRProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+        SetMaterialUniform(pPBRProgram, "material", m_woodenBoxesColor, m_materialShininess, useAO);
+        
         glm::vec3 albedo = glm::vec3(m_albedo, 0.0f, 0.0f);
         for (GLuint row = 0; row < numRows; row++) {
             GLfloat metallic = (GLfloat)row / (GLfloat)numRows;
             for (GLuint col = 0; col < numCol; col++) {
                 GLfloat roughness = glm::clamp((GLfloat)col / (GLfloat)numCol, 0.05f, 1.0f);
                 glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
-                SetPBRMaterialUniform(mainProgram, "material", albedo, metallic, roughness, m_fresnel, m_ao);
-                RenderSphere(mainProgram, position, 30.0f, m_woodenBoxesUseTexture);
+                SetPBRMaterialUniform(pPBRProgram, "material", albedo, metallic, roughness, m_fresnel, m_ao);
+                RenderSphere(pPBRProgram, position, 30.0f, m_woodenBoxesUseTexture);
             }
         }
         
-        SetPBRMaterialUniform(mainProgram, "material", albedo, m_metallic, m_roughness, m_fresnel, m_ao);
+        SetPBRMaterialUniform(pPBRProgram, "material", albedo, m_metallic, m_roughness, m_fresnel, m_ao);
+        
+        // Render Grenade
+        //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
+        
+        // Render Big cube underneath
+        //RenderInteriorBox(mainProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_woodenBoxesUseTexture, true);
+        
+        // RenderTerrain
+        //RenderTerrain(mainProgram, false, m_woodenBoxesUseTexture);
+        
+        // Render Lights
+        RenderLight(pPBRProgram, m_pCamera);
+        
     } else {
         for (GLuint row = 0; row < numRows; row++) {
             for (GLuint col = 0; col < numCol; col++) {
                 glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
-                RenderSphere(mainProgram, position, 30.0f, m_woodenBoxesUseTexture);
+                RenderSphere(pLightProgram, position, 30.0f, m_woodenBoxesUseTexture);
             }
         }
     }
     
-    //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
     
-    
-    // Render Big cube underneath
-    //RenderInteriorBox(mainProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_woodenBoxesUseTexture, true);
-    
-    // RenderTerrain
-    //RenderTerrain(mainProgram, false, m_woodenBoxesUseTexture);
-    
-    // Render Lights
-    RenderLight(mainProgram, m_pCamera);
 
     /*
     /// Normal Mapping
@@ -134,23 +138,16 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetCameraUniform(pChromaticAberrationProgram, "camera", m_pCamera);
     SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
     RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_woodenBoxesUseTexture);
-    
-    /*
-    /// Equirectangular Cube Mapping
-    glDepthFunc(GL_LEQUAL); // set depth function to less than AND equal for skybox depth trick.
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 77];
-    SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
-    RenderEquirectangularCube(pEquirectangularCubeProgram, glm::vec3(0.0f, 0.0f, 0.0f), 1.0f, true);
-    glDepthFunc(GL_LESS);
-    glCullFace(GL_BACK);
-    */
-    
+
     /// Render skybox
     CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
     SetMaterialUniform(pSkyBoxProgram, "material");
-    RenderSkyBox(pSkyBoxProgram);
+    
+    if (m_currentPPFXMode == PostProcessingEffectMode::IBL) {
+        RenderEnvSkyBox(pSkyBoxProgram);
+    } else {
+        RenderSkyBox(pSkyBoxProgram);
+    }
     
     
     /*

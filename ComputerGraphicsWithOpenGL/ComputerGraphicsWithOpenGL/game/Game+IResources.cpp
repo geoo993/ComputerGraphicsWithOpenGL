@@ -21,6 +21,7 @@ void Game::InitialiseResources()
     m_pAudio = new CAudio;
     m_pQuad = new CQuad;
     m_pSkybox = new CSkybox;
+    m_pEnvSkybox = new CSkybox;
     m_pPlanarTerrain = new CPlane;
     m_pHeightmapTerrain = new CHeightMapTerrain;
     m_pLamp = new CCube(1.0f);
@@ -33,7 +34,6 @@ void Game::InitialiseResources()
     m_pSphere = new CSphere;
     m_pFireBallSphere = new CSphere;
     m_pCube = new CCube(1.0f);
-    m_pEquirectangularCube = new CEquirectangularCube(1.0f);
     m_pInteriorBox = new CCube(10.0f);
     m_pParallaxCube = new CCube(1.0f);
     m_pChromaticAberrationCube = new CCube(1.0f);
@@ -54,9 +54,10 @@ void Game::LoadResources(const std::string &path)
     
     // Create the skybox
     // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
+    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, false, nullptr, TextureType::EMISSION, m_skyboxNumber);
     CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
     SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
-    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, m_currentPPFXMode == PostProcessingEffectMode::IBL, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+    m_pEnvSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, true, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
     
     // Create the planar terrain
     m_pPlanarTerrain->Create(path+"/textures/pbr/metalpainted/", { // http://www.crazyrobinhood.org/textures/
@@ -106,9 +107,6 @@ void Game::LoadResources(const std::string &path)
         { "Standard_red_pxr128.tif", TextureType::DIFFUSE},
         { "Standard_red_pxr128_normal.tif", TextureType::NORMAL},
         { "Standard_red_pxr128_bmp.tif", TextureType::SPECULAR}
-    } );
-    m_pEquirectangularCube->Create(path+"/skyboxes/deserthighway/", {
-        { "Road_to_MonumentValley_Ref.hdr", TextureType::EMISSION}
     } );
     m_pInteriorBox->Create(path+"/textures/pbr/harshbricks/", {
         { "harshbricks-albedo.png", TextureType::ALBEDO},              // albedo map

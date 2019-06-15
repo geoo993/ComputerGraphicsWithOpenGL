@@ -70,7 +70,7 @@ Game::Game()
     
     // Point Light
     m_usePoint = true;
-    m_pointIntensity = 40.5f;
+    m_pointIntensity = 20.5f;
     m_pointLightPositionsIndex = 0;
     m_pointLightPositions = {
         glm::vec3(  100.0f,  400.0f,  50.0f      ),
@@ -145,6 +145,7 @@ Game::Game()
     
     // skybox
     m_pSkybox = nullptr;
+    m_pEnvSkybox = nullptr;
     m_mapSize = (GLfloat)ZFAR;
     m_skyboxNumber = 0;
     m_changeSkybox = false;
@@ -170,7 +171,6 @@ Game::Game()
     
     //cube object
     m_pCube = nullptr;
-    m_pEquirectangularCube = nullptr;
     m_pInteriorBox = nullptr;
     m_pParallaxCube = nullptr;
     m_pChromaticAberrationCube = nullptr;
@@ -220,6 +220,7 @@ Game::~Game()
     delete m_pFtFont;
     delete m_pAudio;
     delete m_pSkybox;
+    delete m_pEnvSkybox;
     delete m_pPlanarTerrain;
     delete m_pHeightmapTerrain;
     delete m_pLamp;
@@ -231,7 +232,6 @@ Game::~Game()
     delete m_pFlashlight;
     delete m_pSphere;
     delete m_pCube;
-    delete m_pEquirectangularCube;
     delete m_pInteriorBox;
     delete m_pParallaxCube;
     delete m_pChromaticAberrationCube;

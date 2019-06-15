@@ -23,7 +23,6 @@
 #include "Plane.h"
 #include "HeightMapTerrain.h"
 #include "Cube.h"
-#include "EquirectangularCube.h"
 #include "Sphere.h"
 #include "Torus.h"
 #include "TorusKnot.h"
@@ -57,6 +56,7 @@ private:
     
     // skybox
     CSkybox *m_pSkybox;
+    CSkybox *m_pEnvSkybox;
     GLfloat m_mapSize;
     GLboolean m_changeSkybox;
     GLuint m_skyboxNumber;
@@ -81,7 +81,6 @@ private:
     
     //cube object
     CCube * m_pCube;
-    CEquirectangularCube * m_pEquirectangularCube;
     CCube * m_pChromaticAberrationCube;
     CCube * m_pParallaxCube;
     CCube * m_pInteriorBox;
@@ -256,6 +255,7 @@ protected:
                     const GLfloat & scale = 1.0f, const GLboolean &useTexture = true,
                     const GLboolean &bindTexture = false) override;
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
+    void RenderEnvSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
     void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                         const GLfloat & scale, const GLboolean &useTexture) override;
@@ -263,8 +263,6 @@ protected:
                        const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                     const GLfloat & scale, const GLboolean &useTexture) override;
-    void RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                   const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
                            const float & scale, const bool &useTexture, const bool &bindTexture) override;
     void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,

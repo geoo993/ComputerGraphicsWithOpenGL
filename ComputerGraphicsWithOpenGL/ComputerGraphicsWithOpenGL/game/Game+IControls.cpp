@@ -879,8 +879,6 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
                 GLint nextIndex = (currentIndex - 1) ;
                 if (nextIndex < 0)  nextIndex = numberOfEffects - 1;
                 m_currentPPFXMode = static_cast<PostProcessingEffectMode>(nextIndex);
-                
-                if (currentIndex != nextIndex && m_currentPPFXMode == PostProcessingEffectMode::IBL) m_changeSkybox = true;
             }
                 break;
             case GLFW_KEY_Z: {
@@ -889,8 +887,6 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
                 GLint numberOfEffects = static_cast<GLint>(PostProcessingEffectMode::NumberOfPPFX);
                 GLint nextIndex = (currentIndex + 1) % numberOfEffects;
                 m_currentPPFXMode = static_cast<PostProcessingEffectMode>(nextIndex);
-                
-                if (currentIndex != nextIndex && m_currentPPFXMode == PostProcessingEffectMode::IBL) m_changeSkybox = true;
             }
                 break;
                 /*

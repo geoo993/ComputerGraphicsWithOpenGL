@@ -222,6 +222,7 @@ struct IRenderObject
     virtual void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture, const GLboolean &bindTexture) = 0;
     virtual void RenderSkyBox(CShaderProgram *pShaderProgram) = 0;
+    virtual void RenderEnvSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) = 0;
     virtual void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                 const GLfloat & scale, const GLboolean &useTexture) = 0;
@@ -229,8 +230,6 @@ struct IRenderObject
                                const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderEquirectangularCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                           const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
                                    const float & scale, const bool &useTexture, const bool &bindTexture) = 0;
     virtual void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,

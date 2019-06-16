@@ -22,6 +22,7 @@ void Game::InitialiseResources()
     m_pQuad = new CQuad;
     m_pSkybox = new CSkybox;
     m_pEnvSkybox = new CSkybox;
+    m_pIrrSkybox = new CSkybox;
     m_pPlanarTerrain = new CPlane;
     m_pHeightmapTerrain = new CHeightMapTerrain;
     m_pLamp = new CCube(1.0f);
@@ -54,10 +55,15 @@ void Game::LoadResources(const std::string &path)
     
     // Create the skybox
     // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
-    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, false, nullptr, TextureType::EMISSION, m_skyboxNumber);
+    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
     CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
     SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
-    m_pEnvSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, true, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+    m_pEnvSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::EnvironmentMap, nullptr, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+    
+    CShaderProgram *pIrradianceProgram = (*m_pShaderPrograms)[78];
+    SetMaterialUniform(pIrradianceProgram, "material", glm::vec4(1.0f));
+    m_pIrrSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::IrradianceMap, pIrradianceProgram, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+    
     
     // Create the planar terrain
     m_pPlanarTerrain->Create(path+"/textures/pbr/metalpainted/", { // http://www.crazyrobinhood.org/textures/

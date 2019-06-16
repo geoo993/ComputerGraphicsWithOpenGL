@@ -30,40 +30,41 @@ in VS_OUT
     vec3 vLocalPosition; // direction vector representing a 3D texture coordinate
 } fs_in;
 
-uniform struct HRDLight
-{
-    float exposure;
-    float gamma;
-    bool bHDR;
-} R_hrdlight;
-
-uniform bool bUseEnvCubemap;
-
 layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
 
 void main()
 {
-    if (bUseEnvCubemap) {
-        
-        // the sample direction equals the hemisphere's orientation
-        vec3 normal = normalize(fs_in.vLocalPosition);
-        vec3 irradiance = vec3(0.0);
-        
-        vec3 envColor = texture(material.cubeMap, fs_in.vLocalPosition).rgb;
-        
-        if(R_hrdlight.bHDR)
+    
+    // The world vector acts as the normal of a tangent surface
+    // from the origin, aligned to WorldPos. Given this normal, calculate all
+    // incoming radiance of the environment. The result of this radiance
+    // is the radiance of light coming from -Normal direction, which is what
+    // we use in the PBR shader to sample irradiance.
+    vec3 normal = normalize(fs_in.vLocalPosition);
+    vec3 irradiance = vec3(0.0f);
+    
+    // tangent space calculation from origin point
+    vec3 up    = vec3(0.0f, 1.0f, 0.0f);
+    vec3 right = cross(up, normal);
+    up         = cross(normal, right);
+    
+    float sampleDelta = 0.025;
+    float nrSamples = 0.0;
+    for(float phi = 0.0; phi < 2.0 * float(PI); phi += sampleDelta)
+    {
+        for(float theta = 0.0; theta < 0.5 * float(PI); theta += sampleDelta)
         {
-            // tone mapping with exposure
-            envColor = vec3(1.0f) - exp(-envColor * R_hrdlight.exposure);
-            // also gamma correct while we're at it
-            envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
-        } else {
-            envColor = envColor / (envColor + vec3(1.0f));
-            envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+            // spherical to cartesian (in tangent space)
+            vec3 tangentSample = vec3(sin(theta) * cos(phi),  sin(theta) * sin(phi), cos(theta));
+            // tangent space to world
+            vec3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * normal;
+            
+            irradiance += texture(material.cubeMap, sampleVec).rgb * cos(theta) * sin(theta);
+            nrSamples++;
         }
-        vOutputColour = vec4(envColor, 1.0f);
-    } else {
-        vOutputColour = texture(material.cubeMap, fs_in.vLocalPosition);
     }
+    irradiance = float(PI) * irradiance * (1.0 / float(nrSamples));
+
+    vOutputColour = vec4(irradiance, 1.0f);
     
 }

@@ -1242,6 +1242,7 @@
 		C7A6EE8A2208F6BC005D5161 /* SchofieldNo3NickelCO2BBRevolver.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SchofieldNo3NickelCO2BBRevolver.obj; sourceTree = "<group>"; };
 		C7A6EE8C2208F6BC005D5161 /* AO.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = AO.jpg; sourceTree = "<group>"; };
 		C7A8ED8122347A2F00A9662D /* Game+IResources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IResources.cpp"; sourceTree = "<group>"; };
+		C7B38E0222B6724B00EE881E /* SkyboxType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyboxType.h; sourceTree = "<group>"; };
 		C7B4D32122146E2500BCE130 /* metalgrid-albedo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metalgrid-albedo.png"; sourceTree = "<group>"; };
 		C7B4D32222146E2500BCE130 /* metalgrid-roughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metalgrid-roughness.png"; sourceTree = "<group>"; };
 		C7B4D32322146E2500BCE130 /* metalgrid-ao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metalgrid-ao.png"; sourceTree = "<group>"; };
@@ -3518,20 +3519,21 @@
 		C7C8F2D721FF6D0D00AB865A /* utilities */ = {
 			isa = PBXGroup;
 			children = (
-				C713795C2203418100E9A0F2 /* FrameBufferType.h */,
-				C71379422203287A00E9A0F2 /* Interfaces.h */,
+				C7B7544122048DCD00E54C30 /* Colours.h */,
 				C78DDCF62224B80D0010A5D9 /* ControlType.h */,
-				C7C8F31821FF8A7500AB865A /* LightType.h */,
+				C7FB577C220CBC79006F2D91 /* EnumToString.h */,
+				C7B7544022048CC100E54C30 /* Extensions.h */,
+				C713795C2203418100E9A0F2 /* FrameBufferType.h */,
 				C7090CA92235421C006FE002 /* GUIType.h */,
+				C71379422203287A00E9A0F2 /* Interfaces.h */,
+				C7C8F31821FF8A7500AB865A /* LightType.h */,
+				C7C8F31921FF8B3800AB865A /* MatrixStack.cpp */,
+				C7C8F31A21FF8B3800AB865A /* MatrixStack.h */,
 				C7F053192200B16F00864C31 /* PostProcessingEffectMode.h */,
 				C7C8F31321FF879F00AB865A /* RenderMode.h */,
 				C7C8F31421FF87AD00AB865A /* RenderType.h */,
+				C7B38E0222B6724B00EE881E /* SkyboxType.h */,
 				C7FB577B220CAACB006F2D91 /* TextureType.h */,
-				C7B7544122048DCD00E54C30 /* Colours.h */,
-				C7FB577C220CBC79006F2D91 /* EnumToString.h */,
-				C7B7544022048CC100E54C30 /* Extensions.h */,
-				C7C8F31921FF8B3800AB865A /* MatrixStack.cpp */,
-				C7C8F31A21FF8B3800AB865A /* MatrixStack.h */,
 				C7C8F30621FF700F00AB865A /* Transform.cpp */,
 				C7C8F30321FF700F00AB865A /* Transform.h */,
 				C7C8F30521FF700F00AB865A /* Vector.cpp */,

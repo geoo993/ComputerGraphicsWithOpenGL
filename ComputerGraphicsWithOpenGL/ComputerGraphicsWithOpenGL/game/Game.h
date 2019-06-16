@@ -57,6 +57,7 @@ private:
     // skybox
     CSkybox *m_pSkybox;
     CSkybox *m_pEnvSkybox;
+    CSkybox *m_pIrrSkybox;
     GLfloat m_mapSize;
     GLboolean m_changeSkybox;
     GLuint m_skyboxNumber;
@@ -256,6 +257,7 @@ protected:
                     const GLboolean &bindTexture = false) override;
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderEnvSkyBox(CShaderProgram *pShaderProgram) override;
+    void RenderIrrSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
     void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                         const GLfloat & scale, const GLboolean &useTexture) override;

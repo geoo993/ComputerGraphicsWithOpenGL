@@ -92,7 +92,6 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         }
     }
     
-    
 
     /*
     /// Normal Mapping
@@ -151,10 +150,10 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         SetHRDLightUniform(pSkyBoxProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
         RenderEnvSkyBox(pSkyBoxProgram);
     } else if (m_currentPPFXMode == PostProcessingEffectMode::IIL) {
-        CShaderProgram *pSkyBoxIrradianceProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 78];
-        SetMaterialUniform(pSkyBoxIrradianceProgram, "material");
-        SetHRDLightUniform(pSkyBoxIrradianceProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
-        RenderEnvSkyBox(pSkyBoxIrradianceProgram);
+        CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
+        SetMaterialUniform(pSkyBoxProgram, "material");
+        SetHRDLightUniform(pSkyBoxProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
+        RenderIrrSkyBox(pSkyBoxProgram);
     } else {
         CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
         SetMaterialUniform(pSkyBoxProgram, "material");

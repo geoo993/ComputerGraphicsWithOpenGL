@@ -29,8 +29,8 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
     if (m_changeSkybox == true) {
         m_pSkybox->Release();
         m_pSkybox = new CSkybox;
-        
-        m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, false, nullptr, TextureType::EMISSION, m_skyboxNumber);
+
+        m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
 
         m_changeSkybox = false;
     }
@@ -41,7 +41,7 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
     pShaderProgram->SetUniform("bUseEnvCubemap", false);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
-    m_pSkybox->Render();
+    m_pSkybox->Render(true, SkyboxType::Default);
     glDepthFunc(GL_LESS); // set depth function back to default
     
 }
@@ -53,7 +53,18 @@ void Game::RenderEnvSkyBox(CShaderProgram *pShaderProgram) {
     pShaderProgram->SetUniform("bUseEnvCubemap", true);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
-    m_pEnvSkybox->Render();
+    m_pEnvSkybox->Render(true, SkyboxType::EnvironmentMap);
+    glDepthFunc(GL_LESS); // set depth function back to default
+}
+
+void Game::RenderIrrSkyBox(CShaderProgram *pShaderProgram) {
+    // draw skybox as last
+    glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseEnvCubemap", true);
+    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
+    pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
+    m_pIrrSkybox->Render(true, SkyboxType::IrradianceMap);
     glDepthFunc(GL_LESS); // set depth function back to default
 }
 

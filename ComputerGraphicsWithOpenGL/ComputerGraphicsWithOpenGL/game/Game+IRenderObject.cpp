@@ -32,6 +32,19 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
 
         m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
 
+        m_pEnvSkybox->Release();
+        m_pEnvSkybox = new CSkybox;
+        CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
+        SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
+        m_pEnvSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::EnvironmentMap, nullptr, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+        
+        m_pIrrSkybox->Release();
+        m_pIrrSkybox = new CSkybox;
+        CShaderProgram *pIrradianceProgram = (*m_pShaderPrograms)[78];
+        SetMaterialUniform(pIrradianceProgram, "material", glm::vec4(1.0f));
+        m_pIrrSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::IrradianceMap, pIrradianceProgram, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+        
+        
         m_changeSkybox = false;
     }
 
@@ -64,7 +77,7 @@ void Game::RenderIrrSkyBox(CShaderProgram *pShaderProgram) {
     pShaderProgram->SetUniform("bUseEnvCubemap", true);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
-    m_pIrrSkybox->Render(true, SkyboxType::IrradianceMap);
+    m_pIrrSkybox->Render(true, SkyboxType::EnvironmentMap);
     glDepthFunc(GL_LESS); // set depth function back to default
 }
 

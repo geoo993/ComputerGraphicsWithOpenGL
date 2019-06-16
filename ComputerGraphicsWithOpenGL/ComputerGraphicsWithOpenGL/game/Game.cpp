@@ -40,7 +40,8 @@ Game::Game()
     m_metallic = 0.9f;
     m_roughness = 0.1f;
     m_fresnel = 0.0f;
-    m_ao = 0.3f;
+    m_ao = 1.0f;
+    m_useIrradiance = false;
     
     //textures settings
     m_textures.reserve(50);

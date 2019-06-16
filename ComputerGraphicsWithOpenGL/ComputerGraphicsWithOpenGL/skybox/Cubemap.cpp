@@ -252,7 +252,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_envTexture);
     for (unsigned int i = 0; i < 6; ++i)
     {
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 512, 512, 0, GL_RGB, GL_FLOAT, nullptr);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, nullptr);
     }
     glGenSamplers(1, &m_envSampler);
     glSamplerParameteri(m_envSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -287,7 +287,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     glBindRenderbuffer(GL_RENDERBUFFER, m_envRenderbuffer);
     
     // Creating a depth and stencil renderbuffer object is done by calling the glRenderbufferStorage function:
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, 512, 512);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
     
     // Once we've allocated enough memory for the renderbuffer object we can unbind the renderbuffer.
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -298,7 +298,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
     
-    glViewport(0, 0, 512, 512);
+    glViewport(0, 0, width, height);
     glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
     
     int iTextureUnit = static_cast<int>(equirectangularTexturetype); // cubemap

@@ -148,7 +148,7 @@ protected:
                             const GLboolean &useAO = false) override;
     void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness,
-                               const GLfloat &fresnel, const GLfloat &ao) override;
+                               const GLfloat &fresnel, const GLfloat &ao, const GLboolean &useIrradiance) override;
     
     /// Textures
     void LoadTextures(const std::string &path) override;

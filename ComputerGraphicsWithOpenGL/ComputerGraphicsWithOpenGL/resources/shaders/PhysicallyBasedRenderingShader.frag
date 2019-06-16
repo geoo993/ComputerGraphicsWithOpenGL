@@ -17,7 +17,7 @@
 // http://wiki.polycount.com/wiki/PBR
 // https://3dtextures.me/tag/pbr/
 // https://freepbr.com/
-
+// http://dominium.maksw.com/articles/physically-based-rendering-pbr/pbr-part-one/
 
 /*
  here are different types of substances in real world. They can be classified in three main group: Insulators, semi-conductors and conductors.
@@ -112,10 +112,12 @@ uniform struct Camera
 uniform struct Material
 {
     sampler2D albedoMap;            // 15.  albedo map
-    sampler2D metalnessMap;         // 16.  metalness map
+    sampler2D metallicMap;          // 16.  metalness map
     sampler2D roughnessMap;         // 17.  roughness map
     sampler2D normalMap;            // 3.   normal map
     sampler2D aoMap;                // 7.   ambient oclusion map
+    samplerCube cubeMap;            // 18.  sky box environment irrandiance cube map
+    
     // for more info look at https://marmoset.co/posts/physically-based-rendering-and-you-can-too/
     vec3  albedo;           // Albedo is the base color input, commonly known as a diffuse map.
     // all values below are between 0 and 1
@@ -180,7 +182,7 @@ uniform HRDLight R_hrdlight;
 uniform DirectionalLight R_directionallight;
 uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
-uniform bool bUseTexture, bUseBlinn, bUseSmoothSpot;
+uniform bool bUseIrradiance, bUseTexture, bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
 
 in VS_OUT
@@ -268,7 +270,7 @@ vec3 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
 {
     
     vec3 albedo     = bUseTexture ? pow(texture(material.albedoMap, fs_in.vTexCoord).rgb, vec3(2.2f)) : material.albedo;       // albedo map
-    float metallic  = bUseTexture ? texture(material.metalnessMap, fs_in.vTexCoord).r : material.metallic;                          // metallic map
+    float metallic  = bUseTexture ? texture(material.metallicMap, fs_in.vTexCoord).r : material.metallic;                          // metallic map
     float roughness = bUseTexture ? texture(material.roughnessMap, fs_in.vTexCoord).r : material.roughness;                         // roughness map
     float ao        = bUseTexture ? texture(material.aoMap, fs_in.vTexCoord).r : material.ao;                               // ambient oclusion map
     
@@ -279,15 +281,12 @@ vec3 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     vec3 F0         = vec3(0.04f); // glass
     F0              = mix(F0, albedo, metallic);
     
-    // ambient lighting (note that the IBL tutorial will replace this ambient lighting with environment lighting).
-    vec3 ambient = vec3(base.ambient) * albedo * ao; // ambient light
-    
     float diffuseFactor = max(dot(normal, direction), 0.0f); // diffuse light
     vec3 diffuse = vec3(base.diffuse) * diffuseFactor;
     
     vec3 view =  camera.position + camera.front;
-    vec3 directionToEye = normalize(view - vertexPosition); // viewDirection
-    vec3 reflectDirection = reflect(-direction, normal);    // specular reflection
+    vec3 directionToEye = normalize(view - vertexPosition); // viewDirection aka V
+    vec3 reflectDirection = reflect(-direction, normal);    // specular reflection aka R
     vec3 halfDirection = normalize(direction + directionToEye); // halfway vector
     
     // calculating the NDF and the G term in the reflectance loop, and also the fresnel value
@@ -312,6 +311,20 @@ vec3 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     kD *= 1.0f - metallic; // calculate the ratio of refraction kD:
     
     vec3 specular     = base.specular * (kD * albedo / float(PI) + (cookTorrance / max(specularFactor, 0.001f))); // specular light
+    
+    vec3 ambient = vec3(1.0f);
+    if (bUseIrradiance == false) {
+        // ambient lighting (note that the IBL tutorial will replace this ambient lighting with environment lighting).
+        ambient = vec3(base.ambient) * albedo * ao; // ambient light
+    } else {
+        // ambient lighting (we now use IBL as the ambient term)
+        vec3 kS2 = fresnelSchlick(max(dot(normal, directionToEye), 0.0), F0);
+        vec3 kD2 = 1.0f -kS2;
+        kD2 *= 1.0f - metallic;
+        vec3 irradiance = texture(material.cubeMap, normal).rgb;
+        vec3 diffuse    = irradiance * albedo;
+        ambient = (kD2 * diffuse) * ao;
+    }
     
     // calculate each light's outgoing reflectance value
     // The resulting Lo value, or the outgoing radiance, is effectively the result of the reflectance equation's integral ∫ over Ω.
@@ -374,7 +387,7 @@ layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
-    vec3 normal     = bUseTexture ? getNormalFromMap(fs_in.vWorldNormal, fs_in.vWorldPosition) : normalize(fs_in.vWorldNormal);    // normal map
+    vec3 normal     = bUseTexture ? getNormalFromMap(fs_in.vWorldNormal, fs_in.vWorldPosition) : normalize(fs_in.vWorldNormal); // normal map aka N
     vec3 worldPos   = fs_in.vWorldPosition;
     vec3 color = vec3(0.0f, 0.0f, 0.0f);
     

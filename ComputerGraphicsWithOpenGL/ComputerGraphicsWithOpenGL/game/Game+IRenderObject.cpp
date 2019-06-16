@@ -28,7 +28,6 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
     // start by deleting current skybox and create new one
     if (m_changeSkybox == true) {
         m_pSkybox->Release();
-
         m_pSkybox = new CSkybox;
         
         m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, false, nullptr, TextureType::EMISSION, m_skyboxNumber);
@@ -42,7 +41,6 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
     pShaderProgram->SetUniform("bUseEnvCubemap", false);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
-    
     m_pSkybox->Render();
     glDepthFunc(GL_LESS); // set depth function back to default
     
@@ -55,7 +53,6 @@ void Game::RenderEnvSkyBox(CShaderProgram *pShaderProgram) {
     pShaderProgram->SetUniform("bUseEnvCubemap", true);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
-    
     m_pEnvSkybox->Render();
     glDepthFunc(GL_LESS); // set depth function back to default
 }

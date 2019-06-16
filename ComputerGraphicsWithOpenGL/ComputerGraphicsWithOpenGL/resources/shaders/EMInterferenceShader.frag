@@ -37,8 +37,6 @@ in VS_OUT
 uniform float time;
 uniform float coverage;        // between (0.0f and 1.0f)
 
-#define PI 3.1415927
-
 float rng2(vec2 seed)
 {
     return fract(sin(dot(seed * floor(time * 12.0f), vec2(127.1f,311.7f))) * 43758.5453123f);

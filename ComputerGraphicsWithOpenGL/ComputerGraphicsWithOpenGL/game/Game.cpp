@@ -53,8 +53,8 @@ Game::Game()
     m_ambient = 0.4f;
     m_diffuse = 2.5f;
     m_specular = 0.6f;
-    m_exposure = 0.8f;
-    m_gama = 1.2f;
+    m_exposure = 1.0f;
+    m_gama = 1.0f;
     m_HDR = true;
     
     // Attenuation
@@ -146,7 +146,7 @@ Game::Game()
     // skybox
     m_pSkybox = nullptr;
     m_pEnvSkybox = nullptr;
-    m_mapSize = (GLfloat)ZFAR;
+    m_mapSize = (GLfloat)SKYBOX;
     m_skyboxNumber = 0;
     m_changeSkybox = false;
     
@@ -273,7 +273,7 @@ void Game::PreRendering() {
     UpdateControls();
     
     // update audio
-    //UpdateAudio();
+    UpdateAudio();
 }
 
 // Render scene method runs
@@ -322,7 +322,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
     InitialiseFrameBuffers(width, height);
     InitialiseCamera(width, height, glm::vec3(0.0f, 500.0f, -100.0f));
-    //InitialiseAudio(filepath);
+    InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
     LoadResources(filepath);
@@ -340,7 +340,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
         
         if (m_gameManager->IsActive()) {
             GameLoop();
-        }else{
+        } else {
             std::this_thread::sleep_for(std::chrono::milliseconds(60)); // Do not consume processor power if application isn't active
         }
 

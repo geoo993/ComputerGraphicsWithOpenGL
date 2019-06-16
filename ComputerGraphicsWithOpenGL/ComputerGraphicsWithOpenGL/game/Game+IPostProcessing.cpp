@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::IBL;
+    m_currentPPFXMode = PostProcessingEffectMode::IIL;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -84,13 +84,17 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
     
     switch(mode) {
         case PostProcessingEffectMode::PBR: {
-          
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
             
             return;
         }
         case PostProcessingEffectMode::IBL: {
+            CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+            RenderToScreen(pImageProcessingProgram);
+            return;
+        }
+        case PostProcessingEffectMode::IIL: {
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
             return;
@@ -756,6 +760,9 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::IBL:
             RenderPPFXScene(PostProcessingEffectMode::IBL);
             break;
+        case PostProcessingEffectMode::IIL:
+            RenderPPFXScene(PostProcessingEffectMode::IIL);
+            break;
         case PostProcessingEffectMode::BlinnPhong:
             RenderPPFXScene(PostProcessingEffectMode::BlinnPhong);
             break;
@@ -935,6 +942,8 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         return "Physically Based Rendering";
         case PostProcessingEffectMode::IBL:
         return "Image Based Lighting";
+        case PostProcessingEffectMode::IIL:
+        return "Indirect Irradiance Lighting";
         case PostProcessingEffectMode::BlinnPhong:
         return "Blinn-Phong Lighting";
         case PostProcessingEffectMode::ColorInversion:

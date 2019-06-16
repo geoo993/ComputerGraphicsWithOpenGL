@@ -16,6 +16,7 @@
 enum class PostProcessingEffectMode {
     PBR,
     IBL,
+    IIL,
     BlinnPhong,
     ColorInversion,
     GrayScale,

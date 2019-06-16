@@ -172,6 +172,8 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("CartoonVideoShader.frag");
     sShaderFileNames.push_back("EquirectangularToCubemapShader.vert");// 77
     sShaderFileNames.push_back("EquirectangularToCubemapShader.frag");
+    sShaderFileNames.push_back("SkyBoxIrradianceShader.vert");// 78
+    sShaderFileNames.push_back("SkyBoxIrradianceShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -814,6 +816,14 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pEquirectangularToCubemapProgram->AddShaderToProgram(&shShaders[158]);
     pEquirectangularToCubemapProgram->LinkProgram();
     m_pShaderPrograms->push_back(pEquirectangularToCubemapProgram);
+    
+    // Create SkyBox Irradiance Shader
+    CShaderProgram *pSkyBoxIrradianceProgram = new CShaderProgram;
+    pSkyBoxIrradianceProgram->CreateProgram();
+    pSkyBoxIrradianceProgram->AddShaderToProgram(&shShaders[159]);
+    pSkyBoxIrradianceProgram->AddShaderToProgram(&shShaders[160]);
+    pSkyBoxIrradianceProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pSkyBoxIrradianceProgram);
 }
 
 

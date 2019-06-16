@@ -32,6 +32,13 @@ uniform struct Material
     float shininess;
 } material;
 
+uniform struct HRDLight
+{
+    float exposure;
+    float gamma;
+    bool bHDR;
+} R_hrdlight;
+
 in VS_OUT
 {
     vec2 vTexCoord;    // Texture coordinate
@@ -123,12 +130,28 @@ void main()
     //------ Write the final pixel.
     //
     vec3 color = mix(refractColor, reflectColor, fresnelTerm);
-    
+    vec4 result = vec4(1.0f);
     if (bUseTexture){
-        vOutputColour = vec4(mix(baseColor, color, reflectivity), 1.0f);
+        result = vec4(mix(baseColor, color, reflectivity), 1.0f);
     }else {
-        vOutputColour = vec4(color, 1.0f);
+        result = vec4(color, 1.0f);
     }
+
+    // HDR
+    vec3 envColor = result.xyz;
+    if(R_hrdlight.bHDR)
+    {
+        // tone mapping with exposure
+        envColor = vec3(1.0f) - exp(-envColor * R_hrdlight.exposure);
+        // also gamma correct while we're at it
+        envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+    } else {
+        envColor = envColor / (envColor + vec3(1.0f));
+        envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+    }
+    vOutputColour = vec4(envColor, 1.0f);
+    
+    
     
     // Retrieve bright parts
     float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));

@@ -229,7 +229,7 @@ float DistributionGGX(vec3 N, vec3 V, vec3 H, vec3 R, float roughness)
     
     float num   = a2;
     float denom = (NdotH2 * (a2 - 1.0f) + 1.0f);
-    denom = PI * denom * denom;
+    denom = float(PI) * denom * denom;
     
     return num / denom;
 }
@@ -311,7 +311,7 @@ vec3 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     // have diffuse lighting, or a linear blend if partly metal (pure metals have no diffuse light).
     kD *= 1.0f - metallic; // calculate the ratio of refraction kD:
     
-    vec3 specular     = base.specular * (kD * albedo / PI + (cookTorrance / max(specularFactor, 0.001f))); // specular light
+    vec3 specular     = base.specular * (kD * albedo / float(PI) + (cookTorrance / max(specularFactor, 0.001f))); // specular light
     
     // calculate each light's outgoing reflectance value
     // The resulting Lo value, or the outgoing radiance, is effectively the result of the reflectance equation's integral ∫ over Ω.
@@ -408,6 +408,7 @@ void main()
      your calculations end up incorrect and thus visually unpleasing.
      */
     
+    // HDR
     if(R_hrdlight.bHDR)
     {
         // tone mapping with exposure
@@ -418,9 +419,8 @@ void main()
         color = color / (color + vec3(1.0f));
         /// gamma correct
         //color = pow(color, vec3(1.0f/2.2f));
-         color = pow(color, vec3(1.0f / R_hrdlight.gamma));
+        color = pow(color, vec3(1.0f / R_hrdlight.gamma));
     }
-    
     
     vOutputColour = vec4(color, 1.0f);
     

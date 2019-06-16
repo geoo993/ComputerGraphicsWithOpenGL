@@ -36,8 +36,6 @@ in VS_OUT
 
 uniform float coverage;        // between (0.0f and 1.0f)
 
-#define PI 3.1415927
-
 out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
 void main()

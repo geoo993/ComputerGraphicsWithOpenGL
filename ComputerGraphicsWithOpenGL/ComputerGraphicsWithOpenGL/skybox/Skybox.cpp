@@ -66,9 +66,9 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
             //"skywater",
             //"tokyobigsight",
             //"valley",
-            "winterseashore"
-            //"yokohamaday",
-            //"yokohamanight"
+            "winterseashore",
+            "yokohamaday",
+            "yokohamanight"
         };
         
         unsigned int ind = skyboxNumber % m_skyboxes.size();
@@ -83,10 +83,7 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
                                     }, type);
     } else {
     
-        int width = SKYBOXIMAGE;
-        int height = SKYBOXIMAGE;
-        
-        m_cubemapTexture->LoadHRDCubemap(width, height, type, equirectangularProgram, path+"/skyboxes/deserthighway/", "Road_to_MonumentValley_Ref.hdr", equirectangularTexturetype);
+        m_cubemapTexture->LoadHRDCubemap((int)size, (int)size, type, equirectangularProgram, path+"/skyboxes/deserthighway/", "Road_to_MonumentValley_Ref.hdr", equirectangularTexturetype);
     }
     
     CreateAttributes(size);

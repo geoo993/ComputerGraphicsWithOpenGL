@@ -155,9 +155,9 @@ void Game::LoadControls() {
     roughness->SetValue(&m_roughness);
     guiBox->y += guiBox->height;
     
-    CSlider *fresnel = (CSlider *)AddControl(new CSlider("Fresnel", 0.0f, 1.0f, 5, guiBox));
-    fresnel->SetValue(&m_fresnel);
-    guiBox->y += guiBox->height;
+//    CSlider *fresnel = (CSlider *)AddControl(new CSlider("Fresnel", 0.0f, 1.0f, 5, guiBox));
+//    fresnel->SetValue(&m_fresnel);
+//    guiBox->y += guiBox->height;
     
     CSlider *ao = (CSlider *)AddControl(new CSlider("AO", 0.0f, 1.0f, 5, guiBox));
     ao->SetValue(&m_ao);
@@ -220,6 +220,11 @@ void Game::LoadControls() {
     
     // IIL
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * iiluseIrradiance = (CButton *)AddControl(new CButton("Use Irradiance", guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+    iiluseIrradiance->SetValue(&m_useIrradiance);
+    guiBox->y += guiBox->height;
+    
     CButton * iiluseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
     iiluseHDR->SetValue(&m_HDR);

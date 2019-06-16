@@ -52,6 +52,12 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     GLuint numRows = 5;
     GLuint numCol = 5;
     if (isPBR) {
+        
+        if (m_currentPPFXMode == PostProcessingEffectMode::IIL) {
+            GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
+            m_pIrrSkybox->BindIrrSkyboxTo(cubemapTextureUnit);
+        }
+        
         ///  Physically Based Rendering
         CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
         SetCameraUniform(pPBRProgram, "camera", m_pCamera);
@@ -64,12 +70,14 @@ void Game::RenderScene(const GLboolean &toLightSpace){
             for (GLuint col = 0; col < numCol; col++) {
                 GLfloat roughness = glm::clamp((GLfloat)col / (GLfloat)numCol, 0.05f, 1.0f);
                 glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
-                SetPBRMaterialUniform(pPBRProgram, "material", albedo, metallic, roughness, m_fresnel, m_ao);
+                SetPBRMaterialUniform(pPBRProgram, "material", albedo, metallic, roughness, m_fresnel, m_ao,
+                                      m_currentPPFXMode == PostProcessingEffectMode::IIL ? m_useIrradiance : false);
                 RenderSphere(pPBRProgram, position, 30.0f, m_woodenBoxesUseTexture);
             }
         }
         
-        SetPBRMaterialUniform(pPBRProgram, "material", albedo, m_metallic, m_roughness, m_fresnel, m_ao);
+        SetPBRMaterialUniform(pPBRProgram, "material", albedo, m_metallic, m_roughness, m_fresnel, m_ao,
+                              m_currentPPFXMode == PostProcessingEffectMode::IIL ? m_useIrradiance : false);
         
         // Render Grenade
         //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
@@ -92,13 +100,16 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         }
     }
     
-
-    /*
+    GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
+    m_pEnvSkybox->BindEnvSkyboxTo(cubemapTextureUnit);
+    
+    
     /// Normal Mapping
     CShaderProgram *pNormalMappingProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 6];
     SetCameraUniform(pNormalMappingProgram, "camera", m_pCamera);
     SetLightUniform(pNormalMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
     SetMaterialUniform(pNormalMappingProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
+    SetHRDLightUniform(pNormalMappingProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
     RenderCube(pNormalMappingProgram, glm::vec3(1000.0f, 500.0f, 1000.0f), 100.0f, true);
     
     // Add Normal mapping Lights
@@ -109,24 +120,27 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetCameraUniform(pBumpMappingProgram, "camera", m_pCamera);
     SetLightUniform(pBumpMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
     SetMaterialUniform(pBumpMappingProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
+    SetHRDLightUniform(pBumpMappingProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
     SetBumpMapUniform(pBumpMappingProgram, m_uvTiling);
     RenderCube(pBumpMappingProgram, glm::vec3(500.0f, 500.0f, 1000.0f), 100.0f, true);
-    RenderTorusKnot(pBumpMappingProgram, m_torusKnotPosition, 5.0f, true);
+    //RenderTorusKnot(pBumpMappingProgram, m_torusKnotPosition, 5.0f, true);
     
     // Add Bump mapping Lights
     RenderLight(pBumpMappingProgram, m_pCamera);
+    
     
     /// Parallax Normal Mapping
     CShaderProgram *pParallaxNormalMappingProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 8];
     SetCameraUniform(pParallaxNormalMappingProgram, "camera", m_pCamera);
     SetLightUniform(pParallaxNormalMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
     SetMaterialUniform(pParallaxNormalMappingProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
+    SetHRDLightUniform(pParallaxNormalMappingProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
     SetParallaxMapUniform(pParallaxNormalMappingProgram, m_parallaxHeightScale);
     RenderParallaxCube(pParallaxNormalMappingProgram, glm::vec3(0.0f, 500.0f, 1000.0f), 100.0f, true);
     
     // Add Parallax Normal mapping Lights
     RenderLight(pParallaxNormalMappingProgram, m_pCamera);
-    */
+    
     /// Environment Mapping
     CShaderProgram *pEnvironmentMapProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 9];
     SetCameraUniform(pEnvironmentMapProgram, "camera", m_pCamera);

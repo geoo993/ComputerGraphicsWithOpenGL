@@ -37,6 +37,13 @@ uniform struct Material
     bool bUseAO;
 } material;
 
+uniform struct HRDLight
+{
+    float exposure;
+    float gamma;
+    bool bHDR;
+} R_hrdlight;
+
 // Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
 {
@@ -228,7 +235,19 @@ void main()
         result += spotL;
     }
     
-    vOutputColour = result;
+    // HDR
+    vec3 envColor = result.xyz;
+    if(R_hrdlight.bHDR)
+    {
+        // tone mapping with exposure
+        envColor = vec3(1.0f) - exp(-envColor * R_hrdlight.exposure);
+        // also gamma correct while we're at it
+        envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+    } else {
+        envColor = envColor / (envColor + vec3(1.0f));
+        envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+    }
+    vOutputColour = vec4(envColor, result.z);
     
     // Retrieve bright parts
     float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));

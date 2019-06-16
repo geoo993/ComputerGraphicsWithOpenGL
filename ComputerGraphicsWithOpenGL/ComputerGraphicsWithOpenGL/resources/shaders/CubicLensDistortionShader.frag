@@ -37,8 +37,6 @@ in VS_OUT
 uniform float time = 0.2f;
 uniform float coverage;        // between (0.0f and 1.0f)
 
-#define PI 3.1415927
-
 vec2 computeUV( vec2 uv, float k, float kcube ){
     
     vec2 t = uv - 0.5f;

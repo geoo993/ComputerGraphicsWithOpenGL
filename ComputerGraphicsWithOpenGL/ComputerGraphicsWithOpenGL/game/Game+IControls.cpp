@@ -202,6 +202,38 @@ void Game::LoadControls() {
                                                           guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::PBR));
     pbrGamma->SetValue(&m_gama);
     
+    // IBL
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * ibluseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
+    ibluseHDR->SetValue(&m_HDR);
+    guiBox->y += guiBox->height;
+    
+    CSlider *ibllightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", 0.0f, 1.0f, 5,
+                                                                  guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
+    ibllightExposure->SetValue(&m_exposure);
+    guiBox->y += guiBox->height;
+    
+    CSlider *iblGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", 0.0f, 3.0f, 5,
+                                                          guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
+    iblGamma->SetValue(&m_gama);
+    
+    // IIL
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * iiluseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+    iiluseHDR->SetValue(&m_HDR);
+    guiBox->y += guiBox->height;
+    
+    CSlider *iillightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", 0.0f, 1.0f, 5,
+                                                                  guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+    iillightExposure->SetValue(&m_exposure);
+    guiBox->y += guiBox->height;
+    
+    CSlider *iilGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", 0.0f, 3.0f, 5,
+                                                          guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+    iilGamma->SetValue(&m_gama);
+    
     // Screen wave
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
     CSlider *screenWaveOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 1.0f, 5, guiBox,

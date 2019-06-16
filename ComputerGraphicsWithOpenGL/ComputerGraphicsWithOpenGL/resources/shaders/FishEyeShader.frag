@@ -1,5 +1,5 @@
 #version 400 core
-
+#define PI 3.1415927
 // http://www.geeks3d.com/20140213/glsl-shader-library-fish-eye-and-dome-and-barrel-distortion-post-processing-filters/
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
@@ -37,7 +37,6 @@ in VS_OUT
 
 uniform float radius = 0.9f;  // radius between 0.0f and 1.0f
 uniform float coverage;
-const float PI = 3.1415926535f;
 
 out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
@@ -51,16 +50,13 @@ void main()
      
      */
     
-  
-    
-    
     vec2 st = fs_in.vTexCoord.xy;
     vec4 tc = material.color;
     
     if (st.x < (  coverage  ) )
     {
         float aperture = 178.0f;
-        float apertureHalf = 0.5f * aperture * (PI / 180.0f);
+        float apertureHalf = 0.5f * aperture * (float(PI) / 180.0f);
         float maxFactor = sin( apertureHalf );
         
         vec2 uv;
@@ -70,7 +66,7 @@ void main()
         {
             d = length( xy * maxFactor );
             float z = sqrt(1.0f - d * d);
-            float r = atan(d, z) / PI;
+            float r = atan(d, z) / float(PI);
             float phi = atan(xy.y , xy.x);
             
             uv.x = r * cos( phi ) + 0.5f;

@@ -71,8 +71,8 @@
 #include <FMOD/fmod_errors.h>
 #include <FMOD/fmod_studio_common.h>
 
-#define SCREEN_WIDTH 1440
-#define SCREEN_HEIGHT 880
+#define SCREEN_WIDTH 1240
+#define SCREEN_HEIGHT 860
 #define SHADOW_WIDTH 1024
 #define SHADOW_HEIGHT 1024
 #define FPS 60
@@ -81,8 +81,7 @@
 #define FOV 90.0
 #define ZNEAR 0.1
 #define ZFAR 4000.0
-#define SKYBOXIMAGE 1000
-//#define CUBEMAPTEXTUREUNIT 10 //cube map texture of the skyBox is at 10 texture unit
+#define SKYBOX 1000
 
 // Default camera values
 #define SPEED 50.0f

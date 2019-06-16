@@ -863,6 +863,8 @@
 		C7CEE2EE2212435600895F5D /* EdgeDetectionShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2E62212435600895F5D /* EdgeDetectionShader.frag */; };
 		C7CEE2EF2212435600895F5D /* EdgeDetectionShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2E72212435600895F5D /* EdgeDetectionShader.vert */; };
 		C7CEE2F02212435600895F5D /* KernelBlurShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7CEE2E82212435600895F5D /* KernelBlurShader.frag */; };
+		C7D4D80622B66B7D00A251BC /* SkyBoxIrradianceShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7D4D80422B66B7C00A251BC /* SkyBoxIrradianceShader.vert */; };
+		C7D4D80722B66B7D00A251BC /* SkyBoxIrradianceShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7D4D80522B66B7D00A251BC /* SkyBoxIrradianceShader.frag */; };
 		C7DE38FA221C843D00595556 /* FireBallShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7DE38F6221C843C00595556 /* FireBallShader.vert */; };
 		C7DE38FC221C843D00595556 /* FireBallShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7DE38F8221C843D00595556 /* FireBallShader.frag */; };
 		C7DE38FE221CA1CA00595556 /* explosion.png in Resources */ = {isa = PBXBuildFile; fileRef = C7DE38FD221CA1CA00595556 /* explosion.png */; };
@@ -1937,6 +1939,8 @@
 		C7CEE2E62212435600895F5D /* EdgeDetectionShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EdgeDetectionShader.frag; sourceTree = "<group>"; };
 		C7CEE2E72212435600895F5D /* EdgeDetectionShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EdgeDetectionShader.vert; sourceTree = "<group>"; };
 		C7CEE2E82212435600895F5D /* KernelBlurShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = KernelBlurShader.frag; sourceTree = "<group>"; };
+		C7D4D80422B66B7C00A251BC /* SkyBoxIrradianceShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SkyBoxIrradianceShader.vert; sourceTree = "<group>"; };
+		C7D4D80522B66B7D00A251BC /* SkyBoxIrradianceShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SkyBoxIrradianceShader.frag; sourceTree = "<group>"; };
 		C7DE38F6221C843C00595556 /* FireBallShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FireBallShader.vert; sourceTree = "<group>"; };
 		C7DE38F8221C843D00595556 /* FireBallShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FireBallShader.frag; sourceTree = "<group>"; };
 		C7DE38FD221CA1CA00595556 /* explosion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explosion.png; sourceTree = "<group>"; };
@@ -3404,6 +3408,8 @@
 				C785F9472212D2BC00F1F8FD /* ScreenWaveShader.vert */,
 				C785F9552212DA7B00F1F8FD /* ShockwaveShader.frag */,
 				C785F9602212DA7D00F1F8FD /* ShockwaveShader.vert */,
+				C7D4D80522B66B7D00A251BC /* SkyBoxIrradianceShader.frag */,
+				C7D4D80422B66B7C00A251BC /* SkyBoxIrradianceShader.vert */,
 				C7C8F42B21FFA74300AB865A /* SkyBoxShader.frag */,
 				C7C8F42821FFA74200AB865A /* SkyBoxShader.vert */,
 				C785F985221341CC00F1F8FD /* SobelEdgeDetectionShader.frag */,
@@ -4322,6 +4328,7 @@
 				C7B759452204E32C00E54C30 /* Burled_mappa_pxr128_bmp.tif in Resources */,
 				C7B75A9B2204E32D00E54C30 /* Haitian_cotton_pxr128.tif in Resources */,
 				C7B759CB2204E32C00E54C30 /* Blue_gravel_pxr128_bmp.tif in Resources */,
+				C7D4D80722B66B7D00A251BC /* SkyBoxIrradianceShader.frag in Resources */,
 				C7B759D22204E32C00E54C30 /* Big_pebbles_pxr128_bmp.tif in Resources */,
 				C7B7596C2204E32C00E54C30 /* White_maple_pxr128_normal.tif in Resources */,
 				C7B4D3A222146E2900BCE130 /* woodframe-metal.png in Resources */,
@@ -4927,6 +4934,7 @@
 				C77673B72209F69500BA7062 /* chipped-paint-metal-albedo.png in Resources */,
 				C7B759FE2204E32C00E54C30 /* Poured_cement_pxr128.tif in Resources */,
 				C7B75A532204E32D00E54C30 /* Black_marble_pxr128_bmp.tif in Resources */,
+				C7D4D80622B66B7D00A251BC /* SkyBoxIrradianceShader.vert in Resources */,
 				C7B75A822204E32D00E54C30 /* Stripes_pxr128.tif in Resources */,
 				C7B4D3AA22146E2900BCE130 /* iron-albedo.png in Resources */,
 				C76DAFFF22189C51005C354C /* lensDirt.jpg in Resources */,

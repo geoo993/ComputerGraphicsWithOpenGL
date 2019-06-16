@@ -43,7 +43,11 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     RenderLight(pLightProgram, m_pCamera);
     
      
-    GLboolean isPBR = m_currentPPFXMode == PostProcessingEffectMode::PBR || m_currentPPFXMode == PostProcessingEffectMode::IBL;
+    GLboolean isPBR =
+    m_currentPPFXMode == PostProcessingEffectMode::PBR
+    || m_currentPPFXMode == PostProcessingEffectMode::IBL
+    || m_currentPPFXMode == PostProcessingEffectMode::IIL;
+    
     GLfloat gap = 100.0f;
     GLuint numRows = 5;
     GLuint numCol = 5;
@@ -128,24 +132,32 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     CShaderProgram *pEnvironmentMapProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 9];
     SetCameraUniform(pEnvironmentMapProgram, "camera", m_pCamera);
     SetMaterialUniform(pEnvironmentMapProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
+    SetHRDLightUniform(pEnvironmentMapProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
     SetEnvironmentMapUniform(pEnvironmentMapProgram, m_useRefraction);
     RenderCube(pEnvironmentMapProgram, glm::vec3(-500.0f, 500.0f, 1000.0f), 100.0f, true);
     //RenderMetalBalls(pEnvironmentMapProgram, m_metalballsPosition, 100.0f, true);
-    
     
     /// Chromatic Aberration Mapping
     CShaderProgram *pChromaticAberrationProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 10];
     SetCameraUniform(pChromaticAberrationProgram, "camera", m_pCamera);
     SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
+    SetHRDLightUniform(pChromaticAberrationProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
     RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_woodenBoxesUseTexture);
 
     /// Render skybox
-    CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
-    SetMaterialUniform(pSkyBoxProgram, "material");
-    
     if (m_currentPPFXMode == PostProcessingEffectMode::IBL) {
+        CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
+        SetMaterialUniform(pSkyBoxProgram, "material");
+        SetHRDLightUniform(pSkyBoxProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
         RenderEnvSkyBox(pSkyBoxProgram);
+    } else if (m_currentPPFXMode == PostProcessingEffectMode::IIL) {
+        CShaderProgram *pSkyBoxIrradianceProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 78];
+        SetMaterialUniform(pSkyBoxIrradianceProgram, "material");
+        SetHRDLightUniform(pSkyBoxIrradianceProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
+        RenderEnvSkyBox(pSkyBoxIrradianceProgram);
     } else {
+        CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
+        SetMaterialUniform(pSkyBoxProgram, "material");
         RenderSkyBox(pSkyBoxProgram);
     }
     

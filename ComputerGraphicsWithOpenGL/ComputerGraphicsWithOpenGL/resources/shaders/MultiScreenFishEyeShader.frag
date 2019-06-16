@@ -39,7 +39,6 @@ in VS_OUT
 uniform float lensRadius = 3.5f;
 uniform float signcurvature = 10.0f;
 uniform float coverage;
-const float PI = 3.1415926535f;
 
 #define EPSILON 0.000011
 

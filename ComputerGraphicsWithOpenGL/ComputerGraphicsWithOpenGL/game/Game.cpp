@@ -146,6 +146,7 @@ Game::Game()
     // skybox
     m_pSkybox = nullptr;
     m_pEnvSkybox = nullptr;
+    m_pIrrSkybox = nullptr;
     m_mapSize = (GLfloat)SKYBOX;
     m_skyboxNumber = 0;
     m_changeSkybox = false;
@@ -221,6 +222,7 @@ Game::~Game()
     delete m_pAudio;
     delete m_pSkybox;
     delete m_pEnvSkybox;
+    delete m_pIrrSkybox;
     delete m_pPlanarTerrain;
     delete m_pHeightmapTerrain;
     delete m_pLamp;
@@ -273,7 +275,7 @@ void Game::PreRendering() {
     UpdateControls();
     
     // update audio
-    UpdateAudio();
+    //UpdateAudio();
 }
 
 // Render scene method runs
@@ -285,7 +287,7 @@ void Game::Render()
     m_gameWindow->ClearBuffers();
     
     RenderScene();
-    
+     
     ResetFrameBuffer();
     
     // Post Processing Effects
@@ -296,7 +298,6 @@ void Game::Render()
     
     // Draw controls GUI objects
     RenderControls();
-    
 }
 
 void Game::PostRendering() {
@@ -322,7 +323,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
     InitialiseFrameBuffers(width, height);
     InitialiseCamera(width, height, glm::vec3(0.0f, 500.0f, -100.0f));
-    InitialiseAudio(filepath);
+    //InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
     LoadResources(filepath);

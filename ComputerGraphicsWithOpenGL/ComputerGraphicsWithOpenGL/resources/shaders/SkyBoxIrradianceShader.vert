@@ -4,7 +4,7 @@
 uniform struct Matrices
 {
     mat4 projMatrix;
-    mat4 viewMatrixWithoutTranslation;
+    mat4 viewMatrix;
 } matrices;
 
 // Layout of vertex attributes in VBO
@@ -30,6 +30,5 @@ void main()
     vs_out.vLocalPosition = inPosition;
     
     // Transform the vertex spatial position using
-    vec4 glPosition = matrices.projMatrix * matrices.viewMatrixWithoutTranslation * position;
-    gl_Position = glPosition.xyww;
+    gl_Position = matrices.projMatrix * matrices.viewMatrix * position;
 }

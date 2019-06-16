@@ -6,6 +6,7 @@
 #include "vertexBufferObject.h"
 #include "GameObject.h"
 #include "EquirectangularCube.h"
+#include "SkyboxType.h"
 
 class CCubemap;
 class CEquirectangularCube;
@@ -16,7 +17,7 @@ class CSkybox: public GameObject
 public:
 	CSkybox();
 	~CSkybox();
-    void Create(const GLfloat &size, const std::string &path, const TextureType &type, const GLboolean &useEnvCubemap, CShaderProgram *equirectangularProgram, const TextureType &equirectangularTexturetype, const GLuint &skyboxNumber);
+    void Create(const GLfloat &size, const std::string &path, const TextureType &textureType, const SkyboxType &skyboxType, CShaderProgram *irradianceProgram, CShaderProgram *equirectangularProgram, const TextureType &equirectangularTexturetype, const GLuint &skyboxNumber);
     void CreateAttributes(const GLfloat &size = 1.0f);
     void BindSkyboxTo(const GLint &textureUnit);
 
@@ -25,14 +26,13 @@ public:
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     void Release();
     void Render(const GLboolean &useTexture = true);
+    void Render(const GLboolean &useTexture = true, const SkyboxType &skyboxType = SkyboxType::Default);
     GLuint GetNumberOfSkyboxes() const;
-    GLboolean IsEnvCubemap() const;
     std::vector<std::string> GetSkyboxes() const;
     
 private:
     GLuint m_vao;
     CVertexBufferObject m_vbo;
     CCubemap *m_cubemapTexture;
-    GLboolean m_useHDRTexture;
     std::vector<std::string> m_skyboxes;
 };

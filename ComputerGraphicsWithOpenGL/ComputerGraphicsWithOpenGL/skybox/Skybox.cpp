@@ -9,7 +9,6 @@
 
 CSkybox::CSkybox()
 {
-    m_useHDRTexture = false;
     m_cubemapTexture = new CCubemap();
     m_vao = 0;
     m_skyboxes = {};
@@ -21,69 +20,78 @@ CSkybox::~CSkybox()
 }
 
 // Create a skybox
-void CSkybox::Create(const GLfloat &size, const std::string &path, const TextureType &type, const GLboolean &useEnvCubemap, CShaderProgram *equirectangularProgram, const TextureType &equirectangularTexturetype, const GLuint &skyboxNumber)
+void CSkybox::Create(const GLfloat &size, const std::string &path, const TextureType &textureType, const SkyboxType &skyboxType, CShaderProgram *irradianceProgram, CShaderProgram *equirectangularProgram, const TextureType &equirectangularTexturetype, const GLuint &skyboxNumber)
 {
-    m_useHDRTexture = useEnvCubemap;
-    if (m_useHDRTexture == false) {
-    /*
-         A skybox is a (large) cube that encompasses the entire scene and contains 6 images of a surrounding environment, giving the player the illusion that the environment he's in is actually much larger than it actually is. Some examples of skyboxes used in videogames are images of mountains, of clouds or of a starry night sky. 
-     
-            ________
-            |        |
-            | pos y  |
-            |   up   |
-     _______|________|_________________
-    |       |        |        |        |
-    | neg x | pos z  |  pos x |  neg z |
-    | rt    |   bk   |  lf    |   ft   |
-    |_______|________|________|________|
-            |        |
-            | neg y  |
-            |   dn   |
-            |________|
-     
-     /////--------------/
-     ////  .     T     // |
-     ////--------------   |
-     //    .      B   |   |
-     //    .          |   |
-     // L  .          | R |
-     //    .   F      |   |
-     //    .......... |   /
-     //  /     D      | //
-     ///--------------/
+    switch (skyboxType) {
+        case SkyboxType::Default: {
     
-     */
-    
-        /// http://www.custommapmakers.org/skyboxes.php
-        m_skyboxes = {
-            //"colorbasement",
-            //"commonroom",
-            //"deserthighway",
-            //"diningroom",
-            //"fog",
-            //"petrolstation",
-            //"skywater",
-            //"tokyobigsight",
-            //"valley",
-            "winterseashore",
-            "yokohamaday",
-            "yokohamanight"
-        };
+        /*
+             A skybox is a (large) cube that encompasses the entire scene and contains 6 images of a surrounding environment, giving the player the illusion that the environment he's in is actually much larger than it actually is. Some examples of skyboxes used in videogames are images of mountains, of clouds or of a starry night sky.
+         
+                ________
+                |        |
+                | pos y  |
+                |   up   |
+         _______|________|_________________
+        |       |        |        |        |
+        | neg x | pos z  |  pos x |  neg z |
+        | rt    |   bk   |  lf    |   ft   |
+        |_______|________|________|________|
+                |        |
+                | neg y  |
+                |   dn   |
+                |________|
+         
+         /////--------------/
+         ////  .     T     // |
+         ////--------------   |
+         //    .      B   |   |
+         //    .          |   |
+         // L  .          | R |
+         //    .   F      |   |
+         //    .......... |   /
+         //  /     D      | //
+         ///--------------/
         
-        unsigned int ind = skyboxNumber % m_skyboxes.size();
+         */
         
-        m_cubemapTexture->LoadCubemap({
-                                    path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_rt.jpg", //right
-                                    path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_lf.jpg", //left
-                                    path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_up.jpg", //up
-                                    path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_dn.jpg", //down
-                                    path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_bk.jpg", //back
-                                    path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_ft.jpg",  //front
-                                    }, type);
-    } else {
-    
-        m_cubemapTexture->LoadHRDCubemap((int)size, (int)size, type, equirectangularProgram, path+"/skyboxes/deserthighway/", "Road_to_MonumentValley_Ref.hdr", equirectangularTexturetype);
+            /// http://www.custommapmakers.org/skyboxes.php
+            m_skyboxes = {
+                //"colorbasement",
+                //"commonroom",
+                //"deserthighway",
+                //"diningroom",
+                //"fog",
+                //"petrolstation",
+                //"skywater",
+                //"tokyobigsight",
+                //"valley",
+                "winterseashore",
+                "yokohamaday",
+                "yokohamanight"
+            };
+            
+            unsigned int ind = skyboxNumber % m_skyboxes.size();
+            
+            m_cubemapTexture->LoadCubemap({
+                                        path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_rt.jpg", //right
+                                        path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_lf.jpg", //left
+                                        path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_up.jpg", //up
+                                        path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_dn.jpg", //down
+                                        path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_bk.jpg", //back
+                                        path+"/skyboxes/"+m_skyboxes[ind]+"/flipped/_ft.jpg",  //front
+                                        }, textureType);
+            
+            }
+            break;
+        case SkyboxType::EnvironmentMap: {
+            m_cubemapTexture->LoadHRDCubemap((int)size, (int)size, textureType, equirectangularProgram, path+"/skyboxes/deserthighway/", "Road_to_MonumentValley_Ref.hdr", equirectangularTexturetype);
+        }
+            break;
+        case SkyboxType::IrradianceMap: {
+            m_cubemapTexture->LoadIrradianceCubemap((int)size, (int)size, textureType, irradianceProgram, equirectangularProgram, path+"/skyboxes/deserthighway/", "Road_to_MonumentValley_Ref.hdr", equirectangularTexturetype);
+        }
+            break;
     }
     
     CreateAttributes(size);
@@ -165,12 +173,28 @@ void CSkybox::Transform(const glm::vec3 & position, const glm::vec3 & rotation, 
 
 // Render the skybox
 void CSkybox::Render(const GLboolean &useTexture) {
+    Render(useTexture, SkyboxType::Default);
+}
+
+// Render the skybox with skybox type
+void CSkybox::Render(const GLboolean &useTexture, const SkyboxType &skyboxType) {
     
     glDepthMask(GL_FALSE);
     glBindVertexArray(m_vao);
     
     GLint iTextureUnit = static_cast<GLint>(m_cubemapTexture->GetType());
-    m_cubemapTexture->BindCubemapTexture(iTextureUnit);
+    
+    switch (skyboxType) {
+        case SkyboxType::Default:
+            m_cubemapTexture->BindCubemapTexture(iTextureUnit);
+            break;
+        case SkyboxType::EnvironmentMap:
+            m_cubemapTexture->BindEnvCubemapTexture(iTextureUnit);
+            break;
+        case SkyboxType::IrradianceMap:
+            m_cubemapTexture->BindIrrCubemapTexture(iTextureUnit);
+            break;
+    }
     
     for (int i = 0; i < 6; i++) {
         glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);
@@ -190,10 +214,6 @@ GLuint CSkybox::GetNumberOfSkyboxes() const{
 
 std::vector<std::string> CSkybox::GetSkyboxes() const {
     return m_skyboxes;
-}
-
-GLboolean CSkybox::IsEnvCubemap() const {
-    return m_useHDRTexture;
 }
 
 // Release the storage assocaited with the skybox

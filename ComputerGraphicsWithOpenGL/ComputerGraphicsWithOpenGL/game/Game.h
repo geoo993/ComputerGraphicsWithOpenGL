@@ -258,6 +258,7 @@ protected:
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderEnvSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderIrrSkyBox(CShaderProgram *pShaderProgram) override;
+    void ResetSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
     void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                         const GLfloat & scale, const GLboolean &useTexture) override;

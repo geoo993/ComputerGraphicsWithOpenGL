@@ -22,31 +22,37 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
     pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
     m_pQuad->Render(bindTexture);
 }
+void Game::ResetSkyBox(CShaderProgram *pShaderProgram) {
+    if (m_changeSkybox == true) {
+        // start by deleting current skybox and create new one
+        if (m_changeSkybox == true) {
+            m_pSkybox->Release();
+            m_pSkybox = new CSkybox;
+            
+            m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
+            
+            m_pEnvSkybox->Release();
+            m_pEnvSkybox = new CSkybox;
+            CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
+            SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
+            m_pEnvSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::EnvironmentMap, nullptr, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+            
+            m_pIrrSkybox->Release();
+            m_pIrrSkybox = new CSkybox;
+            CShaderProgram *pIrradianceProgram = (*m_pShaderPrograms)[78];
+            SetMaterialUniform(pIrradianceProgram, "material", glm::vec4(1.0f));
+            m_pIrrSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::IrradianceMap, pIrradianceProgram, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+            
+            m_changeSkybox = false;
+        }
+        
+    }
+    
+}
 
 void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
 
-    // start by deleting current skybox and create new one
-    if (m_changeSkybox == true) {
-        m_pSkybox->Release();
-        m_pSkybox = new CSkybox;
-
-        m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
-
-        m_pEnvSkybox->Release();
-        m_pEnvSkybox = new CSkybox;
-        CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
-        SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
-        m_pEnvSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::EnvironmentMap, nullptr, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
-        
-        m_pIrrSkybox->Release();
-        m_pIrrSkybox = new CSkybox;
-        CShaderProgram *pIrradianceProgram = (*m_pShaderPrograms)[78];
-        SetMaterialUniform(pIrradianceProgram, "material", glm::vec4(1.0f));
-        m_pIrrSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::IrradianceMap, pIrradianceProgram, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
-        
-        
-        m_changeSkybox = false;
-    }
+    ResetSkyBox(pShaderProgram);
 
     // draw skybox as last
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
@@ -60,6 +66,8 @@ void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {
 }
 
 void Game::RenderEnvSkyBox(CShaderProgram *pShaderProgram) {
+    ResetSkyBox(pShaderProgram);
+    
     // draw skybox as last
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
     pShaderProgram->UseProgram();
@@ -71,6 +79,7 @@ void Game::RenderEnvSkyBox(CShaderProgram *pShaderProgram) {
 }
 
 void Game::RenderIrrSkyBox(CShaderProgram *pShaderProgram) {
+    ResetSkyBox(pShaderProgram);
     // draw skybox as last
     glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
     pShaderProgram->UseProgram();

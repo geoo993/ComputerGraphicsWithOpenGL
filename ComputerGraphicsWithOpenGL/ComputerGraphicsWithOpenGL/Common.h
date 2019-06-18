@@ -71,8 +71,8 @@
 #include <FMOD/fmod_errors.h>
 #include <FMOD/fmod_studio_common.h>
 
-#define SCREEN_WIDTH 1240
-#define SCREEN_HEIGHT 860
+#define SCREEN_WIDTH 1440
+#define SCREEN_HEIGHT 880
 #define SHADOW_WIDTH 1024
 #define SHADOW_HEIGHT 1024
 #define FPS 60

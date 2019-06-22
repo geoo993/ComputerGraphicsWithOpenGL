@@ -63,7 +63,7 @@ struct ICamera {
 
 struct IMaterials {
     GLfloat m_materialShininess, m_albedo, m_metallic, m_roughness, m_ao;
-    GLboolean m_useIrradiance;
+    GLboolean m_useIrradianceMap, m_useIrradiance;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec4 &color, const GLfloat &shininess,
                                     const GLboolean &useAO) = 0;
@@ -227,10 +227,6 @@ struct IRenderObject
     virtual void RenderIrrSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void ResetSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) = 0;
-    virtual void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                               const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                             const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,

@@ -26,7 +26,7 @@ void Game::ResetSkyBox(CShaderProgram *pShaderProgram) {
     if (m_changeSkybox == true) {
         // start by deleting current skybox and create new one
         if (m_changeSkybox == true) {
-            m_pSkybox->Clear();            
+            m_pSkybox->Clear();
             m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
             
             m_pEnvSkybox->Clear();
@@ -82,7 +82,7 @@ void Game::RenderIrrSkyBox(CShaderProgram *pShaderProgram) {
     pShaderProgram->SetUniform("bUseEnvCubemap", true);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
-    m_pIrrSkybox->Render(true, SkyboxType::EnvironmentMap);
+    m_pIrrSkybox->Render(true, m_useIrradianceMap ? SkyboxType::IrradianceMap : SkyboxType::EnvironmentMap);
     glDepthFunc(GL_LESS); // set depth function back to default
 }
 
@@ -121,29 +121,7 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHei
     
 }
 
-void Game::RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale, const GLboolean &useTexture) {
-    /*
-    //m_barrelRotation += 0.01;
-    glm::vec3 translation = position;
-    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
-        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
-    }
-    
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bUseTexture", useTexture);
-    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    
-    m_pBarrel->Transform(translation, glm::vec3(0.0f,m_barrelRotation, 0.0f), glm::vec3(scale));
-    
-    glm::mat4 model = m_pBarrel->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", model);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    m_pBarrel->Render();
-    */
-}
-
-void Game::RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position,
                          const GLfloat & scale, const GLboolean &useTexture) {
     glm::vec3 translation = position;
     if (m_pHeightmapTerrain->IsHeightMapRendered()) {
@@ -157,12 +135,12 @@ void Game::RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & posit
     glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
     pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
-    m_pGrenade->Transform(translation, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(scale));
+    model->Transform(translation, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(scale));
     
-    glm::mat4 model = m_pGrenade->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", model);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    m_pGrenade->Render(pShaderProgram);
+    glm::mat4 m = model->Model();
+    pShaderProgram->SetUniform("matrices.modelMatrix", m);
+    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(m));
+    model->Render(pShaderProgram);
 }
 
 void Game::RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale, const GLboolean &useTexture) {

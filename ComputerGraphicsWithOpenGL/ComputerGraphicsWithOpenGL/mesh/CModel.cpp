@@ -7,7 +7,8 @@
 CModel::CModel()
 {
     m_meshes.clear();
-    m_texturesLoaded.clear();
+    m_mesheTextures.clear();
+    m_textureNames = {};
 }
 
 
@@ -17,7 +18,7 @@ CModel::~CModel()
 }
 
 // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
-GLboolean CModel::Create(const std::string &directory, const std::string &modelName, const GLboolean &gamma)
+GLboolean CModel::Create(const std::string &directory,  const std::string &modelName, const std::map<std::string, TextureType> &textureNames)
 {
     // Release the previously loaded mesh (if it exists)
     Release();
@@ -61,6 +62,8 @@ GLboolean CModel::Create(const std::string &directory, const std::string &modelN
     if (scene) {
         // process ASSIMP's root node recursively
         isProcessed = ProcessNode(scene, scene->mRootNode, directory);
+        
+        LoadTextures(directory, textureNames);
     }
     
     return isProcessed;
@@ -327,12 +330,12 @@ CTexture*  CModel::LoadTexture(const aiMaterial *pMaterial,
         GLboolean skip = false;
         CTexture* texture = new CTexture();
         
-        for(GLuint j = 0; j < m_texturesLoaded.size(); j++)
+        for(GLuint j = 0; j < m_mesheTextures.size(); j++)
         {
             std::string texturePath = (directory + path.C_Str());
-            if(std::strcmp(m_texturesLoaded[j]->GetPath().c_str(), texturePath.c_str()) == 0)
+            if(std::strcmp(m_mesheTextures[j]->GetPath().c_str(), texturePath.c_str()) == 0)
             {
-                texture = m_texturesLoaded[j];
+                texture = m_mesheTextures[j];
                 skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
                 break;
             }
@@ -356,12 +359,33 @@ CTexture*  CModel::LoadTexture(const aiMaterial *pMaterial,
             texture->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
             texture->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-            m_texturesLoaded.push_back(texture);
+            m_mesheTextures.push_back(texture);
         }
         return texture;
     }
     
     return nullptr;
+}
+
+void CModel::LoadTextures(const std::string &directory, const std::map<std::string, TextureType> &textureNames) {
+    m_textureNames = textureNames;
+    m_textures.reserve(textureNames.size());
+    
+    // Iterate through all elements in std::map
+    for (auto it = textureNames.begin(); it != textureNames.end(); ++it) {
+        // if the current index is needed:
+        auto i = std::distance(textureNames.begin(), it);
+        
+        // access element as *it
+        m_textures.push_back(new CTexture);
+        m_textures[i]->LoadTexture(directory+it->first, it->second, true);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        
+        // any code including continue, break, return
+    }
 }
 
 void CModel::Transform(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale) {
@@ -375,17 +399,36 @@ void CModel::Transform(const glm::vec3 &position, const glm::vec3 &rotation, con
 
 void CModel::Render(CShaderProgram *pShaderProgram, const GLboolean &useTexture)
 {
+    if (useTexture){
+        for (GLuint i = 0; i < m_textures.size(); ++i){
+            m_textures[i]->BindTexture2DToTextureType();
+        }
+    }
     for (unsigned int i = 0 ; i < m_meshes.size() ; i++) {
+        m_meshes[i]->Render(pShaderProgram, false);
+    }
+}
+
+void CModel::RenderWithMeshTexture(CShaderProgram *pShaderProgram, const GLboolean &useTexture) {
+    for (unsigned int i = 0 ; i < m_meshes.size(); i++) {
         m_meshes[i]->Render(pShaderProgram, useTexture);
     }
 }
 
+void CModel::Render(const GLboolean &useTexture) {}
+
 void CModel::Release()
 {
-    for (GLuint i = 0 ; i < m_texturesLoaded.size() ; i++) {
-        m_texturesLoaded[i]->Release();
+    for (GLuint i = 0 ; i < m_mesheTextures.size() ; i++) {
+        m_mesheTextures[i]->Release();
     }
-    m_texturesLoaded.clear();
+    m_mesheTextures.clear();
+    
+    for (GLuint i = 0; i < m_textures.size(); ++i){
+        m_textures[i]->Release();
+        delete m_textures[i];
+    }
+    m_textures.clear();
     
     for(GLuint i = 0; i < m_meshes.size(); i++){
         m_meshes[i]->Release();

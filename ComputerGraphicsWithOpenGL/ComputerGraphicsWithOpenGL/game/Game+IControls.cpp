@@ -124,7 +124,7 @@ void Game::LoadControls() {
     guiBox->y += guiBox->height + 5;
     
     CButton * matTexture = (CButton *)AddControl(new CButton("Material Texture", guiBox));
-    matTexture->SetValue(&m_woodenBoxesUseTexture);
+    matTexture->SetValue(&m_materialUseTexture);
     guiBox->y += guiBox->height;
     
     CSlider *matShiniess = (CSlider *)AddControl(new CSlider("Material Shininess", 0.0f, 30.0f, 5, guiBox));
@@ -216,8 +216,13 @@ void Game::LoadControls() {
     
     // IIL
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CButton * iiluseIrradiance = (CButton *)AddControl(new CButton("Use Irradiance", guiBox,
+    CButton * iiluseIrradianceMap = (CButton *)AddControl(new CButton("Use Irradiance Map", guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+    iiluseIrradianceMap->SetValue(&m_useIrradianceMap);
+    guiBox->y += guiBox->height;
+    
+    CButton * iiluseIrradiance = (CButton *)AddControl(new CButton("Use Irradiance", guiBox,
+                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
     iiluseIrradiance->SetValue(&m_useIrradiance);
     guiBox->y += guiBox->height;
     

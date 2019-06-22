@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::PBR;
+    m_currentPPFXMode = PostProcessingEffectMode::IIL;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -514,7 +514,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             // Second Pass - Deferred Rendering
             {
                 CShaderProgram *pDeferredRenderingProgram= (*m_pShaderPrograms)[55];
-                SetDeferredRenderingUniform(pDeferredRenderingProgram, m_woodenBoxesUseTexture);
+                SetDeferredRenderingUniform(pDeferredRenderingProgram, m_materialUseTexture);
                 
                 // Render Lighting Scene
                 SetCameraUniform(pDeferredRenderingProgram, "camera", m_pCamera);
@@ -591,7 +591,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             // Fourth Pass - Screen Space Ambient Occlusion Lighting
             {
                 CShaderProgram *pScreenSpaceAmbientOcclusionLightingProgram= (*m_pShaderPrograms)[58];
-                SetScreenSpaceAmbientOcclusionLightingUniform(pScreenSpaceAmbientOcclusionLightingProgram, m_woodenBoxesUseTexture);
+                SetScreenSpaceAmbientOcclusionLightingUniform(pScreenSpaceAmbientOcclusionLightingProgram, m_materialUseTexture);
                 
                 // Render Lighting Scene
                 SetCameraUniform(pScreenSpaceAmbientOcclusionLightingProgram, "camera", m_pCamera);

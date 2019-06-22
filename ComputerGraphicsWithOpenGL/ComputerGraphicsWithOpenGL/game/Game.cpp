@@ -40,7 +40,7 @@ Game::Game()
     m_metallic = 0.9f;
     m_roughness = 0.1f;
     m_ao = 1.0f;
-    m_useIrradiance = false;
+    m_useIrradiance, m_useIrradianceMap = false;
     
     //textures settings
     m_textures.reserve(50);
@@ -158,12 +158,11 @@ Game::Game()
     m_heightMapMaxHeight = 100.0f;
     
     //models
-    m_pCrossbow = nullptr;
-    m_pHorn = nullptr;
-    m_pSchofield = nullptr;
-    m_pMusket = nullptr;
-    m_pGrenade = nullptr;
-    m_pFlashlight = nullptr;
+    m_pTrolley = nullptr;
+    m_pShotgun = nullptr;
+    m_pSuitcase = nullptr;
+    m_pFlareGun = nullptr;
+    m_pMedicalSaw = nullptr;
     
     //sphere object
     m_pSphere = nullptr;
@@ -180,7 +179,7 @@ Game::Game()
     // woodenBox
     m_pWoodenBox = nullptr;
     m_woodenBoxesColor = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
-    m_woodenBoxesUseTexture = true;
+    m_materialUseTexture = true;
     m_woodenBoxesPosition = {
         glm::vec3(  -186.0f,  593.0f,  -132.0f   ),
         glm::vec3(  -135.7f,  550.2f,  322.0f   ),
@@ -198,7 +197,7 @@ Game::Game()
     
     //torusknot object
     m_pTorusKnot = nullptr;
-    m_torusKnotPosition = glm::vec3(130.0f, 560.0f, 250.0f);
+    m_torusKnotPosition = glm::vec3(1230.0f, 560.0f, -1250.0f);
     
     // metalballs
     m_pMetaballs = nullptr;
@@ -226,12 +225,11 @@ Game::~Game()
     delete m_pPlanarTerrain;
     delete m_pHeightmapTerrain;
     delete m_pLamp;
-    delete m_pCrossbow;
-    delete m_pHorn;
-    delete m_pSchofield;
-    delete m_pMusket;
-    delete m_pGrenade;
-    delete m_pFlashlight;
+    delete m_pTrolley;
+    delete m_pShotgun;
+    delete m_pSuitcase;
+    delete m_pFlareGun;
+    delete m_pMedicalSaw;
     delete m_pSphere;
     delete m_pCube;
     delete m_pInteriorBox;

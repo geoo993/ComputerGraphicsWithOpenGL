@@ -21,28 +21,29 @@
 #pragma once
 
 #include "Texture.h"
-#include "Transform.h"
+#include "GameObject.h"
 #include "Shaders.h"
 #include "Mesh.h"
 
-class CModel
+class CModel: public GameObject
 {
 public:
     CModel();
     ~CModel();
-    GLboolean Create(const std::string &directory, const std::string &modelName, const GLboolean &gamma = false);
+    GLboolean Create(const std::string &directory, const std::string &modelName, const std::map<std::string, TextureType> &textureNames);
     void Transform(const glm::vec3 & position,
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     glm::mat4 Model() const { return transform.GetModel(); }
     void Render(CShaderProgram *pShaderProgram, const GLboolean &useTexture = true);
+    void RenderWithMeshTexture(CShaderProgram *pShaderProgram, const GLboolean &useTexture = true);
     void Release();
 private:
     /*  Model Data */
     std::vector<Mesh*> m_meshes; // All the polygon meshes within this object.
-    std::vector<CTexture*> m_texturesLoaded; // mesh textures that are currently loaded
-    GLboolean m_gammaCorrection;
-    CTransform transform;
+    std::vector<CTexture*> m_mesheTextures; // mesh textures that are currently loaded in the model
+    std::map<std::string, TextureType> m_textureNames;
+    std::vector<CTexture*> m_textures;
     
     /*  Functions   */
     // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
@@ -62,6 +63,10 @@ private:
                           const aiTextureType &type,
                           const TextureType &typeName,
                           const std::string &directory);
+    
+    void Render(const GLboolean &useTexture = true);
+    void LoadTextures(const std::string &directory, const std::map<std::string, TextureType> &textureNames);
+        
 };
 
 

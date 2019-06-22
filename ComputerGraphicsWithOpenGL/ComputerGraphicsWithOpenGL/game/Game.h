@@ -68,12 +68,11 @@ private:
     float m_heightMapMinHeight, m_heightMapMaxHeight;
     
     //models
-    CModel * m_pCrossbow;
-    CModel * m_pHorn;
-    CModel * m_pSchofield;
-    CModel * m_pMusket;
-    CModel * m_pGrenade;
-    CModel * m_pFlashlight;
+    CModel * m_pTrolley;
+    CModel * m_pShotgun;
+    CModel * m_pSuitcase;
+    CModel * m_pFlareGun;
+    CModel * m_pMedicalSaw;
     
     //sphere object
     CSphere *m_pSphere;
@@ -89,7 +88,7 @@ private:
     
     // woodenBox
     CCube *m_pWoodenBox;
-    GLboolean m_woodenBoxesUseTexture;
+    GLboolean m_materialUseTexture;
     glm::vec4 m_woodenBoxesColor;
     std::vector<glm::vec3> m_woodenBoxesPosition;
     
@@ -260,10 +259,8 @@ protected:
     void RenderIrrSkyBox(CShaderProgram *pShaderProgram) override;
     void ResetSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
-    void RenderCrossBow(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                        const GLfloat & scale, const GLboolean &useTexture) override;
-    void RenderGrenade(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                       const GLfloat & scale, const GLboolean &useTexture) override;
+    void RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position,
+                        const GLfloat & scale, const GLboolean &useTexture);
     void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                     const GLfloat & scale, const GLboolean &useTexture) override;
     void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,

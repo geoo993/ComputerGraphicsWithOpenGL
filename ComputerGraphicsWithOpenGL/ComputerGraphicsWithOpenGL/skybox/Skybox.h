@@ -27,6 +27,7 @@ public:
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));
     void Release();
+    void Clear();
     void Render(const GLboolean &useTexture = true);
     void Render(const GLboolean &useTexture = true, const SkyboxType &skyboxType = SkyboxType::Default);
     GLuint GetNumberOfSkyboxes() const;

@@ -70,13 +70,13 @@ void Game::RenderScene(const GLboolean &toLightSpace){
             for (GLuint col = 0; col < numCol; col++) {
                 GLfloat roughness = glm::clamp((GLfloat)col / (GLfloat)numCol, 0.05f, 1.0f);
                 glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
-                SetPBRMaterialUniform(pPBRProgram, "material", albedo, metallic, roughness, m_fresnel, m_ao,
+                SetPBRMaterialUniform(pPBRProgram, "material", albedo, metallic, roughness, m_ao,
                                       m_currentPPFXMode == PostProcessingEffectMode::IIL ? m_useIrradiance : false);
                 RenderSphere(pPBRProgram, position, 30.0f, m_woodenBoxesUseTexture);
             }
         }
         
-        SetPBRMaterialUniform(pPBRProgram, "material", albedo, m_metallic, m_roughness, m_fresnel, m_ao,
+        SetPBRMaterialUniform(pPBRProgram, "material", albedo, m_metallic, m_roughness, m_ao,
                               m_currentPPFXMode == PostProcessingEffectMode::IIL ? m_useIrradiance : false);
         
         // Render Grenade

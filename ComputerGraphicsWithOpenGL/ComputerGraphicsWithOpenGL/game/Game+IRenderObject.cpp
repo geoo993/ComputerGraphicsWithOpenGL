@@ -26,19 +26,15 @@ void Game::ResetSkyBox(CShaderProgram *pShaderProgram) {
     if (m_changeSkybox == true) {
         // start by deleting current skybox and create new one
         if (m_changeSkybox == true) {
-            m_pSkybox->Release();
-            m_pSkybox = new CSkybox;
-            
+            m_pSkybox->Clear();            
             m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
             
-            m_pEnvSkybox->Release();
-            m_pEnvSkybox = new CSkybox;
+            m_pEnvSkybox->Clear();
             CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
             SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
             m_pEnvSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::EnvironmentMap, nullptr, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
             
-            m_pIrrSkybox->Release();
-            m_pIrrSkybox = new CSkybox;
+            m_pIrrSkybox->Clear();
             CShaderProgram *pIrradianceProgram = (*m_pShaderPrograms)[78];
             SetMaterialUniform(pIrradianceProgram, "material", glm::vec4(1.0f));
             m_pIrrSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::IrradianceMap, pIrradianceProgram, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);

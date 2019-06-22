@@ -12,6 +12,9 @@ CCubemap::CCubemap()
     m_envFramebuffer = 0;
     m_envRenderbuffer = 0;
     m_faces = {};
+    
+    m_pEquirectangularCube = nullptr;
+    m_irradianceCube = nullptr;
 }
 
 CCubemap::~CCubemap()
@@ -203,14 +206,13 @@ void CCubemap::LoadHRDCubemap(const int &width, const int &height, const Texture
         equirectangularProgram->SetUniform("matrices.projMatrix", captureProjection);
         equirectangularProgram->SetUniform("matrices.viewMatrix", view);
         
-        CEquirectangularCube * m_pEquirectangularCube = new CEquirectangularCube(1.0f);
+        m_pEquirectangularCube = new CEquirectangularCube(1.0f);
         m_pEquirectangularCube->Create(equirectangularCubmapPath, {
             { equirectangularCubmap, equirectangularTexturetype }
         } );
         m_pEquirectangularCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
         m_pEquirectangularCube->Render();
         
-        delete m_pEquirectangularCube;
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDepthFunc(GL_LESS);
@@ -315,14 +317,13 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
         equirectangularProgram->SetUniform("matrices.projMatrix", captureProjection);
         equirectangularProgram->SetUniform("matrices.viewMatrix", view);
         
-        CEquirectangularCube * m_pEquirectangularCube = new CEquirectangularCube(1.0f);
+        m_pEquirectangularCube = new CEquirectangularCube(1.0f);
         m_pEquirectangularCube->Create(equirectangularCubmapPath, {
             { equirectangularCubmap, equirectangularTexturetype }
         } );
         m_pEquirectangularCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
         m_pEquirectangularCube->Render();
         
-        delete m_pEquirectangularCube;
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -359,6 +360,10 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     glViewport(0, 0, 32, 32);
     glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
     
+    m_irradianceCube = new CEquirectangularCube(1.0f);
+    m_irradianceCube->Create(equirectangularCubmapPath, {});
+    m_irradianceCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+    
     for (unsigned int i = 0; i < 6; ++i)
     {
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_irrTexture, 0);
@@ -372,19 +377,14 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
         irradianceProgram->SetUniform("matrices.projMatrix", captureProjection);
         irradianceProgram->SetUniform("matrices.viewMatrix", view);
         
-        CEquirectangularCube * irradianceCube = new CEquirectangularCube(1.0f);
-        irradianceCube->Create(equirectangularCubmapPath, {});
-        irradianceCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
-        irradianceCube->Render(false);
+        m_irradianceCube->Render(false);
         
-        delete irradianceCube;
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
     glDepthFunc(GL_LESS);
     glCullFace(GL_BACK);
     glDisable(GL_DEPTH_TEST);
-    
 }
 
 // Binds texture for rendering
@@ -418,6 +418,26 @@ TextureType CCubemap::GetType() const {
     return m_type;
 }
 
+// Clear resources
+void CCubemap::Clear()
+{
+    glDeleteSamplers(1, &m_skySampler);
+    glDeleteTextures(1, &m_skyTexture);
+    
+    glDeleteSamplers(1, &m_envSampler);
+    glDeleteTextures(1, &m_envTexture);
+    
+    glDeleteSamplers(1, &m_irrSampler);
+    glDeleteTextures(1, &m_irrTexture);
+    
+    glDeleteTextures(1, &m_envFramebuffer);
+    glDeleteTextures(1, &m_envRenderbuffer);
+    m_faces.clear();
+    
+    if (m_pEquirectangularCube != nullptr) m_pEquirectangularCube = nullptr;
+    if (m_irradianceCube != nullptr) m_irradianceCube = nullptr;
+}
+
 // Release resources
 void CCubemap::Release()
 {
@@ -433,4 +453,7 @@ void CCubemap::Release()
     glDeleteTextures(1, &m_envFramebuffer);
     glDeleteTextures(1, &m_envRenderbuffer);
     m_faces.clear();
+    
+    delete m_pEquirectangularCube;
+    delete m_irradianceCube;
 }

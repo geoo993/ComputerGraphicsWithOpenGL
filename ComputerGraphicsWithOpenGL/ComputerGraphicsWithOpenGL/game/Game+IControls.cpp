@@ -155,10 +155,6 @@ void Game::LoadControls() {
     roughness->SetValue(&m_roughness);
     guiBox->y += guiBox->height;
     
-//    CSlider *fresnel = (CSlider *)AddControl(new CSlider("Fresnel", 0.0f, 1.0f, 5, guiBox));
-//    fresnel->SetValue(&m_fresnel);
-//    guiBox->y += guiBox->height;
-    
     CSlider *ao = (CSlider *)AddControl(new CSlider("AO", 0.0f, 1.0f, 5, guiBox));
     ao->SetValue(&m_ao);
     guiBox->y += guiBox->height;

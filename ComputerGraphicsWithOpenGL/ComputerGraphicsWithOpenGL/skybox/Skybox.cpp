@@ -225,6 +225,12 @@ std::vector<std::string> CSkybox::GetSkyboxes() const {
     return m_skyboxes;
 }
 
+void CSkybox::Clear() {
+    glDeleteVertexArrays(1, &m_vao);
+    m_vbo.Release();
+    m_cubemapTexture->Clear();
+}
+
 // Release the storage assocaited with the skybox
 void CSkybox::Release()
 {
@@ -234,3 +240,4 @@ void CSkybox::Release()
     m_cubemapTexture->Release();
     delete m_cubemapTexture;
 }
+

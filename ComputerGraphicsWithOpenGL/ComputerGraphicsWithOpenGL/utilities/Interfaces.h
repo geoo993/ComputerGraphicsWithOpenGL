@@ -62,14 +62,14 @@ struct ICamera {
 };
 
 struct IMaterials {
-    GLfloat m_materialShininess, m_albedo, m_metallic, m_roughness, m_fresnel, m_ao;
+    GLfloat m_materialShininess, m_albedo, m_metallic, m_roughness, m_ao;
     GLboolean m_useIrradiance;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec4 &color, const GLfloat &shininess,
                                     const GLboolean &useAO) = 0;
     virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                        const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness,
-                                       const GLfloat &fresnel, const GLfloat &ao, const GLboolean &useIrradiance) = 0;
+                                       const GLfloat &ao, const GLboolean &useIrradiance) = 0;
 };
 
 struct ITextures {

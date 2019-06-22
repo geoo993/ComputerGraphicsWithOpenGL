@@ -39,7 +39,6 @@ Game::Game()
     m_albedo = 0.5f;
     m_metallic = 0.9f;
     m_roughness = 0.1f;
-    m_fresnel = 0.0f;
     m_ao = 1.0f;
     m_useIrradiance = false;
     
@@ -66,7 +65,7 @@ Game::Game()
     // Dir Light
     m_useDir = false;
     m_dirColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    m_dirIntensity = 0.8f;
+    m_dirIntensity = 1.1f;
     m_directionalLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f),
     
     // Point Light
@@ -276,7 +275,7 @@ void Game::PreRendering() {
     UpdateControls();
     
     // update audio
-    //UpdateAudio();
+    UpdateAudio();
 }
 
 // Render scene method runs
@@ -324,7 +323,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
     InitialiseFrameBuffers(width, height);
     InitialiseCamera(width, height, glm::vec3(0.0f, 500.0f, -100.0f));
-    //InitialiseAudio(filepath);
+    InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
     LoadResources(filepath);

@@ -20,6 +20,7 @@ public:
     void BindIrrCubemapTexture(GLint iTextureUnit);
     
     void Release();
+    void Clear();
     TextureType GetType() const;
     
 private:
@@ -27,6 +28,8 @@ private:
 	GLuint m_skyTexture, m_skySampler, m_envTexture, m_envSampler, m_irrTexture, m_irrSampler;
     GLuint m_envFramebuffer, m_envRenderbuffer;
     
+    CEquirectangularCube * m_pEquirectangularCube;
+    CEquirectangularCube * m_irradianceCube;
     std::vector<std::string> m_faces;
     TextureType m_type;
 };

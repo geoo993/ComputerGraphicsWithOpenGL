@@ -38,12 +38,11 @@ void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string 
 
 void Game::SetPBRMaterialUniform(CShaderProgram *pShaderProgram,  const std::string &uniformName,
                                  const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness,
-                                 const GLfloat &fresnel, const GLfloat &ao, const GLboolean &useIrradiance) {
+                                 const GLfloat &ao, const GLboolean &useIrradiance) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("bUseIrradiance", useIrradiance);
     pShaderProgram->SetUniform(uniformName+".albedo", albedo);
     pShaderProgram->SetUniform(uniformName+".metallic", metallic);
     pShaderProgram->SetUniform(uniformName+".roughness", roughness);
-    pShaderProgram->SetUniform(uniformName+".fresnel", fresnel); // 0.6f
     pShaderProgram->SetUniform(uniformName+".ao", ao);    // 1.0f
 }

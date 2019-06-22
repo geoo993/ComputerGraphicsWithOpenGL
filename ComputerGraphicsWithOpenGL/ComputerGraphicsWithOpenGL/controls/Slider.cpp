@@ -117,14 +117,14 @@ void CSlider::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std:
         hudProgram->SetUniform("bUseScreenQuad", true);
         hudProgram->SetUniform("bUseTexture", false);
         hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.7f, 0.7f, 0.7f));
-        /*
+        
         glBindVertexArray(m_vao);
         // Draw the triangle !
         // https://www.youtube.com/watch?v=4qECwne-CD8
         // https://stackoverflow.com/questions/39430404/drawing-pixels-in-opengl
         glDrawArrays(GL_TRIANGLE_STRIP, 0, m_numTriangles);
         glBindVertexArray(0);
-        */
+        
         // Slider bar
         {
             GLfloat currentX = (*m_current - m_min) / (m_max - m_min) * (GLfloat)(m_width - m_tickSize) + (GLfloat)m_posX;

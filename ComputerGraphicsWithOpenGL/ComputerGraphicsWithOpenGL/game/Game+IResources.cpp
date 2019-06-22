@@ -26,12 +26,11 @@ void Game::InitialiseResources()
     m_pPlanarTerrain = new CPlane;
     m_pHeightmapTerrain = new CHeightMapTerrain;
     m_pLamp = new CCube(1.0f);
-    //m_pCrossbow = new CModel;
-    //m_pHorn = new CModel;
-    //m_pSchofield = new CModel;
-    //m_pMusket = new CModel;
-    //m_pGrenade = new CModel;
-    m_pFlashlight = new CModel;
+    m_pTrolley = new CModel;
+    m_pShotgun = new CModel;
+    m_pSuitcase = new CModel;
+    m_pFlareGun = new CModel;
+    m_pMedicalSaw = new CModel;
     m_pSphere = new CSphere;
     m_pFireBallSphere = new CSphere;
     m_pCube = new CCube(1.0f);
@@ -91,23 +90,52 @@ void Game::LoadResources(const std::string &path)
     
     m_pLamp->Create(path+"/textures/woodenBox/", {} );
     
-    /// https://www.cgtrader.com/free-3d-models/military/other/crossbow-d180227
-    //m_pCrossbow->Load(path+"/models/barrel/barrels_obj.obj");
+    /// https://www.cgtrader.com/free-3d-models/vehicle/industrial/industrial-trolley
+    m_pTrolley->Create(path+"/models/Trolley/", "Industrial_Trolley.obj",
+                       {   { "Trolley Base Color.tga", TextureType::ALBEDO },         // albedo map
+                           { "Trolley Metallic.tga",  TextureType::METALNESS },      // metallic map
+                           { "Trolley Roughness.tga",   TextureType::ROUGHNESS},     // roughness map
+                           { "Trolley Normal.tga", TextureType::NORMAL},             // normalMap
+                           { "Trolley Ambient Occlusion.tga",   TextureType::AO },   // aoMap
+                       });
     
-    /// https://www.cgtrader.com/free-3d-models/household/kitchenware/drinking-horn
-    //m_pHorn;
+    /// https://www.cgtrader.com/free-3d-models/military/gun/lowpoly-pbr-quad-barrel-shotgun
+    m_pShotgun->Create(path+"/models/QuadShotgun/", "Quad_Shotgun.obj",
+    {
+        { "Quad_Shotgun_BaseColor.png", TextureType::ALBEDO },         // albedo map
+        { "Quad_Shotgun_Metallic.png",  TextureType::METALNESS },      // metallic map
+        { "Quad_Shotgun_Roughness.png",   TextureType::ROUGHNESS},     // roughness map
+        { "Quad_Shotgun_Normal.png", TextureType::NORMAL},             // normalMap
+        { "Quad_Shotgun_AO.png",   TextureType::AO },                   // aoMap
+    });
     
-    /// https://www.cgtrader.com/free-3d-models/military/gun/musket-d180221
-    // m_pMusket
+    /// https://www.cgtrader.com/free-3d-models/military/gun/lowpoly-pbr-flare-gun
+    m_pFlareGun->Create(path+"/models/FlareGun/", "FlareGun.obj",
+                        {
+                            { "FlareGun_BaseColor.png", TextureType::ALBEDO },         // albedo map
+                            { "FlareGun_Metallic.png",  TextureType::METALNESS },      // metallic map
+                            { "FlareGun_Roughness.png",   TextureType::ROUGHNESS},     // roughness map
+                            { "FlareGun_Normal.png", TextureType::NORMAL},             // normalMap
+                            { "FlareGun_AO.png",   TextureType::AO },                   // aoMap
+                        });
     
-    /// https://www.cgtrader.com/free-3d-models/military/gun/schofield-3-co2-bb
-    // m_pSchofield
-    
-    /// https://www.cgtrader.com/free-3d-models/military/other/mk2-grenade-1c0f476e-3caa-4b74-9b3f-22280615a688
-    //m_pGrenade->Create(path+"/models/mk2_grenade/", "MK2.obj");
-    
-    /// https://www.cgtrader.com/free-3d-models/military/gun/mipim-d180606
-    //m_pFlashlight
+    /// https://www.cgtrader.com/free-3d-models/household/other/vintage-suitcase-528ee5e8-4a33-4e50-a8aa-aac7267d1b78
+    m_pSuitcase->Create(path+"/models/VintageSuitcase/", "Vintage_Suitcase_LP.obj",
+                        {   { "Vintage_Suitcase_Colour.png", TextureType::ALBEDO },         // albedo map
+                            { "Vintage_Suitcase_Metallic.png",  TextureType::METALNESS },      // metallic map
+                            { "Vintage_Suitcase_Roughness.png",   TextureType::ROUGHNESS},     // roughness map
+                            { "Vintage_Suitcase_Normal.png", TextureType::NORMAL},             // normalMap
+                            { "Vintage_Suitcase_AO.png",   TextureType::AO },                  // aoMap
+                        });
+
+    /// https://www.cgtrader.com/free-3d-models/industrial/tool/medical-saw
+    m_pMedicalSaw->Create(path+"/models/MedicalSaw/", "SM_Medical_Saw_01.obj",
+                          {   { "BaseColor.png", TextureType::ALBEDO },         // albedo map
+                              { "Metallic.png",  TextureType::METALNESS },      // metallic map
+                              { "Roughness.png",   TextureType::ROUGHNESS},     // roughness map
+                              { "Normal.png", TextureType::NORMAL},             // normalMap
+                              { "AO.png",   TextureType::AO },                  // aoMap
+                          });
     
     m_pCube->Create(path+"/textures/pixarLibrary/brick/", {
         { "Standard_red_pxr128.tif", TextureType::DIFFUSE},

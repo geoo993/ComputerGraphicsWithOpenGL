@@ -28,7 +28,8 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         SetMaterialUniform(pLampProgram, "material", m_pointLightColors[i], m_materialShininess, useAO);
         RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f);
     }
-
+    SetMaterialUniform(pLampProgram, "material", glm::vec4(1.0f), m_materialShininess, useAO);
+    
     /// Blinn Phong Lighting
     CShaderProgram *pLightProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 5];
     SetCameraUniform(pLightProgram, "camera", m_pCamera);
@@ -38,7 +39,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     // Render Wooden Boxes
     for ( GLuint i = 0; i < m_woodenBoxesPosition.size(); ++i){
         GLfloat angle = 20.0f * (GLfloat)i;
-        RenderWoodenBox(pLightProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_woodenBoxesUseTexture);
+        RenderWoodenBox(pLightProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_materialUseTexture);
     }
     RenderLight(pLightProgram, m_pCamera);
     
@@ -72,7 +73,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
                 glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
                 SetPBRMaterialUniform(pPBRProgram, "material", albedo, metallic, roughness, m_ao,
                                       m_currentPPFXMode == PostProcessingEffectMode::IIL ? m_useIrradiance : false);
-                RenderSphere(pPBRProgram, position, 30.0f, m_woodenBoxesUseTexture);
+                RenderSphere(pPBRProgram, position, 30.0f, m_materialUseTexture);
             }
         }
         
@@ -83,10 +84,15 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
         
         // Render Big cube underneath
-        //RenderInteriorBox(mainProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_woodenBoxesUseTexture, true);
+        // RenderInteriorBox(pPBRProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_woodenBoxesUseTexture, true);
         
         // RenderTerrain
-        //RenderTerrain(mainProgram, false, m_woodenBoxesUseTexture);
+        //RenderTerrain(pPBRProgram, false, m_woodenBoxesUseTexture);
+        //RenderModel(pPBRProgram, m_pTrolley, glm::vec3(0.0f), 1.0f, m_materialUseTexture);
+        //RenderModel(pPBRProgram, m_pShotgun, glm::vec3(0.0f), 100.0f, m_materialUseTexture);
+        //RenderModel(pPBRProgram, m_pFlareGun, glm::vec3(0.0f), 200.0f, m_materialUseTexture);
+        RenderModel(pPBRProgram, m_pSuitcase, glm::vec3(0.0f), 5.0f, m_materialUseTexture);
+        //RenderModel(pPBRProgram, m_pMedicalSaw, glm::vec3(0.0f), 10.0f, m_materialUseTexture);
         
         // Render Lights
         RenderLight(pPBRProgram, m_pCamera);
@@ -95,7 +101,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         for (GLuint row = 0; row < numRows; row++) {
             for (GLuint col = 0; col < numCol; col++) {
                 glm::vec3 position = glm::vec3(((GLfloat)row * gap) - 100.0f, 300.0f, ((GLfloat)col * gap) - 100.0f);
-                RenderSphere(pLightProgram, position, 30.0f, m_woodenBoxesUseTexture);
+                RenderSphere(pLightProgram, position, 30.0f, m_materialUseTexture);
             }
         }
     }
@@ -110,7 +116,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetLightUniform(pNormalMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
     SetMaterialUniform(pNormalMappingProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
     SetHRDLightUniform(pNormalMappingProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
-    RenderCube(pNormalMappingProgram, glm::vec3(1000.0f, 500.0f, 1000.0f), 100.0f, true);
+    RenderCube(pNormalMappingProgram, glm::vec3(500.0f, 500.0f, 1000.0f), 100.0f, true);
     
     // Add Normal mapping Lights
     RenderLight(pNormalMappingProgram, m_pCamera);
@@ -122,8 +128,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetMaterialUniform(pBumpMappingProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
     SetHRDLightUniform(pBumpMappingProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
     SetBumpMapUniform(pBumpMappingProgram, m_uvTiling);
-    RenderCube(pBumpMappingProgram, glm::vec3(500.0f, 500.0f, 1000.0f), 100.0f, true);
-    //RenderTorusKnot(pBumpMappingProgram, m_torusKnotPosition, 5.0f, true);
+    RenderTorusKnot(pBumpMappingProgram, m_torusKnotPosition, 5.0f, true);
     
     // Add Bump mapping Lights
     RenderLight(pBumpMappingProgram, m_pCamera);
@@ -155,7 +160,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetCameraUniform(pChromaticAberrationProgram, "camera", m_pCamera);
     SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
     SetHRDLightUniform(pChromaticAberrationProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
-    RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_woodenBoxesUseTexture);
+    RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_materialUseTexture);
 
     /// Render skybox
     if (m_currentPPFXMode == PostProcessingEffectMode::IBL) {

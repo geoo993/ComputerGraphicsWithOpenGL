@@ -62,7 +62,7 @@ void Game::ChangePPFXScene(PostProcessingEffectMode &mode) {
 }
 
 /// actvate frame buffer and stop rendering to the default framebuffer
-void Game::ActivateFBO(const PostProcessingEffectMode &mode) {
+void Game::BindPPFXFBO(const PostProcessingEffectMode &mode) {
     
     // start by deleting the current fbos when the ppfx mode is changed and then we render again
     if (m_changePPFXMode == true) {

@@ -282,7 +282,7 @@ void Game::PreRendering() {
     UpdateControls();
     
     // update audio
-    UpdateAudio();
+    //UpdateAudio();
 }
 
 // Render scene method runs
@@ -290,7 +290,7 @@ void Game::Render()
 {
     ChangePPFXScene( m_currentPPFXMode );
     
-    ActivateFBO( m_currentPPFXMode );
+    BindPPFXFBO( m_currentPPFXMode );
     
     // Clear buffers before rendering
     m_gameWindow->ClearBuffers();
@@ -332,7 +332,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
     InitialiseFrameBuffers(width, height);
     InitialiseCamera(width, height, glm::vec3(0.0f, 500.0f, -100.0f));
-    InitialiseAudio(filepath);
+    //InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
     LoadResources(filepath);

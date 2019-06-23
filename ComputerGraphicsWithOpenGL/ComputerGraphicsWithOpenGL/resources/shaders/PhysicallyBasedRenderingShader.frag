@@ -428,13 +428,16 @@ void main()
         color = vec3(1.0f) - exp(-color * R_hrdlight.exposure);
         // also gamma correct while we're at it
         color = pow(color, vec3(1.0f / R_hrdlight.gamma));
-    } else {
+    }
+    /*
+     
+    else {
         color = color / (color + vec3(1.0f));
         /// gamma correct
         //color = pow(color, vec3(1.0f/2.2f));
         color = pow(color, vec3(1.0f / R_hrdlight.gamma));
     }
-    
+    */
     vOutputColour = vec4(color, 1.0f);
     
     // Retrieve bright parts

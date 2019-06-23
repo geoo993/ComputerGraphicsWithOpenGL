@@ -252,7 +252,7 @@ struct IPostProcessing {
     PostProcessingEffectMode m_currentPPFXMode;
     CFrameBufferObject *currentFBO;
     std::vector<CFrameBufferObject*> m_pFBOs;
-    GLboolean m_changePPFXMode;
+    GLboolean m_changePPFXMode, m_prevPPFXMode, m_nextPPFXMode;
     GLuint m_PPFXOption;
     GLfloat m_coverage;
     
@@ -339,6 +339,7 @@ struct IPostProcessing {
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;
     virtual void ActivateFBO(const PostProcessingEffectMode &mode) = 0;
     virtual void RenderPPFXScene(const PostProcessingEffectMode &mode) = 0;
+    virtual void ChangePPFXScene(PostProcessingEffectMode &mode) = 0;
     virtual void RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType,
                                 const GLuint &bufferIndex, const TextureType &textureType) = 0;
     virtual void RenderPPFX(const PostProcessingEffectMode &mode) = 0;

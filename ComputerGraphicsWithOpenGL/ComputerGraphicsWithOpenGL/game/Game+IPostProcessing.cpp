@@ -36,6 +36,31 @@ void Game::LoadFrameBuffers(const GLuint &width , const GLuint &height) {
     m_pFBOs[6]->CreateFramebuffer(width, height, FrameBufferType::SSAO);
 }
 
+
+void Game::ChangePPFXScene(PostProcessingEffectMode &mode) {
+    if (m_prevPPFXMode) {
+        
+        m_changePPFXMode = true;
+        GLint currentIndex = static_cast<GLint>(mode);
+        GLint numberOfEffects = static_cast<GLint>(PostProcessingEffectMode::NumberOfPPFX);
+        GLint nextIndex = (currentIndex - 1) ;
+        if (nextIndex < 0)  nextIndex = numberOfEffects - 1;
+        mode = static_cast<PostProcessingEffectMode>(nextIndex);
+        
+        m_prevPPFXMode = false;
+    }
+    
+    if (m_nextPPFXMode) {
+        m_changePPFXMode = true;
+        GLint currentIndex = static_cast<GLint>(mode);
+        GLint numberOfEffects = static_cast<GLint>(PostProcessingEffectMode::NumberOfPPFX);
+        GLint nextIndex = (currentIndex + 1) % numberOfEffects;
+        mode = static_cast<PostProcessingEffectMode>(nextIndex);
+        
+        m_nextPPFXMode = false;
+    }
+}
+
 /// actvate frame buffer and stop rendering to the default framebuffer
 void Game::ActivateFBO(const PostProcessingEffectMode &mode) {
     
@@ -727,7 +752,7 @@ void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType 
         default: break;
     }
                               
-    SetMaterialUniform(pShaderProgram, "material", m_woodenBoxesColor, m_materialShininess);
+    SetMaterialUniform(pShaderProgram, "material", m_guiColor, m_materialShininess);
     SetImageProcessingUniform(pShaderProgram, true);
     m_pQuad->Render(false);
 }

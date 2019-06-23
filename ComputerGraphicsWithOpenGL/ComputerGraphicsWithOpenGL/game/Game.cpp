@@ -107,6 +107,9 @@ Game::Game()
     
     // PPFX
     m_ffaaOffset = 0.0f;
+    m_changePPFXMode = false;
+    m_prevPPFXMode = false;
+    m_nextPPFXMode = false;
     
     // SSAO
     // generate sample kernel
@@ -285,6 +288,8 @@ void Game::PreRendering() {
 // Render scene method runs
 void Game::Render()
 {
+    ChangePPFXScene( m_currentPPFXMode );
+    
     ActivateFBO( m_currentPPFXMode );
     
     // Clear buffers before rendering

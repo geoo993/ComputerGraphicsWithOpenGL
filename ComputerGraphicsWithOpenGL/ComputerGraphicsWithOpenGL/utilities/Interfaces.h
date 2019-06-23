@@ -349,6 +349,7 @@ struct IPostProcessing {
 
 struct IHud
 {
+    glm::vec4 m_textColor, m_guiColor, m_guiBackgroundColor, m_guiHighlightedColor;
     GLboolean m_enableHud;
     CFreeTypeFont *m_pFtFont;
     virtual void RenderHUD() = 0;

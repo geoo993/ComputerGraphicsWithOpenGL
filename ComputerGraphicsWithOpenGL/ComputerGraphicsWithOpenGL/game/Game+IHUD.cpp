@@ -24,7 +24,7 @@ void Game::RenderHUD(){
     
     hudProgram->UseProgram();
     hudProgram->SetUniform("matrices.projMatrix", orthoMatrix); // set othorgraphic view
-    SetMaterialUniform(hudProgram, "material", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    SetMaterialUniform(hudProgram, "material", m_textColor);
     
     // render labels
     RenderLabels(m_pFtFont, hudProgram, width, height, m_framesPerSecond, m_enableHud);

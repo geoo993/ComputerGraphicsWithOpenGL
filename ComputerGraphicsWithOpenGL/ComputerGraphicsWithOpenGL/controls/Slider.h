@@ -20,7 +20,9 @@ public:
     
     virtual void Create();
     GLboolean Update(const MouseState &state) override;
-    virtual void Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material);
+    virtual void Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material,
+    const glm::vec4 &textColor, const glm::vec4 &textHighlightedColor,
+    const glm::vec4 &sliderColor, const glm::vec4 &backgroundColor);
     virtual GUIType GetGUIType();
     
     void SetValue(GLfloat *value);

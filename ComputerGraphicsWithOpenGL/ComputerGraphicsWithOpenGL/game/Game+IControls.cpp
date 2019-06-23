@@ -175,15 +175,27 @@ void Game::LoadControls() {
     
     guiBox->height = itemHeight;
     
-    /// Post Processing Effect GUI
+    /// Post Processing Effects Selection
     GLint ppfxY = (guiBox->height * m_pSkybox->GetNumberOfSkyboxes()) + 5;
     guiBox->y += ppfxY;
+    guiBox->width -= 100;
+    CButton * previousPPFX = (CButton *)AddControl(new CButton("Prev", guiBox));
+    previousPPFX->SetValue(&m_prevPPFXMode);
     
+    guiBox->x += 100;
+    CButton * nextPPFX = (CButton *)AddControl(new CButton("Next", guiBox));
+    nextPPFX->SetValue(&m_nextPPFXMode);
+    
+    /// Post Processing Effects Coverage
+    guiBox->width += 100;
+    guiBox->x -= 100;
+    guiBox->y += guiBox->height;
     CSlider *coverage = (CSlider *)AddControl(new CSlider("PPFX Coverage", 0.0f, 1.0f, 5, guiBox));
     coverage->SetValue(&m_coverage);
     
+    
     // PBR
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CButton * pbruseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::PBR));
     pbruseHDR->SetValue(&m_HDR);
@@ -199,7 +211,7 @@ void Game::LoadControls() {
     pbrGamma->SetValue(&m_gama);
     
     // IBL
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CButton * ibluseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
     ibluseHDR->SetValue(&m_HDR);
@@ -215,7 +227,7 @@ void Game::LoadControls() {
     iblGamma->SetValue(&m_gama);
     
     // IIL
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CButton * iiluseIrradianceMap = (CButton *)AddControl(new CButton("Use Irradiance Map", guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
     iiluseIrradianceMap->SetValue(&m_useIrradianceMap);
@@ -241,13 +253,13 @@ void Game::LoadControls() {
     iilGamma->SetValue(&m_gama);
     
     // Screen wave
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *screenWaveOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 1.0f, 5, guiBox,
                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::ScreenWave));
     screenWaveOffset->SetValue(&m_screenWaveOffset);
     
     /// Swirl
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *swirlRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 720.0f, 5, guiBox,
                                                              GUIMode::DYNAMIC, false, PostProcessingEffectMode::Swirl));
     swirlRadius->SetValue(&m_swirlRadius);
@@ -258,7 +270,7 @@ void Game::LoadControls() {
     swirlAngle->SetValue(&m_swirlAngle);
 
     /// Night Vision
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *nightVisionluminanceThreshold = (CSlider *)AddControl(new CSlider("Luminance Threshold", 0.0f, 1.0f, 5, guiBox,
                                                              GUIMode::DYNAMIC, false, PostProcessingEffectMode::NightVision));
     nightVisionluminanceThreshold->SetValue(&m_nightVisionluminanceThreshold);
@@ -269,7 +281,7 @@ void Game::LoadControls() {
     nightVisionColorAmplification->SetValue(&m_nightVisionColorAmplification);
     
     /// Posterization
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *posterizationGama = (CSlider *)AddControl(new CSlider("Gama", 0.0f, 2.0f, 5, guiBox,
                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::Posterization));
     posterizationGama->SetValue(&m_posterizationGama);
@@ -280,13 +292,13 @@ void Game::LoadControls() {
     posterizationColors->SetValue(&m_posterizationColors);
     
      /// Pixelate
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *pixelateSize = (CSlider *)AddControl(new CSlider("Pixel Size", 0.0f, 20.0f, 5, guiBox,
     GUIMode::DYNAMIC, false, PostProcessingEffectMode::Pixelate));
     pixelateSize->SetValue(&m_pixelateSize);
     
     /// Pixelation
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *pixelationWidth = (CSlider *)AddControl(new CSlider("Pixel Width", 0.0f, 20.0f, 5, guiBox,
                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::Pixelation));
     pixelationWidth->SetValue(&m_pixelWidth);
@@ -297,7 +309,7 @@ void Game::LoadControls() {
     pixelationHeight->SetValue(&m_pixelHeight);
     
     /// Frosted Glass Effect
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *frostedGlassPixelX = (CSlider *)AddControl(new CSlider("Pixel X", 0.0f, 20.0f, 5, guiBox,
                                                                  GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassEffect));
     frostedGlassPixelX->SetValue(&m_frostedGlassPixelX);
@@ -313,7 +325,7 @@ void Game::LoadControls() {
     frostedGlassFrequency->SetValue(&m_frostedGlassFrequency);
     
     /// Frosted Glass
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *frostedGlassRandomFactor = (CSlider *)AddControl(new CSlider("Random Factor", 0.0f, 0.4f, 5, guiBox,
                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
     frostedGlassRandomFactor->SetValue(&m_frostedGlassRandomFactor);
@@ -324,7 +336,7 @@ void Game::LoadControls() {
     frostedGlassRandomScale->SetValue(&m_frostedGlassRandomScale);
     
     /// Crosshatching
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *crosshatchingOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 10.0f, 5, guiBox,
                                                                           GUIMode::DYNAMIC, false, PostProcessingEffectMode::Crosshatching));
     crosshatchingOffset->SetValue(&m_crosshatchingOffset);
@@ -350,7 +362,7 @@ void Game::LoadControls() {
     crosshatchingThreshold_4->SetValue(&m_crosshatchingThreshold_4);
     
     // Toonify
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *toonifyLowerTres = (CSlider *)AddControl(new CSlider("Lower Threshold", 0.0f, 1.0f, 5, guiBox,
                                                                      GUIMode::DYNAMIC, false, PostProcessingEffectMode::Toonify));
     toonifyLowerTres->SetValue(&m_toonifyLowerTres);
@@ -361,19 +373,19 @@ void Game::LoadControls() {
     toonifyUpperTres->SetValue(&m_toonifyUpperTres);
     
     // Fish Eye
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *fishEyeRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 1.0f, 5, guiBox,
                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::FishEye));
     fishEyeRadius->SetValue(&m_fishEyeRadius);
     
     // Barrel Distortion
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *barrelDistortionPower = (CSlider *)AddControl(new CSlider("Power", 0.0f, 10.0f, 5, guiBox,
                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::BarrelDistortion));
     barrelDistortionPower->SetValue(&m_barrelDistortionPower);
     
     // MultiScreenFishEye
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *multiScreenFishEyeOffsetX = (CSlider *)AddControl(new CSlider("X Offset", 0.0f, 1.0f, 5, guiBox,
                                                                           GUIMode::DYNAMIC, false, PostProcessingEffectMode::MultiScreenFishEye));
     multiScreenFishEyeOffsetX->SetValue(&m_multiScreenFishEyeOffsetX);
@@ -394,19 +406,19 @@ void Game::LoadControls() {
     multiScreenFishEyeCurvature->SetValue(&m_multiScreenFishEyeCurvature);
     
     // FishEyeLens
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *fishEyeLensSize = (CSlider *)AddControl(new CSlider("Size", 0.0f, 1.0f, 5, guiBox,
                                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::FishEyeLens));
     fishEyeLensSize->SetValue(&m_fishEyeLensSize);
     
     // Gaussian Blur
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *gaussianBlurIntensity = (CSlider *)AddControl(new CSlider("Intensity", 0.0f, 2.0f, 5, guiBox,
                                                                  GUIMode::DYNAMIC, false, PostProcessingEffectMode::GaussianBlur));
     gaussianBlurIntensity->SetValue(&m_gaussianBlurIntensity);
     
     // Radial Blur
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *radialBlurRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 1.0f, 5, guiBox,
                                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::RadialBlur));
     radialBlurRadius->SetValue(&m_radialBlurRadius);
@@ -417,7 +429,7 @@ void Game::LoadControls() {
     radialBlurResolution->SetValue(&m_radialBlurResolution);
     
     // Motion Blur
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *motionBlurTargetFps = (CSlider *)AddControl(new CSlider("Target FPS", 0.0f, 300.0f, 5, guiBox,
                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::MotionBlur));
     motionBlurTargetFps->SetValue(&m_motionBlurTargetFps);
@@ -428,7 +440,7 @@ void Game::LoadControls() {
     motionBlurSamples->SetValue(&m_motionBlurSamples);
     
     // Vignetting
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CButton * vignettingTint = (CButton *)AddControl(new CButton("Tint", guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::Vignetting));
     vignettingTint->SetValue(&m_vignettingTint);
     guiBox->y += guiBox->height;
@@ -448,7 +460,7 @@ void Game::LoadControls() {
     
     
     // BrightParts
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CButton * brightPartsSmoothGradient = (CButton *)AddControl(new CButton("Smooth Gradient", guiBox,
                                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::BrightParts));
     brightPartsSmoothGradient->SetValue(&m_brightPartsSmoothGradient);
@@ -459,7 +471,7 @@ void Game::LoadControls() {
     brightPartsIntensity->SetValue(&m_brightPartsIntensity);
     
     // Bloom
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *bloomIntensity = (CSlider *)AddControl(new CSlider("Intensity", 0.0f, 2.0f, 5, guiBox,
                                                                        GUIMode::DYNAMIC, false, PostProcessingEffectMode::Bloom));
     bloomIntensity->SetValue(&m_gaussianBlurIntensity);
@@ -481,7 +493,7 @@ void Game::LoadControls() {
     
     
     // HRDToneMapping
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CButton * hdruseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::HDRToneMapping));
     hdruseHDR->SetValue(&m_HDR);
@@ -497,7 +509,7 @@ void Game::LoadControls() {
     hdrGamma->SetValue(&m_gama);
     
     // Lens Flare
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     guiBox->height = itemHeight * 3;
     GLboolean m_changeLensFlare = true;
     CListBox * lensFlareNames = (CListBox *)AddControl(new CListBox(guiBox, itemHeight,
@@ -557,13 +569,13 @@ void Game::LoadControls() {
     guiBox->y += guiBox->height;
     
     // Fast Approximate Anti Aliasing
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CSlider *ffaaOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 128.0f, 5, guiBox,
                                                                 GUIMode::DYNAMIC, false, PostProcessingEffectMode::FXAA));
     ffaaOffset->SetValue(&m_ffaaOffset);
     
     // SSAO
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CButton * ssaoNoiseUseLight = (CButton *)AddControl(new CButton("Use Light", guiBox,
                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
     ssaoNoiseUseLight->SetValue(&m_ssaoNoiseUseLight);
@@ -911,30 +923,7 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
         
         switch (state.m_keyPressed)
         {
-            case GLFW_KEY_GRAVE_ACCENT: {
-                m_changePPFXMode = true;
-                GLint currentIndex = static_cast<GLint>(m_currentPPFXMode);
-                GLint numberOfEffects = static_cast<GLint>(PostProcessingEffectMode::NumberOfPPFX);
-                GLint nextIndex = (currentIndex - 1) ;
-                if (nextIndex < 0)  nextIndex = numberOfEffects - 1;
-                m_currentPPFXMode = static_cast<PostProcessingEffectMode>(nextIndex);
-            }
-                break;
-            case GLFW_KEY_Z: {
-                m_changePPFXMode = true;
-                GLint currentIndex = static_cast<GLint>(m_currentPPFXMode);
-                GLint numberOfEffects = static_cast<GLint>(PostProcessingEffectMode::NumberOfPPFX);
-                GLint nextIndex = (currentIndex + 1) % numberOfEffects;
-                m_currentPPFXMode = static_cast<PostProcessingEffectMode>(nextIndex);
-            }
-                break;
                 /*
-            case GLFW_KEY_X:
-                m_magnitude -= 0.1f;
-                break;
-            case GLFW_KEY_C:
-                m_magnitude += 0.1f;
-                break;
             case GLFW_KEY_PERIOD:
                 m_audioNumber = (m_audioNumber + 1) % 5;
                 m_changeAudio = true;

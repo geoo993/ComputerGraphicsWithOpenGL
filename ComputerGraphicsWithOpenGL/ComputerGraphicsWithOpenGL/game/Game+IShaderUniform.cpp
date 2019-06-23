@@ -367,18 +367,16 @@ void Game::SetBrightPartsUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetBloomUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bHDR", m_HDR);
-    pShaderProgram->SetUniform("exposure", m_exposure);
-    pShaderProgram->SetUniform("gamma", m_gama);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+    // HDR Light
+    SetHRDLightUniform(pShaderProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
 }
 
 void Game::SetHRDToneMappingUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bHDR", m_HDR);
-    pShaderProgram->SetUniform("exposure", m_exposure);
-    pShaderProgram->SetUniform("gamma", m_gama);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
+    // HDR Light
+    SetHRDLightUniform(pShaderProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
 }
 
 void Game::SetLensFlareGhostUniform(CShaderProgram *pShaderProgram){

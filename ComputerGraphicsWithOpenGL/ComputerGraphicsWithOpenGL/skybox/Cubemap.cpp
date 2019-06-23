@@ -146,7 +146,7 @@ void CCubemap::LoadHRDCubemap(const int &width, const int &height, const Texture
     }
     glGenSamplers(1, &m_envSampler);
     glSamplerParameteri(m_envSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glSamplerParameteri(m_envSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glSamplerParameteri(m_envSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     
     glSamplerParameteri(m_envSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glSamplerParameteri(m_envSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -258,7 +258,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     }
     glGenSamplers(1, &m_envSampler);
     glSamplerParameteri(m_envSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glSamplerParameteri(m_envSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glSamplerParameteri(m_envSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     
     glSamplerParameteri(m_envSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glSamplerParameteri(m_envSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -341,7 +341,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     }
     glGenSamplers(1, &m_irrSampler);
     glSamplerParameteri(m_irrSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glSamplerParameteri(m_irrSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glSamplerParameteri(m_irrSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glSamplerParameteri(m_irrSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glSamplerParameteri(m_irrSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glSamplerParameteri(m_irrSampler, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);

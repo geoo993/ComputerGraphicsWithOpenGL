@@ -57,10 +57,13 @@ void main()
             envColor = vec3(1.0f) - exp(-envColor * R_hrdlight.exposure);
             // also gamma correct while we're at it
             envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
-        } else {
+        }
+        /*
+        else {
             envColor = envColor / (envColor + vec3(1.0f));
             envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
         }
+         */
         vOutputColour = vec4(envColor, 1.0f);
     } else {
         vOutputColour = texture(material.cubeMap, fs_in.vLocalPosition);

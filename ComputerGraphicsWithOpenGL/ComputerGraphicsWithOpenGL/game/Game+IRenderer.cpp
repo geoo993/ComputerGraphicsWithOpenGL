@@ -28,7 +28,6 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         SetMaterialUniform(pLampProgram, "material", m_pointLightColors[i], m_materialShininess, useAO);
         RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f);
     }
-    SetMaterialUniform(pLampProgram, "material", glm::vec4(1.0f), m_materialShininess, useAO);
     
     /// Blinn Phong Lighting
     CShaderProgram *pLightProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 5];
@@ -42,6 +41,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         RenderWoodenBox(pLightProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_materialUseTexture);
     }
     RenderLight(pLightProgram, m_pCamera);
+    RenderTerrain(pLightProgram, false, m_materialUseTexture);
     
      
     GLboolean isPBR =
@@ -80,14 +80,11 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         SetPBRMaterialUniform(pPBRProgram, "material", albedo, m_metallic, m_roughness, m_ao,
                               m_currentPPFXMode == PostProcessingEffectMode::IIL ? m_useIrradiance : false);
         
-        // Render Grenade
-        //RenderGrenade(pNormalMappingProgram,  glm::vec3(600.0f, 200.0f, -500.0f), 20.0f, true);
-        
         // Render Big cube underneath
-        // RenderInteriorBox(pPBRProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_woodenBoxesUseTexture, true);
+        //RenderInteriorBox(pPBRProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_materialUseTexture, true);
         
         // Render Terrain
-        //RenderTerrain(pPBRProgram, false, m_woodenBoxesUseTexture);
+        //RenderTerrain(pPBRProgram, false, m_materialUseTexture);
         
         // Render Models
         //RenderModel(pPBRProgram, m_pTrolley, glm::vec3(0.0f), 1.0f, m_materialUseTexture);

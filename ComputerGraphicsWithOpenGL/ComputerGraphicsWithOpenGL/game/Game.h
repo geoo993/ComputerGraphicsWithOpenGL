@@ -284,7 +284,7 @@ protected:
     /// Post processing
     void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) override;
     void LoadFrameBuffers(const GLuint &width, const GLuint &height) override;
-    void ActivateFBO(const PostProcessingEffectMode &mode) override;
+    void BindPPFXFBO(const PostProcessingEffectMode &mode) override;
     void RenderPPFXScene(const PostProcessingEffectMode &mode) override;
     void ChangePPFXScene(PostProcessingEffectMode &mode) override;
     void RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType = FrameBufferType::Default,

@@ -208,11 +208,12 @@ void main() {
         hdrColor = vec3(1.0f) - exp(-hdrColor * R_hrdlight.exposure);
         // also gamma correct while we're at it
         hdrColor = pow(hdrColor, vec3(1.0f / R_hrdlight.gamma));
-    } else {
-        hdrColor = hdrColor / (hdrColor + vec3(1.0f));
-        hdrColor = pow(hdrColor, vec3(1.0f / R_hrdlight.gamma));
     }
-    vOutputColour = vec4(hdrColor, 1.0f);
+//    else {
+//        hdrColor = hdrColor / (hdrColor + vec3(1.0f));
+//        hdrColor = pow(hdrColor, vec3(1.0f / R_hrdlight.gamma));
+//    }
+    vOutputColour = vec4(hdrColor, result.z);
     
     
     // Retrieve bright parts

@@ -554,6 +554,8 @@ void CGameWindow::PreRendering(){
     glFrontFace(GL_CCW); // this allow us to render in counter clockwise maner, by default opengl renders in this counter colockwise manner.
     // The default value is GL_CCW that stands for counter-clockwise ordering with the other option being GL_CW which (obviously) stands for clockwise ordering.
     
+    // enable seamless cubemap sampling for lower mip levels in the pre-filter map.
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
     
 }
 

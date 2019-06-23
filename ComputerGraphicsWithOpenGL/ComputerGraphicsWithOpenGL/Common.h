@@ -81,7 +81,7 @@
 #define FOV 90.0
 #define ZNEAR 0.1
 #define ZFAR 4000.0
-#define SKYBOX 1000
+#define SKYBOX 512
 
 // Default camera values
 #define SPEED 50.0f

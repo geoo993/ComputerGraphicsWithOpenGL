@@ -150,11 +150,12 @@ Game::Game()
     m_pSkybox = nullptr;
     m_pEnvSkybox = nullptr;
     m_pIrrSkybox = nullptr;
-    m_mapSize = (GLfloat)SKYBOX;
+    m_skyboxSize = (GLfloat)SKYBOX;
     m_skyboxNumber = 0;
     m_changeSkybox = false;
     
     // terrain
+    m_mapSize = (GLfloat)ZFAR;
     m_pPlanarTerrain = nullptr;
     m_pHeightmapTerrain = nullptr;
     m_heightMapMinHeight = 0.0f ;

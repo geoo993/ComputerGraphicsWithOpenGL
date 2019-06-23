@@ -22,22 +22,19 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
     pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
     m_pQuad->Render(bindTexture);
 }
+
 void Game::ResetSkyBox(CShaderProgram *pShaderProgram) {
     if (m_changeSkybox == true) {
         // start by deleting current skybox and create new one
         if (m_changeSkybox == true) {
             m_pSkybox->Clear();
-            m_pSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
+            m_pSkybox->Create(m_skyboxSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
             
             m_pEnvSkybox->Clear();
-            CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
-            SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
-            m_pEnvSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::EnvironmentMap, nullptr, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+            m_pEnvSkybox->Create(m_skyboxSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::EnvironmentMap, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
             
             m_pIrrSkybox->Clear();
-            CShaderProgram *pIrradianceProgram = (*m_pShaderPrograms)[78];
-            SetMaterialUniform(pIrradianceProgram, "material", glm::vec4(1.0f));
-            m_pIrrSkybox->Create(m_mapSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::IrradianceMap, pIrradianceProgram, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+            m_pIrrSkybox->Create(m_skyboxSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::IrradianceMap, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
             
             m_changeSkybox = false;
         }

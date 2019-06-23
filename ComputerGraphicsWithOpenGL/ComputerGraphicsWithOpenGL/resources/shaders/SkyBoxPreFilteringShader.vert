@@ -15,18 +15,18 @@ layout (location = 2) in vec3 inNormal;
 out VS_OUT
 {
     vec2 vTexCoord;    // Texture coordinate
-    vec3 vLocalPosition;
+    vec3 vLocalPosition; // used for skybox
 } vs_out;
 
-
 // This is the entry point into the vertex shader
-void main() {
-    
+void main()
+{
     vec4 position = vec4(inPosition, 1.0f);
     
     // Pass through the texture coordinate
     vs_out.vTexCoord = inCoord;
     
+    // Save the world position for rendering the skybox
     vs_out.vLocalPosition = inPosition;
     
     // Transform the vertex spatial position using

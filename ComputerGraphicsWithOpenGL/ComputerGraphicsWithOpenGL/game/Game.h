@@ -58,11 +58,12 @@ private:
     CSkybox *m_pSkybox;
     CSkybox *m_pEnvSkybox;
     CSkybox *m_pIrrSkybox;
-    GLfloat m_mapSize;
+    GLfloat m_skyboxSize;
     GLboolean m_changeSkybox;
     GLuint m_skyboxNumber;
     
     // terrain
+    GLfloat m_mapSize;
     CPlane *m_pPlanarTerrain;
     CHeightMapTerrain *m_pHeightmapTerrain;
     float m_heightMapMinHeight, m_heightMapMaxHeight;

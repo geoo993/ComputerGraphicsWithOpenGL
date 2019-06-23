@@ -207,6 +207,12 @@ Game::Game()
     m_enableHud = true;
     m_pFtFont = nullptr;
     
+    // https://juiceboxinteractive.com/blog/color/
+    m_textColor = glm::vec4(1.0f, 1.0f, 1.0f, 0.7f);  // unhighlighed text
+    m_guiColor = glm::vec4(0.16f, 0.20f, 0.43f, 0.6f); // sliding / selected
+    m_guiBackgroundColor = glm::vec4(0.16f, 0.49f, 0.62f, 0.6f); // background
+    m_guiHighlightedColor = glm::vec4(0.29f, 0.79f, 0.84f, 0.7f);  // highlighed text
+    
     // inputs
     m_mouseButtonDown = false;
     m_mouseX, m_mouseY = 0.0;

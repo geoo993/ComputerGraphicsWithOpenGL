@@ -86,12 +86,14 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         // Render Big cube underneath
         // RenderInteriorBox(pPBRProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_woodenBoxesUseTexture, true);
         
-        // RenderTerrain
+        // Render Terrain
         //RenderTerrain(pPBRProgram, false, m_woodenBoxesUseTexture);
+        
+        // Render Models
         //RenderModel(pPBRProgram, m_pTrolley, glm::vec3(0.0f), 1.0f, m_materialUseTexture);
         //RenderModel(pPBRProgram, m_pShotgun, glm::vec3(0.0f), 100.0f, m_materialUseTexture);
         //RenderModel(pPBRProgram, m_pFlareGun, glm::vec3(0.0f), 200.0f, m_materialUseTexture);
-        RenderModel(pPBRProgram, m_pSuitcase, glm::vec3(0.0f), 5.0f, m_materialUseTexture);
+        //RenderModel(pPBRProgram, m_pSuitcase, glm::vec3(0.0f), 5.0f, m_materialUseTexture);
         //RenderModel(pPBRProgram, m_pMedicalSaw, glm::vec3(0.0f), 10.0f, m_materialUseTexture);
         
         // Render Lights
@@ -109,7 +111,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
     m_pEnvSkybox->BindEnvSkyboxTo(cubemapTextureUnit);
     
-    
+    /*
     /// Normal Mapping
     CShaderProgram *pNormalMappingProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 6];
     SetCameraUniform(pNormalMappingProgram, "camera", m_pCamera);
@@ -161,7 +163,8 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetMaterialUniform(pChromaticAberrationProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f));
     SetHRDLightUniform(pChromaticAberrationProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
     RenderChromaticAberrationCube(pChromaticAberrationProgram, glm::vec3(-1000.0f, 500.0f, 1000.0f), 100.0f, m_materialUseTexture);
-
+*/
+     
     /// Render skybox
     if (m_currentPPFXMode == PostProcessingEffectMode::IBL) {
         CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];

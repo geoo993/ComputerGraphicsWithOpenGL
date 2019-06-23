@@ -26,7 +26,9 @@ public:
     virtual ~CControl();
     
     virtual void Create() = 0;
-    virtual void Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material) = 0;
+    virtual void Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material,
+    const glm::vec4 &textColor, const glm::vec4 &textHighlightedColor,
+    const glm::vec4 &color, const glm::vec4 &backgroundColor) = 0;
     virtual GLboolean Update(const MouseState &state);
     virtual GUIType GetGUIType() = 0;
     

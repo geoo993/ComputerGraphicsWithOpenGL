@@ -637,7 +637,8 @@ void Game::RenderControls() {
         
         /// Render GUI objects
         if (control->GetIsActive() == true) {
-            control->Render(m_pFtFont, hudProgram, "material");
+            control->Render(m_pFtFont, hudProgram, "material",
+                            m_textColor, m_guiHighlightedColor, m_guiColor, m_guiBackgroundColor);
             
             if ( (controlled != nullptr && controlled != control) || mState.m_isNavigating) {
                 // our current controll is being controlled

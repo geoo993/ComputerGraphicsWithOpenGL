@@ -46,24 +46,6 @@ void Game::InitialiseResources()
 void Game::LoadResources(const std::string &path)
 {
     
-    // font
-    m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32, TextureType::DEPTH);
-    
-    // screens
-    m_pQuad->Create(path+"/textures/pixarLibrary/fabric/", { {"Wild_flowers_pxr128.tif", TextureType::DIFFUSE}}, 1.0f, 1.0f);
-    
-    // Create the skybox
-    // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
-    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
-    CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
-    SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
-    m_pEnvSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::EnvironmentMap, nullptr, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
-    
-    CShaderProgram *pIrradianceProgram = (*m_pShaderPrograms)[78];
-    SetMaterialUniform(pIrradianceProgram, "material", glm::vec4(1.0f));
-    m_pIrrSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::IrradianceMap, pIrradianceProgram, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
-    
-    
     // Create the planar terrain
     m_pPlanarTerrain->Create(path+"/textures/pbr/metalpainted/", { // http://www.crazyrobinhood.org/textures/
         { "Metal_Painted_001_albedo.jpg", TextureType::ALBEDO},              // albedo map
@@ -198,7 +180,7 @@ void Game::LoadResources(const std::string &path)
     },
                          1024,         // in: Number of steps in the torus knot
                          32,           // in: Number of facets
-                         20.0f,         // in: Scale of the knot
+                         20.0f,        // in: Scale of the knot
                          0.1f,         // in: Thickness of the knot
                          0.0f,         // in: Number of clumps in the knot
                          0.0f,         // in: Offset of the clump (in 0..2pi)
@@ -212,4 +194,22 @@ void Game::LoadResources(const std::string &path)
         m_pMetaballs->SetGridSize(50);
         CMarchingCubes::BuildTables();
     }
+    
+    // font
+    m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32, TextureType::DEPTH);
+    
+    // Create the skybox
+    // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
+    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
+    CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
+    SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
+    m_pEnvSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::EnvironmentMap, nullptr, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+    
+    CShaderProgram *pIrradianceProgram = (*m_pShaderPrograms)[78];
+    SetMaterialUniform(pIrradianceProgram, "material", glm::vec4(1.0f));
+    m_pIrrSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::IrradianceMap, pIrradianceProgram, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+    
+    
+    // screens
+    m_pQuad->Create(path+"/textures/pixarLibrary/fabric/", { {"Wild_flowers_pxr128.tif", TextureType::DIFFUSE}}, 1.0f, 1.0f);
 }

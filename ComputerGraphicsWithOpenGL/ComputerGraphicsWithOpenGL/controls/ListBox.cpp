@@ -98,13 +98,15 @@ GLboolean CListBox::Update(const MouseState &state){
     return false;
 }
 
-void CListBox::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material) {
+void CListBox::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std::string &material,
+                    const glm::vec4 &textColor, const glm::vec4 &textHighlightedColor,
+                    const glm::vec4 &boxColor, const glm::vec4 &backgroundColor) {
     
     if (m_isActive && m_currentIndex != nullptr) {
         hudProgram->UseProgram();
         hudProgram->SetUniform("bUseScreenQuad", true);
         hudProgram->SetUniform("bUseTexture", false);
-        hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.7f, 0.7f, 0.7f));
+        hudProgram->SetUniform(material+".color", backgroundColor);
     
         glBindVertexArray(m_vao);
         // Draw the triangle !
@@ -162,7 +164,7 @@ void CListBox::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std
                                   sizeof(glm::vec2),            // stride
                                   (void*)0                      // array buffer offset
                                   );
-            hudProgram->SetUniform(material+".color", glm::vec4(0.7f, 0.2f, 0.2f, 0.7f));
+            hudProgram->SetUniform(material+".color", boxColor);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, g_quad_vertex_buffer_data.size());
             glBindVertexArray(0);
         }
@@ -170,9 +172,9 @@ void CListBox::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std
         for (int i = 0; i < (int)m_items.size(); i++) {
             // Highlight current button
             if (*m_currentIndex == i) {
-                hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.8f));
+                hudProgram->SetUniform(material+".color", textHighlightedColor);
             } else {
-                hudProgram->SetUniform(material+".color", glm::vec4(0.2f, 0.2f, 0.7f, 0.5f));
+                hudProgram->SetUniform(material+".color", textColor);
             }
             
             // Draw text inside button

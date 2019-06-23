@@ -200,14 +200,9 @@ void Game::LoadResources(const std::string &path)
     
     // Create the skybox
     // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
-    m_pSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::Default, nullptr, nullptr, TextureType::EMISSION, m_skyboxNumber);
-    CShaderProgram *pEquirectangularCubeProgram = (*m_pShaderPrograms)[77];
-    SetMaterialUniform(pEquirectangularCubeProgram, "material", glm::vec4(1.0f));
-    m_pEnvSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::EnvironmentMap, nullptr, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
-    
-    CShaderProgram *pIrradianceProgram = (*m_pShaderPrograms)[78];
-    SetMaterialUniform(pIrradianceProgram, "material", glm::vec4(1.0f));
-    m_pIrrSkybox->Create(m_mapSize, path, TextureType::CUBEMAP, SkyboxType::IrradianceMap, pIrradianceProgram, pEquirectangularCubeProgram, TextureType::EMISSION, m_skyboxNumber);
+    m_pSkybox->Create(m_skyboxSize, path, TextureType::CUBEMAP, SkyboxType::Default, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
+    m_pEnvSkybox->Create(m_skyboxSize, path, TextureType::CUBEMAP, SkyboxType::EnvironmentMap, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
+    m_pIrrSkybox->Create(m_skyboxSize, path, TextureType::CUBEMAP, SkyboxType::IrradianceMap, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
     
     
     // screens

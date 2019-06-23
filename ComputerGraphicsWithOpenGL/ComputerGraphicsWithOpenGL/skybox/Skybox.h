@@ -17,7 +17,7 @@ class CSkybox: public GameObject
 public:
 	CSkybox();
 	~CSkybox();
-    void Create(const GLfloat &size, const std::string &path, const TextureType &textureType, const SkyboxType &skyboxType, CShaderProgram *irradianceProgram, CShaderProgram *equirectangularProgram, const TextureType &equirectangularTexturetype, const GLuint &skyboxNumber);
+    void Create(const GLfloat &size, const std::string &path, const TextureType &textureType, const SkyboxType &skyboxType, std::vector <CShaderProgram *> *shaderPrograms, IMaterials *mat, const TextureType &equirectangularTexturetype, const GLuint &skyboxNumber);
     void CreateAttributes(const GLfloat &size = 1.0f);
     void BindSkyboxTo(const GLint &textureUnit);
     void BindEnvSkyboxTo(const GLint &textureUnit);

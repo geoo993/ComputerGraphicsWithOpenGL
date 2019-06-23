@@ -22,7 +22,7 @@ CSkybox::~CSkybox()
 }
 
 // Create a skybox
-void CSkybox::Create(const GLfloat &size, const std::string &path, const TextureType &textureType, const SkyboxType &skyboxType, CShaderProgram *irradianceProgram, CShaderProgram *equirectangularProgram, const TextureType &equirectangularTexturetype, const GLuint &skyboxNumber)
+void CSkybox::Create(const GLfloat &size, const std::string &path, const TextureType &textureType, const SkyboxType &skyboxType, std::vector <CShaderProgram *> *shaderPrograms, IMaterials *mat, const TextureType &equirectangularTexturetype, const GLuint &skyboxNumber)
 {
     
     
@@ -83,13 +83,13 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
             }
             break;
         case SkyboxType::EnvironmentMap: {
-            m_cubemapTexture->LoadHRDCubemap((int)size, (int)size, textureType, equirectangularProgram,
+            m_cubemapTexture->LoadHRDCubemap((int)size, (int)size, textureType, shaderPrograms, mat,
                                              path+"/skyboxes/"+m_skyboxes[ind]+"/", m_skyboxes[ind]+".hdr",
                                              equirectangularTexturetype);
         }
             break;
         case SkyboxType::IrradianceMap: {
-            m_cubemapTexture->LoadIrradianceCubemap((int)size, (int)size, textureType, irradianceProgram, equirectangularProgram,
+            m_cubemapTexture->LoadIrradianceCubemap((int)size, (int)size, textureType, shaderPrograms, mat,
                                                     path+"/skyboxes/"+m_skyboxes[ind]+"/", m_skyboxes[ind]+".hdr", equirectangularTexturetype);
         }
             break;

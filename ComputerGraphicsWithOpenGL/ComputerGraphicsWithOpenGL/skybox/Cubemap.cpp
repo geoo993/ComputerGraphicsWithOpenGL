@@ -8,11 +8,14 @@ CCubemap::CCubemap()
     m_envSampler = 0;
     m_irrTexture = 0;
     m_irrSampler = 0;
+    m_prefilterTexture = 0;
+    m_prefilterSampler = 0;
 
     m_envFramebuffer = 0;
     m_envRenderbuffer = 0;
     m_faces = {};
     
+    m_shaderProgram = nullptr;
     m_pEquirectangularCube = nullptr;
     m_irradianceCube = nullptr;
 }
@@ -113,7 +116,7 @@ void CCubemap::LoadCubemap(const std::vector<std::string> &cubemapFaces, const T
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void CCubemap::LoadHRDCubemap(const int &width, const int &height, const TextureType &type, CShaderProgram *equirectangularProgram, const std::string &equirectangularCubmapPath, const std::string &equirectangularCubmap, const TextureType &equirectangularTexturetype) {
+void CCubemap::LoadHRDCubemap(const int &width, const int &height, const TextureType &type, std::vector <CShaderProgram *> *shaderPrograms, IMaterials *mat, const std::string &equirectangularCubmapPath, const std::string &equirectangularCubmap, const TextureType &equirectangularTexturetype) {
   
     m_faces = {};
     m_type = type;
@@ -181,16 +184,17 @@ void CCubemap::LoadHRDCubemap(const int &width, const int &height, const Texture
     // Creating a depth and stencil renderbuffer object is done by calling the glRenderbufferStorage function:
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
     
-    // Once we've allocated enough memory for the renderbuffer object we can unbind the renderbuffer.
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    
     // Last thing left to do is actually attach the renderbuffer object:
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_envRenderbuffer);
     
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    // Once we've allocated enough memory for the renderbuffer object we can unbind the renderbuffer.
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
     
     glViewport(0, 0, width, height);
     glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
+    
+    m_shaderProgram = (*shaderPrograms)[77]; // equirectangularProgram
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
     
     int iTextureUnit = static_cast<int>(equirectangularTexturetype); // cubemap
     for (unsigned int i = 0; i < 6; ++i)
@@ -201,10 +205,10 @@ void CCubemap::LoadHRDCubemap(const int &width, const int &height, const Texture
         glClearDepth(1.0f);
         
         glm::mat4 view = captureViews[i];
-        equirectangularProgram->UseProgram();
-        equirectangularProgram->SetUniform("material.emissionMap", iTextureUnit);
-        equirectangularProgram->SetUniform("matrices.projMatrix", captureProjection);
-        equirectangularProgram->SetUniform("matrices.viewMatrix", view);
+        m_shaderProgram->UseProgram();
+        m_shaderProgram->SetUniform("material.emissionMap", iTextureUnit);
+        m_shaderProgram->SetUniform("matrices.projMatrix", captureProjection);
+        m_shaderProgram->SetUniform("matrices.viewMatrix", view);
         
         m_pEquirectangularCube = new CEquirectangularCube(1.0f);
         m_pEquirectangularCube->Create(equirectangularCubmapPath, {
@@ -230,7 +234,7 @@ void CCubemap::LoadHRDCubemap(const int &width, const int &height, const Texture
      */
 }
 
-void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const TextureType &type, CShaderProgram *irradianceProgram, CShaderProgram *equirectangularProgram, const std::string &equirectangularCubmapPath, const std::string &equirectangularCubmap, const TextureType &equirectangularTexturetype) {
+void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const TextureType &type, std::vector <CShaderProgram *> *shaderPrograms, IMaterials *mat, const std::string &equirectangularCubmapPath, const std::string &equirectangularCubmap, const TextureType &equirectangularTexturetype) {
     
     m_faces = {};
     m_type = type;
@@ -263,10 +267,6 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     glSamplerParameteri(m_envSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glSamplerParameteri(m_envSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glSamplerParameteri(m_envSampler, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    
-    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-    
 
     // pbr: set up projection and view matrices for capturing data onto the 6 cubemap face directions
     // ----------------------------------------------------------------------------------------------
@@ -291,18 +291,17 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     // Creating a depth and stencil renderbuffer object is done by calling the glRenderbufferStorage function:
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
     
-    // Once we've allocated enough memory for the renderbuffer object we can unbind the renderbuffer.
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-    
     // Last thing left to do is actually attach the renderbuffer object:
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_envRenderbuffer);
     
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
+    // Once we've allocated enough memory for the renderbuffer object we can unbind the renderbuffer.
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
     
     glViewport(0, 0, width, height);
     glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
     
+    m_shaderProgram = (*shaderPrograms)[77]; // equirectangularProgram
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
     int iTextureUnit = static_cast<int>(equirectangularTexturetype); // cubemap
     for (unsigned int i = 0; i < 6; ++i)
     {
@@ -312,10 +311,10 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
         glClearDepth(1.0f);
         
         glm::mat4 view = captureViews[i];
-        equirectangularProgram->UseProgram();
-        equirectangularProgram->SetUniform("material.emissionMap", iTextureUnit);
-        equirectangularProgram->SetUniform("matrices.projMatrix", captureProjection);
-        equirectangularProgram->SetUniform("matrices.viewMatrix", view);
+        m_shaderProgram->UseProgram();
+        m_shaderProgram->SetUniform("material.emissionMap", iTextureUnit);
+        m_shaderProgram->SetUniform("matrices.projMatrix", captureProjection);
+        m_shaderProgram->SetUniform("matrices.viewMatrix", view);
         
         m_pEquirectangularCube = new CEquirectangularCube(1.0f);
         m_pEquirectangularCube->Create(equirectangularCubmapPath, {
@@ -326,6 +325,10 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
         
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    // then let OpenGL generate mipmaps from first mip face (combatting visible dots artifact)
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_envTexture);
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
     // pbr: create an irradiance cubemap, and re-scale capture FBO to irradiance scale.
     // --------------------------------------------------------------------------------
@@ -364,6 +367,8 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     m_irradianceCube->Create(equirectangularCubmapPath, {});
     m_irradianceCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
     
+    m_shaderProgram = (*shaderPrograms)[78]; // irradianceMapProgram
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
     for (unsigned int i = 0; i < 6; ++i)
     {
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_irrTexture, 0);
@@ -372,16 +377,38 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
         glClearDepth(1.0f);
         
         glm::mat4 view = captureViews[i];
-        irradianceProgram->UseProgram();
-        irradianceProgram->SetUniform("material.cubeMap", irrTextureUnit);
-        irradianceProgram->SetUniform("matrices.projMatrix", captureProjection);
-        irradianceProgram->SetUniform("matrices.viewMatrix", view);
+        m_shaderProgram->UseProgram();
+        m_shaderProgram->SetUniform("material.cubeMap", irrTextureUnit);
+        m_shaderProgram->SetUniform("matrices.projMatrix", captureProjection);
+        m_shaderProgram->SetUniform("matrices.viewMatrix", view);
         
         m_irradianceCube->Render(false);
         
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    /*
+    // pbr: create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
+    // --------------------------------------------------------------------------------
+    glGenTextures(1, &m_prefilterTexture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_prefilterTexture);
     
+    for (unsigned int i = 0; i < 6; ++i)
+    {
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, 128, 128, 0, GL_RGB, GL_FLOAT, nullptr);
+    }
+    glGenSamplers(1, &m_prefilterSampler);
+    glSamplerParameteri(m_prefilterSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glSamplerParameteri(m_prefilterSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glSamplerParameteri(m_prefilterSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glSamplerParameteri(m_prefilterSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glSamplerParameteri(m_prefilterSampler, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    // generate mipmaps for the cubemap so OpenGL automatically allocates the required memory.
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    
+    GLint prefilterTextureUnit = static_cast<GLint>(type); // cubemap
+    BindEnvCubemapTexture(prefilterTextureUnit);
+    */
     glDepthFunc(GL_LESS);
     glCullFace(GL_BACK);
     glDisable(GL_DEPTH_TEST);
@@ -414,6 +441,15 @@ void CCubemap::BindIrrCubemapTexture(GLint iTextureUnit)
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 }
 
+// Binds prefilter map texture for rendering
+void CCubemap::BindPrefilterCubemapTexture(GLint iTextureUnit)
+{
+    glActiveTexture(GL_TEXTURE0+iTextureUnit);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, m_prefilterTexture);
+    glBindSampler(iTextureUnit, m_prefilterSampler);
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+}
+
 TextureType CCubemap::GetType() const {
     return m_type;
 }
@@ -429,6 +465,9 @@ void CCubemap::Clear()
     
     glDeleteSamplers(1, &m_irrSampler);
     glDeleteTextures(1, &m_irrTexture);
+    
+    glDeleteSamplers(1, &m_prefilterSampler);
+    glDeleteTextures(1, &m_prefilterTexture);
     
     glDeleteTextures(1, &m_envFramebuffer);
     glDeleteTextures(1, &m_envRenderbuffer);
@@ -450,10 +489,14 @@ void CCubemap::Release()
     glDeleteSamplers(1, &m_irrSampler);
     glDeleteTextures(1, &m_irrTexture);
     
+    glDeleteSamplers(1, &m_prefilterSampler);
+    glDeleteTextures(1, &m_prefilterTexture);
+    
     glDeleteTextures(1, &m_envFramebuffer);
     glDeleteTextures(1, &m_envRenderbuffer);
     m_faces.clear();
     
     delete m_pEquirectangularCube;
     delete m_irradianceCube;
+    delete m_shaderProgram;
 }

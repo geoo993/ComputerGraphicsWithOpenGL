@@ -890,6 +890,8 @@
 		C7EED10E221105360079F5C0 /* WireFrameShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EED105221105360079F5C0 /* WireFrameShader.frag */; };
 		C7EED11122111ECC0079F5C0 /* moon_surface.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7EED10F22111ECB0079F5C0 /* moon_surface.jpg */; };
 		C7EED11222111ECC0079F5C0 /* clean-gray-paper.png in Resources */ = {isa = PBXBuildFile; fileRef = C7EED11022111ECC0079F5C0 /* clean-gray-paper.png */; };
+		C7F7D28D22C0088C00627215 /* SkyBoxPreFilteringShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7F7D28B22C0088C00627215 /* SkyBoxPreFilteringShader.frag */; };
+		C7F7D28E22C0088C00627215 /* SkyBoxPreFilteringShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7F7D28C22C0088C00627215 /* SkyBoxPreFilteringShader.vert */; };
 		C7FB577F220CBE2A006F2D91 /* PhysicallyBasedRenderingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7FB577D220CBE29006F2D91 /* PhysicallyBasedRenderingShader.vert */; };
 		C7FB5780220CBE2A006F2D91 /* PhysicallyBasedRenderingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7FB577E220CBE2A006F2D91 /* PhysicallyBasedRenderingShader.frag */; };
 		C7FB5784220CE7D6006F2D91 /* woodenBoxSpecular.png in Resources */ = {isa = PBXBuildFile; fileRef = C7FB5782220CE7D6006F2D91 /* woodenBoxSpecular.png */; };
@@ -1845,6 +1847,8 @@
 		C7EED10F22111ECB0079F5C0 /* moon_surface.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = moon_surface.jpg; sourceTree = "<group>"; };
 		C7EED11022111ECC0079F5C0 /* clean-gray-paper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clean-gray-paper.png"; sourceTree = "<group>"; };
 		C7F053192200B16F00864C31 /* PostProcessingEffectMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostProcessingEffectMode.h; sourceTree = "<group>"; };
+		C7F7D28B22C0088C00627215 /* SkyBoxPreFilteringShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SkyBoxPreFilteringShader.frag; sourceTree = "<group>"; };
+		C7F7D28C22C0088C00627215 /* SkyBoxPreFilteringShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SkyBoxPreFilteringShader.vert; sourceTree = "<group>"; };
 		C7F98BDC2201143E0079CE80 /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
 		C7FB577B220CAACB006F2D91 /* TextureType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextureType.h; sourceTree = "<group>"; };
 		C7FB577C220CBC79006F2D91 /* EnumToString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnumToString.h; sourceTree = "<group>"; };
@@ -3107,6 +3111,8 @@
 				C785F9602212DA7D00F1F8FD /* ShockwaveShader.vert */,
 				C7D4D80522B66B7D00A251BC /* SkyBoxIrradianceShader.frag */,
 				C7D4D80422B66B7C00A251BC /* SkyBoxIrradianceShader.vert */,
+				C7F7D28B22C0088C00627215 /* SkyBoxPreFilteringShader.frag */,
+				C7F7D28C22C0088C00627215 /* SkyBoxPreFilteringShader.vert */,
 				C7C8F42B21FFA74300AB865A /* SkyBoxShader.frag */,
 				C7C8F42821FFA74200AB865A /* SkyBoxShader.vert */,
 				C785F985221341CC00F1F8FD /* SobelEdgeDetectionShader.frag */,
@@ -3926,6 +3932,7 @@
 				C7B75AA12204E32D00E54C30 /* Pin_stripe_canvas_pxr128_normal.tif in Resources */,
 				C7B4D3B422146E2900BCE130 /* octostone-height.png in Resources */,
 				C7B759C32204E32C00E54C30 /* Brown_dirt_pxr128_bmp.tif in Resources */,
+				C7F7D28D22C0088C00627215 /* SkyBoxPreFilteringShader.frag in Resources */,
 				C7B75A562204E32D00E54C30 /* Gray_marble_pxr128_bmp.tif in Resources */,
 				C7DE39DA221E25D600595556 /* normal.jpg in Resources */,
 				C7B759BC2204E32C00E54C30 /* Round_mesh_pxr128_bmp.tif in Resources */,
@@ -4370,6 +4377,7 @@
 				C7B759B62204E32C00E54C30 /* Corrugated_steel_pxr128.tif in Resources */,
 				C7B75A512204E32D00E54C30 /* Red_shingle_pxr128_bmp.tif in Resources */,
 				C79C6635225A298100705D64 /* Metal_Painted_001_height.png in Resources */,
+				C7F7D28E22C0088C00627215 /* SkyBoxPreFilteringShader.vert in Resources */,
 				C7B7592F2204E32C00E54C30 /* American_oak_pxr128.tif in Resources */,
 				C7B7593D2204E32C00E54C30 /* Quartered_sepele_pxr128_bmp.tif in Resources */,
 				C70A1F93220EEED100170280 /* BumpMappingShader.vert in Resources */,

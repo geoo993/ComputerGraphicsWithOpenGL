@@ -41,6 +41,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         RenderWoodenBox(pLightProgram, m_woodenBoxesPosition[i], 25.0f, angle, m_materialUseTexture);
     }
     RenderLight(pLightProgram, m_pCamera);
+    
     RenderTerrain(pLightProgram, false, m_materialUseTexture);
     
      
@@ -55,7 +56,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     if (isPBR) {
         
         if (m_currentPPFXMode == PostProcessingEffectMode::IIL) {
-            GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
+            GLint cubemapTextureUnit = static_cast<GLint>(TextureType::IRRADIANCEMAP);
             m_pIrrSkybox->BindIrrSkyboxTo(cubemapTextureUnit);
         }
         

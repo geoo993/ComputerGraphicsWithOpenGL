@@ -116,7 +116,8 @@ uniform struct Material
     sampler2D roughnessMap;         // 17.  roughness map
     sampler2D normalMap;            // 3.   normal map
     sampler2D aoMap;                // 7.   ambient oclusion map
-    samplerCube cubeMap;            // 18.  sky box environment irrandiance cube map
+    samplerCube cubeMap;            // 18.  sky box cube map
+    samplerCube irradianceMap;      // 19.  sky box irradiance cube map
     
     // for more info look at https://marmoset.co/posts/physically-based-rendering-and-you-can-too/
     vec3  albedo;           // Albedo is the base color input, commonly known as a diffuse map.
@@ -321,7 +322,7 @@ vec3 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
         vec3 kS2 = fresnelSchlick(max(dot(normal, directionToEye), 0.0), F0);
         vec3 kD2 = 1.0f -kS2;
         kD2 *= 1.0f - metallic;
-        vec3 irradiance = texture(material.cubeMap, normal).rgb;
+        vec3 irradiance = texture(material.irradianceMap, normal).rgb;
         vec3 diffuse    = irradiance * albedo;
         ambient = (kD2 * diffuse) * ao;
     }

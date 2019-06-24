@@ -10,6 +10,8 @@ CCubemap::CCubemap()
     m_irrSampler = 0;
     m_prefilterTexture = 0;
     m_prefilterSampler = 0;
+    m_brdfLUTSampler = 0;
+    m_brdfLUTTexture = 0;
 
     m_envFramebuffer = 0;
     m_envRenderbuffer = 0;
@@ -18,6 +20,8 @@ CCubemap::CCubemap()
     m_shaderProgram = nullptr;
     m_pEquirectangularCube = nullptr;
     m_irradianceCube = nullptr;
+    m_prefilterCube = nullptr;
+    m_brdfLUTCube = nullptr;
 }
 
 CCubemap::~CCubemap()
@@ -364,7 +368,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
     
     m_irradianceCube = new CEquirectangularCube(1.0f);
-    m_irradianceCube->Create(equirectangularCubmapPath, {});
+    m_irradianceCube->Create("", {});
     m_irradianceCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
     
     m_shaderProgram = (*shaderPrograms)[78]; // irradianceMapProgram
@@ -386,7 +390,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
         
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    /*
+    
     // pbr: create a pre-filter cubemap, and re-scale capture FBO to pre-filter scale.
     // --------------------------------------------------------------------------------
     glGenTextures(1, &m_prefilterTexture);
@@ -406,9 +410,90 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     
+    // pbr: run a quasi monte-carlo simulation on the environment lighting to create a prefilter (cube)map.
+    // ----------------------------------------------------------------------------------------------------
     GLint prefilterTextureUnit = static_cast<GLint>(type); // cubemap
     BindEnvCubemapTexture(prefilterTextureUnit);
-    */
+    
+    glViewport(0, 0, 128, 128);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
+    
+    m_prefilterCube = new CEquirectangularCube(1.0f);
+    m_prefilterCube->Create("", {});
+    m_prefilterCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+    
+    m_shaderProgram = (*shaderPrograms)[79]; // prefilterProgram
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
+    unsigned int maxMipLevels = 40;
+    for (unsigned int mip = 0; mip < maxMipLevels; ++mip)
+    {
+        // reisze framebuffer according to mip-level size.
+        unsigned int mipWidth  = 128 * std::pow(0.5f, mip);
+        unsigned int mipHeight = 128 * std::pow(0.5f, mip);
+        glBindRenderbuffer(GL_RENDERBUFFER, m_envRenderbuffer);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);
+        
+        glViewport(0, 0, mipWidth, mipHeight);
+        
+        float roughness = (float)mip / (float)(maxMipLevels - 1);
+        m_shaderProgram->UseProgram();
+        m_shaderProgram->SetUniform("roughness", roughness);
+        m_shaderProgram->SetUniform("resolution", width);
+        for (unsigned int i = 0; i < 6; ++i)
+        {
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_prefilterTexture, mip);
+        
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClearDepth(1.0f);
+            
+            glm::mat4 view = captureViews[i];
+            m_shaderProgram->SetUniform("material.cubeMap", prefilterTextureUnit);
+            m_shaderProgram->SetUniform("matrices.projMatrix", captureProjection);
+            m_shaderProgram->SetUniform("matrices.viewMatrix", view);
+            
+            m_prefilterCube->Render(false);
+        }
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    
+    // pbr: generate a 2D LUT from the BRDF equations used.
+    // ----------------------------------------------------
+    glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, m_envRenderbuffer);
+    
+    glGenTextures(1, &m_brdfLUTTexture);
+    glBindTexture(GL_TEXTURE_2D, m_brdfLUTTexture);
+    
+    // pre-allocate enough memory for the LUT texture.
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, width, height, 0, GL_RG, GL_FLOAT, 0);
+    
+    // be sure to set wrapping mode to GL_CLAMP_TO_EDGE
+    glGenSamplers(1, &m_brdfLUTSampler);
+    glSamplerParameteri(m_brdfLUTSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glSamplerParameteri(m_brdfLUTSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glSamplerParameteri(m_brdfLUTSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glSamplerParameteri(m_brdfLUTSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+   
+    // then re-configure capture framebuffer object and render screen-space quad with BRDF shader.
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_brdfLUTTexture, 0);
+    
+    glViewport(0, 0, width, height);
+    
+    m_shaderProgram = (*shaderPrograms)[80]; // m_brdfLUTProgram
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
+    
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearDepth(1.0f);
+    
+    m_brdfLUTCube = new CEquirectangularCube(1.0f);
+    m_brdfLUTCube->Create("", {});
+    m_brdfLUTCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+    m_brdfLUTCube->Render(false);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+     
     glDepthFunc(GL_LESS);
     glCullFace(GL_BACK);
     glDisable(GL_DEPTH_TEST);
@@ -450,6 +535,15 @@ void CCubemap::BindPrefilterCubemapTexture(GLint iTextureUnit)
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 }
 
+// Binds a BRDF texture for rendering
+void CCubemap::BindBRDFLUTTexture(GLint iTextureUnit)
+{
+    glActiveTexture(GL_TEXTURE0+iTextureUnit);
+    glBindTexture(GL_TEXTURE_3D, m_brdfLUTTexture);
+    glBindSampler(iTextureUnit, m_brdfLUTSampler);
+}
+
+
 TextureType CCubemap::GetType() const {
     return m_type;
 }
@@ -469,12 +563,17 @@ void CCubemap::Clear()
     glDeleteSamplers(1, &m_prefilterSampler);
     glDeleteTextures(1, &m_prefilterTexture);
     
+    glDeleteSamplers(1, &m_brdfLUTSampler);
+    glDeleteTextures(1, &m_brdfLUTTexture);
+    
     glDeleteTextures(1, &m_envFramebuffer);
     glDeleteTextures(1, &m_envRenderbuffer);
     m_faces.clear();
     
     if (m_pEquirectangularCube != nullptr) m_pEquirectangularCube = nullptr;
     if (m_irradianceCube != nullptr) m_irradianceCube = nullptr;
+    if (m_prefilterCube != nullptr) m_prefilterCube = nullptr;
+    if (m_brdfLUTCube != nullptr) m_brdfLUTCube = nullptr;
 }
 
 // Release resources
@@ -492,11 +591,16 @@ void CCubemap::Release()
     glDeleteSamplers(1, &m_prefilterSampler);
     glDeleteTextures(1, &m_prefilterTexture);
     
+    glDeleteSamplers(1, &m_brdfLUTSampler);
+    glDeleteTextures(1, &m_brdfLUTTexture);
+    
     glDeleteTextures(1, &m_envFramebuffer);
     glDeleteTextures(1, &m_envRenderbuffer);
     m_faces.clear();
     
     delete m_pEquirectangularCube;
     delete m_irradianceCube;
+    delete m_prefilterCube;
+    delete m_brdfLUTCube;
     delete m_shaderProgram;
 }

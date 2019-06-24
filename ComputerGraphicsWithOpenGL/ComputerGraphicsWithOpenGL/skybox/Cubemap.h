@@ -19,6 +19,7 @@ public:
     void BindEnvCubemapTexture(GLint iTextureUnit);
     void BindIrrCubemapTexture(GLint iTextureUnit);
     void BindPrefilterCubemapTexture(GLint iTextureUnit);
+    void BindBRDFLUTTexture(GLint iTextureUnit);
     
     void Release();
     void Clear();
@@ -27,11 +28,14 @@ public:
 private:
     GLboolean LoadTexture(std::string filename, BYTE **bmpBytes, GLint &iWidth, GLint &iHeight);
 	GLuint m_skyTexture, m_skySampler, m_envTexture, m_envSampler, m_irrTexture, m_irrSampler, m_prefilterTexture, m_prefilterSampler;
+    GLuint m_brdfLUTTexture, m_brdfLUTSampler;
     GLuint m_envFramebuffer, m_envRenderbuffer;
     
     CShaderProgram * m_shaderProgram;
     CEquirectangularCube * m_pEquirectangularCube;
     CEquirectangularCube * m_irradianceCube;
+    CEquirectangularCube * m_prefilterCube;
+    CEquirectangularCube * m_brdfLUTCube;
     std::vector<std::string> m_faces;
     TextureType m_type;
 };

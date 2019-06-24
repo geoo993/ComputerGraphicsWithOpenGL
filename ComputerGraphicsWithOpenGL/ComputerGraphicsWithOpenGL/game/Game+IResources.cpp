@@ -27,10 +27,7 @@ void Game::InitialiseResources()
     m_pHeightmapTerrain = new CHeightMapTerrain;
     m_pLamp = new CCube(1.0f);
     m_pTrolley = new CModel;
-    m_pShotgun = new CModel;
     m_pSuitcase = new CModel;
-    m_pFlareGun = new CModel;
-    m_pMedicalSaw = new CModel;
     m_pSphere = new CSphere;
     m_pFireBallSphere = new CSphere;
     m_pCube = new CCube(1.0f);
@@ -80,27 +77,7 @@ void Game::LoadResources(const std::string &path)
                            { "Trolley Normal.tga", TextureType::NORMAL},             // normalMap
                            { "Trolley Ambient Occlusion.tga",   TextureType::AO },   // aoMap
                        });
-    
-    /// https://www.cgtrader.com/free-3d-models/military/gun/lowpoly-pbr-quad-barrel-shotgun
-    m_pShotgun->Create(path+"/models/QuadShotgun/", "Quad_Shotgun.obj",
-    {
-        { "Quad_Shotgun_BaseColor.png", TextureType::ALBEDO },         // albedo map
-        { "Quad_Shotgun_Metallic.png",  TextureType::METALNESS },      // metallic map
-        { "Quad_Shotgun_Roughness.png",   TextureType::ROUGHNESS},     // roughness map
-        { "Quad_Shotgun_Normal.png", TextureType::NORMAL},             // normalMap
-        { "Quad_Shotgun_AO.png",   TextureType::AO },                   // aoMap
-    });
-    
-    /// https://www.cgtrader.com/free-3d-models/military/gun/lowpoly-pbr-flare-gun
-    m_pFlareGun->Create(path+"/models/FlareGun/", "FlareGun.obj",
-                        {
-                            { "FlareGun_BaseColor.png", TextureType::ALBEDO },         // albedo map
-                            { "FlareGun_Metallic.png",  TextureType::METALNESS },      // metallic map
-                            { "FlareGun_Roughness.png",   TextureType::ROUGHNESS},     // roughness map
-                            { "FlareGun_Normal.png", TextureType::NORMAL},             // normalMap
-                            { "FlareGun_AO.png",   TextureType::AO },                   // aoMap
-                        });
-    
+
     /// https://www.cgtrader.com/free-3d-models/household/other/vintage-suitcase-528ee5e8-4a33-4e50-a8aa-aac7267d1b78
     m_pSuitcase->Create(path+"/models/VintageSuitcase/", "Vintage_Suitcase_LP.obj",
                         {   { "Vintage_Suitcase_Colour.png", TextureType::ALBEDO },         // albedo map
@@ -109,15 +86,6 @@ void Game::LoadResources(const std::string &path)
                             { "Vintage_Suitcase_Normal.png", TextureType::NORMAL},             // normalMap
                             { "Vintage_Suitcase_AO.png",   TextureType::AO },                  // aoMap
                         });
-
-    /// https://www.cgtrader.com/free-3d-models/industrial/tool/medical-saw
-    m_pMedicalSaw->Create(path+"/models/MedicalSaw/", "SM_Medical_Saw_01.obj",
-                          {   { "BaseColor.png", TextureType::ALBEDO },         // albedo map
-                              { "Metallic.png",  TextureType::METALNESS },      // metallic map
-                              { "Roughness.png",   TextureType::ROUGHNESS},     // roughness map
-                              { "Normal.png", TextureType::NORMAL},             // normalMap
-                              { "AO.png",   TextureType::AO },                  // aoMap
-                          });
     
     m_pCube->Create(path+"/textures/pixarLibrary/brick/", {
         { "Standard_red_pxr128.tif", TextureType::DIFFUSE},

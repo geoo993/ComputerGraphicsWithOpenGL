@@ -236,7 +236,7 @@ void main()
 //        envColor = envColor / (envColor + vec3(1.0f));
 //        envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
 //    }
-    vOutputColour = vec4(envColor, result.z);
+    vOutputColour = vec4(envColor, result.w);
     
     // Retrieve bright parts
     float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));

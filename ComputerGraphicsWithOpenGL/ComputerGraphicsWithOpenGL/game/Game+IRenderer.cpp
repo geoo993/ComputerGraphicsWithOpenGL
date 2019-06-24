@@ -42,9 +42,11 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     }
     RenderLight(pLightProgram, m_pCamera);
     
-    RenderTerrain(pLightProgram, false, m_materialUseTexture);
+    //RenderTerrain(pLightProgram, false, m_materialUseTexture);
     
      
+    CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
+    
     GLboolean isPBR =
     m_currentPPFXMode == PostProcessingEffectMode::PBR
     || m_currentPPFXMode == PostProcessingEffectMode::IBL
@@ -56,12 +58,17 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     if (isPBR) {
         
         if (m_currentPPFXMode == PostProcessingEffectMode::IIL) {
-            GLint cubemapTextureUnit = static_cast<GLint>(TextureType::IRRADIANCEMAP);
-            m_pIrrSkybox->BindIrrSkyboxTo(cubemapTextureUnit);
+            GLint irradianceTextureUnit = static_cast<GLint>(TextureType::IRRADIANCEMAP);
+            m_pIrrSkybox->BindIrrSkyboxTo(irradianceTextureUnit);
+            
+            GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
+            m_pIrrSkybox->BindPrefilterSkyboxTo(cubemapTextureUnit);
+            
+            GLint brdfLUTTextureUnit = static_cast<GLint>(TextureType::SPECULAR);
+            m_pIrrSkybox->BindBRDFLUTTextureTo(brdfLUTTextureUnit);
         }
         
         ///  Physically Based Rendering
-        CShaderProgram *pPBRProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
         SetCameraUniform(pPBRProgram, "camera", m_pCamera);
         SetLightUniform(pPBRProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
         SetMaterialUniform(pPBRProgram, "material", m_woodenBoxesColor, m_materialShininess, useAO);
@@ -80,20 +87,6 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         
         SetPBRMaterialUniform(pPBRProgram, "material", albedo, m_metallic, m_roughness, m_ao,
                               m_currentPPFXMode == PostProcessingEffectMode::IIL ? m_useIrradiance : false);
-        
-        // Render Big cube underneath
-        //RenderInteriorBox(pPBRProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_materialUseTexture, true);
-        
-        // Render Terrain
-        //RenderTerrain(pPBRProgram, false, m_materialUseTexture);
-        
-        // Render Models
-        //RenderModel(pPBRProgram, m_pTrolley, glm::vec3(0.0f), 1.0f, m_materialUseTexture);
-        //RenderModel(pPBRProgram, m_pShotgun, glm::vec3(0.0f), 100.0f, m_materialUseTexture);
-        //RenderModel(pPBRProgram, m_pFlareGun, glm::vec3(0.0f), 200.0f, m_materialUseTexture);
-        //RenderModel(pPBRProgram, m_pSuitcase, glm::vec3(0.0f), 5.0f, m_materialUseTexture);
-        //RenderModel(pPBRProgram, m_pMedicalSaw, glm::vec3(0.0f), 10.0f, m_materialUseTexture);
-        
         // Render Lights
         RenderLight(pPBRProgram, m_pCamera);
         
@@ -105,6 +98,17 @@ void Game::RenderScene(const GLboolean &toLightSpace){
             }
         }
     }
+    
+    CShaderProgram *pShaderProgram = isPBR ? pPBRProgram : pLightProgram;
+    // Render Big cube underneath
+    //RenderInteriorBox(pPBRProgram, glm::vec3(0.0f,  550.0f,  0.0f ), 50.0f, m_materialUseTexture, true);
+    
+    // Render Models
+    RenderModel(pShaderProgram, m_pTrolley, glm::vec3(0.0f, 200.0f, 1000.0f), 1.0f, m_materialUseTexture);
+    RenderModel(pShaderProgram, m_pSuitcase, glm::vec3(-1000.0f, 200.0f, 0.0f), 5.0f, m_materialUseTexture);
+    
+    // Render MetalBalls
+    RenderMetalBalls(pShaderProgram, m_metalballsPosition, 100.0f, m_materialUseTexture);
     
     GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
     m_pEnvSkybox->BindEnvSkyboxTo(cubemapTextureUnit);
@@ -153,7 +157,6 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     SetHRDLightUniform(pEnvironmentMapProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
     SetEnvironmentMapUniform(pEnvironmentMapProgram, m_useRefraction);
     RenderCube(pEnvironmentMapProgram, glm::vec3(-500.0f, 500.0f, 1000.0f), 100.0f, true);
-    //RenderMetalBalls(pEnvironmentMapProgram, m_metalballsPosition, 100.0f, true);
     
     /// Chromatic Aberration Mapping
     CShaderProgram *pChromaticAberrationProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 10];

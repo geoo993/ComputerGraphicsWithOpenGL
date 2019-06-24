@@ -195,6 +195,9 @@ void CSkybox::Render(const GLboolean &useTexture, const SkyboxType &skyboxType) 
         case SkyboxType::IrradianceMap:
             m_cubemapTexture->BindIrrCubemapTexture(iTextureUnit);
             break;
+        case SkyboxType::PrefilterMap:
+            m_cubemapTexture->BindPrefilterCubemapTexture(iTextureUnit);
+            break;
     }
     
     for (int i = 0; i < 6; i++) {
@@ -205,7 +208,7 @@ void CSkybox::Render(const GLboolean &useTexture, const SkyboxType &skyboxType) 
     glDepthMask(GL_TRUE);
 }
 
-void CSkybox::BindSkyboxTo(const GLint &textureUnit){
+void CSkybox::BindSkyboxTo(const GLint &textureUnit) {
     m_cubemapTexture->BindCubemapTexture(textureUnit);
 }
 
@@ -213,8 +216,16 @@ void CSkybox::BindEnvSkyboxTo(const GLint &textureUnit) {
     m_cubemapTexture->BindEnvCubemapTexture(textureUnit);
 }
 
-void CSkybox::BindIrrSkyboxTo(const GLint &textureUnit){
+void CSkybox::BindIrrSkyboxTo(const GLint &textureUnit) {
     m_cubemapTexture->BindIrrCubemapTexture(textureUnit);
+}
+
+void CSkybox::BindPrefilterSkyboxTo(const GLint &textureUnit) {
+    m_cubemapTexture->BindPrefilterCubemapTexture(textureUnit);
+}
+
+void CSkybox::BindBRDFLUTTextureTo(const GLint &textureUnit) {
+    m_cubemapTexture->BindBRDFLUTTexture(textureUnit);
 }
 
 GLuint CSkybox::GetNumberOfSkyboxes() const{

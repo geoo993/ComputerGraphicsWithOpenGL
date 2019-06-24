@@ -163,10 +163,7 @@ Game::Game()
     
     //models
     m_pTrolley = nullptr;
-    m_pShotgun = nullptr;
     m_pSuitcase = nullptr;
-    m_pFlareGun = nullptr;
-    m_pMedicalSaw = nullptr;
     
     //sphere object
     m_pSphere = nullptr;
@@ -236,10 +233,7 @@ Game::~Game()
     delete m_pHeightmapTerrain;
     delete m_pLamp;
     delete m_pTrolley;
-    delete m_pShotgun;
     delete m_pSuitcase;
-    delete m_pFlareGun;
-    delete m_pMedicalSaw;
     delete m_pSphere;
     delete m_pCube;
     delete m_pInteriorBox;

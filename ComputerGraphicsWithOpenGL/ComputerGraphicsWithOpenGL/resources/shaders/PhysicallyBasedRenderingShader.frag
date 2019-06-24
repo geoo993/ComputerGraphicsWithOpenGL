@@ -111,6 +111,7 @@ uniform struct Camera
 // Structure holding PBR material information:  its albedo, metallic, roughness, etc...
 uniform struct Material
 {
+    sampler2D specularMap;          // 2.   specular map
     sampler2D albedoMap;            // 15.  albedo map
     sampler2D metallicMap;          // 16.  metalness map
     sampler2D roughnessMap;         // 17.  roughness map
@@ -264,6 +265,11 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 {
     return F0 + (1.0f - F0) * pow(1.0f - cosTheta, 5.0f);
 }
+// ----------------------------------------------------------------------------
+vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
+{
+    return F0 + (max(vec3(1.0f - roughness), F0) - F0) * pow(1.0f - cosTheta, 5.0f);
+}
 
 // ----------------------------------------------------------------------------
 //Lights
@@ -319,12 +325,22 @@ vec3 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
         ambient = vec3(base.ambient) * albedo * ao; // ambient light
     } else {
         // ambient lighting (we now use IBL as the ambient term)
-        vec3 kS2 = fresnelSchlick(max(dot(normal, directionToEye), 0.0), F0);
+        vec3 F = fresnelSchlickRoughness(max(dot(normal, directionToEye), 0.0), F0, roughness);
+        // ambient lighting (we now use IBL as the ambient term)
+        vec3 kS2 = F;//fresnelSchlick(max(dot(normal, directionToEye), 0.0), F0);
         vec3 kD2 = 1.0f -kS2;
         kD2 *= 1.0f - metallic;
+        
         vec3 irradiance = texture(material.irradianceMap, normal).rgb;
         vec3 diffuse    = irradiance * albedo;
-        ambient = (kD2 * diffuse) * ao;
+        
+        // sample both the pre-filter map and the BRDF lut and combine them together as per the Split-Sum approximation to get the IBL specular part.
+        const float MAX_REFLECTION_LOD = 4.0f;
+        vec3 prefilteredColor = textureLod(material.cubeMap, reflectDirection,  roughness * MAX_REFLECTION_LOD).rgb;
+        vec2 brdf  = texture(material.specularMap, vec2(max(dot(normal, directionToEye), 0.0f), roughness)).rg;
+        vec3 brfSpecular = prefilteredColor * (F * brdf.x + brdf.y);
+        
+        ambient = (kD2 * diffuse + brfSpecular) * ao;
     }
     
     // calculate each light's outgoing reflectance value

@@ -128,6 +128,8 @@
 		C7767437220A53A200BA7062 /* NormalMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7767435220A53A200BA7062 /* NormalMappingShader.vert */; };
 		C779E17822159F5300AF11E9 /* DepthMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C779E17622159F5100AF11E9 /* DepthMappingShader.frag */; };
 		C779E17922159F5300AF11E9 /* DepthMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C779E17722159F5200AF11E9 /* DepthMappingShader.vert */; };
+		C77FC08322C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C77FC08122C0330E00199356 /* BidirectionalReflectanceDistributionFunctionShader.vert */; };
+		C77FC08422C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C77FC08222C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.frag */; };
 		C785F94A2212D2BD00F1F8FD /* ScreenWaveShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C785F9462212D2BB00F1F8FD /* ScreenWaveShader.frag */; };
 		C785F94B2212D2BD00F1F8FD /* ScreenWaveShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C785F9472212D2BC00F1F8FD /* ScreenWaveShader.vert */; };
 		C785F94C2212D2BD00F1F8FD /* SwirlShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C785F9482212D2BC00F1F8FD /* SwirlShader.frag */; };
@@ -820,28 +822,12 @@
 		C7DE39F9221F2D0700595556 /* ScreenSpaceAmbientOcclusionLightingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39F5221F2D0600595556 /* ScreenSpaceAmbientOcclusionLightingShader.frag */; };
 		C7DE39FA221F2D0700595556 /* ScreenSpaceAmbientOcclusionBlurShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39F6221F2D0600595556 /* ScreenSpaceAmbientOcclusionBlurShader.vert */; };
 		C7DE39FB221F2D0700595556 /* ScreenSpaceAmbientOcclusionBlurShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39F7221F2D0600595556 /* ScreenSpaceAmbientOcclusionBlurShader.frag */; };
-		C7E4B17922BE3B240066E3A9 /* Quad_Shotgun_AO.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B15922BE3B230066E3A9 /* Quad_Shotgun_AO.png */; };
-		C7E4B17A22BE3B240066E3A9 /* Quad_Shotgun_NOpenGL.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B15A22BE3B230066E3A9 /* Quad_Shotgun_NOpenGL.png */; };
-		C7E4B17B22BE3B240066E3A9 /* Quad_Shotgun_Normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B15B22BE3B230066E3A9 /* Quad_Shotgun_Normal.png */; };
-		C7E4B17C22BE3B240066E3A9 /* Quad_Shotgun_Roughness.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B15C22BE3B230066E3A9 /* Quad_Shotgun_Roughness.png */; };
-		C7E4B17D22BE3B240066E3A9 /* Quad_Shotgun_Metallic.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B15D22BE3B230066E3A9 /* Quad_Shotgun_Metallic.png */; };
-		C7E4B17E22BE3B240066E3A9 /* Quad_Shotgun.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B15E22BE3B230066E3A9 /* Quad_Shotgun.obj */; };
-		C7E4B17F22BE3B240066E3A9 /* Quad_Shotgun.mtl in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B15F22BE3B230066E3A9 /* Quad_Shotgun.mtl */; };
-		C7E4B18022BE3B240066E3A9 /* Quad_Shotgun_BaseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16022BE3B230066E3A9 /* Quad_Shotgun_BaseColor.png */; };
 		C7E4B18122BE3B240066E3A9 /* Trolley Metallic.tga in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16222BE3B240066E3A9 /* Trolley Metallic.tga */; };
 		C7E4B18222BE3B240066E3A9 /* Industrial_Trolley.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16322BE3B240066E3A9 /* Industrial_Trolley.obj */; };
 		C7E4B18322BE3B240066E3A9 /* Trolley Ambient Occlusion.tga in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16422BE3B240066E3A9 /* Trolley Ambient Occlusion.tga */; };
 		C7E4B18422BE3B240066E3A9 /* Trolley Roughness.tga in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16522BE3B240066E3A9 /* Trolley Roughness.tga */; };
 		C7E4B18522BE3B240066E3A9 /* Trolley Normal.tga in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16622BE3B240066E3A9 /* Trolley Normal.tga */; };
 		C7E4B18622BE3B240066E3A9 /* Trolley Base Color.tga in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16722BE3B240066E3A9 /* Trolley Base Color.tga */; };
-		C7E4B18722BE3B240066E3A9 /* FlareGun_NOpenGL.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16922BE3B240066E3A9 /* FlareGun_NOpenGL.png */; };
-		C7E4B18822BE3B240066E3A9 /* FlareGun.mtl in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16A22BE3B240066E3A9 /* FlareGun.mtl */; };
-		C7E4B18922BE3B240066E3A9 /* FlareGun_Metallic.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16B22BE3B240066E3A9 /* FlareGun_Metallic.png */; };
-		C7E4B18A22BE3B240066E3A9 /* FlareGun_Roughness.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16C22BE3B240066E3A9 /* FlareGun_Roughness.png */; };
-		C7E4B18B22BE3B240066E3A9 /* FlareGun.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16D22BE3B240066E3A9 /* FlareGun.obj */; };
-		C7E4B18C22BE3B240066E3A9 /* FlareGun_Normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16E22BE3B240066E3A9 /* FlareGun_Normal.png */; };
-		C7E4B18D22BE3B240066E3A9 /* FlareGun_BaseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B16F22BE3B240066E3A9 /* FlareGun_BaseColor.png */; };
-		C7E4B18E22BE3B240066E3A9 /* FlareGun_AO.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B17022BE3B240066E3A9 /* FlareGun_AO.png */; };
 		C7E4B18F22BE3B240066E3A9 /* Vintage_Suitcase_Roughness.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B17222BE3B240066E3A9 /* Vintage_Suitcase_Roughness.png */; };
 		C7E4B19022BE3B240066E3A9 /* Vintage_Suitcase_Normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B17322BE3B240066E3A9 /* Vintage_Suitcase_Normal.png */; };
 		C7E4B19122BE3B240066E3A9 /* Vintage_Suitcase_LP.mtl in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B17422BE3B240066E3A9 /* Vintage_Suitcase_LP.mtl */; };
@@ -849,12 +835,6 @@
 		C7E4B19322BE3B240066E3A9 /* Vintage_Suitcase_Metallic.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B17622BE3B240066E3A9 /* Vintage_Suitcase_Metallic.png */; };
 		C7E4B19422BE3B240066E3A9 /* Vintage_Suitcase_LP.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B17722BE3B240066E3A9 /* Vintage_Suitcase_LP.obj */; };
 		C7E4B19522BE3B240066E3A9 /* Vintage_Suitcase_Colour.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B17822BE3B240066E3A9 /* Vintage_Suitcase_Colour.png */; };
-		C7E4B19D22BE8EF00066E3A9 /* BaseColor.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B19722BE8EF00066E3A9 /* BaseColor.png */; };
-		C7E4B19E22BE8EF00066E3A9 /* Metallic.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B19822BE8EF00066E3A9 /* Metallic.png */; };
-		C7E4B19F22BE8EF00066E3A9 /* SM_Medical_Saw_01.obj in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B19922BE8EF00066E3A9 /* SM_Medical_Saw_01.obj */; };
-		C7E4B1A022BE8EF00066E3A9 /* Normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B19A22BE8EF00066E3A9 /* Normal.png */; };
-		C7E4B1A122BE8EF00066E3A9 /* AO.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B19B22BE8EF00066E3A9 /* AO.png */; };
-		C7E4B1A222BE8EF00066E3A9 /* Roughness.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E4B19C22BE8EF00066E3A9 /* Roughness.png */; };
 		C7EDB0D422064878007C7D3A /* Game+ILights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EDB0D322064878007C7D3A /* Game+ILights.cpp */; };
 		C7EDB0D922064BCE007C7D3A /* LampShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D522064BCE007C7D3A /* LampShader.vert */; };
 		C7EDB0DA22064BCE007C7D3A /* LightShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D622064BCE007C7D3A /* LightShader.frag */; };
@@ -1055,6 +1035,8 @@
 		C7767435220A53A200BA7062 /* NormalMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = NormalMappingShader.vert; sourceTree = "<group>"; };
 		C779E17622159F5100AF11E9 /* DepthMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DepthMappingShader.frag; sourceTree = "<group>"; };
 		C779E17722159F5200AF11E9 /* DepthMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DepthMappingShader.vert; sourceTree = "<group>"; };
+		C77FC08122C0330E00199356 /* BidirectionalReflectanceDistributionFunctionShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BidirectionalReflectanceDistributionFunctionShader.vert; sourceTree = "<group>"; };
+		C77FC08222C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BidirectionalReflectanceDistributionFunctionShader.frag; sourceTree = "<group>"; };
 		C785F9462212D2BB00F1F8FD /* ScreenWaveShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ScreenWaveShader.frag; sourceTree = "<group>"; };
 		C785F9472212D2BC00F1F8FD /* ScreenWaveShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ScreenWaveShader.vert; sourceTree = "<group>"; };
 		C785F9482212D2BC00F1F8FD /* SwirlShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SwirlShader.frag; sourceTree = "<group>"; };
@@ -1776,28 +1758,12 @@
 		C7DE39F5221F2D0600595556 /* ScreenSpaceAmbientOcclusionLightingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ScreenSpaceAmbientOcclusionLightingShader.frag; sourceTree = "<group>"; };
 		C7DE39F6221F2D0600595556 /* ScreenSpaceAmbientOcclusionBlurShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ScreenSpaceAmbientOcclusionBlurShader.vert; sourceTree = "<group>"; };
 		C7DE39F7221F2D0600595556 /* ScreenSpaceAmbientOcclusionBlurShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ScreenSpaceAmbientOcclusionBlurShader.frag; sourceTree = "<group>"; };
-		C7E4B15922BE3B230066E3A9 /* Quad_Shotgun_AO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Quad_Shotgun_AO.png; sourceTree = "<group>"; };
-		C7E4B15A22BE3B230066E3A9 /* Quad_Shotgun_NOpenGL.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Quad_Shotgun_NOpenGL.png; sourceTree = "<group>"; };
-		C7E4B15B22BE3B230066E3A9 /* Quad_Shotgun_Normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Quad_Shotgun_Normal.png; sourceTree = "<group>"; };
-		C7E4B15C22BE3B230066E3A9 /* Quad_Shotgun_Roughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Quad_Shotgun_Roughness.png; sourceTree = "<group>"; };
-		C7E4B15D22BE3B230066E3A9 /* Quad_Shotgun_Metallic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Quad_Shotgun_Metallic.png; sourceTree = "<group>"; };
-		C7E4B15E22BE3B230066E3A9 /* Quad_Shotgun.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Quad_Shotgun.obj; sourceTree = "<group>"; };
-		C7E4B15F22BE3B230066E3A9 /* Quad_Shotgun.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Quad_Shotgun.mtl; sourceTree = "<group>"; };
-		C7E4B16022BE3B230066E3A9 /* Quad_Shotgun_BaseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Quad_Shotgun_BaseColor.png; sourceTree = "<group>"; };
 		C7E4B16222BE3B240066E3A9 /* Trolley Metallic.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Trolley Metallic.tga"; sourceTree = "<group>"; };
 		C7E4B16322BE3B240066E3A9 /* Industrial_Trolley.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Industrial_Trolley.obj; sourceTree = "<group>"; };
 		C7E4B16422BE3B240066E3A9 /* Trolley Ambient Occlusion.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Trolley Ambient Occlusion.tga"; sourceTree = "<group>"; };
 		C7E4B16522BE3B240066E3A9 /* Trolley Roughness.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Trolley Roughness.tga"; sourceTree = "<group>"; };
 		C7E4B16622BE3B240066E3A9 /* Trolley Normal.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Trolley Normal.tga"; sourceTree = "<group>"; };
 		C7E4B16722BE3B240066E3A9 /* Trolley Base Color.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Trolley Base Color.tga"; sourceTree = "<group>"; };
-		C7E4B16922BE3B240066E3A9 /* FlareGun_NOpenGL.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FlareGun_NOpenGL.png; sourceTree = "<group>"; };
-		C7E4B16A22BE3B240066E3A9 /* FlareGun.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FlareGun.mtl; sourceTree = "<group>"; };
-		C7E4B16B22BE3B240066E3A9 /* FlareGun_Metallic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FlareGun_Metallic.png; sourceTree = "<group>"; };
-		C7E4B16C22BE3B240066E3A9 /* FlareGun_Roughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FlareGun_Roughness.png; sourceTree = "<group>"; };
-		C7E4B16D22BE3B240066E3A9 /* FlareGun.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FlareGun.obj; sourceTree = "<group>"; };
-		C7E4B16E22BE3B240066E3A9 /* FlareGun_Normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FlareGun_Normal.png; sourceTree = "<group>"; };
-		C7E4B16F22BE3B240066E3A9 /* FlareGun_BaseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FlareGun_BaseColor.png; sourceTree = "<group>"; };
-		C7E4B17022BE3B240066E3A9 /* FlareGun_AO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FlareGun_AO.png; sourceTree = "<group>"; };
 		C7E4B17222BE3B240066E3A9 /* Vintage_Suitcase_Roughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Vintage_Suitcase_Roughness.png; sourceTree = "<group>"; };
 		C7E4B17322BE3B240066E3A9 /* Vintage_Suitcase_Normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Vintage_Suitcase_Normal.png; sourceTree = "<group>"; };
 		C7E4B17422BE3B240066E3A9 /* Vintage_Suitcase_LP.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Vintage_Suitcase_LP.mtl; sourceTree = "<group>"; };
@@ -1805,12 +1771,6 @@
 		C7E4B17622BE3B240066E3A9 /* Vintage_Suitcase_Metallic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Vintage_Suitcase_Metallic.png; sourceTree = "<group>"; };
 		C7E4B17722BE3B240066E3A9 /* Vintage_Suitcase_LP.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Vintage_Suitcase_LP.obj; sourceTree = "<group>"; };
 		C7E4B17822BE3B240066E3A9 /* Vintage_Suitcase_Colour.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Vintage_Suitcase_Colour.png; sourceTree = "<group>"; };
-		C7E4B19722BE8EF00066E3A9 /* BaseColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BaseColor.png; sourceTree = "<group>"; };
-		C7E4B19822BE8EF00066E3A9 /* Metallic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Metallic.png; sourceTree = "<group>"; };
-		C7E4B19922BE8EF00066E3A9 /* SM_Medical_Saw_01.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SM_Medical_Saw_01.obj; sourceTree = "<group>"; };
-		C7E4B19A22BE8EF00066E3A9 /* Normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Normal.png; sourceTree = "<group>"; };
-		C7E4B19B22BE8EF00066E3A9 /* AO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AO.png; sourceTree = "<group>"; };
-		C7E4B19C22BE8EF00066E3A9 /* Roughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Roughness.png; sourceTree = "<group>"; };
 		C7EDB0D322064878007C7D3A /* Game+ILights.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+ILights.cpp"; sourceTree = "<group>"; };
 		C7EDB0D522064BCE007C7D3A /* LampShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LampShader.vert; sourceTree = "<group>"; };
 		C7EDB0D622064BCE007C7D3A /* LightShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightShader.frag; sourceTree = "<group>"; };
@@ -2973,6 +2933,8 @@
 				C785F99222134CA900F1F8FD /* BarrelDistortionPixelShader.vert */,
 				C7090CC7223659C2006FE002 /* BayerMatrixDitheringShader.frag */,
 				C7090CC6223659C1006FE002 /* BayerMatrixDitheringShader.vert */,
+				C77FC08222C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.frag */,
+				C77FC08122C0330E00199356 /* BidirectionalReflectanceDistributionFunctionShader.vert */,
 				C7EEC50222136AF700909E4C /* BloomShader.frag */,
 				C7EEC4F722136AF100909E4C /* BloomShader.vert */,
 				C7EEC4FE22136AF500909E4C /* BlurShader.frag */,
@@ -3159,9 +3121,6 @@
 		C7C8F2CB21FF5F5C00AB865A /* models */ = {
 			isa = PBXGroup;
 			children = (
-				C7E4B19622BE8EF00066E3A9 /* MedicalSaw */,
-				C7E4B16822BE3B240066E3A9 /* FlareGun */,
-				C7E4B15822BE3B230066E3A9 /* QuadShotgun */,
 				C7E4B16122BE3B240066E3A9 /* Trolley */,
 				C7E4B17122BE3B240066E3A9 /* VintageSuitcase */,
 			);
@@ -3551,21 +3510,6 @@
 			path = GroundMoss;
 			sourceTree = "<group>";
 		};
-		C7E4B15822BE3B230066E3A9 /* QuadShotgun */ = {
-			isa = PBXGroup;
-			children = (
-				C7E4B15922BE3B230066E3A9 /* Quad_Shotgun_AO.png */,
-				C7E4B15A22BE3B230066E3A9 /* Quad_Shotgun_NOpenGL.png */,
-				C7E4B15B22BE3B230066E3A9 /* Quad_Shotgun_Normal.png */,
-				C7E4B15C22BE3B230066E3A9 /* Quad_Shotgun_Roughness.png */,
-				C7E4B15D22BE3B230066E3A9 /* Quad_Shotgun_Metallic.png */,
-				C7E4B15E22BE3B230066E3A9 /* Quad_Shotgun.obj */,
-				C7E4B15F22BE3B230066E3A9 /* Quad_Shotgun.mtl */,
-				C7E4B16022BE3B230066E3A9 /* Quad_Shotgun_BaseColor.png */,
-			);
-			path = QuadShotgun;
-			sourceTree = "<group>";
-		};
 		C7E4B16122BE3B240066E3A9 /* Trolley */ = {
 			isa = PBXGroup;
 			children = (
@@ -3577,21 +3521,6 @@
 				C7E4B16722BE3B240066E3A9 /* Trolley Base Color.tga */,
 			);
 			path = Trolley;
-			sourceTree = "<group>";
-		};
-		C7E4B16822BE3B240066E3A9 /* FlareGun */ = {
-			isa = PBXGroup;
-			children = (
-				C7E4B16922BE3B240066E3A9 /* FlareGun_NOpenGL.png */,
-				C7E4B16A22BE3B240066E3A9 /* FlareGun.mtl */,
-				C7E4B16B22BE3B240066E3A9 /* FlareGun_Metallic.png */,
-				C7E4B16C22BE3B240066E3A9 /* FlareGun_Roughness.png */,
-				C7E4B16D22BE3B240066E3A9 /* FlareGun.obj */,
-				C7E4B16E22BE3B240066E3A9 /* FlareGun_Normal.png */,
-				C7E4B16F22BE3B240066E3A9 /* FlareGun_BaseColor.png */,
-				C7E4B17022BE3B240066E3A9 /* FlareGun_AO.png */,
-			);
-			path = FlareGun;
 			sourceTree = "<group>";
 		};
 		C7E4B17122BE3B240066E3A9 /* VintageSuitcase */ = {
@@ -3606,19 +3535,6 @@
 				C7E4B17822BE3B240066E3A9 /* Vintage_Suitcase_Colour.png */,
 			);
 			path = VintageSuitcase;
-			sourceTree = "<group>";
-		};
-		C7E4B19622BE8EF00066E3A9 /* MedicalSaw */ = {
-			isa = PBXGroup;
-			children = (
-				C7E4B19722BE8EF00066E3A9 /* BaseColor.png */,
-				C7E4B19822BE8EF00066E3A9 /* Metallic.png */,
-				C7E4B19922BE8EF00066E3A9 /* SM_Medical_Saw_01.obj */,
-				C7E4B19A22BE8EF00066E3A9 /* Normal.png */,
-				C7E4B19B22BE8EF00066E3A9 /* AO.png */,
-				C7E4B19C22BE8EF00066E3A9 /* Roughness.png */,
-			);
-			path = MedicalSaw;
 			sourceTree = "<group>";
 		};
 		C7FB5781220CE7D6006F2D91 /* woodenBox */ = {
@@ -3696,7 +3612,6 @@
 				C785F97E2212E74000F1F8FD /* noise_texture_colored.png in Resources */,
 				C7B759442204E32C00E54C30 /* Figured_rosewood_pxr128_normal.tif in Resources */,
 				C7B759C92204E32C00E54C30 /* Fine_gravel_pxr128_bmp.tif in Resources */,
-				C7E4B17922BE3B240066E3A9 /* Quad_Shotgun_AO.png in Resources */,
 				C7B4D3D722146E2900BCE130 /* oakfloor2-albedo.png in Resources */,
 				C7CEE2EC2212435600895F5D /* KernelShader.vert in Resources */,
 				C76DB0052218A6DE005C354C /* lensDirt.png in Resources */,
@@ -3761,7 +3676,6 @@
 				C7B759DA2204E32C00E54C30 /* Bowling_grass_pxr128_normal.tif in Resources */,
 				C755BCCF22B6E0BE0074F8A5 /* _lf.jpg in Resources */,
 				C77673BB2209F69500BA7062 /* rust-panel-metalness.png in Resources */,
-				C7E4B17C22BE3B240066E3A9 /* Quad_Shotgun_Roughness.png in Resources */,
 				C7EEC50E22136AF700909E4C /* MotionBlurShader.frag in Resources */,
 				C7090CCC22365F4C006FE002 /* KnittedPixelationShader.frag in Resources */,
 				C7CEE2F02212435600895F5D /* KernelBlurShader.frag in Resources */,
@@ -3771,6 +3685,7 @@
 				C7B759E22204E32C00E54C30 /* Beach_sand_pxr128.tif in Resources */,
 				C779E17922159F5300AF11E9 /* DepthMappingShader.vert in Resources */,
 				C7B759F22204E32C00E54C30 /* Cedar_shake_pxr128_bmp.tif in Resources */,
+				C77FC08322C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.vert in Resources */,
 				C7B75A5E2204E32D00E54C30 /* Red_granite_pxr128_bmp.tif in Resources */,
 				C7B75A672204E32D00E54C30 /* Gray_marble_pxr128_normal.tif in Resources */,
 				C7B4D40222146E2900BCE130 /* cavefloor-height.png in Resources */,
@@ -3818,7 +3733,6 @@
 				C7090CE9223676FD006FE002 /* DistortedTVShader.frag in Resources */,
 				C7B4D3BC22146E2900BCE130 /* granitesmooth-metal.png in Resources */,
 				C7B759792204E32C00E54C30 /* Silver_paper_cilps_pxr128_normal.tif in Resources */,
-				C7E4B18C22BE3B240066E3A9 /* FlareGun_Normal.png in Resources */,
 				C7B759232204E32C00E54C30 /* Honduran_mahogany_pxr128.tif in Resources */,
 				C7C8F4A921FFC6F200AB865A /* HudShader.vert in Resources */,
 				C7B4D3F222146E2900BCE130 /* titanium-metal.png in Resources */,
@@ -3859,9 +3773,7 @@
 				C7FB5784220CE7D6006F2D91 /* woodenBoxSpecular.png in Resources */,
 				C7B4D3CE22146E2900BCE130 /* haystack-ao.png in Resources */,
 				C7B75A232204E32C00E54C30 /* Stone_and_brick_pxr128_normal.tif in Resources */,
-				C7E4B18E22BE3B240066E3A9 /* FlareGun_AO.png in Resources */,
 				C785F9802212E74000F1F8FD /* noise_texture_gray.png in Resources */,
-				C7E4B17E22BE3B240066E3A9 /* Quad_Shotgun.obj in Resources */,
 				C785F99422134CAE00F1F8FD /* FishEyeLensShader.vert in Resources */,
 				C7B4D3B922146E2900BCE130 /* granitesmooth-albedo2.png in Resources */,
 				C7090CC8223659C2006FE002 /* BayerMatrixDitheringShader.vert in Resources */,
@@ -3888,12 +3800,10 @@
 				C7B75A682204E32D00E54C30 /* Buffed_marble_pxr128_bmp.tif in Resources */,
 				C7B7597D2204E32C00E54C30 /* Iridescent_ribbon_pxr128_bmp.tif in Resources */,
 				C7B75AA42204E32D00E54C30 /* Gray_swirl_marble_pxr128.tif in Resources */,
-				C7E4B18722BE3B240066E3A9 /* FlareGun_NOpenGL.png in Resources */,
 				C7B4D3F322146E2900BCE130 /* paint-peeling-normal.png in Resources */,
 				C7B759682204E32C00E54C30 /* Burled_walnut_pxr128_normal.tif in Resources */,
 				C7B7597E2204E32C00E54C30 /* Iridescent_ribbon_pxr128.tif in Resources */,
 				C7B75A722204E32D00E54C30 /* Black_granite_pxr128.tif in Resources */,
-				C7E4B19F22BE8EF00066E3A9 /* SM_Medical_Saw_01.obj in Resources */,
 				C7B7595A2204E32C00E54C30 /* Figured_lacewood_pxr128_normal.tif in Resources */,
 				C7B4D3C222146E2900BCE130 /* bamboo-wood-semigloss-albedo.png in Resources */,
 				C7DE39E5221E25D600595556 /* snow.png in Resources */,
@@ -3914,7 +3824,6 @@
 				C77673B12209F69500BA7062 /* Metal_007_Normal.jpg in Resources */,
 				C7B7599A2204E32C00E54C30 /* Small_black_tile_pxr128_bmp.tif in Resources */,
 				C7B759F12204E32C00E54C30 /* Redwood_outdoor_pxr128_normal.tif in Resources */,
-				C7E4B18822BE3B240066E3A9 /* FlareGun.mtl in Resources */,
 				C7B75A222204E32C00E54C30 /* Thin_building_block_pxr128_normal.tif in Resources */,
 				C7B75A142204E32C00E54C30 /* White_brick_block_pxr128_normal.tif in Resources */,
 				C7B4D3A922146E2900BCE130 /* iron-normal.png in Resources */,
@@ -4022,7 +3931,6 @@
 				C7DE39D6221E25D600595556 /* diffuse.jpg in Resources */,
 				C7DE39EE221E25D600595556 /* diffuse.jpg in Resources */,
 				C7B759BA2204E32C00E54C30 /* Wire_screen_pxr128_normal.tif in Resources */,
-				C7E4B1A222BE8EF00066E3A9 /* Roughness.png in Resources */,
 				C718545122ABC68A00E54C30 /* EquirectangularToCubemapShader.frag in Resources */,
 				C7DE39F9221F2D0700595556 /* ScreenSpaceAmbientOcclusionLightingShader.frag in Resources */,
 				C7B759D92204E32C00E54C30 /* Street_asphalt_pxr128_bmp.tif in Resources */,
@@ -4089,7 +3997,6 @@
 				C7B7599B2204E32C00E54C30 /* Rattan_pxr128_bmp.tif in Resources */,
 				C7B4D3EE22146E2900BCE130 /* charcoal-roughness.png in Resources */,
 				C7EDB0DC22064BCE007C7D3A /* LightShader.vert in Resources */,
-				C7E4B1A122BE8EF00066E3A9 /* AO.png in Resources */,
 				C785F94C2212D2BD00F1F8FD /* SwirlShader.frag in Resources */,
 				C7CEE2D32211E2AB00895F5D /* ToonShader.frag in Resources */,
 				C7CEE2DF221241BA00895F5D /* ColorInversionShader.vert in Resources */,
@@ -4113,7 +4020,6 @@
 				C7B759A02204E32C00E54C30 /* Shale_rock_pxr128_bmp.tif in Resources */,
 				C7CEE2ED2212435600895F5D /* KernelBlurShader.vert in Resources */,
 				C7B75A802204E32D00E54C30 /* Blue_cotton_tweed_pxr128_normal.jpg in Resources */,
-				C7E4B17F22BE3B240066E3A9 /* Quad_Shotgun.mtl in Resources */,
 				C79C6638225A298100705D64 /* Metal_Painted_001_metallic.jpg in Resources */,
 				C7B759AC2204E32C00E54C30 /* Black_mesh_pxr128_bmp.tif in Resources */,
 				C77673B22209F69500BA7062 /* Metal_007_Roughness.jpg in Resources */,
@@ -4222,11 +4128,9 @@
 				C77673B02209F69500BA7062 /* Metal_007_Metallic.jpg in Resources */,
 				C7EEC50822136AF700909E4C /* LensFlareShader.frag in Resources */,
 				C7B759D12204E32C00E54C30 /* Fine_gravel_pxr128.tif in Resources */,
-				C7E4B17A22BE3B240066E3A9 /* Quad_Shotgun_NOpenGL.png in Resources */,
 				C7B75A972204E32D00E54C30 /* Haitian_cotton_pxr128_bmp.tif in Resources */,
 				C7B759832204E32C00E54C30 /* Panda_fur_pxr128_normal.tif in Resources */,
 				C7B75A492204E32D00E54C30 /* Standard_shingle_pxr128_normal.tif in Resources */,
-				C7E4B19D22BE8EF00066E3A9 /* BaseColor.png in Resources */,
 				C7B759C52204E32C00E54C30 /* Pebbles_in_mortar_pxr128_bmp.tif in Resources */,
 				C7B759B02204E32C00E54C30 /* Steel_grating_pxr128_bmp.tif in Resources */,
 				C7B4D3C722146E2900BCE130 /* aluminium-normal.png in Resources */,
@@ -4242,7 +4146,6 @@
 				C7B75A7A2204E32D00E54C30 /* Red_velvet_pxr128_bmp.tif in Resources */,
 				C7B4D39F22146E2900BCE130 /* metalgrid-ao.png in Resources */,
 				C7090CAC2235CBF5006FE002 /* RainDropsShader.frag in Resources */,
-				C7E4B18922BE3B240066E3A9 /* FlareGun_Metallic.png in Resources */,
 				C7C8F43321FFBA0400AB865A /* Kai_Engel_-_08_-_Oecumene_Sleeps.mp3 in Resources */,
 				C7EEC50622136AF700909E4C /* RadialBlurShader.vert in Resources */,
 				C7B759602204E32C00E54C30 /* Figured_rosewood_pxr128_bmp.tif in Resources */,
@@ -4275,7 +4178,6 @@
 				C77673AE2209F69500BA7062 /* Metal_007_Ambient_Occlusion.jpg in Resources */,
 				C7B75A7D2204E32D00E54C30 /* Wild_flowers_pxr128_bmp.tif in Resources */,
 				C7DE39E7221E25D600595556 /* patchygrass.png in Resources */,
-				C7E4B17D22BE3B240066E3A9 /* Quad_Shotgun_Metallic.png in Resources */,
 				C7B4D3CF22146E2900BCE130 /* haystack-normal.png in Resources */,
 				C7EED109221105360079F5C0 /* PorcupineRenderingShader.geom in Resources */,
 				C7B75A7B2204E32D00E54C30 /* White_lace_pxr128.tif in Resources */,
@@ -4293,14 +4195,13 @@
 				C7B7595F2204E32C00E54C30 /* Redwood_tree_bark_pxr128.tif in Resources */,
 				C7B759EE2204E32C00E54C30 /* Cedar_shake_pxr128_normal.tif in Resources */,
 				C7B75A962204E32D00E54C30 /* Woven_flower_pxr128_bmp.tif in Resources */,
-				C7E4B19E22BE8EF00066E3A9 /* Metallic.png in Resources */,
 				C7B759C12204E32C00E54C30 /* Beach_sand_pxr128_normal.tif in Resources */,
 				C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */,
 				C7EEC50522136AF700909E4C /* BrightPartsShader.vert in Resources */,
-				C7E4B18A22BE3B240066E3A9 /* FlareGun_Roughness.png in Resources */,
 				C7B75A072204E32C00E54C30 /* Whitewashed_wood_pxr128.tif in Resources */,
 				C7DE39C3221E25D600595556 /* normal.jpg in Resources */,
 				C7DE39C8221E25D600595556 /* diffuse.jpg in Resources */,
+				C77FC08422C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.frag in Resources */,
 				C7EEC51122136AF700909E4C /* GaussianBlurShader.vert in Resources */,
 				C7B75A3C2204E32C00E54C30 /* Red_shingle_pxr128.tif in Resources */,
 				C7B75A402204E32C00E54C30 /* Brown_shingle_pxr128.tif in Resources */,
@@ -4308,7 +4209,6 @@
 				C7B75A992204E32D00E54C30 /* Stripes_pxr128_bmp.tif in Resources */,
 				C7B75A6A2204E32D00E54C30 /* Brown_marble_pxr128.tif in Resources */,
 				C785F99822134CAE00F1F8FD /* BarrelDistortionPixelShader.frag in Resources */,
-				C7E4B18B22BE3B240066E3A9 /* FlareGun.obj in Resources */,
 				C7090CB92235E38E006FE002 /* CubicLensDistortionShader.frag in Resources */,
 				C7B759952204E32C00E54C30 /* Railroad_tie_ends_pxr128_normal.tif in Resources */,
 				C7B7595B2204E32C00E54C30 /* American_oak_pxr128_normal.tif in Resources */,
@@ -4364,7 +4264,6 @@
 				C7DE39F8221F2D0700595556 /* ScreenSpaceAmbientOcclusionLightingShader.vert in Resources */,
 				C77673AF2209F69500BA7062 /* Metal_007_Base_Color.png in Resources */,
 				C7B75A602204E32D00E54C30 /* Green_marble_pxr128.tif in Resources */,
-				C7E4B18022BE3B240066E3A9 /* Quad_Shotgun_BaseColor.png in Resources */,
 				C7C8F43121FFBA0400AB865A /* Kai_Engel_-_03_-_Brooks.mp3 in Resources */,
 				C7B75A202204E32C00E54C30 /* Relief_building_block_pxr128_normal.tif in Resources */,
 				C7EEC50922136AF700909E4C /* BloomShader.vert in Resources */,
@@ -4437,7 +4336,6 @@
 				C7B759402204E32C00E54C30 /* Burled_olive_ash_pxr128_bmp.tif in Resources */,
 				C785F987221341CC00F1F8FD /* FreiChenEdgeDetectionShader.vert in Resources */,
 				C7DE38FE221CA1CA00595556 /* explosion.png in Resources */,
-				C7E4B17B22BE3B240066E3A9 /* Quad_Shotgun_Normal.png in Resources */,
 				C7B7596D2204E32C00E54C30 /* Figured_yew_wood_pxr128_normal.tif in Resources */,
 				C76DAFFB22187727005C354C /* lensTexture.jpg in Resources */,
 				C7B759992204E32C00E54C30 /* Rock_in_mortar_pxr128_normal.tif in Resources */,
@@ -4461,7 +4359,6 @@
 				C78F395F2215C81C006163EC /* LightSpaceShader.frag in Resources */,
 				C7B7592D2204E32C00E54C30 /* Brazilian_rosewood_pxr128_bmp.tif in Resources */,
 				C7B759692204E32C00E54C30 /* Belizan_mahognay_pxr128_bmp.tif in Resources */,
-				C7E4B18D22BE3B240066E3A9 /* FlareGun_BaseColor.png in Resources */,
 				C7B75A3A2204E32C00E54C30 /* Brown_shingle_pxr128_normal.tif in Resources */,
 				C785F99D22134CAE00F1F8FD /* FishEyeAntiFishEyeShader.frag in Resources */,
 				C7B7598E2204E32C00E54C30 /* Small_black_tile_pxr128.tif in Resources */,
@@ -4481,7 +4378,6 @@
 				C7B759D82204E32C00E54C30 /* Bowling_grass_pxr128_bmp.tif in Resources */,
 				C70A1F94220EEED100170280 /* ChromaticAberrationShader.vert in Resources */,
 				C785F99C22134CAE00F1F8FD /* BarrelDistortionPixelShader.vert in Resources */,
-				C7E4B1A022BE8EF00066E3A9 /* Normal.png in Resources */,
 				C7B759852204E32C00E54C30 /* Panda_fur_pxr128.tif in Resources */,
 				C7C8F4A821FFC6ED00AB865A /* HudShader.frag in Resources */,
 				C785F9812212E74000F1F8FD /* perlin_noise_texture.png in Resources */,

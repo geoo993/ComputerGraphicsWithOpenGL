@@ -174,6 +174,10 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("EquirectangularToCubemapShader.frag");
     sShaderFileNames.push_back("SkyBoxIrradianceShader.vert");// 78
     sShaderFileNames.push_back("SkyBoxIrradianceShader.frag");
+    sShaderFileNames.push_back("SkyBoxPreFilteringShader.vert");// 79
+    sShaderFileNames.push_back("SkyBoxPreFilteringShader.frag");
+    sShaderFileNames.push_back("BidirectionalReflectanceDistributionFunctionShader.vert");// 80
+    sShaderFileNames.push_back("BidirectionalReflectanceDistributionFunctionShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -824,6 +828,23 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pSkyBoxIrradianceProgram->AddShaderToProgram(&shShaders[160]);
     pSkyBoxIrradianceProgram->LinkProgram();
     m_pShaderPrograms->push_back(pSkyBoxIrradianceProgram);
+    
+    // Create SkyBox PreFiltering Shader
+    CShaderProgram *pSkyBoxPreFilteringProgram = new CShaderProgram;
+    pSkyBoxPreFilteringProgram->CreateProgram();
+    pSkyBoxPreFilteringProgram->AddShaderToProgram(&shShaders[161]);
+    pSkyBoxPreFilteringProgram->AddShaderToProgram(&shShaders[162]);
+    pSkyBoxPreFilteringProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pSkyBoxPreFilteringProgram);
+    
+    // Create Bidirectional Reflectance Distribution Function Shader
+    CShaderProgram *pBidirectionalReflectanceDistributionFunctionProgram = new CShaderProgram;
+    pBidirectionalReflectanceDistributionFunctionProgram->CreateProgram();
+    pBidirectionalReflectanceDistributionFunctionProgram->AddShaderToProgram(&shShaders[163]);
+    pBidirectionalReflectanceDistributionFunctionProgram->AddShaderToProgram(&shShaders[164]);
+    pBidirectionalReflectanceDistributionFunctionProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pBidirectionalReflectanceDistributionFunctionProgram);
+    
 }
 
 

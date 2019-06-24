@@ -79,7 +79,7 @@ void Game::RenderIrrSkyBox(CShaderProgram *pShaderProgram) {
     pShaderProgram->SetUniform("bUseEnvCubemap", true);
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrixWithoutTranslation", m_pCamera->GetViewWithoutTranslation());
-    m_pIrrSkybox->Render(true, m_useIrradianceMap ? SkyboxType::IrradianceMap : SkyboxType::EnvironmentMap);
+    m_pIrrSkybox->Render(true, m_useIrradianceMap ? SkyboxType::PrefilterMap : SkyboxType::EnvironmentMap);
     glDepthFunc(GL_LESS); // set depth function back to default
 }
 

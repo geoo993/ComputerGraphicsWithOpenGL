@@ -13,6 +13,7 @@ enum class SkyboxType {
     Default,
     EnvironmentMap,
     IrradianceMap,
+    PrefilterMap,
 };
 
 

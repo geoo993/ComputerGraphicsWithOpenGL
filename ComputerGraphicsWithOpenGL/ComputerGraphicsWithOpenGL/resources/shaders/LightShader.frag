@@ -213,7 +213,7 @@ void main() {
 //        hdrColor = hdrColor / (hdrColor + vec3(1.0f));
 //        hdrColor = pow(hdrColor, vec3(1.0f / R_hrdlight.gamma));
 //    }
-    vOutputColour = vec4(hdrColor, result.z);
+    vOutputColour = vec4(hdrColor, result.w);
     
     
     // Retrieve bright parts

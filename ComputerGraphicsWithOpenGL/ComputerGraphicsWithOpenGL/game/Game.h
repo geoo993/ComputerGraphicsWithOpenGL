@@ -70,10 +70,7 @@ private:
     
     //models
     CModel * m_pTrolley;
-    CModel * m_pShotgun;
     CModel * m_pSuitcase;
-    CModel * m_pFlareGun;
-    CModel * m_pMedicalSaw;
     
     //sphere object
     CSphere *m_pSphere;

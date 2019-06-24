@@ -22,7 +22,8 @@ public:
     void BindSkyboxTo(const GLint &textureUnit);
     void BindEnvSkyboxTo(const GLint &textureUnit);
     void BindIrrSkyboxTo(const GLint &textureUnit);
-
+    void BindPrefilterSkyboxTo(const GLint &textureUnit);
+    void BindBRDFLUTTextureTo(const GLint &textureUnit);
     void Transform(const glm::vec3 & position,
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));

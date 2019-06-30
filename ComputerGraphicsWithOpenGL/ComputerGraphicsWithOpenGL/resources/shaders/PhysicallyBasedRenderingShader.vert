@@ -23,6 +23,7 @@ out VS_OUT
     vec3 vLocalPosition;
     vec3 vLocalNormal;
     vec3 vWorldPosition;
+    vec3 vNormal;
     vec3 vWorldNormal;
     vec3 vWorldTangent;
     vec4 vEyePosition;
@@ -45,6 +46,8 @@ void main() {
     vs_out.vWorldNormal = matrices.normalMatrix * normal;
     vs_out.vWorldTangent = matrices.normalMatrix * tangent;
     vs_out.vLocalNormal = normal;
+    
+    vs_out.vNormal =  mat3(matrices.modelMatrix) * normal;
     
     vs_out.vEyePosition = matrices.viewMatrix * matrices.modelMatrix * position;
     vs_out.vWorldPosition = vec3(matrices.modelMatrix * position);

@@ -117,7 +117,7 @@ void CSlider::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std:
     if (m_isActive && m_current != nullptr) {
         hudProgram->UseProgram();
         hudProgram->SetUniform("bUseScreenQuad", true);
-        hudProgram->SetUniform("bUseTexture", false);
+        hudProgram->SetUniform("material.bUseTexture", false);
         hudProgram->SetUniform(material+".color", backgroundColor);
         
         glBindVertexArray(m_vao);
@@ -193,7 +193,7 @@ void CSlider::Render(CFreeTypeFont *font, CShaderProgram *hudProgram, const std:
         int textY = m_posY + (m_height + textHeight) / 2;
         
         hudProgram->SetUniform("bUseScreenQuad", false);
-        hudProgram->SetUniform("bUseTexture", true);
+        hudProgram->SetUniform("material.bUseTexture", true);
         font->Render(hudProgram, textX, (GLfloat)SCREEN_HEIGHT - textY, m_labelSize, "%s", m_label.data());
     }
 }

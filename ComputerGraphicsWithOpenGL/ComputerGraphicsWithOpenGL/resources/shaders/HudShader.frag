@@ -21,6 +21,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    bool bUseTexture;
 } material;
 
 in VS_OUT
@@ -33,12 +34,10 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform bool bUseTexture;
-
 out vec4 vOutputColour;
 
 void main()
 {
     vec4 vTexColour = texture(material.depthMap, fs_in.vTexCoord);    // Get the texel colour from the image
-    vOutputColour = bUseTexture ? vec4(vTexColour.r) * material.color : material.color;
+    vOutputColour = material.bUseTexture ? vec4(vTexColour.r) * material.color : material.color;
 }

@@ -22,8 +22,6 @@
 #include "Skybox.h"
 #include "Plane.h"
 #include "HeightMapTerrain.h"
-#include "Cube.h"
-#include "Sphere.h"
 #include "Torus.h"
 #include "TorusKnot.h"
 #include "Metaballs.h"
@@ -69,25 +67,24 @@ private:
     float m_heightMapMinHeight, m_heightMapMaxHeight;
     
     //models
-    CModel * m_pTrolley;
     CModel * m_pSuitcase;
     
     //sphere object
     CSphere *m_pSphere;
+    CSphere *m_pSpherePBR1;
+    CSphere *m_pSpherePBR2;
+    CSphere *m_pSpherePBR3;
+    CSphere *m_pSpherePBR4;
+    CSphere *m_pSpherePBR5;
+    CSphere *m_pSpherePBR6;
     CSphere *m_pFireBallSphere;
-    glm::vec3 m_spherePosition;
     
     //cube object
-    CCube * m_pCube;
-    CCube * m_pChromaticAberrationCube;
     CCube * m_pParallaxCube;
-    CCube * m_pInteriorBox;
-    glm::vec3 m_cubePosition;
     
     // woodenBox
     CCube *m_pWoodenBox;
-    GLboolean m_materialUseTexture;
-    glm::vec4 m_woodenBoxesColor;
+    GLfloat m_woodenBoxesRotation;
     std::vector<glm::vec3> m_woodenBoxesPosition;
     
     // lamp
@@ -95,15 +92,12 @@ private:
     
     //torus object
     CTorus * m_pTorus;
-    glm::vec3 m_torusPosition;
     
     //torus knot
     CTorusKnot * m_pTorusKnot;
-    glm::vec3 m_torusKnotPosition;
     
     // metal ball
     CMetaballs *m_pMetaballs;
-    glm::vec3 m_metalballsPosition;
 
 public:
     Game();
@@ -144,7 +138,7 @@ protected:
                             const glm::vec4 &color = glm::vec4(1.0f), const GLfloat &shininess = 32.0f,
                             const GLboolean &useAO = false) override;
     void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                               const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness,
+                               const GLfloat &albedo, const GLfloat &metallic, const GLfloat &roughness,
                                const GLfloat &ao, const GLboolean &useIrradiance) override;
     
     /// Textures
@@ -210,10 +204,10 @@ protected:
     void SetLensFlareGhostUniform(CShaderProgram *pShaderProgram) override;
     void SetLensFlareUniform(CShaderProgram *pShaderProgram) override;
     void SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram) override;
-    void SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture = true) override;
+    void SetDeferredRenderingUniform(CShaderProgram *pShaderProgram) override;
     void SetScreenSpaceAmbientOcclusionUniform(CShaderProgram *pShaderProgram) override;
     void SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) override;
-    void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture = true) override;
+    void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram) override;
     void SetRainDropsUniform(CShaderProgram *pShaderProgram) override;
     void SetPaletteQuantizationAndDitheringUniform(CShaderProgram *pShaderProgram) override;
     void SetDistortedTVUniform(CShaderProgram *pShaderProgram) override;
@@ -250,34 +244,24 @@ protected:
     
     /// Render object
     void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),
-                    const GLfloat & scale = 1.0f, const GLboolean &useTexture = true,
-                    const GLboolean &bindTexture = false) override;
+                    const GLfloat & scale = 1.0f, const GLboolean &bindTexture = false) override;
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderEnvSkyBox(CShaderProgram *pShaderProgram) override;
-    void RenderIrrSkyBox(CShaderProgram *pShaderProgram) override;
     void ResetSkyBox(CShaderProgram *pShaderProgram) override;
-    void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) override;
-    void RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position,
-                        const GLfloat & scale, const GLboolean &useTexture);
-    void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                    const GLfloat & scale, const GLboolean &useTexture) override;
-    void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
-                           const float & scale, const bool &useTexture, const bool &bindTexture) override;
-    void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                            const GLfloat & scale, const GLboolean &useTexture);
-    void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                       const GLfloat & scale, const GLboolean &useTexture) override;
+    void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) override;
+    void RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position, const GLfloat & scale);
+    void RenderCube(CShaderProgram *pShaderProgram, CCube *cube, const glm::vec3 & position, const GLfloat & scale,
+        const GLboolean &useTexture = true) override;
     void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
-                         const GLfloat & angle, const GLboolean &useTexture) override;
-    void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                      const GLfloat & scale, const GLboolean &useTexture) override;
-    void RenderFireBallSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale) override;
+                         const GLfloat & angleX, const GLfloat & angleY, const GLfloat & angleZ) override;
+    void RenderSphere(CShaderProgram *pShaderProgram, CSphere *sphere, const glm::vec3 & position,
+                      const GLfloat & scale, const GLboolean &useTexture = true) override;
     void RenderTorus(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                     const GLfloat & scale, const GLboolean &useTexture) override;
+                     const GLfloat & scale) override;
     void RenderTorusKnot(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                         const GLfloat & scale, const GLboolean &useTexture) override;
+                         const GLfloat & scale) override;
     void RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                          const GLfloat & scale, const GLboolean &useTexture) override;
+                          const GLfloat & scale) override;
     
     /// Post processing
     void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) override;

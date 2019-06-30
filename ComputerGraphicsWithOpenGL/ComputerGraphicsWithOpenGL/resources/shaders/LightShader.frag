@@ -36,6 +36,8 @@ uniform struct Material
     vec4 color;
     float shininess;
     bool bUseAO;
+    bool bUseTexture;
+    bool bUseColor;
 } material;
 
 uniform struct HRDLight
@@ -87,7 +89,7 @@ struct SpotLight
 uniform DirectionalLight R_directionallight;
 uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
-uniform bool bUseTexture, bUseBlinn, bUseSmoothSpot;
+uniform bool bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
 
 in VS_OUT
@@ -115,10 +117,10 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     
     vec4 lightColor = vec4(base.color, 1.0f);
     vec4 materialColor = material.color;
-    vec4 ambient = base.ambient * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
-    vec4 diffuse = base.diffuse * diffuseFactor * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
-    vec4 specular = base.specular * specularFactor * (bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
-    return (ambient + diffuse + specular) * base.intensity * lightColor;
+    vec4 ambient = base.ambient * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+    vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+    vec4 specular = base.specular * specularFactor * (material.bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
+    return (ambient + diffuse + specular) * base.intensity * (material.bUseColor ? lightColor : vec4(1.0f));
 }
 
 vec4 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 vertexPosition)
@@ -176,7 +178,7 @@ layout (location = 4) out vec4 vAlbedoSpec;
 
 void main() {
     
-    vec3 normal = normalize(fs_in.vWorldNormal);
+    vec3 normal = material.bUseTexture ? texture(material.normalMap, fs_in.vTexCoord).rgb : normalize(fs_in.vWorldNormal);
     vec3 worldPos = fs_in.vWorldPosition;
     vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     

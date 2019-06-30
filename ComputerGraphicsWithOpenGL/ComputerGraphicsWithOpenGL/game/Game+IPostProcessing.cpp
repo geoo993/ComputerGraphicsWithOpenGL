@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::IIL;
+    m_currentPPFXMode = PostProcessingEffectMode::IBL;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -115,11 +115,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::IBL: {
-            CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
-            RenderToScreen(pImageProcessingProgram);
-            return;
-        }
-        case PostProcessingEffectMode::IIL: {
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
             return;
@@ -539,7 +534,8 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             // Second Pass - Deferred Rendering
             {
                 CShaderProgram *pDeferredRenderingProgram= (*m_pShaderPrograms)[55];
-                SetDeferredRenderingUniform(pDeferredRenderingProgram, m_materialUseTexture);
+                SetMaterialUniform(pDeferredRenderingProgram, "material", m_materialColor, m_materialShininess, false);
+                SetDeferredRenderingUniform(pDeferredRenderingProgram);
                 
                 // Render Lighting Scene
                 SetCameraUniform(pDeferredRenderingProgram, "camera", m_pCamera);
@@ -577,7 +573,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             /*
              In reality, light scatters in all kinds of directions with varying intensities so the indirectly lit parts of a scene should also have varying intensities, instead of a constant ambient component. One type of indirect lighting approximation is called ambient occlusion that tries to approximate indirect lighting by darkening creases, holes and surfaces that are close to each other. These areas are largely occluded by surrounding geometry and thus light rays have less places to escape, hence the areas appear darker.
              */
-            
             // Second Pass - Screen Space Ambient Occlusion
             {
                 
@@ -616,7 +611,8 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             // Fourth Pass - Screen Space Ambient Occlusion Lighting
             {
                 CShaderProgram *pScreenSpaceAmbientOcclusionLightingProgram= (*m_pShaderPrograms)[58];
-                SetScreenSpaceAmbientOcclusionLightingUniform(pScreenSpaceAmbientOcclusionLightingProgram, m_materialUseTexture);
+                SetMaterialUniform(pScreenSpaceAmbientOcclusionLightingProgram, "material", m_materialColor, m_materialShininess, true);
+                SetScreenSpaceAmbientOcclusionLightingUniform(pScreenSpaceAmbientOcclusionLightingProgram);
                 
                 // Render Lighting Scene
                 SetCameraUniform(pScreenSpaceAmbientOcclusionLightingProgram, "camera", m_pCamera);
@@ -662,12 +658,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::RetroParallax: {
-            CShaderProgram *pRetroParallaxProgram = (*m_pShaderPrograms)[65];
-            SetRetroParallaxUniform(pRetroParallaxProgram);
-            RenderToScreen(pRetroParallaxProgram);
-            return;
-        }
-        case PostProcessingEffectMode::ScaryRetroParallax: {
             CShaderProgram *pScaryRetroParallaxProgram = (*m_pShaderPrograms)[66];
             SetScaryRetroParallaxUniform(pScaryRetroParallaxProgram);
             RenderToScreen(pScaryRetroParallaxProgram);
@@ -784,9 +774,6 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
             break;
         case PostProcessingEffectMode::IBL:
             RenderPPFXScene(PostProcessingEffectMode::IBL);
-            break;
-        case PostProcessingEffectMode::IIL:
-            RenderPPFXScene(PostProcessingEffectMode::IIL);
             break;
         case PostProcessingEffectMode::BlinnPhong:
             RenderPPFXScene(PostProcessingEffectMode::BlinnPhong);
@@ -923,9 +910,6 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::RetroParallax:
             RenderPPFXScene(PostProcessingEffectMode::RetroParallax);
             break;
-        case PostProcessingEffectMode::ScaryRetroParallax:
-            RenderPPFXScene(PostProcessingEffectMode::ScaryRetroParallax);
-            break;
         case PostProcessingEffectMode::MoneyFilter:
             RenderPPFXScene(PostProcessingEffectMode::MoneyFilter);
             break;
@@ -967,8 +951,6 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         return "Physically Based Rendering";
         case PostProcessingEffectMode::IBL:
         return "Image Based Lighting";
-        case PostProcessingEffectMode::IIL:
-        return "Indirect Irradiance Lighting";
         case PostProcessingEffectMode::BlinnPhong:
         return "Blinn-Phong Lighting";
         case PostProcessingEffectMode::ColorInversion:
@@ -1059,8 +1041,6 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
             return "RGB Display";
         case PostProcessingEffectMode::RetroParallax:
             return "Retro Parallax";
-        case PostProcessingEffectMode::ScaryRetroParallax:
-            return "Scary Retro Parallax";
         case PostProcessingEffectMode::MoneyFilter:
             return "Money Filter";
         case PostProcessingEffectMode::MicroprismMosaic:

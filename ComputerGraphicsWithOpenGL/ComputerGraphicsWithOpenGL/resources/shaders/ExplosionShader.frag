@@ -22,6 +22,7 @@ uniform struct Material
     vec4 color;
     float shininess;
     bool bUseAO;
+    bool bUseTexture;
 } material;
 
 in VS_OUT
@@ -35,8 +36,6 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform bool bUseTexture;
-
 layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
 layout (location = 1) out vec4 vBrightColor;
 layout (location = 2) out vec3 vPosition;
@@ -46,7 +45,7 @@ layout (location = 4) out vec4 vAlbedoSpec;
 void main()
 {
 
-    if (bUseTexture){
+    if (material.bUseTexture){
         vOutputColour = texture(material.diffuseMap, fs_in.vTexCoord);
     }else{
         vOutputColour = material.color;

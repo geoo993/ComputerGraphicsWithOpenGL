@@ -27,6 +27,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    bool bUseTexture;
 } material;
 
 in VS_OUT
@@ -40,7 +41,7 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform bool bUseTexture, bWireFrame;
+uniform bool bWireFrame;
 uniform float thickness;
 
 noperspective in vec3 GEdgeDistance;
@@ -55,7 +56,7 @@ void main()
     if (bWireFrame) {
         
         if (distance < thickness){
-            vOutputColour = bUseTexture
+            vOutputColour = material.bUseTexture
             ? texture(material.diffuseMap, fs_in.vTexCoord) : material.color; //draw fragment if close to edge
         }else if (distance >= thickness){
             discard; //discard if not

@@ -34,8 +34,16 @@ uniform struct Material
     vec4 color;
     float shininess;
     bool bUseAO;
+    bool bUseTexture;
+    bool bUseColor;
 } material;
 
+uniform struct HRDLight
+{
+    float exposure;
+    float gamma;
+    bool bHDR;
+} R_hrdlight;
 
 // Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
@@ -79,8 +87,9 @@ struct SpotLight
 uniform DirectionalLight R_directionallight;
 uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
-uniform bool bUseTexture, bUseBlinn, bUseSmoothSpot;
+uniform bool bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
+
 float toonIntensity;
 
 in VS_OUT
@@ -103,13 +112,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     const float D = 1.0f;
     
     float diffuseFactor = max(dot(normal, direction), 0.0f);
-    /*
-    if (diffuseFactor < A) diffuseFactor = 0.0f;
-    else if (diffuseFactor < B) diffuseFactor = B;
-    else if (diffuseFactor < C) diffuseFactor = C;
-    else diffuseFactor = D;
-    */
-    
+  
     vec3 viewPosition =  camera.position + camera.front;
     vec3 directionToEye = normalize(viewPosition - vertexPosition); // viewDirection
     vec3 reflectDirection = reflect(-direction, normal);    // specular reflection
@@ -127,10 +130,10 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     // toon intensity
     toonIntensity = diffuseFactor + specularFactor;
     
-    vec4 ambient = base.ambient * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
-    vec4 diffuse = base.diffuse * diffuseFactor * (bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
-    vec4 specular = base.specular * specularFactor * (bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
-    return (ambient + diffuse + specular + toonColor) * base.intensity * lightColor;
+    vec4 ambient = base.ambient * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+    vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+    vec4 specular = base.specular * specularFactor * (material.bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
+    return (ambient + diffuse + specular + toonColor) * base.intensity * (material.bUseColor ? lightColor : vec4(1.0f));
 }
 
 vec4 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 vertexPosition)
@@ -191,7 +194,7 @@ void main()
     vec3 normal = normalize(fs_in.vWorldNormal);
     vec3 worldPos = fs_in.vWorldPosition;
     vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
-    
+ 
     if (bUseDirectionalLight){
         // Directional lighting
         vec4 directionalLight = CalcDirectionalLight(R_directionallight, normal, worldPos);
@@ -216,22 +219,33 @@ void main()
     const float B = 0.3f;
     const float C = 0.6f;
     const float D = 1.0f;
+    vec4 color = vec4(1.0f);
     
+    
+    if (toonIntensity < A) color = result * 0.001f;
+    else if (toonIntensity < B) color = result * B;
+    else if (toonIntensity < C) color = result * C;
+    else color = result * D;
+    
+    // HDR
+    vec3 hdrColor = color.xyz;
+    if(R_hrdlight.bHDR)
+    {
+        // tone mapping with exposure
+        hdrColor = vec3(1.0f) - exp(-hdrColor * R_hrdlight.exposure);
+        // also gamma correct while we're at it
+        hdrColor = pow(hdrColor, vec3(1.0f / R_hrdlight.gamma));
+    }
     /*
-    if (toonIntensity > 0.75f)
-        vOutputColour =  (result * D);
-    else if (toonIntensity > 0.5f)
-        vOutputColour =  (result * C);
-    else
-        vOutputColour =  (result * B);
+     else {
+         // reinhard tone mapping
+         color = color / (color + vec3(1.0f));
+         /// gamma correct
+         //color = pow(color, vec3(1.0f/2.2f));
+         color = pow(color, vec3(1.0f / R_hrdlight.gamma));
+         }
      */
-    
-    /// OR
-    if (toonIntensity < A) vOutputColour = result * 0.001f;
-    else if (toonIntensity < B) vOutputColour = result * B;
-    else if (toonIntensity < C) vOutputColour = result * C;
-    else vOutputColour = result * D;
-    
+    vOutputColour = vec4(hdrColor, color.w);
 
     // Retrieve bright parts
     float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));

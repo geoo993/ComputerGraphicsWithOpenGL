@@ -451,9 +451,8 @@ void Game::SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram)
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
-void Game::SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) {
+void Game::SetDeferredRenderingUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 
@@ -479,9 +478,8 @@ void Game::SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProg
     pShaderProgram->SetUniform("noiseSize", m_ssaoNoiseSize);
 }
 
-void Game::SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) {
+void Game::SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bUseTexture", useTexture);
     pShaderProgram->SetUniform("bUseLight", m_ssaoNoiseUseLight);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }

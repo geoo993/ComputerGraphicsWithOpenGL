@@ -59,7 +59,7 @@ void Game::LoadControls() {
     guiBox->textSize = 15;
     
     /// LEFT SCREEN
-    CButton * useDir = (CButton *)AddControl(new CButton("Use Diriectional Light", guiBox));
+    CButton * useDir = (CButton *)AddControl(new CButton("Use Directional Light", guiBox));
     useDir->SetValue(&m_useDir);
     guiBox->y += guiBox->height;
     
@@ -119,12 +119,16 @@ void Game::LoadControls() {
     linearAtt->SetValue(&m_linear);
     guiBox->y += guiBox->height;
     
-    CSlider *quadraticAtt = (CSlider *)AddControl(new CSlider("Attenuation Quadratic", 0.0f, 0.03f, 5, guiBox));
+    CSlider *quadraticAtt = (CSlider *)AddControl(new CSlider("Attenuation Quadratic", 0.0f, 0.1f, 5, guiBox));
     quadraticAtt->SetValue(&m_exponent);
     guiBox->y += guiBox->height + 5;
     
     CButton * matTexture = (CButton *)AddControl(new CButton("Material Texture", guiBox));
     matTexture->SetValue(&m_materialUseTexture);
+    guiBox->y += guiBox->height;
+    
+    CButton * matColor = (CButton *)AddControl(new CButton("Material Color", guiBox));
+    matColor->SetValue(&m_materialUseColor);
     guiBox->y += guiBox->height;
     
     CSlider *matShiniess = (CSlider *)AddControl(new CSlider("Material Shininess", 0.0f, 30.0f, 5, guiBox));
@@ -196,6 +200,11 @@ void Game::LoadControls() {
     
     // PBR
     guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
+    CButton * pbruseIrradiance = (CButton *)AddControl(new CButton("Use Irradiance", guiBox,
+                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::PBR));
+    pbruseIrradiance->SetValue(&m_useIrradiance);
+    guiBox->y += guiBox->height;
+    
     CButton * pbruseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::PBR));
     pbruseHDR->SetValue(&m_HDR);
@@ -212,44 +221,28 @@ void Game::LoadControls() {
     
     // IBL
     guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
-    CButton * ibluseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
-                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
-    ibluseHDR->SetValue(&m_HDR);
-    guiBox->y += guiBox->height;
-    
-    CSlider *ibllightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", 0.0f, 1.0f, 5,
-                                                                  guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
-    ibllightExposure->SetValue(&m_exposure);
-    guiBox->y += guiBox->height;
-    
-    CSlider *iblGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", 0.0f, 3.0f, 5,
-                                                          guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
-    iblGamma->SetValue(&m_gama);
-    
-    // IIL
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + guiBox->height + 5;
     CButton * iiluseIrradianceMap = (CButton *)AddControl(new CButton("Use Irradiance Map", guiBox,
-                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
     iiluseIrradianceMap->SetValue(&m_useIrradianceMap);
     guiBox->y += guiBox->height;
     
     CButton * iiluseIrradiance = (CButton *)AddControl(new CButton("Use Irradiance", guiBox,
-                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
     iiluseIrradiance->SetValue(&m_useIrradiance);
     guiBox->y += guiBox->height;
     
     CButton * iiluseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
-                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
     iiluseHDR->SetValue(&m_HDR);
     guiBox->y += guiBox->height;
     
     CSlider *iillightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", 0.0f, 1.0f, 5,
-                                                                  guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+                                                                  guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
     iillightExposure->SetValue(&m_exposure);
     guiBox->y += guiBox->height;
     
     CSlider *iilGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", 0.0f, 3.0f, 5,
-                                                          guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IIL));
+                                                          guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::IBL));
     iilGamma->SetValue(&m_gama);
     
     // Screen wave

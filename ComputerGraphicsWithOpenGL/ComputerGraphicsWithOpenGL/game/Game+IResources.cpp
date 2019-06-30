@@ -26,14 +26,16 @@ void Game::InitialiseResources()
     m_pPlanarTerrain = new CPlane;
     m_pHeightmapTerrain = new CHeightMapTerrain;
     m_pLamp = new CCube(1.0f);
-    m_pTrolley = new CModel;
     m_pSuitcase = new CModel;
     m_pSphere = new CSphere;
+    m_pSpherePBR1 = new CSphere;
+    m_pSpherePBR2 = new CSphere;
+    m_pSpherePBR3 = new CSphere;
+    m_pSpherePBR4 = new CSphere;
+    m_pSpherePBR5 = new CSphere;
+    m_pSpherePBR6 = new CSphere;
     m_pFireBallSphere = new CSphere;
-    m_pCube = new CCube(1.0f);
-    m_pInteriorBox = new CCube(10.0f);
     m_pParallaxCube = new CCube(1.0f);
-    m_pChromaticAberrationCube = new CCube(1.0f);
     m_pWoodenBox = new CCube(1.0f);
     m_pTorus = new CTorus(5.0f);
     m_pTorusKnot = new CTorusKnot;
@@ -45,13 +47,13 @@ void Game::LoadResources(const std::string &path)
     
     // Create the planar terrain
     m_pPlanarTerrain->Create(path+"/textures/pbr/metalpainted/", { // http://www.crazyrobinhood.org/textures/
-        { "Metal_Painted_001_albedo.jpg", TextureType::ALBEDO},              // albedo map
-        { "Metal_Painted_001_diffuse.jpg", TextureType::DIFFUSE},
-        { "Metal_Painted_001_metallic.jpg",  TextureType::METALNESS },           // metallic map
-        { "Metal_Painted_001_roughness.jpg",   TextureType::ROUGHNESS},         // roughness map
-        { "Metal_Painted_001_normal.jpg", TextureType::NORMAL},                  // normalMap 3
-        { "Metal_Painted_001_ambientOcclusion.jpg",   TextureType::AO },           // aoMap 4
-        { "Metal_Painted_001_specular.jpg",   TextureType::SPECULAR }
+        { "albedo.jpg", TextureType::ALBEDO},              // albedo map
+        { "diffuse.jpg", TextureType::DIFFUSE},
+        { "metallic.jpg",  TextureType::METALNESS },           // metallic map
+        { "roughness.jpg",   TextureType::ROUGHNESS},         // roughness map
+        { "normal.jpg", TextureType::NORMAL},                  // normalMap 3
+        { "ao.jpg",   TextureType::AO },           // aoMap 4
+        { "specular.jpg",   TextureType::SPECULAR }
     }, m_mapSize, m_mapSize, 5.0f, 50); // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
     
     // Create the heightmap terrain
@@ -67,17 +69,9 @@ void Game::LoadResources(const std::string &path)
                                 m_mapSize,
                                 200.0f);
     
-    m_pLamp->Create(path+"/textures/woodenBox/", {} );
-    
-    /// https://www.cgtrader.com/free-3d-models/vehicle/industrial/industrial-trolley
-    m_pTrolley->Create(path+"/models/Trolley/", "Industrial_Trolley.obj",
-                       {   { "Trolley Base Color.tga", TextureType::ALBEDO },         // albedo map
-                           { "Trolley Metallic.tga",  TextureType::METALNESS },      // metallic map
-                           { "Trolley Roughness.tga",   TextureType::ROUGHNESS},     // roughness map
-                           { "Trolley Normal.tga", TextureType::NORMAL},             // normalMap
-                           { "Trolley Ambient Occlusion.tga",   TextureType::AO },   // aoMap
-                       });
-
+    m_pLamp->Create("", {} );
+  
+    /*
     /// https://www.cgtrader.com/free-3d-models/household/other/vintage-suitcase-528ee5e8-4a33-4e50-a8aa-aac7267d1b78
     m_pSuitcase->Create(path+"/models/VintageSuitcase/", "Vintage_Suitcase_LP.obj",
                         {   { "Vintage_Suitcase_Colour.png", TextureType::ALBEDO },         // albedo map
@@ -86,22 +80,74 @@ void Game::LoadResources(const std::string &path)
                             { "Vintage_Suitcase_Normal.png", TextureType::NORMAL},             // normalMap
                             { "Vintage_Suitcase_AO.png",   TextureType::AO },                  // aoMap
                         });
-    
-    m_pCube->Create(path+"/textures/pixarLibrary/brick/", {
-        { "Standard_red_pxr128.tif", TextureType::DIFFUSE},
-        { "Standard_red_pxr128_normal.tif", TextureType::NORMAL},
-        { "Standard_red_pxr128_bmp.tif", TextureType::SPECULAR}
-    } );
-    m_pInteriorBox->Create(path+"/textures/pbr/harshbricks/", {
-        { "harshbricks-albedo.png", TextureType::ALBEDO},              // albedo map
-        { "harshbricks-diffuse.png", TextureType::DIFFUSE},
-        { "harshbricks-metal.png",  TextureType::METALNESS },           // metallic map
-        { "harshbricks-roughness.png",   TextureType::ROUGHNESS},         // roughness map
-        { "harshbricks-normal.png", TextureType::NORMAL},                  // normalMap 3
-        { "harshbricks-ao.png",   TextureType::AO },            // aoMap 4
-        { "harshbricks-specular.png",   TextureType::SPECULAR }
-    } );
-    
+    */
+    // Create a sphere
+    // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
+    // Also from https://www.pinterest.co.uk/adigitaldreamer/free-pbr-materials/
+    m_pSphere->Create(path+"/textures/pbr/chippedpaintmetal/",
+                      {   { "albedo.png", TextureType::ALBEDO },           // albedo map
+                          { "diffuse.png", TextureType::DIFFUSE },
+                          { "metallic.png",  TextureType::METALNESS },           // metallic map
+                          { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
+                          { "normal.png", TextureType::NORMAL},          // normalMap 3
+                          { "ao.png",   TextureType::AO },                          // aoMap 4
+                          { "specular.png",   TextureType::SPECULAR}
+                      }, 50, 50);
+    m_pSpherePBR1->Create(path+"/textures/pbr/gold/",
+                      {   { "albedo.png", TextureType::ALBEDO },           // albedo map
+                          { "metallic.png",  TextureType::METALNESS },           // metallic map
+                          { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
+                          { "normal.png", TextureType::NORMAL},          // normalMap 3
+                          { "ao.png",   TextureType::AO },                          // aoMap 4
+                          { "diffuse.png",   TextureType::DIFFUSE},
+                          { "specular.png",   TextureType::SPECULAR}
+                      }, 50, 50);
+    m_pSpherePBR2->Create(path+"/textures/pbr/copper/",
+                          {   { "albedo.png", TextureType::ALBEDO },           // albedo map
+                              { "metallic.png",  TextureType::METALNESS },           // metallic map
+                              { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
+                              { "normal.png", TextureType::NORMAL},          // normalMap 3
+                              { "ao.png",   TextureType::AO },                          // aoMap 4
+                              { "diffuse.png",   TextureType::DIFFUSE},
+                              { "specular.png",   TextureType::SPECULAR}
+                          }, 50, 50);
+    m_pSpherePBR3->Create(path+"/textures/pbr/plastic/",
+                          {   { "albedo.png", TextureType::ALBEDO },           // albedo map
+                              { "metallic.png",  TextureType::METALNESS },           // metallic map
+                              { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
+                              { "normal.png", TextureType::NORMAL},          // normalMap 3
+                              { "ao.png",   TextureType::AO },                          // aoMap 4
+                              { "diffuse.png",   TextureType::DIFFUSE},
+                              { "specular.png",   TextureType::SPECULAR}
+                          }, 50, 50);
+    m_pSpherePBR4->Create(path+"/textures/pbr/granite/",
+                          {   { "albedo.png", TextureType::ALBEDO },           // albedo map
+                              { "metallic.png",  TextureType::METALNESS },           // metallic map
+                              { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
+                              { "normal.png", TextureType::NORMAL},          // normalMap 3
+                              { "ao.png",   TextureType::AO },                          // aoMap 4
+                              { "diffuse.png",   TextureType::DIFFUSE},
+                              { "specular.png",   TextureType::SPECULAR}
+                          }, 50, 50);
+    m_pSpherePBR5->Create(path+"/textures/pbr/marble/",
+                          {   { "albedo.png", TextureType::ALBEDO },           // albedo map
+                              { "metallic.png",  TextureType::METALNESS },           // metallic map
+                              { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
+                              { "normal.png", TextureType::NORMAL},          // normalMap 3
+                              { "ao.png",   TextureType::AO },                          // aoMap 4
+                              { "diffuse.png",   TextureType::DIFFUSE},
+                              { "specular.png",   TextureType::SPECULAR}
+                          }, 50, 50);
+    m_pSpherePBR6->Create(path+"/textures/pbr/aluminum/",
+                          {   { "albedo.png", TextureType::ALBEDO },           // albedo map
+                              { "metallic.png",  TextureType::METALNESS },           // metallic map
+                              { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
+                              { "normal.png", TextureType::NORMAL},          // normalMap 3
+                              { "ao.png",   TextureType::AO },                          // aoMap 4
+                              { "diffuse.png",   TextureType::DIFFUSE},
+                              { "specular.png",   TextureType::SPECULAR}
+                          }, 50, 50);
+
     m_pParallaxCube->Create(path+"/textures/pixarLibrary/brick/", {
         { "bricks_diffuse.jpg", TextureType::DIFFUSE},
         { "bricks_normal.jpg", TextureType::NORMAL},
@@ -109,31 +155,16 @@ void Game::LoadResources(const std::string &path)
         { "bricks_height_map.png", TextureType::HEIGHT }
     } );
     
-    m_pChromaticAberrationCube->Create(path+"/textures/", {
-        { "clean-gray-paper.png", TextureType::DIFFUSE},
-        { "moon_surface.jpg", TextureType::GLOSSINESS}
-    } );
-   
     m_pWoodenBox->Create(path+"/textures/woodenBox/",
                          {
-                             { "woodenBoxDiffuse.png", TextureType::DIFFUSE},       // diffuseMap 1
-                             { "woodenBoxSpecular.png", TextureType::SPECULAR},      // specularMap 2
+                             { "woodenBoxDiffuse.png", TextureType::DIFFUSE},       // diffuseMap
+                             { "woodenBoxSpecular.png", TextureType::SPECULAR},      // specularMap 
+                             { "woodenBoxNormal.tga", TextureType::NORMAL},      // normalMap
+                             { "woodenBoxBump.png", TextureType::DISPLACEMENT},      // bump
                          });
     
-    // Create a sphere
-    // Texture downloaded from http://www.psionicgames.com/?page_id=26 on 24 Jan 2013
-    m_pSphere->Create(path+"/textures/pbr/chippedpaintmetal/",
-                      {   { "chipped-paint-metal-albedo.png", TextureType::ALBEDO },           // albedo map
-                          { "chipped-paint-metal-diffuse.png", TextureType::DIFFUSE },
-                          { "chipped-paint-metal-metal.png",  TextureType::METALNESS },           // metallic map
-                          { "chipped-paint-metal-rough.png",   TextureType::ROUGHNESS},         // roughness map
-                          { "chipped-paint-metal-normal.png", TextureType::NORMAL},          // normalMap 3
-                          { "chipped-paint-ao.png",   TextureType::AO },                          // aoMap 4
-                          { "chipped-paint-specular.png",   TextureType::SPECULAR}
-                      }, 50, 50);
     m_pFireBallSphere->Create(path+"/textures/",
-                              //{   { "explosion.png", TextureType::NOISE }
-                              {   { "watercolor.png", TextureType::NOISE }
+                              {   { "explosion.png", TextureType::NOISE }
                               }, 50, 50);
     m_pTorus->Create(path+"/textures/pixarLibrary/metal/", {
         {"Alloy_diamond_plate_pxr128.tif", TextureType::DIFFUSE},

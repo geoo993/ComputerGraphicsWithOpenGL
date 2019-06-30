@@ -31,6 +31,8 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    bool bUseTexture;
+    bool bUseColor;
 } material;
 
 // Structure holding light information:  its position, colors, direction etc...
@@ -75,7 +77,7 @@ struct SpotLight
 uniform DirectionalLight R_directionallight;
 uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
-uniform bool bUseLight, bUseTexture, bUseBlinn, bUseSmoothSpot;
+uniform bool bUseLight, bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
 uniform float coverage;
 
@@ -105,12 +107,12 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     float specularMap = texture(material.diffuseMap, fs_in.vTexCoord).a;            // specularMap
     float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
     
-    vec4 lightColor = vec4(base.color, 1.0f);
+    vec4 lightColor = (material.bUseColor ? vec4(base.color, 1.0f) : vec4(1.0f));
     vec4 materialColor = material.color;
-    vec4 ambient = base.ambient * (bUseTexture ? vec4(diffuseMap * ambientOcclusion, 1.0f) : materialColor);
-    vec4 diffuse = base.diffuse * diffuseFactor * (bUseTexture ? vec4(diffuseMap, 1.0f) : materialColor) * lightColor;
+    vec4 ambient = base.ambient * (material.bUseTexture ? vec4(diffuseMap * ambientOcclusion, 1.0f) : materialColor) * lightColor;
+    vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? vec4(diffuseMap, 1.0f) : materialColor) * lightColor;
     vec4 specular = base.specular * specularFactor * lightColor;
-    if (bUseTexture) {
+    if (material.bUseTexture) {
         specular *= specularMap;
     } else {
         specular *= materialColor;

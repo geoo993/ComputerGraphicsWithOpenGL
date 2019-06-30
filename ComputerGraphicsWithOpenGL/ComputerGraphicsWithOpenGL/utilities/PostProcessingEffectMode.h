@@ -16,7 +16,6 @@
 enum class PostProcessingEffectMode {
     PBR,
     IBL,
-    IIL,
     BlinnPhong,
     ColorInversion,
     GrayScale,
@@ -62,7 +61,6 @@ enum class PostProcessingEffectMode {
     DistortedTV,
     RGBDisplay,
     RetroParallax,
-    ScaryRetroParallax,
     MoneyFilter,
     MicroprismMosaic,
     BayerMatrixDithering,

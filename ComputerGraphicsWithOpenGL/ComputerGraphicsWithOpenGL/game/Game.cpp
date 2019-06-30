@@ -33,6 +33,8 @@ Game::Game()
     // materials
     m_parallaxHeightScale = 1.0f;
     m_materialShininess = 10.0f;
+    m_materialUseTexture = true;
+    m_materialColor = glm::vec4(Extensions::randRGB(), 1.0f);
     m_uvTiling = 1.4f;
     m_magnitude = 0.3f;
     
@@ -40,7 +42,8 @@ Game::Game()
     m_metallic = 0.9f;
     m_roughness = 0.1f;
     m_ao = 1.0f;
-    m_useIrradiance, m_useIrradianceMap = false;
+    m_useIrradiance = true;
+    m_useIrradianceMap = false;
     
     //textures settings
     m_textures.reserve(50);
@@ -55,7 +58,8 @@ Game::Game()
     m_specular = 0.6f;
     m_exposure = 1.0f;
     m_gama = 1.0f;
-    m_HDR = true;
+    m_HDR = false;
+    m_useBlinn = true;
     
     // Attenuation
     m_constant = 1.0f;
@@ -162,28 +166,28 @@ Game::Game()
     m_heightMapMaxHeight = 100.0f;
     
     //models
-    m_pTrolley = nullptr;
     m_pSuitcase = nullptr;
     
     //sphere object
     m_pSphere = nullptr;
+    m_pSpherePBR1 = nullptr;
+    m_pSpherePBR2 = nullptr;
+    m_pSpherePBR3 = nullptr;
+    m_pSpherePBR4 = nullptr;
+    m_pSpherePBR5 = nullptr;
+    m_pSpherePBR6 = nullptr;
     m_pFireBallSphere = nullptr;
-    m_spherePosition = glm::vec3(130.0f,350.0f,-450.0f);
     
     //cube object
-    m_pCube = nullptr;
-    m_pInteriorBox = nullptr;
     m_pParallaxCube = nullptr;
-    m_pChromaticAberrationCube = nullptr;
-    m_cubePosition = glm::vec3(20.0f,120.0f, -50.0f);
     
     // woodenBox
     m_pWoodenBox = nullptr;
-    m_woodenBoxesColor = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
-    m_materialUseTexture = true;
+    m_materialColor = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
+    m_woodenBoxesRotation = 0.0f;
     m_woodenBoxesPosition = {
         glm::vec3(  -186.0f,  593.0f,  -132.0f   ),
-        glm::vec3(  -135.7f,  550.2f,  322.0f   ),
+        glm::vec3(  -135.7f,  550.2f,  -222.0f   ),
         glm::vec3(  52.3f, 523.3f, -44.0f      ),
         glm::vec3(  -24.0f,  452.0f, -112.0f    ),
         glm::vec3(  220.0f,  620.0f, -133.0f    ),
@@ -194,15 +198,12 @@ Game::Game()
     
     //torus object
     m_pTorus = nullptr;
-    m_torusPosition = glm::vec3(-160.0f,530.0f,-450.0f);
     
     //torusknot object
     m_pTorusKnot = nullptr;
-    m_torusKnotPosition = glm::vec3(1230.0f, 560.0f, -1250.0f);
     
     // metalballs
     m_pMetaballs = nullptr;
-    m_metalballsPosition = glm::vec3(500.0f,500.0f,0.0f);
     
     // hud
     m_enableHud = true;
@@ -232,13 +233,15 @@ Game::~Game()
     delete m_pPlanarTerrain;
     delete m_pHeightmapTerrain;
     delete m_pLamp;
-    delete m_pTrolley;
     delete m_pSuitcase;
     delete m_pSphere;
-    delete m_pCube;
-    delete m_pInteriorBox;
+    delete m_pSpherePBR1;
+    delete m_pSpherePBR2;
+    delete m_pSpherePBR3;
+    delete m_pSpherePBR4;
+    delete m_pSpherePBR5;
+    delete m_pSpherePBR6;
     delete m_pParallaxCube;
-    delete m_pChromaticAberrationCube;
     delete m_pWoodenBox;
     delete m_pTorus;
     delete m_pTorusKnot;

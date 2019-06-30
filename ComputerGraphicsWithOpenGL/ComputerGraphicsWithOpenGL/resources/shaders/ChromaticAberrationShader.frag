@@ -30,6 +30,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    bool bUseTexture;
 } material;
 
 uniform struct HRDLight
@@ -51,7 +52,6 @@ in VS_OUT
 
 uniform vec2 fresnelValues;
 uniform vec3 IoR_Values;
-uniform bool bUseTexture;
 
 vec3 refraction(vec3 i, vec3 n, float eta)
 {
@@ -131,7 +131,7 @@ void main()
     //
     vec3 color = mix(refractColor, reflectColor, fresnelTerm);
     vec4 result = vec4(1.0f);
-    if (bUseTexture){
+    if (material.bUseTexture){
         result = vec4(mix(baseColor, color, reflectivity), 1.0f);
     }else {
         result = vec4(color, 1.0f);

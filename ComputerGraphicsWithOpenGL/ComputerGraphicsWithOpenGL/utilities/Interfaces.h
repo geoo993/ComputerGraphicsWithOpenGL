@@ -18,6 +18,8 @@
 #include "PostProcessingEffectMode.h"
 #include "Lighting.h"
 #include "FrameBufferObject.h"
+#include "Cube.h"
+#include "Sphere.h"
 
 struct IGameWindow
 {
@@ -62,13 +64,14 @@ struct ICamera {
 };
 
 struct IMaterials {
+    glm::vec4 m_materialColor;
     GLfloat m_materialShininess, m_albedo, m_metallic, m_roughness, m_ao;
-    GLboolean m_useIrradianceMap, m_useIrradiance;
+    GLboolean m_useIrradianceMap, m_materialUseTexture, m_materialUseColor, m_useIrradiance;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec4 &color, const GLfloat &shininess,
                                     const GLboolean &useAO) = 0;
     virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                       const glm::vec3 &albedo, const GLfloat &metallic, const GLfloat &roughness,
+                                       const GLfloat &albedo, const GLfloat &metallic, const GLfloat &roughness,
                                        const GLfloat &ao, const GLboolean &useIrradiance) = 0;
 };
 
@@ -141,10 +144,10 @@ struct IShaderUniform {
     virtual void SetLensFlareGhostUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetLensFlareUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetFastApproximateAntiAliasingUniform(CShaderProgram *pShaderProgram) = 0;
-    virtual void SetDeferredRenderingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) = 0;
+    virtual void SetDeferredRenderingUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetScreenSpaceAmbientOcclusionUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetScreenSpaceAmbientOcclusionBlurUniform(CShaderProgram *pShaderProgram) = 0;
-    virtual void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram, const GLboolean &useTexture) = 0;
+    virtual void SetScreenSpaceAmbientOcclusionLightingUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetRainDropsUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetPaletteQuantizationAndDitheringUniform(CShaderProgram *pShaderProgram) = 0;
     virtual void SetDistortedTVUniform(CShaderProgram *pShaderProgram) = 0;
@@ -221,31 +224,22 @@ struct IRenderer
 struct IRenderObject
 {
     virtual void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                            const GLfloat & scale, const GLboolean &useTexture, const GLboolean &bindTexture) = 0;
+                            const GLfloat & scale, const GLboolean &bindTexture) = 0;
     virtual void RenderSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderEnvSkyBox(CShaderProgram *pShaderProgram) = 0;
-    virtual void RenderIrrSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void ResetSkyBox(CShaderProgram *pShaderProgram) = 0;
-    virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap, const GLboolean &useTexture) = 0;
-    virtual void RenderCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                            const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderInteriorBox(CShaderProgram *pShaderProgram, const glm::vec3 &position,
-                                   const float & scale, const bool &useTexture, const bool &bindTexture) = 0;
-    virtual void RenderParallaxCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                    const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderChromaticAberrationCube(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                               const GLfloat & scale, const GLboolean &useTexture) = 0;
+    virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) = 0;
+    virtual void RenderCube(CShaderProgram *pShaderProgram, CCube *cube, const glm::vec3 & position, const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
-                                 const GLfloat & angle, const GLboolean &useTexture) = 0;
-    virtual void RenderSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position,
+                                 const GLfloat & angleX, const GLfloat & angleY, const GLfloat & angleZ) = 0;
+    virtual void RenderSphere(CShaderProgram *pShaderProgram, CSphere *sphere, const glm::vec3 & position,
                               const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderFireBallSphere(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale) = 0;
     virtual void RenderTorus(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                             const GLfloat & scale, const GLboolean &useTexture) = 0;
+                             const GLfloat & scale) = 0;
     virtual void RenderTorusKnot(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                 const GLfloat & scale, const GLboolean &useTexture) = 0;
+                                 const GLfloat & scale) = 0;
     virtual void RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                  const GLfloat & scale, const GLboolean &useTexture) = 0;
+                                  const GLfloat & scale) = 0;
 };
 
 struct IPostProcessing {

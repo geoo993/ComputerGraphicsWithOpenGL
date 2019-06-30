@@ -31,10 +31,11 @@ uniform struct Material
     vec4 color;
     float shininess;
     bool bUseAO;
+    bool bUseTexture;
 } material;
 
 uniform float fMinHeight, fMaxHeight;
-uniform bool bUseHeightMap, bUseTexture;
+uniform bool bUseHeightMap;
 
 /*
      Then we also need to declare an input interface block in the next shader which is the fragment shader. The block name (VS_OUT) should be the same in the fragment shader, but the instance name (vs_out as used in the vertex shader) can be anything we like - avoiding confusing names like vs_out that actually contains input variables.
@@ -85,7 +86,7 @@ void main()
 
         vTexColour = vTexColour2;
         
-        if (bUseTexture) {
+        if (material.bUseTexture) {
             vOutputColour = vTexColour;
         }else{
             vec3 vColour = normalize(fs_in.vWorldNormal);

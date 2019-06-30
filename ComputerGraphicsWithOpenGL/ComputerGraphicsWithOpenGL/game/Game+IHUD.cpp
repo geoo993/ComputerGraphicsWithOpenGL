@@ -42,7 +42,7 @@ void Game::RenderLabels(CFreeTypeFont *font, CShaderProgram *fontProgram, const 
     if (framesPerSecond > 0) {
         if (enableHud) {
             fontProgram->SetUniform("bUseScreenQuad", false);
-            fontProgram->SetUniform("bUseTexture", true);
+            fontProgram->SetUniform("material.bUseTexture", true);
             font->Render(fontProgram, 20, 20, 20, "FPS: %d", framesPerSecond);
             font->Render(fontProgram, (width / 2) - 100, height - 20, 20, "%s", PostProcessingEffectToString(m_currentPPFXMode));
         }

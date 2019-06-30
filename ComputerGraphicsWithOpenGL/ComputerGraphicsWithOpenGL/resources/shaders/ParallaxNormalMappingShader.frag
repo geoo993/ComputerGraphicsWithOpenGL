@@ -35,6 +35,8 @@ uniform struct Material
     vec4 color;
     float shininess;
     bool bUseAO;
+    bool bUseTexture;
+    bool bUseColor;
 } material;
 
 uniform struct HRDLight
@@ -86,7 +88,7 @@ struct SpotLight
 uniform DirectionalLight R_directionallight;
 uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
-uniform bool bUseTexture, bUseBlinn, bUseSmoothSpot;
+uniform bool bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
 uniform float heightScale;
 
@@ -183,7 +185,8 @@ vec4 CalcLight(BaseLight base, vec3 direction, mat3 TBN, vec3 vertexPosition)
      : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
      vec3 specular = vec3(base.specular) * specularFactor;
      
-     return (bUseTexture ? vec4(ambient + diffuse + specular, 1.0f) : material.color) * base.intensity * vec4(base.color, 1.0f);
+    return (material.bUseTexture ? vec4(ambient + diffuse + specular, 1.0f) : material.color) * base.intensity
+    * (material.bUseColor ? vec4(base.color, 1.0f) : vec4(1.0f));
 }
 
 vec4 CalcDirectionalLight(DirectionalLight directionalLight, mat3 TBN, vec3 vertexPosition)

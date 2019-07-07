@@ -41,9 +41,9 @@ Game::Game()
     m_uvTiling = 1.4f;
     m_magnitude = 0.3f;
     
-    m_albedo = 0.5f;
-    m_metallic = 0.9f;
-    m_roughness = 0.1f;
+    m_albedo = 1.0f;
+    m_metallic = 1.0f;
+    m_roughness = 1.0f;
     m_ao = 1.0f;
     m_useIrradiance = true;
     m_useIrradianceMap = false;
@@ -79,30 +79,18 @@ Game::Game()
     m_usePoint = true;
     m_pointIntensity = 18.0f;
     m_pointLightPositionsIndex = 0;
-    m_pointLightPositions = {
-        glm::vec3(  100.0f,  40.0f,  50.0f      ),
-        glm::vec3(  226.0f,  -83.0f,  -32.0f      ),
-        glm::vec3(  -335.7f,  50.2f,  122.0f      ),
-        glm::vec3(  202.3f,  43.3f, -224.0f      ),
-        glm::vec3(  -204.0f,  12.0f, -200.0f    ),
-        glm::vec3(  300.0f,  -120.0f, -233.0f      ),
-        glm::vec3(  320.0f,  150.0f, 410.0f  ),
-        glm::vec3(  20.0f,  10.0f, 413.0f  ),
-        glm::vec3(  -120.0f,  -50.0f, 233.0f  ),
-        glm::vec3(  -600.0f,  1500.0f, 130.0f )
-    };
     
-    m_pointLightColors = {
-        glm::vec4(  1.0f,  0.1f,  0.9f, 1.0f      ),
-        glm::vec4(  0.1f,  0.9f,  0.8f , 1.0f       ),
-        glm::vec4(  1.0f,  1.0f,  0.0f  , 1.0f      ),
-        glm::vec4(  0.01f, 0.96f, 0.0f , 1.0f       ),
-        glm::vec4(  0.0f,  0.0f, 1.0f  , 1.0f    ),
-        glm::vec4(  1.0f,  0.0f, 0.1f , 1.0f       ),
-        glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f      ),
-        glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f       ),
-        glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f      ),
-        glm::vec4(  200.0f,  200.0f, 200.0f  , 1.0f )
+    m_pointLights = {
+        std::make_tuple(glm::vec3(  100.0f,  40.0f,  250.0f     ), glm::vec4(  1.0f,  0.1f,  0.9f, 1.0f     )   ),      // 1
+        std::make_tuple(glm::vec3(  326.0f,  -23.0f,  -32.0f    ), glm::vec4(  0.1f,  0.9f,  0.8f , 1.0f    )   ),      // 2
+        std::make_tuple(glm::vec3(  -450.7f,  50.2f,  -150.0f   ), glm::vec4(  1.0f,  1.0f,  0.0f  , 1.0f   )   ),      // 3
+        std::make_tuple(glm::vec3(  202.3f,  43.3f, -224.0f     ), glm::vec4(  0.01f, 0.96f, 0.0f , 1.0f    )   ),      // 4
+        std::make_tuple(glm::vec3(  -204.0f,  12.0f, -200.0f    ), glm::vec4(  0.0f,  0.0f, 1.0f  , 1.0f    )   ),      // 5
+        std::make_tuple(glm::vec3(  450.0f,  -50.0f, -233.0f    ), glm::vec4(  1.0f,  0.0f, 0.1f , 1.0f     )   ),      // 6
+        std::make_tuple(glm::vec3(  320.0f,  70.0f, 350.0f      ), glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f   )   ),      // 7
+        std::make_tuple(glm::vec3(  -600.0f,  10.0f, 370.0f     ), glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f     )   ),      // 8
+        std::make_tuple(glm::vec3(  -120.0f,  -50.0f, 233.0f    ), glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f    )   ),      // 9
+        std::make_tuple(glm::vec3(  -600.0f,  1500.0f, 130.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
     };
     
     // Spot Light

@@ -28,7 +28,7 @@ void Game::InitialiseResources()
     
     m_teapot1 = new CModel;
     m_teapot2 = new CModel;
-    //m_vehicle = new CModel;
+    m_vehicle = new CModel;
     
     m_pSpherePBR1 = new CSphere;
     m_pSpherePBR2 = new CSphere;
@@ -74,6 +74,18 @@ void Game::InitialiseResources()
 
 void Game::LoadResources(const std::string &path)
 {
+    m_pMetaballs->Create(100.0f, 10, 0, 32, path+"/textures/pbr/metalpainted/",
+                         {   { "albedo.jpg", TextureType::ALBEDO },           // albedo map
+                             { "metallic.jpg",  TextureType::METALNESS },           // metallic map
+                             { "roughness.jpg",   TextureType::ROUGHNESS},         // roughness map
+                             { "normal.jpg", TextureType::NORMAL},          // normalMap 3
+                             { "ao.jpg",   TextureType::AO },                          // aoMap 4
+                             { "diffuse.jpg",   TextureType::DIFFUSE},
+                             { "specular.jpg",   TextureType::SPECULAR}
+                         }); {
+                             m_pMetaballs->SetGridSize(50);
+                             CMarchingCubes::BuildTables();
+                         }
     
     // Create the planar terrain
     m_pPlanarTerrain->Create(path+"/textures/pbr/grass/", {
@@ -102,14 +114,14 @@ void Game::LoadResources(const std::string &path)
     // Texture downloaded from https://www.pinterest.co.uk/adigitaldreamer/free-pbr-materials/
     // https://www.textures.com/browse/pbr-materials/114558
     m_pSpherePBR1->Create(path+"/textures/pbr/gold/",
-                      {   { "albedo.png", TextureType::ALBEDO },           // albedo map
-                          { "metallic.png",  TextureType::METALNESS },           // metallic map
-                          { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
-                          { "normal.png", TextureType::NORMAL},          // normalMap 3
-                          { "ao.png",   TextureType::AO },                          // aoMap 4
-                          { "diffuse.png",   TextureType::DIFFUSE},
-                          { "specular.png",   TextureType::SPECULAR}
-                      }, 50, 50);
+                          {   { "albedo.png", TextureType::ALBEDO },           // albedo map
+                              { "metallic.png",  TextureType::METALNESS },           // metallic map
+                              { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
+                              { "normal.png", TextureType::NORMAL},          // normalMap 3
+                              { "ao.png",   TextureType::AO },                          // aoMap 4
+                              { "diffuse.png",   TextureType::DIFFUSE},
+                              { "specular.png",   TextureType::SPECULAR}
+                          }, 50, 50);
     m_pCube1->Create(path+"/textures/pbr/gold/",
                           {   { "albedo.png", TextureType::ALBEDO },           // albedo map
                               { "metallic.png",  TextureType::METALNESS },           // metallic map
@@ -271,7 +283,7 @@ void Game::LoadResources(const std::string &path)
                               { "diffuse.png",   TextureType::DIFFUSE},
                               { "specular.png",   TextureType::SPECULAR}
                           });
-    m_teapot1->Create(path+"/models/Teapot/utah-teapot.obj", path+"/textures/pbr/blackmarble/",
+    m_teapot1->Create(path+"/models/teapot/utah-teapot.obj", path+"/textures/pbr/blackmarble/",
                       {   { "albedo.png", TextureType::ALBEDO },           // albedo map
                           { "metallic.png",  TextureType::METALNESS },           // metallic map
                           { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
@@ -280,6 +292,7 @@ void Game::LoadResources(const std::string &path)
                           { "diffuse.png",   TextureType::DIFFUSE},
                           { "specular.png",   TextureType::SPECULAR}
                       });
+    
     m_pSpherePBR10->Create(path+"/textures/pbr/rustedmetal/",
                            {   { "albedo.jpg", TextureType::ALBEDO },           // albedo map
                                { "metallic.jpg",  TextureType::METALNESS },           // metallic map
@@ -347,7 +360,7 @@ void Game::LoadResources(const std::string &path)
                               { "specular.jpg", TextureType::SPECULAR},
                               { "moss.png", TextureType::NOISE }
                           }, 50, 50);
-    m_teapot2->Create(path+"/models/Teapot/utah-teapot.obj", path+"/textures/dirtpile/",
+    m_teapot2->Create(path+"/models/teapot/utah-teapot.obj", path+"/textures/dirtpile/",
                       {   { "diffuse.jpg", TextureType::DIFFUSE},
                           { "bump.jpg", TextureType::DISPLACEMENT},
                           { "normal.jpg", TextureType::NORMAL},
@@ -376,8 +389,7 @@ void Game::LoadResources(const std::string &path)
         {"diamond_plate_specular.png", TextureType::SPECULAR}
     }, 50, 50);
     
-    /*
-    m_vehicle->Create(path+"/models/Trolley/Industrial_Trolley.obj", path+"/models/Trolley/",
+    m_vehicle->Create(path+"/models/trolley/Industrial_Trolley.obj", path+"/models/trolley/",
                       {
                           { "albedo.png", TextureType::ALBEDO },           // albedo map
                           { "metallic.png",  TextureType::METALNESS },           // metallic map
@@ -387,8 +399,7 @@ void Game::LoadResources(const std::string &path)
                           { "diffuse.png",   TextureType::DIFFUSE},
                           { "specular.png",   TextureType::SPECULAR}
                       });
-    */
-    
+  
     m_pLamp->Create("", {} );
 
     /*
@@ -420,22 +431,8 @@ void Game::LoadResources(const std::string &path)
                          -2.0f         // in: Q parameter of the knot
                          );
    
-    
-    m_pMetaballs->Create(100.0f, 10, 0, 32, path+"/textures/pbr/rustedmetal/",
-                         {   { "albedo.jpg", TextureType::ALBEDO },           // albedo map
-                             { "metallic.jpg",  TextureType::METALNESS },           // metallic map
-                             { "roughness.jpg",   TextureType::ROUGHNESS},         // roughness map
-                             { "normal.jpg", TextureType::NORMAL},          // normalMap 3
-                             { "ao.jpg",   TextureType::AO },                          // aoMap 4
-                             { "diffuse.jpg",   TextureType::DIFFUSE},
-                             { "specular.jpg",   TextureType::SPECULAR}
-                         }); {
-        m_pMetaballs->SetGridSize(50);
-        CMarchingCubes::BuildTables();
-    }
-     */
-    
-    
+    */
+
     // font
     m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32, TextureType::DEPTH);
     

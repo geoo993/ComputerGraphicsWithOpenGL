@@ -561,9 +561,11 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             {
                 /// Render Lamps
                 CShaderProgram *pLampProgram = (*m_pShaderPrograms)[4];
-                for (unsigned int i = 0; i < m_pointLightPositions.size(); i++) {
-                    SetMaterialUniform(pLampProgram, "material", m_pointLightColors[i]);
-                    RenderLamp(pLampProgram, m_pointLightPositions[i], 10.0f);
+                for (auto it = m_pointLights.begin(); it != m_pointLights.end(); ++it) {
+                    glm::vec3 position = std::get<0>(*it);
+                    glm::vec4 color = std::get<1>(*it);
+                    SetMaterialUniform(pLampProgram, "material", color);
+                    RenderLamp(pLampProgram, position, 10.0f);
                 }
             }
             

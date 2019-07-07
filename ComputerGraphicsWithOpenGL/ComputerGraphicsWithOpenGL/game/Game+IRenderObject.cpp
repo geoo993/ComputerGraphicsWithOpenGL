@@ -101,7 +101,7 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHei
     
 }
 
-void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position, const GLfloat & scale) {
+void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale) {
     glm::vec3 translation = position;
     if (m_pHeightmapTerrain->IsHeightMapRendered()) {
         translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
@@ -113,7 +113,7 @@ void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm
     glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
     pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
-    model->Transform(translation, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(scale));
+    model->Transform(translation, rotation, glm::vec3(scale));
     
     glm::mat4 m = model->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", m);

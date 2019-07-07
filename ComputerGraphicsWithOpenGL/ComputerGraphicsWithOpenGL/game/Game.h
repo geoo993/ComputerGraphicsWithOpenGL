@@ -273,7 +273,7 @@ protected:
     void RenderEnvSkyBox(CShaderProgram *pShaderProgram) override;
     void ResetSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) override;
-    void RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position, const GLfloat & scale);
+    void RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale);
     void RenderCube(CShaderProgram *pShaderProgram, CCube *cube, const glm::vec3 & position,
                     const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture = true) override;
     void RenderSphere(CShaderProgram *pShaderProgram, CSphere *sphere, const glm::vec3 & position,

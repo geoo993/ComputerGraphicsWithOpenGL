@@ -11,9 +11,9 @@
  // Terathon Software 3D Graphics Library, 2001.
  // http://www.terathon.com/code/tangent.html
 
-CTorus::CTorus(const float & size)
+CTorus::CTorus()
 {
-    this->m_size = size;
+    
 };
 
 CTorus::~CTorus()
@@ -21,9 +21,13 @@ CTorus::~CTorus()
     Release();
 }
 
-void CTorus::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames) {
+void CTorus::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames,
+                    const int &radialSeg,
+                    const int &circularSeg,
+                    const float &outerRadius,           // radius
+                    const float &innerRadius             //tick
+                    ) {
     
-    m_directory = directory;
     m_textureNames = textureNames;
     m_textures.reserve(textureNames.size());
     
@@ -34,7 +38,7 @@ void CTorus::Create(const std::string &directory, const std::map<std::string, Te
         
         // access element as *it
         m_textures.push_back(new CTexture);
-        m_textures[i]->LoadTexture(m_directory+it->first, it->second, true);
+        m_textures[i]->LoadTexture(directory+it->first, it->second, true);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -58,8 +62,6 @@ void CTorus::Create(const std::string &directory, const std::map<std::string, Te
     std::vector<glm::vec3> bitangents;
     std::vector<glm::vec3> binormals;
     
-    int radialSeg = 50; 
-    int circularSeg = 60;
     int i, j, k;
     
     static const float sTexCoord[3] = { 2.0, 0, 0 };
@@ -73,8 +75,6 @@ void CTorus::Create(const std::string &directory, const std::map<std::string, Te
     float u, v;          //  U V
     float cu, su;       // COS And SIN  U 
     float cv, sv;       // COS And SIN  V
-    float outerRadius = (m_size ) / 2.0f; // radius
-    float innerRadius = 1.5f;             //tick
     float twopi = 2.0f * glm::pi <float> (); 
     
     

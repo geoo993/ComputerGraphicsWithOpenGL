@@ -37,7 +37,7 @@ public:
     void SetViewport();
     void SetViewport(const int & width, const int & height);
     bool ShouldClose();
-    void ClearBuffers();
+    void ClearBuffers(const GLboolean &stencil = false);
     void SwapBuffers();
     void DestroyWindow();
     

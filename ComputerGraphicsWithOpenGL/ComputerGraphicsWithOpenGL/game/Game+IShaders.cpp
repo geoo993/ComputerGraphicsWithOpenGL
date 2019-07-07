@@ -178,6 +178,11 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("SkyBoxPreFilteringShader.frag");
     sShaderFileNames.push_back("BidirectionalReflectanceDistributionFunctionShader.vert");// 80
     sShaderFileNames.push_back("BidirectionalReflectanceDistributionFunctionShader.frag");
+    sShaderFileNames.push_back("DiscardShader.vert");// 81
+    sShaderFileNames.push_back("DiscardShader.frag");
+    sShaderFileNames.push_back("SilhouetteShader.vert");// 82
+    sShaderFileNames.push_back("SilhouetteShader.geom");
+    sShaderFileNames.push_back("SilhouetteShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -844,6 +849,24 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pBidirectionalReflectanceDistributionFunctionProgram->AddShaderToProgram(&shShaders[164]);
     pBidirectionalReflectanceDistributionFunctionProgram->LinkProgram();
     m_pShaderPrograms->push_back(pBidirectionalReflectanceDistributionFunctionProgram);
+    
+    // Create Discard Shader
+    CShaderProgram *pDiscardProgram = new CShaderProgram;
+    pDiscardProgram->CreateProgram();
+    pDiscardProgram->AddShaderToProgram(&shShaders[165]);
+    pDiscardProgram->AddShaderToProgram(&shShaders[166]);
+    pDiscardProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pDiscardProgram);
+    
+    
+    // Create Silhouette Shader
+    CShaderProgram *pSilhouetteProgram = new CShaderProgram;
+    pSilhouetteProgram->CreateProgram();
+    pSilhouetteProgram->AddShaderToProgram(&shShaders[167]);
+    pSilhouetteProgram->AddShaderToProgram(&shShaders[168]);
+    pSilhouetteProgram->AddShaderToProgram(&shShaders[169]);
+    pSilhouetteProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pSilhouetteProgram);
     
 }
 

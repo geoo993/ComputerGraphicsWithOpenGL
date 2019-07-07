@@ -64,16 +64,11 @@ void Game::SetFireBallUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->SetUniform("explosion", 0.001f);
 }
 
-void Game::SetJupiterColorUniform(CShaderProgram *pShaderProgram){
-
+void Game::SetDisintegrationUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("time", m_timeInSeconds);
-    pShaderProgram->SetUniform("mouse", glm::vec2(m_mouseX, m_mouseY));
-    pShaderProgram->SetUniform("width", (float)m_gameWindow->GetWidth());
-    pShaderProgram->SetUniform("height", (float)m_gameWindow->GetHeight());
+    pShaderProgram->SetUniform("minThreshold", 0.25f);
+    pShaderProgram->SetUniform("maxThreshold", m_parallaxHeightScale / 2.0f);
 }
-
-
 
 /// Post Processing Uniforms
 void Game::SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) {
@@ -369,14 +364,14 @@ void Game::SetBloomUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
     // HDR Light
-    SetHRDLightUniform(pShaderProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
+    SetHRDLightUniform(pShaderProgram, "hrdlight", m_exposure, m_gama, m_HDR);
 }
 
 void Game::SetHRDToneMappingUniform(CShaderProgram *pShaderProgram){
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
     // HDR Light
-    SetHRDLightUniform(pShaderProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
+    SetHRDLightUniform(pShaderProgram, "hrdlight", m_exposure, m_gama, m_HDR);
 }
 
 void Game::SetLensFlareGhostUniform(CShaderProgram *pShaderProgram){

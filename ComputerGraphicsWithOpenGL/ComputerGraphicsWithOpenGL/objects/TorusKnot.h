@@ -47,8 +47,6 @@ private:
     
     std::map<std::string, TextureType> m_textureNames;
     std::vector<CTexture*> m_textures;
-    
-    std::string m_directory;
 };
 
 #endif /* TorusKnot_h */

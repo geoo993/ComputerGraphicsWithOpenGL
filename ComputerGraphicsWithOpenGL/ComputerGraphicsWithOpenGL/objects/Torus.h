@@ -12,10 +12,14 @@ class CTorus: public GameObject {
     
 public:
     
-    CTorus(const GLfloat & size);
+    CTorus();
     ~CTorus();
-    void Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames);
-    GLfloat GetSize() const { return m_size; }
+    void Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames,
+                const int &radialSeg,
+                const int &circularSeg,
+                const float &outerRadius,           // radius
+                const float &innerRadius             //tick
+    );
     
     void Transform(const glm::vec3 & position,
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
@@ -31,9 +35,6 @@ private:
     std::map<std::string, TextureType> m_textureNames;
     std::vector<CTexture*> m_textures;
     
-    std::string m_directory;
-    GLfloat m_size;
-  
 };
 
 

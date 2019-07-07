@@ -80,7 +80,7 @@ void Game::RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) {
     pShaderProgram->UseProgram();
 
     // HDR Light
-    SetHRDLightUniform(pShaderProgram, "R_hrdlight", m_exposure, m_gama, m_HDR);
+    SetHRDLightUniform(pShaderProgram, "hrdlight", m_exposure, m_gama, m_HDR);
     
     // Directional light
     DirectionalLight dirLight(m_dirColor, m_dirIntensity);

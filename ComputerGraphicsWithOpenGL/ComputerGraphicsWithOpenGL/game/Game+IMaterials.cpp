@@ -49,3 +49,13 @@ void Game::SetPBRMaterialUniform(CShaderProgram *pShaderProgram,  const std::str
     pShaderProgram->SetUniform(uniformName+".roughness", roughness);
     pShaderProgram->SetUniform(uniformName+".ao", ao);    // 1.0f
 }
+
+void Game::SetFogMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                            const glm::vec3 &color, const GLboolean &bUseFog) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform(uniformName+".bUseFog", bUseFog);
+    pShaderProgram->SetUniform(uniformName+".minDist", 1.0f);
+    pShaderProgram->SetUniform(uniformName+".maxDist", m_mapSize / 2.0f);
+    pShaderProgram->SetUniform(uniformName+".color", color);
+    
+}

@@ -35,7 +35,14 @@ uniform struct HRDLight
     float exposure;
     float gamma;
     bool bHDR;
-} R_hrdlight;
+} hrdlight;
+
+uniform struct Fog {
+    float maxDist;
+    float minDist;
+    vec3 color;
+    bool bUseFog;
+} fog;
 
 uniform bool bUseEnvCubemap;
 
@@ -43,28 +50,36 @@ layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl
 
 void main()
 {
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    
     if (bUseEnvCubemap) {
         
         // the sample direction equals the hemisphere's orientation
         vec3 normal = normalize(fs_in.vLocalPosition);
         vec3 irradiance = vec3(0.0);
         
+        // HDR
         vec3 envColor = texture(material.cubeMap, fs_in.vLocalPosition).rgb;
-        
-        if(R_hrdlight.bHDR)
+        if(hrdlight.bHDR)
         {
             // tone mapping with exposure
-            envColor = vec3(1.0f) - exp(-envColor * R_hrdlight.exposure);
+            envColor = vec3(1.0f) - exp(-envColor * hrdlight.exposure);
             // also gamma correct while we're at it
-            envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+            envColor = pow(envColor, vec3(1.0f / hrdlight.gamma));
         }
         else {
-            envColor = envColor / (envColor + vec3(1.0f));
-            envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+            //envColor = envColor / (envColor + vec3(1.0f));
+            //envColor = pow(envColor, vec3(1.0f / hrdlight.gamma));
         }
-        vOutputColour = vec4(envColor, 1.0f);
+        result = vec4(envColor, 1.0f);
     } else {
-        vOutputColour = texture(material.cubeMap, fs_in.vLocalPosition);
+        result = texture(material.cubeMap, fs_in.vLocalPosition);
     }
     
+    // FOG
+    if (fog.bUseFog) {
+        result = vec4(fog.color, 1.0f);
+    }
+    
+    vOutputColour = result;
 }

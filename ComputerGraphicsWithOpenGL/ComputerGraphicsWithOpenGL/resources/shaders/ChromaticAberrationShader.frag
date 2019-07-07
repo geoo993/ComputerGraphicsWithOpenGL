@@ -38,7 +38,14 @@ uniform struct HRDLight
     float exposure;
     float gamma;
     bool bHDR;
-} R_hrdlight;
+} hrdlight;
+
+uniform struct Fog {
+    float maxDist;
+    float minDist;
+    vec3 color;
+    bool bUseFog;
+} fog;
 
 in VS_OUT
 {
@@ -137,18 +144,30 @@ void main()
         result = vec4(color, 1.0f);
     }
 
+    // FOG
+    vec3 fogColor = result.xyz;
+    if (fog.bUseFog) {
+        //float dist = abs( fs_in.vEyePosition.z );
+        float dist = length( fs_in.vEyePosition.xyz );
+        float fogFactor = (fog.maxDist - dist) / (fog.maxDist - fog.minDist);
+        fogFactor = clamp( fogFactor, 0.0f, 1.0f );
+        
+        fogColor += mix( fog.color, fogColor, fogFactor );
+    }
+    result = vec4(fogColor, result.w);
+    
     // HDR
     vec3 envColor = result.xyz;
-    if(R_hrdlight.bHDR)
+    if(hrdlight.bHDR)
     {
         // tone mapping with exposure
-        envColor = vec3(1.0f) - exp(-envColor * R_hrdlight.exposure);
+        envColor = vec3(1.0f) - exp(-envColor * hrdlight.exposure);
         // also gamma correct while we're at it
-        envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+        envColor = pow(envColor, vec3(1.0f / hrdlight.gamma));
     }
 //    else {
 //        envColor = envColor / (envColor + vec3(1.0f));
-//        envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+//        envColor = pow(envColor, vec3(1.0f / hrdlight.gamma));
 //    }
     vOutputColour = vec4(envColor, result.w);
     

@@ -36,7 +36,7 @@ public:
 	CMetaballs();
     ~CMetaballs();
     
-    void Create(const float &level, const int &numberOfBalls, const int &gridSize, const int &maxOpenVoxels,
+    void Create(const float &level, const int &numberOfBalls, const int &gridSize, const int &maxOpenVoxels, const std::string &directory,
                 const std::map<std::string, TextureType> &textureFiles);
 	void Compute();
 	void Update(const GLfloat &fDeltaTime);

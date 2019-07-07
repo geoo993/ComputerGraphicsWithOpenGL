@@ -30,7 +30,7 @@ class CModel: public GameObject
 public:
     CModel();
     ~CModel();
-    GLboolean Create(const std::string &directory, const std::string &modelName, const std::map<std::string, TextureType> &textureNames);
+    GLboolean Create(const std::string &modelPath,  const std::string &texturesPath, const std::map<std::string, TextureType> &texturesName);
     void Transform(const glm::vec3 & position,
                    const glm::vec3 & rotation = glm::vec3(0, 0, 0),
                    const glm::vec3 & scale = glm::vec3(1, 1, 1));

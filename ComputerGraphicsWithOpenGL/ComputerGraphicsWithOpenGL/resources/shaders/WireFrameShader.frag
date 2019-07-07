@@ -1,4 +1,5 @@
 #version 400 core
+#define NUMBER_OF_POINT_LIGHTS 10
 
 // http://codeflow.org/entries/2012/aug/02/easy-wireframe-display-with-barycentric-coordinates/
 // https://forum.libcinder.org/topic/wireframe-shader-implementation
@@ -27,8 +28,79 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    bool bUseAO;
     bool bUseTexture;
+    bool bUseColor;
 } material;
+
+uniform struct Fog {
+    float maxDist;
+    float minDist;
+    vec3 color;
+    bool bUseFog;
+} fog;
+
+// Structure holding hrd light information
+uniform struct HRDLight
+{
+    float exposure;
+    float gamma;
+    bool bHDR;
+} hrdlight;
+
+uniform struct Camera
+{
+    vec3 position;
+    vec3 front;
+    bool isMoving;
+} camera;
+
+// Structure holding light information:  its position, colors, direction etc...
+struct BaseLight
+{
+    vec3 color;
+    float intensity;
+    float ambient;
+    float diffuse;
+    float specular;
+};
+
+struct Attenuation
+{
+    float constant;
+    float linear;
+    float exponent;
+};
+
+struct DirectionalLight
+{
+    BaseLight base;
+    vec3 direction;
+};
+
+struct PointLight
+{
+    BaseLight base;
+    Attenuation attenuation;
+    vec3 position;
+    float range; // This returns a radius between roughly 1.0 and 5.0 based on the light's maximum intensity.
+};
+
+struct SpotLight
+{
+    PointLight pointLight;
+    vec3 direction;
+    float cutOff;
+    float outerCutOff;
+};
+
+uniform DirectionalLight R_directionallight;
+uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
+uniform SpotLight R_spotlight;
+uniform bool bUseBlinn, bUseSmoothSpot;
+uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
+uniform bool bWireFrame;
+uniform float thickness;
 
 in VS_OUT
 {
@@ -41,32 +113,163 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform bool bWireFrame;
-uniform float thickness;
+vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
+{
+    float diffuseFactor = max(dot(normal, direction), 0.0f);
+    
+    vec3 view =  camera.position + camera.front;
+    vec3 directionToEye = normalize(view - vertexPosition); // viewDirection
+    vec3 reflectDirection = reflect(-direction, normal);    // specular reflection
+    vec3 halfDirection = normalize(direction + directionToEye); // halfway vector
+    float specularFactor = bUseBlinn
+    ? pow(max(dot(normal, halfDirection), 0.0f), material.shininess)
+    : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
+    
+    vec4 lightColor = vec4(base.color, 1.0f);
+    vec4 materialColor = material.color;
+    vec4 ambient = base.ambient * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+    vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+    vec4 specular = base.specular * specularFactor * (material.bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
+    return (ambient + diffuse + specular) * base.intensity * (material.bUseColor ? lightColor : vec4(1.0f));
+}
+
+vec4 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 vertexPosition)
+{
+    return CalcLight(directionalLight.base, normalize(-directionalLight.direction), normal, vertexPosition);
+}
+
+vec4 CalcPointLight(PointLight pointLight, vec3 normal, vec3 vertexPosition)
+{
+    vec3 lightDirection = normalize(pointLight.position - vertexPosition);
+    float distanceToPoint = length(pointLight.position - vertexPosition);
+    
+    if(distanceToPoint > pointLight.range)
+        return vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    
+    vec4 color = CalcLight(pointLight.base, lightDirection, normal, vertexPosition);
+    
+    // attenuation
+    
+    float attenuation = 1.0f / (pointLight.attenuation.constant + pointLight.attenuation.linear * distanceToPoint +
+                                pointLight.attenuation.exponent * (distanceToPoint * distanceToPoint));
+    return color * attenuation;
+}
+
+vec4 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 vertexPosition)
+{
+    vec3 lightDirection = normalize(spotLight.pointLight.position - vertexPosition);
+    float theta = max(dot(lightDirection, normalize(-spotLight.direction)), 0.0f);
+    vec4 color = vec4( 0.0f, 0.0f, 0.0f, 0.0f);
+    
+    if(theta > spotLight.cutOff)
+    {
+        float epsilon = spotLight.cutOff - spotLight.outerCutOff;
+        float intensity = bUseSmoothSpot
+        ? (1.0f - (1.0f - theta) / (1.0f - spotLight.cutOff))
+        : clamp((theta - spotLight.outerCutOff) / epsilon, 0.0f, 1.0f);
+        color = CalcPointLight(spotLight.pointLight, normal, vertexPosition) * intensity;
+    }
+    return color;
+}
+
 
 noperspective in vec3 GEdgeDistance;
 
-out vec4 vOutputColour;		// The output colour
+layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
+layout (location = 1) out vec4 vBrightColor;
+layout (location = 2) out vec3 vPosition;
+layout (location = 3) out vec3 vNormal;
+layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    
     //base fragment color off of which edge is closest
     float distance = min(GEdgeDistance[0], min(GEdgeDistance[1], GEdgeDistance[2]));
-    
     if (bWireFrame) {
         
         if (distance < thickness){
-            vOutputColour = material.bUseTexture
-            ? texture(material.diffuseMap, fs_in.vTexCoord) : material.color; //draw fragment if close to edge
+            result = material.bUseTexture ? texture(material.diffuseMap, fs_in.vTexCoord) : material.color; //draw fragment if close to edge
         }else if (distance >= thickness){
             discard; //discard if not
         }
     } else {
         //draw the each side with different color, displaying the barymetric concept
-        if (distance==GEdgeDistance[0])vOutputColour=vec4(0.52f, 0.0f, 0.0f, 1.0f);
-        else if (distance==GEdgeDistance[1])vOutputColour=vec4(0.0f, 0.52f, 0.0f, 1.0f);
-        else if (distance==GEdgeDistance[2])vOutputColour=vec4(0.0f, 0.0f, 0.52f, 1.0f);
+        if (distance==GEdgeDistance[0])result=vec4(0.52f, 0.0f, 0.0f, 1.0f);
+        else if (distance==GEdgeDistance[1])result=vec4(0.0f, 0.52f, 0.0f, 1.0f);
+        else if (distance==GEdgeDistance[2])result=vec4(0.0f, 0.0f, 0.52f, 1.0f);
     }
     
+    vec3 normal = material.bUseTexture ? texture(material.normalMap, fs_in.vTexCoord).rgb : normalize(fs_in.vWorldNormal);
+    vec3 worldPos = fs_in.vWorldPosition;
+    
+    if (bUseDirectionalLight){
+        // Directional lighting
+        vec4 directionalLight = CalcDirectionalLight(R_directionallight, normal, worldPos);
+        result += directionalLight;
+    }
+    
+    if (bUsePointLight){
+        // Point lights
+        for (int i = 0; i < NUMBER_OF_POINT_LIGHTS; i++){
+            vec4 pointL = CalcPointLight(R_pointlight[i], normal, worldPos);
+            result += pointL;
+        }
+    }
+    
+    if (bUseSpotlight){
+        // Spot light
+        vec4 spotL = CalcSpotLight(R_spotlight, normal, worldPos);
+        result += spotL;
+    }
+    
+    
+    // FOG
+    vec3 fogColor = result.xyz;
+    if (fog.bUseFog) {
+        //float dist = abs( fs_in.vEyePosition.z );
+        float dist = length( fs_in.vEyePosition.xyz );
+        float fogFactor = (fog.maxDist - dist) / (fog.maxDist - fog.minDist);
+        fogFactor = clamp( fogFactor, 0.0f, 1.0f );
+        
+        fogColor += mix( fog.color, fogColor, fogFactor );
+    }
+    result = vec4(fogColor, result.w);
+    
+    
+    // HDR
+    vec3 hdrColor = result.xyz;
+    if(hrdlight.bHDR)
+    {
+        // tone mapping with exposure
+        hdrColor = vec3(1.0f) - exp(-hdrColor * hrdlight.exposure);
+        // also gamma correct while we're at it
+        hdrColor = pow(hdrColor, vec3(1.0f / hrdlight.gamma));
+    }
+    //    else {
+    //        hdrColor = hdrColor / (hdrColor + vec3(1.0f));
+    //        hdrColor = pow(hdrColor, vec3(1.0f / hrdlight.gamma));
+    //    }
+    result = vec4(hdrColor, result.w);
+    
+    
+    vOutputColour = result;
+    
+    // Retrieve bright parts
+    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
+    if(brightness > 1.0f) {
+        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
+    } else {
+        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    }
+    
+    // store the fragment position vector in the first gbuffer texture
+    vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
+    // also store the per-fragment normals into the gbuffer
+    vNormal = normalize(fs_in.vWorldNormal);
+    // and the diffuse per-fragment color
+    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, fs_in.vTexCoord).rgb;
+    // store specular intensity in gAlbedoSpec's alpha component
+    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, fs_in.vTexCoord).r;
 }
-

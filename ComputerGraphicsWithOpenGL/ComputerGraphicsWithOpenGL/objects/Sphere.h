@@ -26,8 +26,6 @@ private:
     std::map<std::string, TextureType> m_textureNames;
     std::vector<CTexture*> m_textures;
     
-    std::string m_directory;
-    
     // inputs
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec2> uvs;

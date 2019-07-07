@@ -21,7 +21,6 @@ CQuad::~CQuad()
 void CQuad::Create(const std::string &directory, const std::map<std::string, TextureType> &textureNames,
                    const GLfloat &width, const GLfloat &height){
     
-    m_directory = directory;
     m_textureNames = textureNames;
     m_textures.reserve(textureNames.size());
     
@@ -32,7 +31,7 @@ void CQuad::Create(const std::string &directory, const std::map<std::string, Tex
         
         // access element as *it
         m_textures.push_back(new CTexture);
-        m_textures[i]->LoadTexture(m_directory+it->first, it->second, true);
+        m_textures[i]->LoadTexture(directory+it->first, it->second, true);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

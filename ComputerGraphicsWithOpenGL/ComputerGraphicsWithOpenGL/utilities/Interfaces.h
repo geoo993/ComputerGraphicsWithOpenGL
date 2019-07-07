@@ -67,12 +67,16 @@ struct IMaterials {
     glm::vec4 m_materialColor;
     GLfloat m_materialShininess, m_albedo, m_metallic, m_roughness, m_ao;
     GLboolean m_useIrradianceMap, m_materialUseTexture, m_materialUseColor, m_useIrradiance;
+    GLboolean m_useFog;
+    glm::vec3 m_fogColor;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec4 &color, const GLfloat &shininess,
                                     const GLboolean &useAO) = 0;
     virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                        const GLfloat &albedo, const GLfloat &metallic, const GLfloat &roughness,
                                        const GLfloat &ao, const GLboolean &useIrradiance) = 0;
+    virtual void SetFogMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
+                                        const glm::vec3 &color, const GLboolean &bUseFog) = 0;
 };
 
 struct ITextures {
@@ -103,7 +107,7 @@ struct IShaderUniform {
     virtual void SetWireframeUniform(CShaderProgram *pShaderProgram, const GLboolean &useWireframe, const GLfloat &thickness) = 0;
     virtual void SetChromaticAberrationUniform(CShaderProgram *pShaderProgram, const glm::vec2 &fresnelValues) = 0;
     virtual void SetFireBallUniform(CShaderProgram *pShaderProgram) = 0;
-    virtual void SetJupiterColorUniform(CShaderProgram *pShaderProgram) = 0;
+    virtual void SetDisintegrationUniform(CShaderProgram *pShaderProgram) = 0;
     
     ///Post Processing Uniform
     virtual void SetImageProcessingUniform(CShaderProgram *pShaderProgram, const GLboolean &bUseScreenQuad) = 0;
@@ -229,17 +233,16 @@ struct IRenderObject
     virtual void RenderEnvSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void ResetSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) = 0;
-    virtual void RenderCube(CShaderProgram *pShaderProgram, CCube *cube, const glm::vec3 & position, const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderWoodenBox(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale,
-                                 const GLfloat & angleX, const GLfloat & angleY, const GLfloat & angleZ) = 0;
+    virtual void RenderCube(CShaderProgram *pShaderProgram, CCube *cube, const glm::vec3 & position,
+                             const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderSphere(CShaderProgram *pShaderProgram, CSphere *sphere, const glm::vec3 & position,
-                              const GLfloat & scale, const GLboolean &useTexture) = 0;
+                            const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderTorus(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                              const GLfloat & scale) = 0;
     virtual void RenderTorusKnot(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                  const GLfloat & scale) = 0;
     virtual void RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                  const GLfloat & scale) = 0;
+                                  const GLfloat & scale, const GLboolean &useTexture) = 0;
 };
 
 struct IPostProcessing {

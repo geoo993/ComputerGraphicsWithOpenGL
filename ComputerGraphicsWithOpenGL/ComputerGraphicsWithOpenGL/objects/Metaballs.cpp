@@ -8,7 +8,8 @@
 //=============================================================================
 CMetaballs::CMetaballs()
 {
-    
+    m_vao = 0;
+    m_textures = {};
 }
 
 CMetaballs::~CMetaballs(){
@@ -16,7 +17,7 @@ CMetaballs::~CMetaballs(){
     Release();
 }
 
-void CMetaballs::Create(const float &level, const int &numberOfBalls, const int &gridSize, const int &maxOpenVoxels,
+void CMetaballs::Create(const float &level, const int &numberOfBalls, const int &gridSize, const int &maxOpenVoxels, const std::string &directory,
                         const std::map<std::string, TextureType> &textureFiles){
     m_fLevel    = level;//100.0f;
     m_nNumBalls = numberOfBalls; //20;
@@ -46,7 +47,7 @@ void CMetaballs::Create(const float &level, const int &numberOfBalls, const int 
         
         // access element as *it
         m_textures.push_back(new CTexture);
-        m_textures[i]->LoadTexture(it->first, it->second, true);
+        m_textures[i]->LoadTexture(directory+it->first, it->second, true);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);

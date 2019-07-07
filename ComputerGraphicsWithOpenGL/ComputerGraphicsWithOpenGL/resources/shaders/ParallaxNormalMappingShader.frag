@@ -44,7 +44,14 @@ uniform struct HRDLight
     float exposure;
     float gamma;
     bool bHDR;
-} R_hrdlight;
+} hrdlight;
+
+uniform struct Fog {
+    float maxDist;
+    float minDist;
+    vec3 color;
+    bool bUseFog;
+} fog;
 
 // Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
@@ -169,13 +176,16 @@ vec4 CalcLight(BaseLight base, vec3 direction, mat3 TBN, vec3 vertexPosition)
      // transform normal vector to range [-1,1]
      normalMap = normalize(normalMap * 2.0f - 1.0f);  // this normal is in tangent space
     
+     vec4 lightColor = vec4(base.color, 1.0f);
+     vec4 materialColor = material.color;
+    
     // ambient
-     vec3 ambient = base.ambient * diffuseMap;
+     vec4 ambient = base.ambient * (material.bUseTexture ? texture(material.diffuseMap, fs_in.vTexCoord ) : materialColor);
     
      // diffuse
      //vec3 lightDirection = normalize(tangentLightPos - tangentFragPos);
      float diffuseFactor = max(dot(direction, normalMap), 0.0f);
-     vec3 diffuse = base.diffuse * diffuseFactor * diffuseMap;
+     vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
     
      // specular
      vec3 reflectDirection = reflect(-direction, normalMap);    // specular reflection
@@ -183,10 +193,10 @@ vec4 CalcLight(BaseLight base, vec3 direction, mat3 TBN, vec3 vertexPosition)
      float specularFactor = bUseBlinn
      ? pow(max(dot(normalMap, halfDirection), 0.0f), material.shininess)
      : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
-     vec3 specular = vec3(base.specular) * specularFactor;
+     vec4 specular = base.specular * specularFactor * (material.bUseTexture ? texture( material.specularMap, fs_in.vTexCoord) : materialColor);
      
-    return (material.bUseTexture ? vec4(ambient + diffuse + specular, 1.0f) : material.color) * base.intensity
-    * (material.bUseColor ? vec4(base.color, 1.0f) : vec4(1.0f));
+    return (ambient + diffuse + specular) * base.intensity
+    * (material.bUseColor ? lightColor : vec4(1.0f));
 }
 
 vec4 CalcDirectionalLight(DirectionalLight directionalLight, mat3 TBN, vec3 vertexPosition)
@@ -264,21 +274,37 @@ void main()
         vec4 spotL = CalcSpotLight(R_spotlight, TBN, worldPos);
         result += spotL;
     }
+    
+    // FOG
+    vec3 fogColor = result.xyz;
+    if (fog.bUseFog) {
+        //float dist = abs( fs_in.vEyePosition.z );
+        float dist = length( fs_in.vEyePosition.xyz );
+        float fogFactor = (fog.maxDist - dist) / (fog.maxDist - fog.minDist);
+        fogFactor = clamp( fogFactor, 0.0f, 1.0f );
+        
+        fogColor += mix( fog.color, fogColor, fogFactor );
+    }
+    result = vec4(fogColor, result.w);
+    
 
     // HDR
     vec3 envColor = result.xyz;
-    if(R_hrdlight.bHDR)
+    if(hrdlight.bHDR)
     {
         // tone mapping with exposure
-        envColor = vec3(1.0f) - exp(-envColor * R_hrdlight.exposure);
+        envColor = vec3(1.0f) - exp(-envColor * hrdlight.exposure);
         // also gamma correct while we're at it
-        envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+        envColor = pow(envColor, vec3(1.0f / hrdlight.gamma));
     }
 //    else {
 //        envColor = envColor / (envColor + vec3(1.0f));
-//        envColor = pow(envColor, vec3(1.0f / R_hrdlight.gamma));
+//        envColor = pow(envColor, vec3(1.0f / hrdlight.gamma));
 //    }
-    vOutputColour = vec4(envColor, result.w);
+    result = vec4(envColor, result.w);
+    
+    
+    vOutputColour = result;
     
     // Retrieve bright parts
     float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));

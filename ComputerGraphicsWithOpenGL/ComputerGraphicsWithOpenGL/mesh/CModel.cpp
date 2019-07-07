@@ -18,7 +18,7 @@ CModel::~CModel()
 }
 
 // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
-GLboolean CModel::Create(const std::string &directory,  const std::string &modelName, const std::map<std::string, TextureType> &textureNames)
+GLboolean CModel::Create(const std::string &modelPath,  const std::string &texturesPath, const std::map<std::string, TextureType> &texturesName)
 {
     // Release the previously loaded mesh (if it exists)
     Release();
@@ -41,12 +41,11 @@ GLboolean CModel::Create(const std::string &directory,  const std::string &model
      */
 
     bool isProcessed = false;
-    std::string fullModel = directory + modelName;
     
     // read file via ASSIMP
     Assimp::Importer Importer;
     const aiScene* scene = Importer.ReadFile(
-                                              fullModel,
+                                              modelPath,
                                               aiProcess_Triangulate |
                                               aiProcess_GenSmoothNormals |
                                               aiProcess_FlipUVs |
@@ -61,9 +60,9 @@ GLboolean CModel::Create(const std::string &directory,  const std::string &model
 
     if (scene) {
         // process ASSIMP's root node recursively
-        isProcessed = ProcessNode(scene, scene->mRootNode, directory);
+        isProcessed = ProcessNode(scene, scene->mRootNode, texturesPath);
         
-        LoadTextures(directory, textureNames);
+        LoadTextures(texturesPath, texturesName);
     }
     
     return isProcessed;

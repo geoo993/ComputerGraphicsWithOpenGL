@@ -19,8 +19,6 @@ void Game::LoadTextures(const std::string &path)
     m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensDirt.png", TextureType::NOISE)); // Lens Flare
     m_textures.push_back(AddTexture(path+"/textures/lensFlare/lensStarburst.png", TextureType::GLOSSINESS)); // Lens Flare
     m_textures.push_back(AddTexture(4, 4, TextureType::NOISE, &m_ssaoNoise[0])); // SSAO Noise
-    m_textures.push_back(AddTexture(path+"/textures/clean-gray-paper.png", TextureType::DIFFUSE)); // ChromaticAberration
-    m_textures.push_back(AddTexture(path+"/textures/moon_surface.jpg", TextureType::GLOSSINESS)); // ChromaticAberration
 }
 
 CTexture * Game::AddTexture(const std::string &textureFile, const TextureType &type, const bool &gammaCorrection) {

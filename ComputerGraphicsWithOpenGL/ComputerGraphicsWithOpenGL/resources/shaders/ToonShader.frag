@@ -43,7 +43,14 @@ uniform struct HRDLight
     float exposure;
     float gamma;
     bool bHDR;
-} R_hrdlight;
+} hrdlight;
+
+uniform struct Fog {
+    float maxDist;
+    float minDist;
+    vec3 color;
+    bool bUseFog;
+} fog;
 
 // Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
@@ -221,20 +228,32 @@ void main()
     const float D = 1.0f;
     vec4 color = vec4(1.0f);
     
-    
     if (toonIntensity < A) color = result * 0.001f;
     else if (toonIntensity < B) color = result * B;
     else if (toonIntensity < C) color = result * C;
     else color = result * D;
     
+    // FOG
+    vec3 fogColor = color.xyz;
+    if (fog.bUseFog) {
+        //float dist = abs( fs_in.vEyePosition.z );
+        float dist = length( fs_in.vEyePosition.xyz );
+        float fogFactor = (fog.maxDist - dist) / (fog.maxDist - fog.minDist);
+        fogFactor = clamp( fogFactor, 0.0f, 1.0f );
+        
+        fogColor += mix( fog.color, fogColor, fogFactor );
+    }
+    color = vec4(fogColor, color.w);
+    
+    
     // HDR
     vec3 hdrColor = color.xyz;
-    if(R_hrdlight.bHDR)
+    if(hrdlight.bHDR)
     {
         // tone mapping with exposure
-        hdrColor = vec3(1.0f) - exp(-hdrColor * R_hrdlight.exposure);
+        hdrColor = vec3(1.0f) - exp(-hdrColor * hrdlight.exposure);
         // also gamma correct while we're at it
-        hdrColor = pow(hdrColor, vec3(1.0f / R_hrdlight.gamma));
+        hdrColor = pow(hdrColor, vec3(1.0f / hrdlight.gamma));
     }
     /*
      else {
@@ -242,10 +261,13 @@ void main()
          color = color / (color + vec3(1.0f));
          /// gamma correct
          //color = pow(color, vec3(1.0f/2.2f));
-         color = pow(color, vec3(1.0f / R_hrdlight.gamma));
+         color = pow(color, vec3(1.0f / hrdlight.gamma));
          }
      */
-    vOutputColour = vec4(hdrColor, color.w);
+    color = vec4(hdrColor, color.w);
+    
+    
+    vOutputColour = color;
 
     // Retrieve bright parts
     float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));

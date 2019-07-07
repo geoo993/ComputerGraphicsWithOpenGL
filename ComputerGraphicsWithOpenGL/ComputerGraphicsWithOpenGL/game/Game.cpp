@@ -31,10 +31,13 @@ Game::Game()
     m_pCamera = nullptr;
     
     // materials
-    m_parallaxHeightScale = 1.0f;
+    m_parallaxHeightScale = 1.2f;
     m_materialShininess = 10.0f;
     m_materialUseTexture = true;
     m_materialColor = glm::vec4(Extensions::randRGB(), 1.0f);
+    m_useFog = false;
+    m_fogColor = glm::vec3(0.6f);
+    
     m_uvTiling = 1.4f;
     m_magnitude = 0.3f;
     
@@ -67,39 +70,39 @@ Game::Game()
     m_exponent = 0.0019f;
 
     // Dir Light
-    m_useDir = false;
+    m_useDir = true;
     m_dirColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    m_dirIntensity = 1.1f;
+    m_dirIntensity = 0.4f;
     m_directionalLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f),
     
     // Point Light
     m_usePoint = true;
-    m_pointIntensity = 20.5f;
+    m_pointIntensity = 18.0f;
     m_pointLightPositionsIndex = 0;
     m_pointLightPositions = {
-        glm::vec3(  100.0f,  400.0f,  50.0f      ),
-        glm::vec3(  226.0f,  583.0f,  -32.0f      ),
-        glm::vec3(  -335.7f,  550.2f,  122.0f      ),
-        glm::vec3(  102.3f, 663.3f, -44.0f      ),
-        glm::vec3(  -104.0f,  612.0f, -200.0f    ),
-        glm::vec3(  300.0f,  620.0f, -233.0f      ),
-        glm::vec3(  320.0f,  310.0f, 410.0f  ),
-        glm::vec3(  20.0f,  410.0f, 413.0f  ),
-        glm::vec3(  -120.0f,  350.0f, 233.0f  ),
-        glm::vec3(  -600.0f,  2000.0f, 130.0f )
+        glm::vec3(  100.0f,  40.0f,  50.0f      ),
+        glm::vec3(  226.0f,  -83.0f,  -32.0f      ),
+        glm::vec3(  -335.7f,  50.2f,  122.0f      ),
+        glm::vec3(  202.3f,  43.3f, -224.0f      ),
+        glm::vec3(  -204.0f,  12.0f, -200.0f    ),
+        glm::vec3(  300.0f,  -120.0f, -233.0f      ),
+        glm::vec3(  320.0f,  150.0f, 410.0f  ),
+        glm::vec3(  20.0f,  10.0f, 413.0f  ),
+        glm::vec3(  -120.0f,  -50.0f, 233.0f  ),
+        glm::vec3(  -600.0f,  1500.0f, 130.0f )
     };
     
     m_pointLightColors = {
         glm::vec4(  1.0f,  0.1f,  0.9f, 1.0f      ),
         glm::vec4(  0.1f,  0.9f,  0.8f , 1.0f       ),
         glm::vec4(  1.0f,  1.0f,  0.0f  , 1.0f      ),
-        glm::vec4(  0.1f, 0.9f, 0.0f , 1.0f       ),
+        glm::vec4(  0.01f, 0.96f, 0.0f , 1.0f       ),
         glm::vec4(  0.0f,  0.0f, 1.0f  , 1.0f    ),
         glm::vec4(  1.0f,  0.0f, 0.1f , 1.0f       ),
         glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f      ),
         glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f       ),
         glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f      ),
-        glm::vec4(  200.0f,  200.0f, 200.0f  , 1.0f      )
+        glm::vec4(  200.0f,  200.0f, 200.0f  , 1.0f )
     };
     
     // Spot Light
@@ -166,36 +169,48 @@ Game::Game()
     m_heightMapMaxHeight = 100.0f;
     
     //models
-    m_pSuitcase = nullptr;
+    m_teapot1 = nullptr;
+    m_teapot2 = nullptr;
+    m_vehicle = nullptr;
     
     //sphere object
-    m_pSphere = nullptr;
+    m_sphereRotation = 0.0f;
     m_pSpherePBR1 = nullptr;
     m_pSpherePBR2 = nullptr;
     m_pSpherePBR3 = nullptr;
     m_pSpherePBR4 = nullptr;
     m_pSpherePBR5 = nullptr;
     m_pSpherePBR6 = nullptr;
-    m_pFireBallSphere = nullptr;
+    m_pSpherePBR7 = nullptr;
+    m_pSpherePBR8 = nullptr;
+    m_pSpherePBR9 = nullptr;
+    m_pSpherePBR10 = nullptr;
+    m_pSpherePBR11 = nullptr;
+    m_pSpherePBR12 = nullptr;
+    m_pSpherePBR13 = nullptr;
+    m_pSpherePBR14 = nullptr;
+    m_pSpherePBR15 = nullptr;
+    m_pSpherePBR16 = nullptr;
+    m_pSpherePBR17 = nullptr;
+    m_pSpherePBR18 = nullptr;
+    m_pSpherePBR19 = nullptr;
     
     //cube object
-    m_pParallaxCube = nullptr;
-    
-    // woodenBox
-    m_pWoodenBox = nullptr;
-    m_materialColor = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
-    m_woodenBoxesRotation = 0.0f;
-    m_woodenBoxesPosition = {
-        glm::vec3(  -186.0f,  593.0f,  -132.0f   ),
-        glm::vec3(  -135.7f,  550.2f,  -222.0f   ),
-        glm::vec3(  52.3f, 523.3f, -44.0f      ),
-        glm::vec3(  -24.0f,  452.0f, -112.0f    ),
-        glm::vec3(  220.0f,  620.0f, -133.0f    ),
-        glm::vec3(  -152.3f, 663.3f, -74.0f  ),
-        glm::vec3(  224.0f,  572.0f, 12.0f   ),
-        glm::vec3(  -220.0f,  610.0f, 133.0f  ),
-    };
-    
+    m_pCube1 = nullptr;
+    m_pCube2 = nullptr;
+    m_pCube3 = nullptr;
+    m_pCube4 = nullptr;
+    m_pCube5 = nullptr;
+    m_pCube6 = nullptr;
+    m_pCube7 = nullptr;
+    m_pCube8 = nullptr;
+    m_pCube9 = nullptr;
+    m_pCube10 = nullptr;
+    m_pCube11 = nullptr;
+    m_pCube12 = nullptr;
+    m_pCube13 = nullptr;
+    m_pCube14 = nullptr;
+
     //torus object
     m_pTorus = nullptr;
     
@@ -232,22 +247,50 @@ Game::~Game()
     delete m_pIrrSkybox;
     delete m_pPlanarTerrain;
     delete m_pHeightmapTerrain;
-    delete m_pLamp;
-    delete m_pSuitcase;
-    delete m_pSphere;
+    delete m_teapot1;
+    delete m_teapot2;
+    delete m_vehicle;
     delete m_pSpherePBR1;
     delete m_pSpherePBR2;
     delete m_pSpherePBR3;
     delete m_pSpherePBR4;
     delete m_pSpherePBR5;
     delete m_pSpherePBR6;
-    delete m_pParallaxCube;
-    delete m_pWoodenBox;
+    delete m_pSpherePBR7;
+    delete m_pSpherePBR8;
+    delete m_pSpherePBR9;
+    delete m_pSpherePBR10;
+    delete m_pSpherePBR11;
+    delete m_pSpherePBR12;
+    delete m_pSpherePBR13;
+    delete m_pSpherePBR14;
+    delete m_pSpherePBR15;
+    delete m_pSpherePBR16;
+    delete m_pSpherePBR17;
+    delete m_pSpherePBR18;
+    delete m_pSpherePBR19;
+    
+    delete m_pCube1;
+    delete m_pCube2;
+    delete m_pCube3;
+    delete m_pCube4;
+    delete m_pCube5;
+    delete m_pCube6;
+    delete m_pCube7;
+    delete m_pCube8;
+    delete m_pCube9;
+    delete m_pCube10;
+    delete m_pCube11;
+    delete m_pCube12;
+    delete m_pCube13;
+    delete m_pCube14;
+    
+    delete m_pLamp;
+    
     delete m_pTorus;
     delete m_pTorusKnot;
     delete m_pMetaballs;
     delete m_pQuad;
-    delete m_pFireBallSphere;
     
     for (GLuint i = 0; i < m_pFBOs.size(); i++) {
         // delete current buffers
@@ -291,7 +334,7 @@ void Game::Render()
     BindPPFXFBO( m_currentPPFXMode );
     
     // Clear buffers before rendering
-    m_gameWindow->ClearBuffers();
+    m_gameWindow->ClearBuffers(true);
     
     RenderScene();
      
@@ -329,7 +372,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     InitialiseResources();
     InitialiseGameWindow("OpenGL Window", filepath, width, height);
     InitialiseFrameBuffers(width, height);
-    InitialiseCamera(width, height, glm::vec3(0.0f, 500.0f, -100.0f));
+    InitialiseCamera(width, height, glm::vec3(0.0f, 0.0f, 200.0f));
     //InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);

@@ -111,11 +111,13 @@ uniform struct Camera
 // Structure holding PBR material information:  its albedo, metallic, roughness, etc...
 uniform struct Material
 {
-    sampler2D specularMap;          // 2.   specular map
+    sampler2D ambientMap;           // 0.   ambient map (albedo map)
+    sampler2D diffuseMap;           // 1.   diffuse map (metallic map)
+    sampler2D specularMap;          // 2.   specular map (roughness map)
+    sampler2D normalMap;            // 3.   normal map
     sampler2D albedoMap;            // 15.  albedo map
     sampler2D metallicMap;          // 16.  metalness map
     sampler2D roughnessMap;         // 17.  roughness map
-    sampler2D normalMap;            // 3.   normal map
     sampler2D aoMap;                // 7.   ambient oclusion map
     samplerCube cubeMap;            // 18.  sky box cube map
     samplerCube irradianceMap;      // 19.  sky box irradiance cube map
@@ -135,6 +137,21 @@ uniform struct Material
     bool bUseColor;
 } material;
 
+uniform struct Fog {
+    float maxDist;
+    float minDist;
+    vec3 color;
+    bool bUseFog;
+} fog;
+
+// Structure holding hrd light information
+uniform struct HRDLight
+{
+    float exposure;
+    float gamma;
+    bool bHDR;
+} hrdlight;
+
 // Structure holding light information:  its position, colors, direction etc...
 struct BaseLight
 {
@@ -145,14 +162,6 @@ struct BaseLight
     float specular;
     float exposure;
     float gamma;
-};
-
-// Structure holding hrd light information
-struct HRDLight
-{
-    float exposure;
-    float gamma;
-    bool bHDR;
 };
 
 struct Attenuation
@@ -184,7 +193,6 @@ struct SpotLight
     float outerCutOff;
 };
 
-uniform HRDLight R_hrdlight;
 uniform DirectionalLight R_directionallight;
 uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
@@ -428,7 +436,24 @@ void main()
     }
     color += ambient;
     
-    
+//    // FOG
+//    if (fog.bUseFog) {
+//        /*
+//         In the above code, we used the absolute value of the z coordinate as the distance from the
+//         camera. This may cause the fog to look a bit unrealistic in certain situations. To compute a
+//         more precise distance, we could replace the line:
+//            float dist = abs( Position.z );
+//         with the following.
+//            float dist = length( Position.xyz );
+//         */
+//        //float dist = abs( fs_in.vEyePosition.z );
+//        float dist = length( fs_in.vEyePosition.xyz );
+//        float fogFactor = (fog.maxDist - dist) / (fog.maxDist - fog.minDist);
+//        fogFactor = clamp( fogFactor, 0.0f, 1.0f );
+//
+//        color += mix( fog.color, color, fogFactor );
+//    }
+//
     /*
      Here we tone map the HDR color using the Reinhard operator, preserving the high dynamic range of possibly highly
      varying irradiance after which we gamma correct the color.
@@ -441,23 +466,23 @@ void main()
      */
     
     
-    // HDR
-    if(R_hrdlight.bHDR)
-    {
-        // tone mapping with exposure
-        color = vec3(1.0f) - exp(-color * R_hrdlight.exposure);
-        // also gamma correct while we're at it
-        color = pow(color, vec3(1.0f / R_hrdlight.gamma));
-    }
-    /*
-     else {
-        // reinhard tone mapping
-        color = color / (color + vec3(1.0f));
-        /// gamma correct
-        //color = pow(color, vec3(1.0f/2.2f));
-        color = pow(color, vec3(1.0f / R_hrdlight.gamma));
-     }
-    */
+//    // HDR
+//    if(hrdlight.bHDR)
+//    {
+//        // tone mapping with exposure
+//        color = vec3(1.0f) - exp(-color * hrdlight.exposure);
+//        // also gamma correct while we're at it
+//        color = pow(color, vec3(1.0f / hrdlight.gamma));
+//    }
+//    /*
+//     else {
+//        // reinhard tone mapping
+//        color = color / (color + vec3(1.0f));
+//        /// gamma correct
+//        //color = pow(color, vec3(1.0f/2.2f));
+//        color = pow(color, vec3(1.0f / hrdlight.gamma));
+//     }
+//    */
     vOutputColour = vec4(color, 1.0f);
     
     // Retrieve bright parts

@@ -288,9 +288,9 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 //Lights
 vec3 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPos)
 {
-    vec3 albedo     = material.bUseTexture ? pow(texture(material.albedoMap, fs_in.vTexCoord).rgb, vec3(2.2f)) : (material.color.xyz * material.albedo);
-    float metallic  = material.bUseTexture ? texture(material.metallicMap, fs_in.vTexCoord).r : material.metallic;
-    float roughness = material.bUseTexture ? texture(material.roughnessMap, fs_in.vTexCoord).r : material.roughness;
+    vec3 albedo     = material.bUseTexture ? (pow(texture(material.albedoMap, fs_in.vTexCoord).rgb, vec3(2.2f)) * material.albedo) : (material.color.xyz * material.albedo);
+    float metallic  = material.bUseTexture ? (texture(material.metallicMap, fs_in.vTexCoord).r * material.metallic) : material.metallic;
+    float roughness = material.bUseTexture ? (texture(material.roughnessMap, fs_in.vTexCoord).r * material.roughness) : material.roughness;
     
     vec3 directionToEye = normalize(camera.position - worldPos); // viewDirection aka V
     vec3 reflectDirection = reflect(-directionToEye, normal);    // specular reflection aka R
@@ -379,10 +379,10 @@ void main()
     vec3 normal     = material.bUseTexture ? getNormalFromMap() : normalize(fs_in.vNormal);       // albedo map
     vec3 color = vec3(0.0f, 0.0f, 0.0f);
     
-    vec3 albedo     = material.bUseTexture ? pow(texture(material.albedoMap, fs_in.vTexCoord).rgb, vec3(2.2f)) : (material.color.xyz * material.albedo);
-    float metallic  = material.bUseTexture ? texture(material.metallicMap, fs_in.vTexCoord).r : material.metallic;
-    float roughness = material.bUseTexture ? texture(material.roughnessMap, fs_in.vTexCoord).r : material.roughness;
-    float ao        = material.bUseTexture ? texture(material.aoMap, fs_in.vTexCoord).r : material.ao;
+    vec3 albedo     = material.bUseTexture ? (pow(texture(material.albedoMap, fs_in.vTexCoord).rgb, vec3(2.2f)) * material.albedo) : (material.color.xyz * material.albedo);
+    float metallic  = material.bUseTexture ? (texture(material.metallicMap, fs_in.vTexCoord).r * material.metallic) : material.metallic;
+    float roughness = material.bUseTexture ? (texture(material.roughnessMap, fs_in.vTexCoord).r * material.roughness) : material.roughness;
+    float ao        = material.bUseTexture ? (texture(material.aoMap, fs_in.vTexCoord).r * material.ao) : material.ao;
     
     vec3 directionToEye = normalize(camera.position - worldPos); // viewDirection aka V
     vec3 reflectDirection = reflect(-directionToEye, normal);    // specular reflection aka R
@@ -436,24 +436,24 @@ void main()
     }
     color += ambient;
     
-//    // FOG
-//    if (fog.bUseFog) {
-//        /*
-//         In the above code, we used the absolute value of the z coordinate as the distance from the
-//         camera. This may cause the fog to look a bit unrealistic in certain situations. To compute a
-//         more precise distance, we could replace the line:
-//            float dist = abs( Position.z );
-//         with the following.
-//            float dist = length( Position.xyz );
-//         */
-//        //float dist = abs( fs_in.vEyePosition.z );
-//        float dist = length( fs_in.vEyePosition.xyz );
-//        float fogFactor = (fog.maxDist - dist) / (fog.maxDist - fog.minDist);
-//        fogFactor = clamp( fogFactor, 0.0f, 1.0f );
-//
-//        color += mix( fog.color, color, fogFactor );
-//    }
-//
+    // FOG
+    if (fog.bUseFog) {
+        /*
+         In the above code, we used the absolute value of the z coordinate as the distance from the
+         camera. This may cause the fog to look a bit unrealistic in certain situations. To compute a
+         more precise distance, we could replace the line:
+            float dist = abs( Position.z );
+         with the following.
+            float dist = length( Position.xyz );
+         */
+        //float dist = abs( fs_in.vEyePosition.z );
+        float dist = length( fs_in.vEyePosition.xyz );
+        float fogFactor = (fog.maxDist - dist) / (fog.maxDist - fog.minDist);
+        fogFactor = clamp( fogFactor, 0.0f, 1.0f );
+
+        color += mix( fog.color, color, fogFactor );
+    }
+
     /*
      Here we tone map the HDR color using the Reinhard operator, preserving the high dynamic range of possibly highly
      varying irradiance after which we gamma correct the color.
@@ -466,23 +466,23 @@ void main()
      */
     
     
-//    // HDR
-//    if(hrdlight.bHDR)
-//    {
-//        // tone mapping with exposure
-//        color = vec3(1.0f) - exp(-color * hrdlight.exposure);
-//        // also gamma correct while we're at it
-//        color = pow(color, vec3(1.0f / hrdlight.gamma));
-//    }
-//    /*
-//     else {
-//        // reinhard tone mapping
-//        color = color / (color + vec3(1.0f));
-//        /// gamma correct
-//        //color = pow(color, vec3(1.0f/2.2f));
-//        color = pow(color, vec3(1.0f / hrdlight.gamma));
-//     }
-//    */
+    // HDR
+    if(hrdlight.bHDR)
+    {
+        // tone mapping with exposure
+        color = vec3(1.0f) - exp(-color * hrdlight.exposure);
+        // also gamma correct while we're at it
+        color = pow(color, vec3(1.0f / hrdlight.gamma));
+    }
+    /*
+     else {
+        // reinhard tone mapping
+        color = color / (color + vec3(1.0f));
+        /// gamma correct
+        //color = pow(color, vec3(1.0f/2.2f));
+        color = pow(color, vec3(1.0f / hrdlight.gamma));
+     }
+    */
     vOutputColour = vec4(color, 1.0f);
     
     // Retrieve bright parts

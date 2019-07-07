@@ -194,8 +194,7 @@ struct ILights
     GLboolean m_usePoint;
     GLfloat m_pointIntensity;
     GLuint m_pointLightPositionsIndex = 0;
-    std::vector<glm::vec3> m_pointLightPositions;
-    std::vector<glm::vec4> m_pointLightColors;
+    std::vector<std::tuple<glm::vec3, glm::vec4>> m_pointLights;
     
     // Spot Light
     GLboolean m_useSpot;

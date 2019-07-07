@@ -87,14 +87,14 @@ void Game::RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) {
     SetDirectionalLightUniform(pShaderProgram, "R_directionallight", dirLight, m_directionalLightDirection);
     
     // Point Light
-    for ( GLuint i = 0; i < m_pointLightPositions.size(); ++i){
+    for (auto it = m_pointLights.begin(); it != m_pointLights.end(); ++it) {
+        auto i = std::distance(m_pointLights.begin(), it);
         std::string uniformName = "R_pointlight[" + std::to_string(i) + "]";
-        
-        glm::vec3 position = m_pointLightPositions[i];
+        glm::vec3 position = std::get<0>(*it);
         if (m_pHeightmapTerrain->IsHeightMapRendered()) {
             position = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
         }
-        glm::vec3 color = glm::vec3(m_pointLightColors[i]);
+        glm::vec3 color = glm::vec3(std::get<1>(*it));
         PointLight pointLight(color, m_pointIntensity, Attenuation(m_constant, m_linear, m_exponent), position);
         SetPointLightUniform(pShaderProgram, uniformName, pointLight);
     }

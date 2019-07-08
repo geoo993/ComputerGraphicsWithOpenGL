@@ -33,29 +33,96 @@ until finished
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
+## Content
 
-Explain how to run the automated tests for this system
+### Objects
+* Cube
+* Sphere
+* Quad
+* Torus
+* Torus Knot
+* Metal Balls
+* Teapot
+* Trolley
+* Planar Terrain and HeightMap Terrain
 
-### Break down into end to end tests
+### Lighting 
+* Blinn Phong
+* HDR Tone Mapping
+* Image Based Lighting (IBL)
 
-Explain what these tests test and why
+### Shaders
+* Bump mapping
+* Normal Mapping
+* Parallax Mapping
+* Chromatic Aberration
+* Environment Mapping (reflection and refraction)
+* Disintergration
+* Explosion Fireball (Geometry Shader)
+* Wireframe (Geometry Shader)
+* Porcupine / Display Normal (Geometry Shader)
+* Toon/Cell shading
+* Physically Based Rendering (PBR)
+* Fast Approximate Anti-Aliasing (FXAA)
 
-```
-Give an example
-```
+### Post Processing Effects
+* Color Inversion
+* GrayScale
+* Kernel
+* Kernel Blur
+* Sobel Edge Detection
+* Frei-Chen Edge Detection
+* Screen Wave
+* Swirl
+* Night Vision
+* Lens Circle
+* Posterization
+* Dream Vision
+* Pixelate
+* Pixelation
+* Knitted Pixelation
+* Frosted Glass
+* Frosted Glass Extra
+* Crosshatching
+* Predators Thermal Vision
+* Toonify
+* Shockwave
+* Fish Eye
+* Barrel Distortion
+* MultiScreen Fish Eye
+* Fish Eye Lens
+* Fish Eye / Anti-Fish Eye
+* Gaussian Blur
+* Blur
+* Radial Blur
+* Motion Blur
+* Depth Mapping
+* Vignetting
+* Bright Parts
+* Bloom
+* Lens Flare
+* Deferred Rendering
+* Screen Space Ambient Occlusion
+* Rain Drops
+* Palette Quantization And Dithering
+* Distorted TV
+* RGB Display
+* Retro Parallax
+* Money Filter
+* Microprism Mosaic
+* Bayer Matrix Dithering
+* Julia Freak"
+* Heart Blend
+* EM Interference
+* Cubic Lens Distortion
+* Cel Shaderish
+* Cartoon Video"
 
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+### Controls 
+* **Arrow Keys** - Move in the scene
+* **Mouse Drag** - Look around
+* **Mouse Wheel** - Zoom
+* **Mouse Click** - Select  GUI Button or Slider
 
 ## Built With
 

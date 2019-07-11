@@ -9,6 +9,14 @@
 #include "Game.h"
 
 /// Shaders Uniforms
+void Game::SetTerrainUniform(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("bUseHeightMap", useHeightMap);
+    pShaderProgram->SetUniform("fMinHeight", m_heightMapMinHeight);
+    pShaderProgram->SetUniform("fMaxHeight", m_heightMapMaxHeight);
+    
+}
+
 void Game::SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("bRefraction", useRefraction);

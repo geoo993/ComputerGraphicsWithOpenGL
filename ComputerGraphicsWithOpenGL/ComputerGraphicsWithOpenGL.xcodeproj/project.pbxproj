@@ -82,13 +82,6 @@
 		C71E7E84223ADB9500336C6C /* JupiterColorShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C71E7E82223ADB9500336C6C /* JupiterColorShader.vert */; };
 		C72D784722D1D73F00819D56 /* specular.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D784522D1D73F00819D56 /* specular.png */; };
 		C72D784822D1D73F00819D56 /* diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D784622D1D73F00819D56 /* diffuse.png */; };
-		C72D785122D1E46A00819D56 /* albedo.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D784A22D1E46900819D56 /* albedo.png */; };
-		C72D785222D1E46A00819D56 /* diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D784B22D1E46900819D56 /* diffuse.png */; };
-		C72D785322D1E46A00819D56 /* metallic.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D784C22D1E46900819D56 /* metallic.png */; };
-		C72D785422D1E46A00819D56 /* specular.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D784D22D1E46900819D56 /* specular.png */; };
-		C72D785522D1E46A00819D56 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D784E22D1E46900819D56 /* normal.png */; };
-		C72D785622D1E46A00819D56 /* ao.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D784F22D1E46900819D56 /* ao.png */; };
-		C72D785722D1E46A00819D56 /* roughness.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D785022D1E46900819D56 /* roughness.png */; };
 		C72D785A22D1ECDD00819D56 /* specular.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D785822D1ECDD00819D56 /* specular.png */; };
 		C72D785B22D1ECDD00819D56 /* diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D785922D1ECDD00819D56 /* diffuse.png */; };
 		C7332977221775D400BFE37B /* ToneMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7332975221775D300BFE37B /* ToneMappingShader.vert */; };
@@ -133,6 +126,23 @@
 		C75C9747220E212F00420DF6 /* bricks_diffuse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C75C9743220E212F00420DF6 /* bricks_diffuse.jpg */; };
 		C75C9748220E212F00420DF6 /* bricks_height.png in Resources */ = {isa = PBXBuildFile; fileRef = C75C9744220E212F00420DF6 /* bricks_height.png */; };
 		C75CCAF322ACF2E30092B72C /* EquirectangularCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75CCAF222ACF2E30092B72C /* EquirectangularCube.cpp */; };
+		C7681A1B22D7DBFA00F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A1A22D7DBFA00F1254E /* ambient.png */; };
+		C7681A1D22D7DC9E00F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A1C22D7DC9D00F1254E /* ambient.png */; };
+		C7681A1F22D7DD0900F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A1E22D7DD0900F1254E /* ambient.png */; };
+		C7681A2122D7DD1A00F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A2022D7DD1A00F1254E /* ambient.png */; };
+		C7681A2322D7DD2800F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A2222D7DD2800F1254E /* ambient.png */; };
+		C7681A2522D7DD5D00F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A2422D7DD5D00F1254E /* ambient.png */; };
+		C7681A2722D7DD6F00F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A2622D7DD6E00F1254E /* ambient.png */; };
+		C7681A2922D7DD7E00F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A2822D7DD7D00F1254E /* ambient.png */; };
+		C7681A2B22D7DD8B00F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A2A22D7DD8A00F1254E /* ambient.png */; };
+		C7681A2D22D7DD9800F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A2C22D7DD9800F1254E /* ambient.png */; };
+		C7681A2F22D7DDA600F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A2E22D7DDA600F1254E /* ambient.png */; };
+		C7681A3122D7DDB800F1254E /* ambient.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7681A3022D7DDB700F1254E /* ambient.jpg */; };
+		C7681A3322D7DDC400F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A3222D7DDC400F1254E /* ambient.png */; };
+		C7681A3522D7DDD100F1254E /* ambient.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7681A3422D7DDD100F1254E /* ambient.jpg */; };
+		C7681A3B22D7DEC800F1254E /* specular.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A3822D7DEC700F1254E /* specular.png */; };
+		C7681A3C22D7DEC800F1254E /* ambient.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A3922D7DEC700F1254E /* ambient.png */; };
+		C7681A3D22D7DEC800F1254E /* diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = C7681A3A22D7DEC800F1254E /* diffuse.png */; };
 		C76DAFFB22187727005C354C /* lensTexture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C76DAFF922187727005C354C /* lensTexture.jpg */; };
 		C76DAFFC22187727005C354C /* lensColor.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C76DAFFA22187727005C354C /* lensColor.jpg */; };
 		C76DAFFF22189C51005C354C /* lensDirt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C76DAFFE22189C50005C354C /* lensDirt.jpg */; };
@@ -568,13 +578,6 @@
 		C71E7E82223ADB9500336C6C /* JupiterColorShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = JupiterColorShader.vert; sourceTree = "<group>"; };
 		C72D784522D1D73F00819D56 /* specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = specular.png; sourceTree = "<group>"; };
 		C72D784622D1D73F00819D56 /* diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diffuse.png; sourceTree = "<group>"; };
-		C72D784A22D1E46900819D56 /* albedo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = albedo.png; sourceTree = "<group>"; };
-		C72D784B22D1E46900819D56 /* diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diffuse.png; sourceTree = "<group>"; };
-		C72D784C22D1E46900819D56 /* metallic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metallic.png; sourceTree = "<group>"; };
-		C72D784D22D1E46900819D56 /* specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = specular.png; sourceTree = "<group>"; };
-		C72D784E22D1E46900819D56 /* normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normal.png; sourceTree = "<group>"; };
-		C72D784F22D1E46900819D56 /* ao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ao.png; sourceTree = "<group>"; };
-		C72D785022D1E46900819D56 /* roughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roughness.png; sourceTree = "<group>"; };
 		C72D785822D1ECDD00819D56 /* specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = specular.png; sourceTree = "<group>"; };
 		C72D785922D1ECDD00819D56 /* diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diffuse.png; sourceTree = "<group>"; };
 		C7332975221775D300BFE37B /* ToneMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.vert; sourceTree = "<group>"; };
@@ -621,6 +624,23 @@
 		C75C9744220E212F00420DF6 /* bricks_height.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bricks_height.png; sourceTree = "<group>"; };
 		C75CCAF122ACF2E20092B72C /* EquirectangularCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquirectangularCube.h; sourceTree = "<group>"; };
 		C75CCAF222ACF2E30092B72C /* EquirectangularCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EquirectangularCube.cpp; sourceTree = "<group>"; };
+		C7681A1A22D7DBFA00F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A1C22D7DC9D00F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A1E22D7DD0900F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A2022D7DD1A00F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A2222D7DD2800F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A2422D7DD5D00F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A2622D7DD6E00F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A2822D7DD7D00F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A2A22D7DD8A00F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A2C22D7DD9800F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A2E22D7DDA600F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A3022D7DDB700F1254E /* ambient.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ambient.jpg; sourceTree = "<group>"; };
+		C7681A3222D7DDC400F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A3422D7DDD100F1254E /* ambient.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ambient.jpg; sourceTree = "<group>"; };
+		C7681A3822D7DEC700F1254E /* specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = specular.png; sourceTree = "<group>"; };
+		C7681A3922D7DEC700F1254E /* ambient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ambient.png; sourceTree = "<group>"; };
+		C7681A3A22D7DEC800F1254E /* diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diffuse.png; sourceTree = "<group>"; };
 		C76DAFF922187727005C354C /* lensTexture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lensTexture.jpg; sourceTree = "<group>"; };
 		C76DAFFA22187727005C354C /* lensColor.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lensColor.jpg; sourceTree = "<group>"; };
 		C76DAFFE22189C50005C354C /* lensDirt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lensDirt.jpg; sourceTree = "<group>"; };
@@ -1025,20 +1045,6 @@
 			path = deserthighway;
 			sourceTree = "<group>";
 		};
-		C72D784922D1E46900819D56 /* blackmarble */ = {
-			isa = PBXGroup;
-			children = (
-				C72D784A22D1E46900819D56 /* albedo.png */,
-				C72D784B22D1E46900819D56 /* diffuse.png */,
-				C72D784C22D1E46900819D56 /* metallic.png */,
-				C72D784D22D1E46900819D56 /* specular.png */,
-				C72D784E22D1E46900819D56 /* normal.png */,
-				C72D784F22D1E46900819D56 /* ao.png */,
-				C72D785022D1E46900819D56 /* roughness.png */,
-			);
-			path = blackmarble;
-			sourceTree = "<group>";
-		};
 		C73D516322D262B2007893B6 /* teapot */ = {
 			isa = PBXGroup;
 			children = (
@@ -1143,6 +1149,7 @@
 		C773F3F622D08AB600382078 /* metal */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A2E22D7DDA600F1254E /* ambient.png */,
 				C773F40322D08B0000382078 /* ao.png */,
 				C773F3F722D08AB600382078 /* albedo.png */,
 				C773F3F822D08AB600382078 /* diffuse.png */,
@@ -1158,7 +1165,6 @@
 			isa = PBXGroup;
 			children = (
 				C7DD1B0722CC06A000752153 /* aluminum */,
-				C72D784922D1E46900819D56 /* blackmarble */,
 				C7DD1B0022CC06A000752153 /* cavefloor */,
 				C7DD1B3422CC06A100752153 /* copper */,
 				C7DD1AE922CC069F00752153 /* gold */,
@@ -1716,6 +1722,7 @@
 		C7DD1AE922CC069F00752153 /* gold */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A1A22D7DBFA00F1254E /* ambient.png */,
 				C7DD1AEA22CC069F00752153 /* albedo.png */,
 				C7DD1AEB22CC069F00752153 /* diffuse.png */,
 				C7DD1AEC22CC069F00752153 /* metallic.png */,
@@ -1730,6 +1737,9 @@
 		C7DD1AF422CC069F00752153 /* woodframe */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A3922D7DEC700F1254E /* ambient.png */,
+				C7681A3A22D7DEC800F1254E /* diffuse.png */,
+				C7681A3822D7DEC700F1254E /* specular.png */,
 				C7DD1AF522CC069F00752153 /* metal.png */,
 				C7DD1AF622CC069F00752153 /* albedo.png */,
 				C7DD1AF722CC069F00752153 /* normal.png */,
@@ -1742,6 +1752,7 @@
 		C7DD1AFA22CC06A000752153 /* grass */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A2422D7DD5D00F1254E /* ambient.png */,
 				C72D785922D1ECDD00819D56 /* diffuse.png */,
 				C72D785822D1ECDD00819D56 /* specular.png */,
 				C7DD1AFB22CC06A000752153 /* albedo.png */,
@@ -1756,6 +1767,7 @@
 		C7DD1B0022CC06A000752153 /* cavefloor */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A1E22D7DD0900F1254E /* ambient.png */,
 				C7DD1B0122CC06A000752153 /* metal.png */,
 				C7DD1B0222CC06A000752153 /* albedo.png */,
 				C7DD1B0322CC06A000752153 /* normal.png */,
@@ -1769,6 +1781,7 @@
 		C7DD1B0722CC06A000752153 /* aluminum */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A1C22D7DC9D00F1254E /* ambient.png */,
 				C7DD1B0822CC06A000752153 /* albedo.png */,
 				C7DD1B0922CC06A000752153 /* diffuse.png */,
 				C7DD1B0A22CC06A000752153 /* metallic.png */,
@@ -1783,6 +1796,7 @@
 		C7DD1B0F22CC06A000752153 /* plastic */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A3222D7DDC400F1254E /* ambient.png */,
 				C7DD1B1022CC06A000752153 /* albedo.png */,
 				C7DD1B1122CC06A000752153 /* diffuse.png */,
 				C7DD1B1222CC06A000752153 /* metallic.png */,
@@ -1797,6 +1811,7 @@
 		C7DD1B1722CC06A000752153 /* haystack */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A2822D7DD7D00F1254E /* ambient.png */,
 				C7DD1B1822CC06A000752153 /* albedo.png */,
 				C7DD1B1922CC06A000752153 /* metallic.png */,
 				C7DD1B1A22CC06A000752153 /* normal.png */,
@@ -1810,6 +1825,7 @@
 		C7DD1B1E22CC06A100752153 /* harshbricks */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A2622D7DD6E00F1254E /* ambient.png */,
 				C7DD1B1F22CC06A100752153 /* albedo.png */,
 				C7DD1B2022CC06A100752153 /* diffuse.png */,
 				C7DD1B2122CC06A100752153 /* metallic.png */,
@@ -1825,6 +1841,7 @@
 		C7DD1B2722CC06A100752153 /* iron */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A2A22D7DD8A00F1254E /* ambient.png */,
 				C72D784622D1D73F00819D56 /* diffuse.png */,
 				C72D784522D1D73F00819D56 /* specular.png */,
 				C773F3EC22D08AA100382078 /* albedo.png */,
@@ -1839,6 +1856,7 @@
 		C7DD1B3422CC06A100752153 /* copper */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A2022D7DD1A00F1254E /* ambient.png */,
 				C7DD1B3622CC06A100752153 /* albedo.png */,
 				C7DD1B3722CC06A100752153 /* diffuse.png */,
 				C7DD1B3822CC06A100752153 /* metallic.png */,
@@ -1853,6 +1871,7 @@
 		C7DD1B3D22CC06A100752153 /* rustedmetal */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A3422D7DDD100F1254E /* ambient.jpg */,
 				C7DD1B3E22CC06A100752153 /* albedo.jpg */,
 				C7DD1B3F22CC06A100752153 /* diffuse.jpg */,
 				C7DD1B4022CC06A100752153 /* metallic.jpg */,
@@ -1868,6 +1887,7 @@
 		C7DD1B4622CC06A100752153 /* granite */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A2222D7DD2800F1254E /* ambient.png */,
 				C7DD1B4722CC06A100752153 /* granitesmooth-albedo3.png */,
 				C7DD1B4822CC06A100752153 /* granitesmooth-albedo2.png */,
 				C7DD1B4922CC06A100752153 /* albedo.png */,
@@ -1884,6 +1904,7 @@
 		C7DD1B5022CC06A100752153 /* metalpainted */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A3022D7DDB700F1254E /* ambient.jpg */,
 				C7DD1B5122CC06A100752153 /* albedo.jpg */,
 				C7DD1B5222CC06A100752153 /* diffuse.jpg */,
 				C7DD1B5322CC06A100752153 /* metallic.jpg */,
@@ -1899,6 +1920,7 @@
 		C7DD1B5922CC06A200752153 /* marble */ = {
 			isa = PBXGroup;
 			children = (
+				C7681A2C22D7DD9800F1254E /* ambient.png */,
 				C7DD1B5A22CC06A200752153 /* albedo.png */,
 				C7DD1B5B22CC06A200752153 /* diffuse.png */,
 				C7DD1B5C22CC06A200752153 /* metallic.png */,
@@ -2033,7 +2055,6 @@
 				C7CEE2F02212435600895F5D /* KernelBlurShader.frag in Resources */,
 				C7DD1BA822CC06A200752153 /* ao.png in Resources */,
 				C72D785B22D1ECDD00819D56 /* diffuse.png in Resources */,
-				C72D785222D1E46A00819D56 /* diffuse.png in Resources */,
 				C779E17922159F5300AF11E9 /* DepthMappingShader.vert in Resources */,
 				C77FC08322C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.vert in Resources */,
 				C7EED10E221105360079F5C0 /* WireFrameShader.frag in Resources */,
@@ -2048,6 +2069,7 @@
 				C7DD1B7122CC06A200752153 /* metallic.png in Resources */,
 				C7403B6A22D0D831009EB7A0 /* SilhouetteShader.geom in Resources */,
 				C785F99622134CAE00F1F8FD /* FishEyeLensShader.frag in Resources */,
+				C7681A2D22D7DD9800F1254E /* ambient.png in Resources */,
 				C7DD1B8422CC06A200752153 /* metallic.png in Resources */,
 				C785F9642212DA7E00F1F8FD /* ToonifyShader.vert in Resources */,
 				C7DD1B7922CC06A200752153 /* ao.png in Resources */,
@@ -2058,6 +2080,7 @@
 				C7DD1BC722CC06A200752153 /* normal.png in Resources */,
 				C7090CE9223676FD006FE002 /* DistortedTVShader.frag in Resources */,
 				C7C8F4A921FFC6F200AB865A /* HudShader.vert in Resources */,
+				C7681A3C22D7DEC800F1254E /* ambient.png in Resources */,
 				C7EED106221105360079F5C0 /* ExplosionShader.frag in Resources */,
 				C7EEC51022136AF700909E4C /* BlurShader.frag in Resources */,
 				C785F94A2212D2BD00F1F8FD /* ScreenWaveShader.frag in Resources */,
@@ -2076,7 +2099,6 @@
 				C785F99422134CAE00F1F8FD /* FishEyeLensShader.vert in Resources */,
 				C7090CC8223659C2006FE002 /* BayerMatrixDitheringShader.vert in Resources */,
 				C773F3F322D08AA200382078 /* metallic.png in Resources */,
-				C72D785422D1E46A00819D56 /* specular.png in Resources */,
 				C7090CDD223671A8006FE002 /* RetroParallaxShader.vert in Resources */,
 				C7DD1BA322CC06A200752153 /* albedo.png in Resources */,
 				C773F3D922D07CC500382078 /* bump.jpg in Resources */,
@@ -2086,7 +2108,6 @@
 				C755BCB622B6D84A0074F8A5 /* _dn.jpg in Resources */,
 				C7DE39E5221E25D600595556 /* snow.png in Resources */,
 				C7DD1B9522CC06A200752153 /* ao.png in Resources */,
-				C72D785322D1E46A00819D56 /* metallic.png in Resources */,
 				C7C8F4AC21FFC92900AB865A /* SkyBoxShader.frag in Resources */,
 				C7DE39E8221E25D600595556 /* heightmap4.bmp in Resources */,
 				C7DD1BAD22CC06A200752153 /* specular.jpg in Resources */,
@@ -2114,17 +2135,19 @@
 				C7DD1B6B22CC06A200752153 /* metal.png in Resources */,
 				C71AEB8322D09558000D0E93 /* steel_plate_bump.png in Resources */,
 				C71AEB8022D09558000D0E93 /* diamond_plate_bump.png in Resources */,
-				C72D785122D1E46A00819D56 /* albedo.png in Resources */,
 				C785F9782212DA7E00F1F8FD /* FrostedGlassShader.vert in Resources */,
 				C7EED10D221105360079F5C0 /* ExplosionShader.vert in Resources */,
+				C7681A1B22D7DBFA00F1254E /* ambient.png in Resources */,
 				C7B70506221C1106002F5732 /* FastApproximateAntiAliasingShader.vert in Resources */,
 				C73D517E22D262B4007893B6 /* metallic.png in Resources */,
 				C755BCCA22B6E0BE0074F8A5 /* caveroom.hdr in Resources */,
+				C7681A2922D7DD7E00F1254E /* ambient.png in Resources */,
 				C718544C22ABBD3300E54C30 /* Road_to_MonumentValley.ibl in Resources */,
 				C7090CC02235E666006FE002 /* HeartBlendShader.frag in Resources */,
 				C7090CE8223676FD006FE002 /* DistortedTVShader.vert in Resources */,
 				C73D518022D262B4007893B6 /* normal.png in Resources */,
 				C73D517A22D262B4007893B6 /* utah-teapot.mtl in Resources */,
+				C7681A3122D7DDB800F1254E /* ambient.jpg in Resources */,
 				C7EDB0D922064BCE007C7D3A /* LampShader.vert in Resources */,
 				C785F99B22134CAE00F1F8FD /* MultiScreenFishEyeShader.frag in Resources */,
 				C7DD1B9422CC06A200752153 /* height.png in Resources */,
@@ -2148,25 +2171,28 @@
 				C7DE39F9221F2D0700595556 /* ScreenSpaceAmbientOcclusionLightingShader.frag in Resources */,
 				C75C9720220DD69F00420DF6 /* EnvironmentMappingShader.frag in Resources */,
 				C7EEC50722136AF700909E4C /* LensFlareGhostShader.frag in Resources */,
+				C7681A3D22D7DEC800F1254E /* diffuse.png in Resources */,
 				C7EEC51222136AF700909E4C /* LensFlareGhostShader.vert in Resources */,
 				C7DD1B7422CC06A200752153 /* roughness.png in Resources */,
 				C7DD1B8822CC06A200752153 /* roughness.png in Resources */,
 				C7DD1BA622CC06A200752153 /* specular.png in Resources */,
 				C773F3E322D0833800382078 /* red_brick_normal.png in Resources */,
+				C7681A2122D7DD1A00F1254E /* ambient.png in Resources */,
 				C7403B6922D0D831009EB7A0 /* SilhouetteShader.frag in Resources */,
+				C7681A3522D7DDD100F1254E /* ambient.jpg in Resources */,
 				C7DD1BB422CC06A200752153 /* albedo.png in Resources */,
 				C7DE39E4221E25D600595556 /* heightmap1.jpg in Resources */,
 				C7DD1B6D22CC06A200752153 /* normal.png in Resources */,
 				C7090CD922366F95006FE002 /* ScaryRetroParallaxShader.vert in Resources */,
 				C779E17822159F5300AF11E9 /* DepthMappingShader.frag in Resources */,
 				C785F9662212DA7E00F1F8FD /* NightVisionLensShader.vert in Resources */,
+				C7681A1F22D7DD0900F1254E /* ambient.png in Resources */,
 				C7DD1B7522CC06A200752153 /* metal.png in Resources */,
 				C7DE39E1221E25D600595556 /* normal.png in Resources */,
 				C773F3D222D0056900382078 /* moss.png in Resources */,
 				C755BCB722B6D84A0074F8A5 /* _rt.jpg in Resources */,
 				C7090CD52236686F006FE002 /* MoneyFilterShader.frag in Resources */,
 				C7EDB0DA22064BCE007C7D3A /* LightShader.frag in Resources */,
-				C72D785622D1E46A00819D56 /* ao.png in Resources */,
 				C755BCCC22B6E0BE0074F8A5 /* _dn.jpg in Resources */,
 				C7DD1BB622CC06A200752153 /* metallic.png in Resources */,
 				C7DD1BA922CC06A200752153 /* roughness.png in Resources */,
@@ -2223,6 +2249,7 @@
 				C7090CDC223671A8006FE002 /* RetroParallaxShader.frag in Resources */,
 				C785F99722134CAE00F1F8FD /* MultiScreenFishEyeShader.vert in Resources */,
 				C785F9762212DA7E00F1F8FD /* ShockwaveShader.vert in Resources */,
+				C7681A3B22D7DEC800F1254E /* specular.png in Resources */,
 				C7DD1BC022CC06A200752153 /* height.jpg in Resources */,
 				C7DD1B6F22CC06A200752153 /* ao.png in Resources */,
 				C7DE39E2221E25D600595556 /* heightmap3.jpg in Resources */,
@@ -2278,12 +2305,12 @@
 				C7090CE022367404006FE002 /* PixelateShader.frag in Resources */,
 				C7988C9C22C7322200E16EE3 /* woodenBoxDiffuse.png in Resources */,
 				C773F3E922D0833800382078 /* red_orange_glazed_bump.png in Resources */,
-				C72D785722D1E46A00819D56 /* roughness.png in Resources */,
 				C7DD1BBD22CC06A200752153 /* metallic.jpg in Resources */,
 				C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */,
 				C7EEC50522136AF700909E4C /* BrightPartsShader.vert in Resources */,
 				C77FC08422C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.frag in Resources */,
 				C7EEC51122136AF700909E4C /* GaussianBlurShader.vert in Resources */,
+				C7681A2722D7DD6F00F1254E /* ambient.png in Resources */,
 				C773F3F522D08AA200382078 /* normal.png in Resources */,
 				C785F99822134CAE00F1F8FD /* BarrelDistortionPixelShader.frag in Resources */,
 				C7090CB92235E38E006FE002 /* CubicLensDistortionShader.frag in Resources */,
@@ -2292,6 +2319,7 @@
 				C773F3F422D08AA200382078 /* ao.png in Resources */,
 				C755BCCB22B6E0BE0074F8A5 /* _ft.jpg in Resources */,
 				C785F99522134CAE00F1F8FD /* FishEyeShader.frag in Resources */,
+				C7681A2322D7DD2800F1254E /* ambient.png in Resources */,
 				C71AEB7E22D09558000D0E93 /* round_mesh_bump.png in Resources */,
 				C773F40422D08B0000382078 /* ao.png in Resources */,
 				C7DE38FC221C843D00595556 /* FireBallShader.frag in Resources */,
@@ -2330,7 +2358,9 @@
 				C7090CB52235DE7D006FE002 /* CelShaderishShader.vert in Resources */,
 				C7090CB82235E38E006FE002 /* CubicLensDistortionShader.vert in Resources */,
 				C7D4D80622B66B7D00A251BC /* SkyBoxIrradianceShader.vert in Resources */,
+				C7681A2522D7DD5D00F1254E /* ambient.png in Resources */,
 				C76DAFFF22189C51005C354C /* lensDirt.jpg in Resources */,
+				C7681A2F22D7DDA600F1254E /* ambient.png in Resources */,
 				C755BCC722B6E0BE0074F8A5 /* Mt-Washington-Cave-Room_Env.hdr in Resources */,
 				C7090CD1223665B1006FE002 /* MicroprismMosaicShader.vert in Resources */,
 				C785F9702212DA7E00F1F8FD /* PredatorsThermalVisionShader.frag in Resources */,
@@ -2359,12 +2389,12 @@
 				C773F3D722D07CC500382078 /* normal.jpg in Resources */,
 				C755BCCE22B6E0BE0074F8A5 /* _bk.jpg in Resources */,
 				C7DD1BAF22CC06A200752153 /* height.jpg in Resources */,
+				C7681A3322D7DDC400F1254E /* ambient.png in Resources */,
 				C7090CC42235E727006FE002 /* JuliaFreakShader.frag in Resources */,
 				C7DD1B6722CC06A200752153 /* ao.png in Resources */,
 				C785F9772212DA7E00F1F8FD /* DreamVisionShader.frag in Resources */,
 				C72D785A22D1ECDD00819D56 /* specular.png in Resources */,
 				C70A1F94220EEED100170280 /* ChromaticAberrationShader.vert in Resources */,
-				C72D785522D1E46A00819D56 /* normal.png in Resources */,
 				C7DD1B8522CC06A200752153 /* specular.png in Resources */,
 				C785F99C22134CAE00F1F8FD /* BarrelDistortionPixelShader.vert in Resources */,
 				C7C8F4A821FFC6ED00AB865A /* HudShader.frag in Resources */,
@@ -2372,6 +2402,8 @@
 				C785F9812212E74000F1F8FD /* perlin_noise_texture.png in Resources */,
 				C773F3D822D07CC500382078 /* diffuse.jpg in Resources */,
 				C773F3FD22D08AB600382078 /* albedo.png in Resources */,
+				C7681A1D22D7DC9E00F1254E /* ambient.png in Resources */,
+				C7681A2B22D7DD8B00F1254E /* ambient.png in Resources */,
 				C71AEB8622D09558000D0E93 /* diamond_plate_diffuse.png in Resources */,
 				C7EED11222111ECC0079F5C0 /* clean-gray-paper.png in Resources */,
 				C773F3E422D0833800382078 /* red_orange_glazed_normal.png in Resources */,

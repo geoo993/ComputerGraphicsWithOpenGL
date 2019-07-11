@@ -95,6 +95,7 @@ struct IShaders {
 struct IShaderUniform {
     GLboolean m_useRefraction;
     GLfloat m_parallaxHeightScale, m_uvTiling, m_magnitude;
+    virtual void SetTerrainUniform(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) = 0;
     virtual void SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) = 0;
     virtual void SetParallaxMapUniform(CShaderProgram *pShaderProgram, const GLfloat &heightScale) = 0;
     virtual void SetBumpMapUniform(CShaderProgram *pShaderProgram, const GLfloat &uvTiling) = 0;
@@ -231,7 +232,7 @@ struct IRenderObject
     virtual void RenderSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderEnvSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void ResetSkyBox(CShaderProgram *pShaderProgram) = 0;
-    virtual void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) = 0;
+    virtual void RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useHeightMap) = 0;
     virtual void RenderCube(CShaderProgram *pShaderProgram, CCube *cube, const glm::vec3 & position,
                              const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderSphere(CShaderProgram *pShaderProgram, CSphere *sphere, const glm::vec3 & position,

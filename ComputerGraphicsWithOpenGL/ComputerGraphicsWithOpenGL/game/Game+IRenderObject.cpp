@@ -67,14 +67,9 @@ void Game::RenderEnvSkyBox(CShaderProgram *pShaderProgram) {
     glDepthFunc(GL_LESS); // set depth function back to default
 }
 
-void Game::RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) {
+void Game::RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useHeightMap) {
     
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bUseHeightMap", useHeightMap);
-    pShaderProgram->SetUniform("fMinHeight", m_heightMapMinHeight);
-    pShaderProgram->SetUniform("fMaxHeight", m_heightMapMaxHeight);
-    
-    // Set the projection matrix
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
@@ -82,7 +77,7 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHei
     
     if (useHeightMap == true) {
         // Render the height map terrain
-        m_pHeightmapTerrain->Transform(glm::vec3(0.0f));
+        m_pHeightmapTerrain->Transform(position, rotation, glm::vec3(scale));
         glm::mat4 model = m_pHeightmapTerrain->Model();
         pShaderProgram->SetUniform("matrices.modelMatrix", model);
         pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
@@ -91,7 +86,8 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHei
         // Render the planar terrain
         glEnable (GL_BLEND);
         glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        m_pPlanarTerrain->Transform(glm::vec3(0.0f));
+        m_pPlanarTerrain->Transform(position, rotation, glm::vec3(scale));
+        
         glm::mat4 terrainModel = m_pPlanarTerrain->Model();
         pShaderProgram->SetUniform("matrices.modelMatrix", terrainModel);
         pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(terrainModel));

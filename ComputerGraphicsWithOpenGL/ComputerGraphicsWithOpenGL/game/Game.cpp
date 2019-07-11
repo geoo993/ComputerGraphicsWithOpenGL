@@ -159,6 +159,18 @@ Game::Game()
     //models
     m_teapot1 = nullptr;
     m_teapot2 = nullptr;
+    m_teapot3 = nullptr;
+    m_teapot4 = nullptr;
+    m_teapot5 = nullptr;
+    m_teapot6 = nullptr;
+    m_teapot7 = nullptr;
+    m_teapot8 = nullptr;
+    m_teapot10 = nullptr;
+    m_teapot15 = nullptr;
+    m_teapot16 = nullptr;
+    m_teapot17 = nullptr;
+    m_teapot19 = nullptr;
+    
     m_vehicle = nullptr;
     
     //sphere object
@@ -184,17 +196,6 @@ Game::Game()
     m_pSpherePBR19 = nullptr;
     
     //cube object
-    m_pCube1 = nullptr;
-    m_pCube2 = nullptr;
-    m_pCube3 = nullptr;
-    m_pCube4 = nullptr;
-    m_pCube5 = nullptr;
-    m_pCube6 = nullptr;
-    m_pCube7 = nullptr;
-    m_pCube8 = nullptr;
-    m_pCube9 = nullptr;
-    m_pCube10 = nullptr;
-    m_pCube11 = nullptr;
     m_pCube12 = nullptr;
     m_pCube13 = nullptr;
     m_pCube14 = nullptr;
@@ -237,6 +238,19 @@ Game::~Game()
     delete m_pHeightmapTerrain;
     delete m_teapot1;
     delete m_teapot2;
+    delete m_teapot3;
+    delete m_teapot4;
+    delete m_teapot5;
+    delete m_teapot6;
+    delete m_teapot7;
+    delete m_teapot8;
+    delete m_teapot9;
+    delete m_teapot10;
+    delete m_teapot15;
+    delete m_teapot16;
+    delete m_teapot17;
+    delete m_teapot19;
+    
     delete m_vehicle;
     delete m_pSpherePBR1;
     delete m_pSpherePBR2;
@@ -258,17 +272,6 @@ Game::~Game()
     delete m_pSpherePBR18;
     delete m_pSpherePBR19;
     
-    delete m_pCube1;
-    delete m_pCube2;
-    delete m_pCube3;
-    delete m_pCube4;
-    delete m_pCube5;
-    delete m_pCube6;
-    delete m_pCube7;
-    delete m_pCube8;
-    delete m_pCube9;
-    delete m_pCube10;
-    delete m_pCube11;
     delete m_pCube12;
     delete m_pCube13;
     delete m_pCube14;
@@ -325,7 +328,7 @@ void Game::Render()
     m_gameWindow->ClearBuffers(true);
     
     RenderScene();
-     
+    
     ResetFrameBuffer();
     
     // Post Processing Effects

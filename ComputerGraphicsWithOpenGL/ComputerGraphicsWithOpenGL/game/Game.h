@@ -69,6 +69,18 @@ private:
     //models
     CModel * m_teapot1;
     CModel * m_teapot2;
+    CModel * m_teapot3;
+    CModel * m_teapot4;
+    CModel * m_teapot5;
+    CModel * m_teapot6;
+    CModel * m_teapot7;
+    CModel * m_teapot8;
+    CModel * m_teapot9;
+    CModel * m_teapot10;
+    CModel * m_teapot15;
+    CModel * m_teapot16;
+    CModel * m_teapot17;
+    CModel * m_teapot19;
     CModel * m_vehicle;
     
     //sphere objects
@@ -94,17 +106,6 @@ private:
     CSphere *m_pSpherePBR19;
     
     //cube objects
-    CCube * m_pCube1;
-    CCube * m_pCube2;
-    CCube * m_pCube3;
-    CCube * m_pCube4;
-    CCube * m_pCube5;
-    CCube * m_pCube6;
-    CCube * m_pCube7;
-    CCube * m_pCube8;
-    CCube * m_pCube9;
-    CCube * m_pCube10;
-    CCube * m_pCube11;
     CCube * m_pCube12;
     CCube * m_pCube13;
     CCube * m_pCube14;
@@ -175,6 +176,7 @@ protected:
     void LoadShaderPrograms(const std::string &path) override;
     
     /// Shader uniform
+    void SetTerrainUniform(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) override;
     void SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) override;
     void SetParallaxMapUniform(CShaderProgram *pShaderProgram, const GLfloat &heightScale) override;
     void SetBumpMapUniform(CShaderProgram *pShaderProgram, const GLfloat &uvTiling) override;
@@ -272,7 +274,7 @@ protected:
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderEnvSkyBox(CShaderProgram *pShaderProgram) override;
     void ResetSkyBox(CShaderProgram *pShaderProgram) override;
-    void RenderTerrain(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) override;
+    void RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useHeightMap) override;
     void RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale);
     void RenderCube(CShaderProgram *pShaderProgram, CCube *cube, const glm::vec3 & position,
                     const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture = true) override;

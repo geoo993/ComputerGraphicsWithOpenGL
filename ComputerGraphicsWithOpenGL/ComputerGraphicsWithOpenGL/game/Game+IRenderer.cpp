@@ -13,15 +13,53 @@ void Game::RenderScene(const GLboolean &toLightSpace){
     const GLboolean useAO = m_currentPPFXMode == PostProcessingEffectMode::SSAO;
     const GLfloat zfront = -200.0f;
     const GLfloat zback = 300.0f;
-    
     m_sphereRotation += m_deltaTime * 0.02f;
-    
-    CShaderProgram *pShaderProgram;
-    
+
     GLboolean isPBR =
     m_currentPPFXMode == PostProcessingEffectMode::PBR
     || m_currentPPFXMode == PostProcessingEffectMode::IBL;
 
+    /// Skybox
+    {
+        // reset cubmap
+        GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
+        m_pEnvSkybox->BindEnvSkyboxTo(cubemapTextureUnit);
+        
+        CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
+        SetMaterialUniform(pSkyBoxProgram, "material");
+        SetFogMaterialUniform(pSkyBoxProgram, "fog", m_fogColor, m_useFog);
+        
+        if (m_currentPPFXMode == PostProcessingEffectMode::IBL) {
+            SetHRDLightUniform(pSkyBoxProgram, "hrdlight", m_exposure, m_gama, m_HDR);
+            RenderEnvSkyBox(pSkyBoxProgram);
+        } else {
+            RenderSkyBox(pSkyBoxProgram);
+        }
+    }
+    
+    /*
+    /// Terrain
+    {
+        GLboolean useHeightMap = false;
+        CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 2];
+        SetMaterialUniform(pTerrainProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetTerrainUniform(pTerrainProgram, useHeightMap);
+        RenderTerrain(pTerrainProgram, glm::vec3(0.0f, -400.0f, 0), glm::vec3(0.0f), 1.0f, useHeightMap);
+    }
+    */
+    
+    /// Render Lamps
+    {
+        CShaderProgram *pLampProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 4];
+        for (auto it = m_pointLights.begin(); it != m_pointLights.end(); ++it) {
+            glm::vec3 position = std::get<0>(*it);
+            glm::vec4 color = std::get<1>(*it);
+            SetMaterialUniform(pLampProgram, "material", color, m_materialShininess, useAO);
+            RenderLamp(pLampProgram, position, 10.0f);
+        }
+    }
+    
+    CShaderProgram *pShaderProgram;
     if (isPBR) {
         ///  Physically Based Rendering
         pShaderProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 3];
@@ -53,44 +91,47 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, useAO);
         SetPBRMaterialUniform(pShaderProgram, "material", m_albedo, m_metallic, m_roughness, m_ao, m_useIrradiance);
         SetFogMaterialUniform(pShaderProgram, "fog", m_fogColor, m_useFog);
+        
         // Render Lights
         RenderLight(pShaderProgram, m_pCamera);
         
-        //RenderTerrain(pShaderProgram, false, m_materialUseTexture);
     }
+    
+    RenderTerrain(pShaderProgram, glm::vec3(0.0f, -400.0f, 0), glm::vec3(0.0f), 1.0f, false);
     
     // 1 - 10
     RenderSphere(pShaderProgram, m_pSpherePBR1, glm::vec3(50.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube1, glm::vec3(50.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+    RenderModel(pShaderProgram, m_teapot1, glm::vec3(50.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     
     RenderSphere(pShaderProgram, m_pSpherePBR2, glm::vec3(-50.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube2, glm::vec3(-50.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+    RenderModel(pShaderProgram, m_teapot2, glm::vec3(-50.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     
     RenderSphere(pShaderProgram, m_pSpherePBR3, glm::vec3(150.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube3, glm::vec3(150.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+    RenderModel(pShaderProgram, m_teapot3, glm::vec3(150.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     
     RenderSphere(pShaderProgram, m_pSpherePBR4, glm::vec3(-150.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube4, glm::vec3(-150.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+    RenderModel(pShaderProgram, m_teapot4, glm::vec3(-150.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     
     RenderSphere(pShaderProgram, m_pSpherePBR5, glm::vec3(250.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube5, glm::vec3(250.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+    RenderModel(pShaderProgram, m_teapot5, glm::vec3(250.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     
     RenderSphere(pShaderProgram, m_pSpherePBR6, glm::vec3(-250.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube6, glm::vec3(-250.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+    RenderModel(pShaderProgram, m_teapot6, glm::vec3(-250.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     
     RenderSphere(pShaderProgram, m_pSpherePBR7, glm::vec3(350.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube7, glm::vec3(350.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+    RenderModel(pShaderProgram, m_teapot7, glm::vec3(350.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     
     RenderSphere(pShaderProgram, m_pSpherePBR8, glm::vec3(-350.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube8, glm::vec3(-350.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+    RenderModel(pShaderProgram, m_teapot8, glm::vec3(-350.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     
     RenderSphere(pShaderProgram, m_pSpherePBR9, glm::vec3(450.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube9, glm::vec3(450.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+    RenderModel(pShaderProgram, m_teapot9, glm::vec3(450.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     
     RenderSphere(pShaderProgram, m_pSpherePBR10, glm::vec3(-450.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderCube(pShaderProgram, m_pCube10, glm::vec3(-450.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
-
-    RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, -50.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f), 0.5f);
+    RenderModel(pShaderProgram, m_teapot10, glm::vec3(-450.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    
+    
+    //RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, -50.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f), 0.5f);
     
     /// Bump Mapping
     {
@@ -171,7 +212,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         
         // 15
         RenderSphere(pDiscardProgram, m_pSpherePBR15, glm::vec3(750.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        RenderModel(pDiscardProgram, m_teapot2, glm::vec3(750.0f, 0.0f, zback), glm::vec3(0.0f), 2.0f);
+        RenderModel(pDiscardProgram, m_teapot15, glm::vec3(750.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
         
         // Add Discard Lights
         glDisable (GL_BLEND);
@@ -189,7 +230,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         
         // 16
         RenderSphere(pToonProgram, m_pSpherePBR16, glm::vec3(-750.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        RenderModel(pToonProgram, m_teapot1, glm::vec3(-750.0f, 0.0f, zback), glm::vec3(0.0f), 2.0f);
+        RenderModel(pToonProgram, m_teapot16, glm::vec3(-750.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     }
     
     /// Porcupine Rendering
@@ -199,7 +240,7 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         SetPorcupineRenderingUniform(pPorcupineRenderingProgram, glm::vec3(1.0f, 1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), m_magnitude);
         // 17
         RenderSphere(pPorcupineRenderingProgram, m_pSpherePBR17, glm::vec3(850.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f, false);
-        RenderModel(pPorcupineRenderingProgram, m_teapot1, glm::vec3(850.0f, 0.0f, zback), glm::vec3(0.0f), 2.0f);
+        RenderModel(pPorcupineRenderingProgram, m_teapot17, glm::vec3(850.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
         
     }
     
@@ -227,35 +268,9 @@ void Game::RenderScene(const GLboolean &toLightSpace){
         
         // 19
         RenderSphere(pWireframeProgram, m_pSpherePBR19, glm::vec3(950.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        RenderModel(pWireframeProgram, m_teapot1, glm::vec3(950.0f, 0.0f, zback), glm::vec3(0.0f), 2.0f);
+        RenderModel(pWireframeProgram, m_teapot19, glm::vec3(950.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
         
     }
     
-    /// Skybox
-    {
-        // reset cubmap
-        GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
-        m_pEnvSkybox->BindEnvSkyboxTo(cubemapTextureUnit);
-        
-        CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 1];
-        SetMaterialUniform(pSkyBoxProgram, "material");
-        SetFogMaterialUniform(pSkyBoxProgram, "fog", m_fogColor, m_useFog);
-        
-        if (m_currentPPFXMode == PostProcessingEffectMode::IBL) {
-            SetHRDLightUniform(pSkyBoxProgram, "hrdlight", m_exposure, m_gama, m_HDR);
-            RenderEnvSkyBox(pSkyBoxProgram);
-        } else {
-            RenderSkyBox(pSkyBoxProgram);
-        }
-    }
-    
-    /// Render Lamps
-    CShaderProgram *pLampProgram = (*m_pShaderPrograms)[toLightSpace ? lightSpaceIndex : 4];
-    for (auto it = m_pointLights.begin(); it != m_pointLights.end(); ++it) {
-        glm::vec3 position = std::get<0>(*it);
-        glm::vec4 color = std::get<1>(*it);
-        SetMaterialUniform(pLampProgram, "material", color, m_materialShininess, useAO);
-        RenderLamp(pLampProgram, position, 10.0f);
-    }
-    
+  
 }

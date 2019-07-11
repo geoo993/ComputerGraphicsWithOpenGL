@@ -28,7 +28,7 @@ void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string 
     pShaderProgram->SetUniform(uniformName+".maskMap", 13);             // mask map
     pShaderProgram->SetUniform(uniformName+".lensMap", 14);             // lens map
     pShaderProgram->SetUniform(uniformName+".albedoMap", 15);           // albedo map
-    pShaderProgram->SetUniform(uniformName+".metalnessMap", 16);        // metallic map
+    pShaderProgram->SetUniform(uniformName+".metallicMap", 16);        // metallic map
     pShaderProgram->SetUniform(uniformName+".roughnessMap", 17);        // roughness, smoothness map
     pShaderProgram->SetUniform(uniformName+".cubeMap", 18);             // sky box cube map
     pShaderProgram->SetUniform(uniformName+".irradianceMap", 19);       // sky box irradiance cube map

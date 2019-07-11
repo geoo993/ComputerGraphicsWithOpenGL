@@ -9,29 +9,23 @@
  
  */
 
-// Structure holding material information:  its ambient, diffuse, specular, etc...
+// Structure holding PBR material information:  its albedo, metallic, roughness, etc...
 uniform struct Material
 {
     sampler2D ambientMap;           // 0.   ambient map (albedo map)
     sampler2D diffuseMap;           // 1.   diffuse map (metallic map)
     sampler2D specularMap;          // 2.   specular map (roughness map)
     sampler2D normalMap;            // 3.   normal map
-    sampler2D heightMap;            // 4.   height map
-    sampler2D emissionMap;          // 5.   emission map
-    sampler2D displacementMap;      // 6.   displacment map
+    sampler2D albedoMap;            // 15.  albedo map
+    sampler2D metallicMap;          // 16.  metalness map
+    sampler2D roughnessMap;         // 17.  roughness map
     sampler2D aoMap;                // 7.   ambient oclusion map
-    sampler2D glossinessMap;        // 8.   glossiness map
-    sampler2D opacityMap;           // 9.   opacity map
-    sampler2D reflectionMap;        // 10.  reflection map
-    sampler2D depthMap;             // 11.  depth map
-    sampler2D noiseMap;             // 12.  noise map
-    sampler2D maskMap;              // 13.  mask map
-    sampler2D lensMap;              // 14.  lens map
-    samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
+    samplerCube cubeMap;            // 18.  sky box cube map
     vec4 color;
     float shininess;
     bool bUseAO;
     bool bUseTexture;
+    bool bUseColor;
 } material;
 
 uniform float fMinHeight, fMaxHeight;
@@ -61,37 +55,26 @@ layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
-    
     // Get the texel colour from the texture sampler
     vec4 vTexColour0 = texture(material.ambientMap, fs_in.vTexCoord);
     vec4 vTexColour1 = texture(material.normalMap, fs_in.vTexCoord);
     vec4 vTexColour2 = texture(material.diffuseMap, fs_in.vTexCoord);
     vec4 vTexColour3 = texture(material.specularMap, fs_in.vTexCoord);
-    
-    vec4 vTexColour;
 
     if (bUseHeightMap == true){
 
         float f = clamp(3.0f * (fs_in.vLocalPosition.y - fMinHeight) / (fMaxHeight - fMinHeight), 0.0f, 3.0f);
 
         if (f < 1.0f){
-            vTexColour = mix(vTexColour0, vTexColour1, f);
-        }else if (f < 2.0f){
-            vTexColour = mix(vTexColour1, vTexColour2, f - 1.0f);
-        }else{
-            vTexColour = mix(vTexColour2, vTexColour3, f - 2.0f);
+            vOutputColour = mix(vTexColour0, vTexColour1, f);
+        } else if (f < 2.0f){
+            vOutputColour = mix(vTexColour1, vTexColour2, f - 1.0f);
+        } else {
+            vOutputColour = mix(vTexColour2, vTexColour3, f - 2.0f);
         }
-        vOutputColour = vTexColour;
-    } else {
-
-        vTexColour = vTexColour2;
         
-        if (material.bUseTexture) {
-            vOutputColour = vTexColour;
-        }else{
-            vec3 vColour = normalize(fs_in.vWorldNormal);
-            vOutputColour = vec4(vColour, 1.0f);
-        }
+    } else {
+        vOutputColour = material.bUseTexture ? vTexColour2 : material.color;
     }
     
     // Retrieve bright parts
@@ -101,7 +84,7 @@ void main()
     } else {
         vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     }
-    
+
     // store the fragment position vector in the first gbuffer texture
     vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
     // also store the per-fragment normals into the gbuffer
@@ -110,5 +93,4 @@ void main()
     vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, fs_in.vTexCoord).rgb;
     // store specular intensity in gAlbedoSpec's alpha component
     vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, fs_in.vTexCoord).r;
-    
 }

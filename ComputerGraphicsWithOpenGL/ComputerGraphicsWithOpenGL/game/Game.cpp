@@ -427,16 +427,10 @@ void Game::Render()
     // bind framebuffer
     BindPPFXFBO( m_currentPPFXMode );
     
-    switch (m_currentPPFXMode) {
-        case PostProcessingEffectMode::DepthTesting:
-            m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
-            RenderScene(true, true, 83);
-            break;
-        default:
-            m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
-            RenderScene();
-            break;
-    }
+    // Clear screen
+    m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
+    
+    RenderScene();
     
     // set viewport and clear buffers
     ResetFrameBuffer();

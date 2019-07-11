@@ -1,5 +1,6 @@
 #version 400 core
 // https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/5.1.framebuffers/framebuffers.cpp
+// https://hackernoon.com/converting-shaders-from-shadertoy-to-threejs-fe17480ed5c6
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -37,11 +38,11 @@ in VS_OUT
 uniform int mouseDown;
 uniform vec2 mouse;
 uniform float time;
-uniform float channelTime = 1.0f;   // Time for channel (if video or sound), in seconds
-uniform vec4 date;          // (year, month, day, time in seconds)
-uniform float width;   // width of the current render target
-uniform float height;  // height of the current render target
-uniform float coverage;        // between (0.0f and 1.0f)
+uniform float channelTime = 1.0f;       // Time for channel (if video or sound), in seconds
+uniform vec4 date;                      // (year, month, day, time in seconds)
+uniform float width;                    // width of the current render target
+uniform float height;                   // height of the current render target
+uniform float coverage = 1.0f;          // between (0.0f and 1.0f)
 
 out vec4 vOutputColour;        // The output colour formely  gl_FragColor
 
@@ -54,6 +55,22 @@ void main()
     vec2 fragCoordViewportCoordinates = fragCoord * 0.5f + 0.5f;
     vec2 resolution = vec2(width, height);// width and height of the screen
     vec2 uv = fs_in.vTexCoord.xy;
-    vec4 vTexColour = texture(material.ambientMap, fs_in.vTexCoord);
-    vOutputColour = vTexColour;
+    vec4 tc = material.color;
+    
+    if (uv.x < (  coverage  ) )
+    {
+        tc = texture(material.diffuseMap, uv);
+    }
+    else if ( uv.x  >=  (  coverage  +   0.003f) )
+    {
+        tc = texture(material.ambientMap, uv);
+    }
+    else {
+        
+        if ( coverage > ( 1.0f + 0.003f) ) {
+            tc = texture(material.ambientMap, uv);
+        }
+    }
+    
+    vOutputColour = tc;
 }

@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::IBL;
+    m_currentPPFXMode = PostProcessingEffectMode::DepthMapping;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -104,16 +104,22 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
     
     switch(mode) {
         case PostProcessingEffectMode::PBR: {
+            currentFBO = m_pFBOs[0];
+            currentFBO->BindTexture(static_cast<GLint>(TextureType::DIFFUSE)); // bind to diffuse texture as well
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
             return;
         }
         case PostProcessingEffectMode::IBL: {
+            currentFBO = m_pFBOs[0];
+            currentFBO->BindTexture(static_cast<GLint>(TextureType::DIFFUSE)); // bind to diffuse texture as well
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
             return;
         }
         case PostProcessingEffectMode::BlinnPhong: {
+            currentFBO = m_pFBOs[0];
+            currentFBO->BindTexture(static_cast<GLint>(TextureType::DIFFUSE)); // bind to diffuse texture as well
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
             return;
@@ -564,8 +570,29 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::DepthTesting: {
-            CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
-            RenderToScreen(pImageProcessingProgram);
+            
+            // Second Pass
+            {
+                currentFBO = m_pFBOs[4];
+                currentFBO->Bind(true); // prepare another framebuffer
+                
+                m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
+                RenderScene(true, true, 83);
+            }
+            
+            ResetFrameBuffer();
+           
+            // Third Pass - Render to quad
+            {
+                // bind depth texture
+                currentFBO = m_pFBOs[4];
+                currentFBO->BindTexture(static_cast<GLint>(TextureType::DIFFUSE)); // bind to diffuse texture
+                
+                currentFBO = m_pFBOs[0]; // scene texture
+                CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+                RenderToScreen(pImageProcessingProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
+            }
+            
             return;
         }
         case PostProcessingEffectMode::DepthMapping: {

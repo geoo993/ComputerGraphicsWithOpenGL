@@ -96,13 +96,14 @@ End with an example of getting some data out of the system or using it for a lit
 * Blur
 * Radial Blur
 * Motion Blur
-* Depth Mapping
 * Vignetting
 * Bright Parts
 * Bloom
 * Lens Flare
-* Deferred Rendering
 * Screen Space Ambient Occlusion
+* Depth Mapping
+* Shadow Mapping
+* Deferred Rendering
 * Rain Drops
 * Palette Quantization And Dithering
 * Distorted TV

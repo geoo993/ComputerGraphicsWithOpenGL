@@ -362,31 +362,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             }
             return;
         }
-        case PostProcessingEffectMode::DepthMapping: {
-            
-            // Second Pass - Render Scene as usual
-            {
-                currentFBO = m_pFBOs[3];
-                currentFBO->Bind(true); // prepare depth frame buffer (3)
-                RenderScene(true);
-            }
-            
-            ResetFrameBuffer();
-            
-            // Third Pass - DepthMapping
-            {
-                CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[50];
-                SetDepthMappingUniform(pDepthMappingProgram);
-                
-                // bind depth texture
-                currentFBO = m_pFBOs[3];
-                currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
-                
-                currentFBO = m_pFBOs[0];
-                RenderToScreen(pDepthMappingProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
-            }
-            return;
-        }
         case PostProcessingEffectMode::Vignetting: {
             CShaderProgram *pVignettingProgram = (*m_pShaderPrograms)[45];
             SetVignettingUniform(pVignettingProgram);
@@ -524,10 +499,105 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             }
             return;
         }
+        case PostProcessingEffectMode::SSAO: {
+            /*
+             In reality, light scatters in all kinds of directions with varying intensities so the indirectly lit parts of a scene should also have varying intensities, instead of a constant ambient component. One type of indirect lighting approximation is called ambient occlusion that tries to approximate indirect lighting by darkening creases, holes and surfaces that are close to each other. These areas are largely occluded by surrounding geometry and thus light rays have less places to escape, hence the areas appear darker.
+             */
+            // Second Pass - Screen Space Ambient Occlusion
+            {
+                
+                currentFBO = m_pFBOs[5];
+                currentFBO->Bind(true);     // prepare frame buffer 5
+                
+                CShaderProgram *pScreenSpaceAmbientOcclusionProgram= (*m_pShaderPrograms)[56];
+                SetScreenSpaceAmbientOcclusionUniform(pScreenSpaceAmbientOcclusionProgram);
+                
+                // Bind Textures
+                currentFBO = m_pFBOs[1];
+                currentFBO->BindPositionTexture(static_cast<GLint>(TextureType::DISPLACEMENT));
+                currentFBO->BindNormalTexture(static_cast<GLint>(TextureType::NORMAL));
+                currentFBO->BindAlbedoTexture(static_cast<GLint>(TextureType::DIFFUSE));
+                
+                RenderToScreen(pScreenSpaceAmbientOcclusionProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT);
+                
+            }
+            
+            ResetFrameBuffer();
+            
+            // Third Pass - Screen Space Ambient Occlusion Blur
+            {
+                currentFBO = m_pFBOs[6];
+                currentFBO->Bind(true);     // prepare frame buffer 5
+                
+                CShaderProgram *pScreenSpaceAmbientOcclusionBlurProgram= (*m_pShaderPrograms)[57];
+                SetScreenSpaceAmbientOcclusionBlurUniform(pScreenSpaceAmbientOcclusionBlurProgram);
+                
+                currentFBO = m_pFBOs[5];
+                RenderToScreen(pScreenSpaceAmbientOcclusionBlurProgram, FrameBufferType::SSAO, 0, TextureType::AO);
+            }
+            
+            ResetFrameBuffer();
+            
+            // Fourth Pass - Screen Space Ambient Occlusion Lighting
+            {
+                CShaderProgram *pScreenSpaceAmbientOcclusionLightingProgram= (*m_pShaderPrograms)[58];
+                SetMaterialUniform(pScreenSpaceAmbientOcclusionLightingProgram, "material", m_materialColor, m_materialShininess, true);
+                SetScreenSpaceAmbientOcclusionLightingUniform(pScreenSpaceAmbientOcclusionLightingProgram);
+                
+                // Render Lighting Scene
+                SetCameraUniform(pScreenSpaceAmbientOcclusionLightingProgram, "camera", m_pCamera);
+                SetLightUniform(pScreenSpaceAmbientOcclusionLightingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+                
+                // Add Default Lights
+                RenderLight(pScreenSpaceAmbientOcclusionLightingProgram, m_pCamera);
+                
+                currentFBO = m_pFBOs[5];
+                currentFBO->BindTexture(static_cast<GLint>(TextureType::AO));
+                
+                currentFBO = m_pFBOs[1];
+                currentFBO->BindPositionTexture(static_cast<GLint>(TextureType::DISPLACEMENT));
+                currentFBO->BindNormalTexture(static_cast<GLint>(TextureType::NORMAL));
+                currentFBO->BindAlbedoTexture(static_cast<GLint>(TextureType::DIFFUSE));
+                RenderToScreen(pScreenSpaceAmbientOcclusionLightingProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT);
+            }
+            
+            return;
+        }
         case PostProcessingEffectMode::FXAA: {
             CShaderProgram *pFastApproximateAntiAliasingProgram = (*m_pShaderPrograms)[53];
             SetFastApproximateAntiAliasingUniform(pFastApproximateAntiAliasingProgram);
             RenderToScreen(pFastApproximateAntiAliasingProgram);
+            return;
+        }
+        case PostProcessingEffectMode::DepthMapping: {
+            
+            // Second Pass - Render Scene as usual
+            {
+                currentFBO = m_pFBOs[3];
+                currentFBO->Bind(true); // prepare depth frame buffer (3)
+                RenderScene(true);
+            }
+            
+            ResetFrameBuffer();
+            
+            // Third Pass - DepthMapping
+            {
+                CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[50];
+                SetDepthMappingUniform(pDepthMappingProgram);
+                
+                // bind depth texture
+                currentFBO = m_pFBOs[3];
+                currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
+                
+                currentFBO = m_pFBOs[0];
+                RenderToScreen(pDepthMappingProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
+            }
+            return;
+        }
+        case PostProcessingEffectMode::ShadowMapping: {
+            CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+            RenderToScreen(pImageProcessingProgram);
+            
             return;
         }
         case PostProcessingEffectMode::DeferredRendering: {
@@ -567,70 +637,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                     SetMaterialUniform(pLampProgram, "material", color);
                     RenderLamp(pLampProgram, position, 10.0f);
                 }
-            }
-            
-            return;
-        }
-        case PostProcessingEffectMode::SSAO: {
-            /*
-             In reality, light scatters in all kinds of directions with varying intensities so the indirectly lit parts of a scene should also have varying intensities, instead of a constant ambient component. One type of indirect lighting approximation is called ambient occlusion that tries to approximate indirect lighting by darkening creases, holes and surfaces that are close to each other. These areas are largely occluded by surrounding geometry and thus light rays have less places to escape, hence the areas appear darker.
-             */
-            // Second Pass - Screen Space Ambient Occlusion
-            {
-                
-                currentFBO = m_pFBOs[5];
-                currentFBO->Bind(true);     // prepare frame buffer 5
-                
-                CShaderProgram *pScreenSpaceAmbientOcclusionProgram= (*m_pShaderPrograms)[56];
-                SetScreenSpaceAmbientOcclusionUniform(pScreenSpaceAmbientOcclusionProgram);
-                
-                // Bind Textures
-                currentFBO = m_pFBOs[1];
-                currentFBO->BindPositionTexture(static_cast<GLint>(TextureType::DISPLACEMENT));
-                currentFBO->BindNormalTexture(static_cast<GLint>(TextureType::NORMAL));
-                currentFBO->BindAlbedoTexture(static_cast<GLint>(TextureType::DIFFUSE));
-            
-                RenderToScreen(pScreenSpaceAmbientOcclusionProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT);
-                
-            }
-            
-            ResetFrameBuffer();
-            
-            // Third Pass - Screen Space Ambient Occlusion Blur
-            {
-                currentFBO = m_pFBOs[6];
-                currentFBO->Bind(true);     // prepare frame buffer 5
-                
-                CShaderProgram *pScreenSpaceAmbientOcclusionBlurProgram= (*m_pShaderPrograms)[57];
-                SetScreenSpaceAmbientOcclusionBlurUniform(pScreenSpaceAmbientOcclusionBlurProgram);
-        
-                currentFBO = m_pFBOs[5];
-                RenderToScreen(pScreenSpaceAmbientOcclusionBlurProgram, FrameBufferType::SSAO, 0, TextureType::AO);
-            }
-            
-            ResetFrameBuffer();
-            
-            // Fourth Pass - Screen Space Ambient Occlusion Lighting
-            {
-                CShaderProgram *pScreenSpaceAmbientOcclusionLightingProgram= (*m_pShaderPrograms)[58];
-                SetMaterialUniform(pScreenSpaceAmbientOcclusionLightingProgram, "material", m_materialColor, m_materialShininess, true);
-                SetScreenSpaceAmbientOcclusionLightingUniform(pScreenSpaceAmbientOcclusionLightingProgram);
-                
-                // Render Lighting Scene
-                SetCameraUniform(pScreenSpaceAmbientOcclusionLightingProgram, "camera", m_pCamera);
-                SetLightUniform(pScreenSpaceAmbientOcclusionLightingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-                
-                // Add Default Lights
-                RenderLight(pScreenSpaceAmbientOcclusionLightingProgram, m_pCamera);
-                
-                currentFBO = m_pFBOs[5];
-                currentFBO->BindTexture(static_cast<GLint>(TextureType::AO));
-                
-                currentFBO = m_pFBOs[1];
-                currentFBO->BindPositionTexture(static_cast<GLint>(TextureType::DISPLACEMENT));
-                currentFBO->BindNormalTexture(static_cast<GLint>(TextureType::NORMAL));
-                currentFBO->BindAlbedoTexture(static_cast<GLint>(TextureType::DIFFUSE));
-                RenderToScreen(pScreenSpaceAmbientOcclusionLightingProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT);
             }
             
             return;
@@ -870,9 +876,6 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::MotionBlur:
             RenderPPFXScene(PostProcessingEffectMode::MotionBlur);
             break;
-        case PostProcessingEffectMode::DepthMapping:
-            RenderPPFXScene(PostProcessingEffectMode::DepthMapping);
-            break;
         case PostProcessingEffectMode::Vignetting:
             RenderPPFXScene(PostProcessingEffectMode::Vignetting);
             break;
@@ -888,14 +891,20 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::LensFlare:
             RenderPPFXScene(PostProcessingEffectMode::LensFlare);
             break;
+        case PostProcessingEffectMode::SSAO:
+            RenderPPFXScene(PostProcessingEffectMode::SSAO);
+            break;
         case PostProcessingEffectMode::FXAA:
             RenderPPFXScene(PostProcessingEffectMode::FXAA);
             break;
+        case PostProcessingEffectMode::DepthMapping:
+            RenderPPFXScene(PostProcessingEffectMode::DepthMapping);
+            break;
+        case PostProcessingEffectMode::ShadowMapping:
+            RenderPPFXScene(PostProcessingEffectMode::ShadowMapping);
+            break;
         case PostProcessingEffectMode::DeferredRendering:
             RenderPPFXScene(PostProcessingEffectMode::DeferredRendering);
-            break;
-        case PostProcessingEffectMode::SSAO:
-            RenderPPFXScene(PostProcessingEffectMode::SSAO);
             break;
         case PostProcessingEffectMode::RainDrops:
             RenderPPFXScene(PostProcessingEffectMode::RainDrops);
@@ -1015,8 +1024,6 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         return "Radial Blur";
         case PostProcessingEffectMode::MotionBlur:
         return "Motion Blur";
-        case PostProcessingEffectMode::DepthMapping:
-            return "Depth Mapping";
         case PostProcessingEffectMode::Vignetting:
             return "Vignetting";
         case PostProcessingEffectMode::BrightParts:
@@ -1027,12 +1034,16 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
             return "HDR Tone Mapping";
         case PostProcessingEffectMode::LensFlare:
             return "Lens Flare";
-        case PostProcessingEffectMode::FXAA:
-            return "Fast Approximate Anti-Aliasing (FXAA)";
-        case PostProcessingEffectMode::DeferredRendering:
-            return "Deferred Rendering";
         case PostProcessingEffectMode::SSAO:
             return "Screen Space Ambient Occlusion";
+        case PostProcessingEffectMode::FXAA:
+            return "Fast Approximate Anti-Aliasing (FXAA)";
+        case PostProcessingEffectMode::DepthMapping:
+            return "Depth Mapping";
+        case PostProcessingEffectMode::ShadowMapping:
+            return "Shadow Mapping";
+        case PostProcessingEffectMode::DeferredRendering:
+            return "Deferred Rendering";
         case PostProcessingEffectMode::RainDrops:
             return "Rain Drops";
         case PostProcessingEffectMode::PaletteQuantizationAndDithering:

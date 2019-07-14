@@ -16,11 +16,11 @@ uniform struct Material
     sampler2D diffuseMap;           // 1.   diffuse map (metallic map)
     sampler2D specularMap;          // 2.   specular map (roughness map)
     sampler2D normalMap;            // 3.   normal map
+    sampler2D heightMap;            // 4.   height map
+    sampler2D aoMap;                // 7.   ambient oclusion map
     sampler2D albedoMap;            // 15.  albedo map
     sampler2D metallicMap;          // 16.  metalness map
     sampler2D roughnessMap;         // 17.  roughness map
-    sampler2D aoMap;                // 7.   ambient oclusion map
-    samplerCube cubeMap;            // 18.  sky box cube map
     vec4 color;
     float shininess;
     bool bUseAO;
@@ -60,7 +60,7 @@ void main()
     vec4 vTexColour1 = texture(material.normalMap, fs_in.vTexCoord);
     vec4 vTexColour2 = texture(material.diffuseMap, fs_in.vTexCoord);
     vec4 vTexColour3 = texture(material.specularMap, fs_in.vTexCoord);
-
+    
     if (bUseHeightMap == true){
 
         float f = clamp(3.0f * (fs_in.vLocalPosition.y - fMinHeight) / (fMaxHeight - fMinHeight), 0.0f, 3.0f);
@@ -76,7 +76,6 @@ void main()
     } else {
         vOutputColour = material.bUseTexture ? vTexColour2 : material.color;
     }
-    
     // Retrieve bright parts
     float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
     if(brightness > 1.0f) {

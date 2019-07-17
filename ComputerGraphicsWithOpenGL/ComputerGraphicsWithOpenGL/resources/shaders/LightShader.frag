@@ -11,6 +11,8 @@ uniform struct Camera
 {
     vec3 position;
     vec3 front;
+    float znear;
+    float zfar;
     bool isMoving;
 } camera;
 
@@ -185,7 +187,7 @@ layout (location = 4) out vec4 vAlbedoSpec;
 
 void main() {
     
-    vec3 normal = material.bUseTexture ? texture(material.normalMap, fs_in.vTexCoord).rgb : normalize(fs_in.vWorldNormal);
+    vec3 normal = normalize(fs_in.vWorldNormal);
     vec3 worldPos = fs_in.vWorldPosition;
     vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     
@@ -209,6 +211,7 @@ void main() {
         result += spotL;
     }
     
+    /*
     // FOG
     vec3 fogColor = result.xyz;
     if (fog.bUseFog) {
@@ -236,8 +239,7 @@ void main() {
 //        hdrColor = pow(hdrColor, vec3(1.0f / hrdlight.gamma));
 //    }
     result = vec4(hdrColor, result.w);
-    
-    
+     */
     
     vOutputColour = result;
     

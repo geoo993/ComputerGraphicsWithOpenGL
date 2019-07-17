@@ -326,10 +326,15 @@ void CGameWindow::PreRendering(){
     
     //https://learnopengl.com/#!Advanced-OpenGL/Depth-testing
     // Depth testing is done in screen space after the fragment shader has run (and after stencil testing has run). The screen space coordinates relate directly to the viewport defined by OpenGL's glViewport function and can be accessed via GLSL's built-in gl_FragCoord variable in the fragment shader. The x and y components of gl_FragCoord represent the fragment's screen-space coordinates (with (0,0) being the bottom-left corner). The gl_FragCoord also contains a z-component which contains the actual depth value of the fragment. This z value is the value that is compared to the depth buffer's content.
+    // Depth testing is disabled by default so to enable depth testing we need to enable it with the GL_DEPTH_TEST option:
     glEnable(GL_DEPTH_TEST); // enable depth-testing, only draw fragments with a depth value of 1.
     //GL_DEPTH_TEST is to be enabled to avoid ugly artifacts that depend on the angle of view and drawing order (otherwise ie. if back of the cube is drawn last, if will appear "above" the front of the cube).
     //So yes, both GL_CULL_FACE and GL_DEPTH_TEST should be enabled.
     
+    //OpenGL allows us to disable writing to the depth buffer by setting its depth mask to GL_FALSE: glDepthMask(GL_FALSE).
+    // Note that this only has effect if depth testing is enabled.
+    glDepthMask(GL_FALSE);
+        
     //OpenGL allows us to modify the comparison operators it uses for the depth test. This allows us to control when OpenGL should pass or discard fragments and when to update the depth buffer. We can set the comparison operator (or depth function) by calling glDepthFunc:
     
     /*

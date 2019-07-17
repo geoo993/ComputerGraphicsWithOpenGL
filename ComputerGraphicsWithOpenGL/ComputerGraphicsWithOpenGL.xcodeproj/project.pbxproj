@@ -84,6 +84,8 @@
 		C72D784822D1D73F00819D56 /* diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D784622D1D73F00819D56 /* diffuse.png */; };
 		C72D785A22D1ECDD00819D56 /* specular.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D785822D1ECDD00819D56 /* specular.png */; };
 		C72D785B22D1ECDD00819D56 /* diffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = C72D785922D1ECDD00819D56 /* diffuse.png */; };
+		C72DE90522DFCC3000981AED /* DepthTestingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C72DE90322DFCC2F00981AED /* DepthTestingShader.frag */; };
+		C72DE90622DFCC3000981AED /* DepthTestingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C72DE90422DFCC2F00981AED /* DepthTestingShader.vert */; };
 		C7332977221775D400BFE37B /* ToneMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7332975221775D300BFE37B /* ToneMappingShader.vert */; };
 		C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7332976221775D400BFE37B /* ToneMappingShader.frag */; };
 		C73D517922D262B4007893B6 /* utah-teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = C73D516422D262B2007893B6 /* utah-teapot.obj */; };
@@ -580,6 +582,8 @@
 		C72D784622D1D73F00819D56 /* diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diffuse.png; sourceTree = "<group>"; };
 		C72D785822D1ECDD00819D56 /* specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = specular.png; sourceTree = "<group>"; };
 		C72D785922D1ECDD00819D56 /* diffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diffuse.png; sourceTree = "<group>"; };
+		C72DE90322DFCC2F00981AED /* DepthTestingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DepthTestingShader.frag; sourceTree = "<group>"; };
+		C72DE90422DFCC2F00981AED /* DepthTestingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DepthTestingShader.vert; sourceTree = "<group>"; };
 		C7332975221775D300BFE37B /* ToneMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.vert; sourceTree = "<group>"; };
 		C7332976221775D400BFE37B /* ToneMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ToneMappingShader.frag; sourceTree = "<group>"; };
 		C73D516422D262B2007893B6 /* utah-teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "utah-teapot.obj"; sourceTree = "<group>"; };
@@ -1304,10 +1308,10 @@
 				C7B932E621FE8E4A00979C04 /* Game.h */,
 				C713795422032FCB00E9A0F2 /* Game+IAudio.cpp */,
 				C71379562203356000E9A0F2 /* Game+ICamera.cpp */,
+				C7C8F32621FF9A5C00AB865A /* Game+IControls.cpp */,
 				C713795A22033DE100E9A0F2 /* Game+IGameTimer.cpp */,
 				C774664522161EF90099F081 /* Game+IGameWindow.cpp */,
 				C7C8F32A21FFA48900AB865A /* Game+IHUD.cpp */,
-				C7C8F32621FF9A5C00AB865A /* Game+IControls.cpp */,
 				C7EDB0D322064878007C7D3A /* Game+ILights.cpp */,
 				C7EDB0DD22066DE4007C7D3A /* Game+IMaterials.cpp */,
 				C713795222032B2400E9A0F2 /* Game+IPostProcessing.cpp */,
@@ -1376,6 +1380,8 @@
 				C7DE38FF221CCD1A00595556 /* DeferredRenderingShader.vert */,
 				C779E17622159F5100AF11E9 /* DepthMappingShader.frag */,
 				C779E17722159F5200AF11E9 /* DepthMappingShader.vert */,
+				C72DE90322DFCC2F00981AED /* DepthTestingShader.frag */,
+				C72DE90422DFCC2F00981AED /* DepthTestingShader.vert */,
 				C78AAF6D22CAB4E9008BC2B6 /* DiscardShader.frag */,
 				C78AAF6E22CAB4E9008BC2B6 /* DiscardShader.vert */,
 				C7090CE7223676FC006FE002 /* DistortedTVShader.frag */,
@@ -2152,6 +2158,7 @@
 				C785F99B22134CAE00F1F8FD /* MultiScreenFishEyeShader.frag in Resources */,
 				C7DD1B9422CC06A200752153 /* height.png in Resources */,
 				C785F94B2212D2BD00F1F8FD /* ScreenWaveShader.vert in Resources */,
+				C72DE90622DFCC3000981AED /* DepthTestingShader.vert in Resources */,
 				C75C9745220E212F00420DF6 /* bricks_bump.jpg in Resources */,
 				C7DD1BC922CC06A200752153 /* roughness.png in Resources */,
 				C773F3E622D0833800382078 /* red_brick_bump.png in Resources */,
@@ -2281,6 +2288,7 @@
 				C7DE39E9221E25D600595556 /* sand.png in Resources */,
 				C7090CAC2235CBF5006FE002 /* RainDropsShader.frag in Resources */,
 				C7C8F43321FFBA0400AB865A /* Kai_Engel_-_08_-_Oecumene_Sleeps.mp3 in Resources */,
+				C72DE90522DFCC3000981AED /* DepthTestingShader.frag in Resources */,
 				C7EEC50622136AF700909E4C /* RadialBlurShader.vert in Resources */,
 				C7EEC50D22136AF700909E4C /* VignettingShader.vert in Resources */,
 				C7DD1B7622CC06A200752153 /* albedo.png in Resources */,

@@ -27,6 +27,8 @@ void Game::SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &u
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName+".position", camera->GetPosition());
     pShaderProgram->SetUniform(uniformName+".front", camera->GetForward());
+    pShaderProgram->SetUniform(uniformName+".znear", camera->GetNearPlane());
+    pShaderProgram->SetUniform(uniformName+".zfar", camera->GetFarPlane());
     pShaderProgram->SetUniform(uniformName+".isMoving", camera->IsMoving());
 }
 

@@ -7,6 +7,8 @@ uniform struct Camera
 {
     vec3 position;
     vec3 front;
+    float znear;
+    float zfar;
     bool isMoving;
 } camera;
 

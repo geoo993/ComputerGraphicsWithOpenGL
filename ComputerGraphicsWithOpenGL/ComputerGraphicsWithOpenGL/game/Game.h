@@ -113,6 +113,10 @@ private:
     // lamp
     CCube *m_pLamp;
     
+    // woodenBox
+    CCube *m_pWoodenBox;
+    std::vector<glm::vec3> m_woodenBoxesPosition;
+    
     //torus object
     CTorus * m_pTorus;
     
@@ -266,7 +270,7 @@ protected:
     void PreRendering() override;
     void Render() override;
     void PostRendering() override;
-    void RenderScene(const GLboolean &toLightSpace = false) override;
+    void RenderScene(const GLboolean &toCustomShader = false, const GLint &toCustomShaderIndex = 4) override;
     
     /// Render object
     void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),

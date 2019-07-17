@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::BlinnPhong;
+    m_currentPPFXMode = PostProcessingEffectMode::ShadowMapping;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -111,7 +111,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
         case PostProcessingEffectMode::PBR: {
             CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
             RenderToScreen(pImageProcessingProgram);
-            
             return;
         }
         case PostProcessingEffectMode::IBL: {
@@ -342,7 +341,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             {
                 currentFBO = m_pFBOs[3];
                 currentFBO->Bind(true); // prepare depth frame buffer (3)
-                RenderScene(true);
+                RenderScene(true, 51);
             }
             
             ResetFrameBuffer();
@@ -569,13 +568,18 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             RenderToScreen(pFastApproximateAntiAliasingProgram);
             return;
         }
+        case PostProcessingEffectMode::DepthTesting: {
+            CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+            RenderToScreen(pImageProcessingProgram);
+            return;
+        }
         case PostProcessingEffectMode::DepthMapping: {
             
             // Second Pass - Render Scene as usual
             {
                 currentFBO = m_pFBOs[3];
                 currentFBO->Bind(true); // prepare depth frame buffer (3)
-                RenderScene(true);
+                RenderScene(true, 51);
             }
             
             ResetFrameBuffer();
@@ -897,6 +901,9 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::FXAA:
             RenderPPFXScene(PostProcessingEffectMode::FXAA);
             break;
+        case PostProcessingEffectMode::DepthTesting:
+            RenderPPFXScene(PostProcessingEffectMode::DepthTesting);
+            break;
         case PostProcessingEffectMode::DepthMapping:
             RenderPPFXScene(PostProcessingEffectMode::DepthMapping);
             break;
@@ -1038,6 +1045,8 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
             return "Screen Space Ambient Occlusion";
         case PostProcessingEffectMode::FXAA:
             return "Fast Approximate Anti-Aliasing (FXAA)";
+        case PostProcessingEffectMode::DepthTesting:
+            return "Depth Testing";
         case PostProcessingEffectMode::DepthMapping:
             return "Depth Mapping";
         case PostProcessingEffectMode::ShadowMapping:

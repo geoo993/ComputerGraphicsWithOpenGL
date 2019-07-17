@@ -200,6 +200,19 @@ Game::Game()
     m_pCube13 = nullptr;
     m_pCube14 = nullptr;
 
+    // woodenBox
+    m_pWoodenBox = nullptr;
+    m_woodenBoxesPosition = {
+        glm::vec3(  -186.0f,  193.0f,  -132.0f   ),
+        glm::vec3(  -135.7f,  150.2f,  -222.0f   ),
+        glm::vec3(  52.3f, 123.3f, -44.0f      ),
+        glm::vec3(  -24.0f,  152.0f, -112.0f    ),
+        glm::vec3(  220.0f,  220.0f, -133.0f    ),
+        glm::vec3(  -152.3f, 263.3f, -74.0f  ),
+        glm::vec3(  224.0f,  172.0f, 12.0f   ),
+        glm::vec3(  -220.0f,  210.0f, 133.0f  ),
+    };
+    
     //torus object
     m_pTorus = nullptr;
     
@@ -277,6 +290,7 @@ Game::~Game()
     delete m_pCube14;
     
     delete m_pLamp;
+    delete m_pWoodenBox;
     
     delete m_pTorus;
     delete m_pTorusKnot;
@@ -327,7 +341,14 @@ void Game::Render()
     // Clear buffers before rendering
     m_gameWindow->ClearBuffers(true);
     
-    RenderScene();
+    switch (m_currentPPFXMode) {
+        case PostProcessingEffectMode::DepthTesting:
+            RenderScene(true, 83);
+            break;
+        default:
+            RenderScene();
+            break;
+    }
     
     ResetFrameBuffer();
     

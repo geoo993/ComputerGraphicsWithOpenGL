@@ -183,6 +183,8 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("SilhouetteShader.vert");// 82
     sShaderFileNames.push_back("SilhouetteShader.geom");
     sShaderFileNames.push_back("SilhouetteShader.frag");
+    sShaderFileNames.push_back("DepthTestingShader.vert");// 83
+    sShaderFileNames.push_back("DepthTestingShader.frag");
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -867,6 +869,14 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pSilhouetteProgram->AddShaderToProgram(&shShaders[169]);
     pSilhouetteProgram->LinkProgram();
     m_pShaderPrograms->push_back(pSilhouetteProgram);
+    
+    // Depth Testing Shader
+    CShaderProgram *pDepthTestingProgram = new CShaderProgram;
+    pDepthTestingProgram->CreateProgram();
+    pDepthTestingProgram->AddShaderToProgram(&shShaders[170]);
+    pDepthTestingProgram->AddShaderToProgram(&shShaders[171]);
+    pDepthTestingProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pDepthTestingProgram);
     
 }
 

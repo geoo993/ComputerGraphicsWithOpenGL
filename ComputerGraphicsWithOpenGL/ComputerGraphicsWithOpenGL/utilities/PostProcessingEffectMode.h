@@ -54,6 +54,7 @@ enum class PostProcessingEffectMode {
     LensFlare,
     SSAO,
     FXAA,
+    DepthTesting,
     DepthMapping,
     ShadowMapping,
     DeferredRendering,

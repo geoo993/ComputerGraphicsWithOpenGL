@@ -66,6 +66,7 @@ void Game::InitialiseResources()
     m_pCube13 = new CCube(1.0f);
     m_pCube14 = new CCube(1.0f);
     
+    m_pWoodenBox = new CCube(1.0f);
     m_pLamp = new CCube(1.0f);
     
     m_pTorus = new CTorus;
@@ -101,6 +102,17 @@ void Game::LoadResources(const std::string &path)
                                 m_mapSize,
                                 200.0f);
     
+    m_pLamp->Create("", {} );
+    m_pWoodenBox->Create(path+"/textures/woodenBox/",
+                         {
+                             { "woodenBoxDiffuse.png", TextureType::DIFFUSE},       // diffuseMap
+                             { "woodenBoxSpecular.png", TextureType::SPECULAR},      // specularMap
+                             { "woodenBoxNormal.tga", TextureType::NORMAL},      // normalMap
+                             { "woodenBoxBump.png", TextureType::DISPLACEMENT},      // bump
+                         });
+
+    
+    /*
     // Texture downloaded from https://www.pinterest.co.uk/adigitaldreamer/free-pbr-materials/
     // https://www.textures.com/browse/pbr-materials/114558
     m_pSpherePBR1->Create(path+"/textures/pbr/gold/",
@@ -414,16 +426,7 @@ void Game::LoadResources(const std::string &path)
                              m_pMetaballs->SetGridSize(50);
                              CMarchingCubes::BuildTables();
                          }
-     
-    /*
-    m_pWoodenBox->Create(path+"/textures/woodenBox/",
-                         {
-                             { "woodenBoxDiffuse.png", TextureType::DIFFUSE},       // diffuseMap
-                             { "woodenBoxSpecular.png", TextureType::SPECULAR},      // specularMap
-                             { "woodenBoxNormal.tga", TextureType::NORMAL},      // normalMap
-                             { "woodenBoxBump.png", TextureType::DISPLACEMENT},      // bump
-                         });
-
+    
     m_pTorusKnot->Create(path+"/textures/metal/", {
         {"round_mesh_diffuse.png", TextureType::DIFFUSE},
         {"round_mesh_bump.png", TextureType::DISPLACEMENT},
@@ -442,9 +445,7 @@ void Game::LoadResources(const std::string &path)
                          7.0f,         // in: P parameter of the knot
                          -2.0f         // in: Q parameter of the knot
                          );
-   
-    */
-
+*/
     // font
     m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32, TextureType::DEPTH);
     
@@ -456,5 +457,5 @@ void Game::LoadResources(const std::string &path)
     
     
     // screens
-    m_pQuad->Create(path+"/textures/", { {"noise_texture_colored.png", TextureType::DIFFUSE}}, 1.0f, 1.0f);
+    m_pQuad->Create(path+"/textures/", { {"noise_texture_colored.png", TextureType::DIFFUSE }}, 1.0f, 1.0f);
 }

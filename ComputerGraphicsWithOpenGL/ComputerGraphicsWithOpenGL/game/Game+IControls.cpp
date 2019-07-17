@@ -50,7 +50,7 @@ void Game::LoadControls() {
     m_gameWindow->SetInputs(OnMouseEnter_callback, OnMouseMove_callback,
                             OnMouseDown_callback, OnMouseScroll_callback,
                             OnKeyDown_callback);
-    
+
     GUIBoxData *guiBox = new GUIBoxData();
     guiBox->x = 10;
     guiBox->y = 10;
@@ -594,6 +594,7 @@ void Game::LoadControls() {
     CSlider *ssaoNoise = (CSlider *)AddControl(new CSlider("Noise", 0.0f, 10.0f, 5, guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
     ssaoNoise->SetValue(&m_ssaoNoiseSize);
+    
 }
 
 void Game::RenderControls() {
@@ -743,8 +744,7 @@ static void OnMouseEnter_callback(GLFWwindow* window, int entered) {
 }
 
 // glfw: whenever a mouse button is pressed, this callback is called
-void OnMouseDown_callback(GLFWwindow* window, int button, int action, int mods){
- 
+void OnMouseDown_callback(GLFWwindow* window, int button, int action, int mods) {
     
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
         mState.m_leftButtonDown = ControlType::LEFTMOUSE;

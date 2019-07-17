@@ -222,7 +222,7 @@ struct IRenderer
     virtual void PreRendering() = 0;
     virtual void Render() = 0;
     virtual void PostRendering() = 0;
-    virtual void RenderScene(const GLboolean &toLightSpace) = 0;
+    virtual void RenderScene(const GLboolean &toCustomShader, const GLint &toCustomShaderIndex) = 0;
 };
 
 struct IRenderObject

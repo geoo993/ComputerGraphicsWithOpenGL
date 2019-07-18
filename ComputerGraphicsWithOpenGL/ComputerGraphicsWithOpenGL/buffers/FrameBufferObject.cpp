@@ -64,7 +64,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glBindTexture(GL_TEXTURE_2D, m_uiDepthTexture);
             
             //We give the texture a width and height of 1024: this is the resolution of the depth map.
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_iWidth, m_iHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
             
             glGenerateMipmap(GL_TEXTURE_2D);
             glGenSamplers(1, &m_uiSampler);

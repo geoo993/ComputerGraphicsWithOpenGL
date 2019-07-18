@@ -570,12 +570,12 @@ void CGameWindow::PostRendering()
     glfwPollEvents();
 }
 
-void CGameWindow::ClearBuffers(const GLboolean &stencil){
+void CGameWindow::ClearBuffers(const ClearBuffersType &bufferType){
 
-    // Clear the buffers and enable depth testing (z-buffering) or stencil testing
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     
-    if (stencil) {
+    switch (bufferType) {
+    case ClearBuffersType::COLORDEPTHSTENCIL:
         //// CLEAR Buffers, The default clear value for the depth is 1.0f, which is equal to the depth of your far clipping plane
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); ////<-- CLEAR WINDOW
         glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer
@@ -589,11 +589,18 @@ void CGameWindow::ClearBuffers(const GLboolean &stencil){
         // glStencilMask(0x00); // each bit ends up as 0 in the stencil buffer (disabling writes)
         // Most of the cases you'll just be writing 0x00 or 0xFF as the stencil mask, but it's good to know there are options to set custom bit-masks.
         glStencilMask(0x00);
-    } else {
+        break;
+    case ClearBuffersType::COLORDEPTH:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); ////<-- CLEAR WINDOW
         glClearDepth(1.0f); // same as glClear, we are simply specificaly clearing the depthbuffer
+        
+        glEnable(GL_DEPTH_TEST);
+        break;
+    case ClearBuffersType::DEPTH:
+        glClear(GL_DEPTH_BUFFER_BIT); ////<-- CLEAR WINDOW
+        glEnable(GL_DEPTH_TEST);
+        break;
     }
-    
 }
 
 //Swap front and back buffers

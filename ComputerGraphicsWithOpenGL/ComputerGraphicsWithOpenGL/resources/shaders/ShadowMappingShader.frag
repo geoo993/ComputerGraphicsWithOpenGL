@@ -5,6 +5,7 @@
 // https://stackoverflow.com/questions/26406120/viewing-depth-buffer-in-opengl
 // https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
 
+
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
 {

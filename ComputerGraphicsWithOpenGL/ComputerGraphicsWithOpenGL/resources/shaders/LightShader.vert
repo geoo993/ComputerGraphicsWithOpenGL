@@ -8,6 +8,8 @@ uniform struct Matrices
     mat4 viewMatrix;
     mat3 normalMatrix;
     
+    // we use a different projection and view matrix to render the scene from the light's point of view.
+    mat4 lightSpaceMatrix;
 } matrices;
 
 // Layout of vertex attributes in VBO
@@ -29,6 +31,7 @@ out VS_OUT
 } vs_out;
 
 uniform bool bReverseNormals;
+uniform bool bUseShadowMapping;
 
 // This is the entry point into the vertex shader
 void main() {

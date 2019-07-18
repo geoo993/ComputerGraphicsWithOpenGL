@@ -77,7 +77,7 @@ void Game::InitialiseResources()
 void Game::LoadResources(const std::string &path)
 {
     // Create the planar terrain
-    m_pPlanarTerrain->Create(path+"/textures/pbr/grass/", {
+    m_pPlanarTerrain->Create(path+"/textures/pbr/oakfloor/", {
         { "albedo.png", TextureType::ALBEDO },           // albedo map
         { "metallic.png",  TextureType::METALNESS },           // metallic map
         { "roughness.png",   TextureType::ROUGHNESS},         // roughness map

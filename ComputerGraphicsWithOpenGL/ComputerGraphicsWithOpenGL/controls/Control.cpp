@@ -98,7 +98,7 @@ PostProcessingEffectMode CControl::GetPostProcessingEffectMode() const {
 }
 
 void CControl::Clear() {
-    glDeleteVertexArrays(1, &m_vao);
+    //glDeleteVertexArrays(1, &m_vao);
     m_vbo.Release();
     m_isActive = false;
 }

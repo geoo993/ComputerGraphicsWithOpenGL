@@ -332,6 +332,9 @@ struct IPostProcessing {
     GLfloat m_ssaoBias, m_ssaoRadius, m_ssaoNoiseSize;
     GLboolean m_ssaoNoiseUseLight;
     
+    // Depth and Shadow Mapping
+    GLboolean m_useLinearizeDepth;
+    
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;
     virtual void BindPPFXFBO(const PostProcessingEffectMode &mode) = 0;

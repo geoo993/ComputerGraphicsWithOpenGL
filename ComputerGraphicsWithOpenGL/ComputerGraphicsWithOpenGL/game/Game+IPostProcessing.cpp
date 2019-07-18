@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::ShadowMapping;
+    m_currentPPFXMode = PostProcessingEffectMode::DepthMapping;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -94,10 +94,12 @@ void Game::BindPPFXFBO(const PostProcessingEffectMode &mode) {
             currentFBO = m_pFBOs[1];
             currentFBO->Bind(true);     // prepare frame buffer 1
             break;
-        case FrameBufferType::PingPongRendering:break;
         case FrameBufferType::DepthMapping:
-            currentFBO = m_pFBOs[3];
-            currentFBO->Bind(true);     // prepare frame buffer 3
+            //currentFBO = m_pFBOs[3];
+            //m_gameWindow->SetViewport(SHADOW_WIDTH, SHADOW_HEIGHT);
+            //currentFBO->Bind(false);     // prepare frame buffer 3
+            currentFBO = m_pFBOs[0];
+            currentFBO->Bind(true);
             break;
         default: break;
     }
@@ -575,10 +577,12 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
         }
         case PostProcessingEffectMode::DepthMapping: {
             
-            // Second Pass - Render Scene as usual
+            // Second Pass - Render Scene to light space
             {
                 currentFBO = m_pFBOs[3];
-                currentFBO->Bind(true); // prepare depth frame buffer (3)
+                currentFBO->Bind(false); // prepare depth frame buffer (3)
+                
+                m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
                 RenderScene(true, 51);
             }
             
@@ -587,6 +591,8 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             // Third Pass - DepthMapping
             {
                 CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[50];
+                SetCameraUniform(pDepthMappingProgram, "camera", m_pCamera);
+                SetMaterialUniform(pDepthMappingProgram, "material", m_materialColor, m_materialShininess, false);
                 SetDepthMappingUniform(pDepthMappingProgram);
                 
                 // bind depth texture
@@ -769,10 +775,11 @@ void Game::ResetFrameBuffer(const GLboolean &clearBuffers) {
     m_gameWindow->SetViewport();
     
     // clear all relevant buffers, set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
-    if (clearBuffers) m_gameWindow->ClearBuffers();
+    if (clearBuffers) m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
     
     // disable depth test so screen-space quad isn't discarded due to depth test.
     glDisable(GL_DEPTH_TEST);
+
 }
 
 // Render scene method runs

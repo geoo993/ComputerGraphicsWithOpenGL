@@ -106,6 +106,9 @@ Game::Game()
     m_prevPPFXMode = false;
     m_nextPPFXMode = false;
     
+    // Depth and Shadow mapping
+    m_useLinearizeDepth = false;
+    
     // SSAO
     // generate sample kernel
     // ----------------------
@@ -334,22 +337,59 @@ void Game::PreRendering() {
 // Render scene method runs
 void Game::Render()
 {
+    /*
+     currentFBO = m_pFBOs[0];
+     currentFBO->Bind(true);     // prepare frame buffer 3
+     
+     m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
+     RenderScene();
+     
+     currentFBO = m_pFBOs[3];
+     currentFBO->Bind(false);     // prepare frame buffer 3
+     m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
+     RenderScene(true, 51);
+     
+     
+     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+     
+     m_gameWindow->SetViewport();
+     
+     // clear all relevant buffers, set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
+     m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
+     glDisable(GL_DEPTH_TEST);
+     
+     
+     // use depth mapping quad
+     CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[50];
+     SetCameraUniform(pDepthMappingProgram, "camera", m_pCamera);
+     SetMaterialUniform(pDepthMappingProgram, "material", m_materialColor, m_materialShininess, false);
+     SetDepthMappingUniform(pDepthMappingProgram);
+     
+     // bind depth texture
+     currentFBO = m_pFBOs[3];
+     currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
+     
+     currentFBO = m_pFBOs[0];
+     RenderToScreen(pDepthMappingProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
+     */
+    
     ChangePPFXScene( m_currentPPFXMode );
     
+    // bind framebuffer
     BindPPFXFBO( m_currentPPFXMode );
-    
-    // Clear buffers before rendering
-    m_gameWindow->ClearBuffers(true);
     
     switch (m_currentPPFXMode) {
         case PostProcessingEffectMode::DepthTesting:
+            m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
             RenderScene(true, 83);
             break;
         default:
+            m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
             RenderScene();
             break;
     }
     
+    // set viewport and clear buffers
     ResetFrameBuffer();
     
     // Post Processing Effects

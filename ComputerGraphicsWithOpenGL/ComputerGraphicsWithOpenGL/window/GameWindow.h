@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "ClearBuffersType.h"
 
 class CGameWindow {
 public:
@@ -37,7 +38,7 @@ public:
     void SetViewport();
     void SetViewport(const int & width, const int & height);
     bool ShouldClose();
-    void ClearBuffers(const GLboolean &stencil = false);
+    void ClearBuffers(const ClearBuffersType &bufferType = ClearBuffersType::COLORDEPTH);
     void SwapBuffers();
     void DestroyWindow();
     

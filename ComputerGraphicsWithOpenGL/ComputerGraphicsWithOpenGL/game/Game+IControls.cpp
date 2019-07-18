@@ -568,12 +568,6 @@ void Game::LoadControls() {
     lensFlareHaloThreshold->SetValue(&m_lensFlareHaloThreshold);
     guiBox->y += guiBox->height;
     
-    // Fast Approximate Anti Aliasing
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CSlider *ffaaOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 128.0f, 5, guiBox,
-                                                                GUIMode::DYNAMIC, false, PostProcessingEffectMode::FXAA));
-    ffaaOffset->SetValue(&m_ffaaOffset);
-    
     // SSAO
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
     CButton * ssaoNoiseUseLight = (CButton *)AddControl(new CButton("Use Light", guiBox,
@@ -595,6 +589,21 @@ void Game::LoadControls() {
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
     ssaoNoise->SetValue(&m_ssaoNoiseSize);
     
+    // Fast Approximate Anti Aliasing
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CSlider *ffaaOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 128.0f, 5, guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::FXAA));
+    ffaaOffset->SetValue(&m_ffaaOffset);
+    
+    // Depth Mapping
+    CButton * depthMapping = (CButton *)AddControl(new CButton("Use Linearize Depth", guiBox,
+                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthMapping));
+    depthMapping->SetValue(&m_useLinearizeDepth);
+    
+    // Shadow Mapping
+    CButton * shadowMapping = (CButton *)AddControl(new CButton("Use Linearize Depth", guiBox,
+                                                               GUIMode::DYNAMIC, false, PostProcessingEffectMode::ShadowMapping));
+    shadowMapping->SetValue(&m_useLinearizeDepth);
 }
 
 void Game::RenderControls() {

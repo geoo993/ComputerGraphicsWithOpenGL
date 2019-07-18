@@ -345,9 +345,7 @@ void Game::SetMotionBlurUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetDepthMappingUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bLinearized", true);
-    pShaderProgram->SetUniform("near_plane", m_pCamera->GetNearPlane()); // shadows near plane
-    pShaderProgram->SetUniform("far_plane", m_pCamera->GetFarPlane());   // shadows far plane
+    pShaderProgram->SetUniform("bUseLinearizeDepth", m_useLinearizeDepth);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
     
 }

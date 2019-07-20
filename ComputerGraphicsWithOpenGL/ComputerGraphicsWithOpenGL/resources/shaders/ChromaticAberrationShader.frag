@@ -9,6 +9,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
@@ -32,6 +33,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    float uvTiling;
     bool bUseTexture;
 } material;
 

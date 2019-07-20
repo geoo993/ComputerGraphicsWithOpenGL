@@ -35,6 +35,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 in VS_OUT

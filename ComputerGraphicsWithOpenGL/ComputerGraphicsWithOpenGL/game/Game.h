@@ -163,7 +163,7 @@ protected:
     /// Materials
     void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                             const glm::vec4 &color = glm::vec4(1.0f), const GLfloat &shininess = 32.0f,
-                            const GLboolean &useAO = false) override;
+                            const GLfloat &uvTiling = 1.0f, const GLboolean &useAO = false) override;
     void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                const GLfloat &albedo, const GLfloat &metallic, const GLfloat &roughness,
                                const GLfloat &ao, const GLboolean &useIrradiance) override;
@@ -183,7 +183,6 @@ protected:
     void SetTerrainUniform(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) override;
     void SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) override;
     void SetParallaxMapUniform(CShaderProgram *pShaderProgram, const GLfloat &heightScale) override;
-    void SetBumpMapUniform(CShaderProgram *pShaderProgram, const GLfloat &uvTiling) override;
     void SetExplosionUniform(CShaderProgram *pShaderProgram,
                              const GLboolean &explode, const GLboolean &animate,
                              const GLfloat &time, const GLfloat &magnitude) override;

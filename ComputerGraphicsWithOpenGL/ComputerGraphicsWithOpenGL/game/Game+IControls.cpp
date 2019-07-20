@@ -595,15 +595,23 @@ void Game::LoadControls() {
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::FXAA));
     ffaaOffset->SetValue(&m_ffaaOffset);
     
+    // Depth Testing
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * depthTesting = (CButton *)AddControl(new CButton("Use Ortho Camera", guiBox,
+                                                               GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthTesting));
+    depthTesting->SetValue(&m_useOrthographicCamera);
+    
     // Depth Mapping
-    CButton * depthMapping = (CButton *)AddControl(new CButton("Use Linearize Depth", guiBox,
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * depthMapping = (CButton *)AddControl(new CButton("Use Ortho Camera", guiBox,
                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthMapping));
-    depthMapping->SetValue(&m_useLinearizeDepth);
+    depthMapping->SetValue(&m_useOrthographicCamera);
     
     // Shadow Mapping
-    CButton * shadowMapping = (CButton *)AddControl(new CButton("Use Linearize Depth", guiBox,
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * shadowMapping = (CButton *)AddControl(new CButton("Use Ortho Camera", guiBox,
                                                                GUIMode::DYNAMIC, false, PostProcessingEffectMode::ShadowMapping));
-    shadowMapping->SetValue(&m_useLinearizeDepth);
+    shadowMapping->SetValue(&m_useOrthographicCamera);
 }
 
 void Game::RenderControls() {

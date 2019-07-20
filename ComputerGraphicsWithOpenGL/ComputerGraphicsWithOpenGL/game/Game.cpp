@@ -107,7 +107,7 @@ Game::Game()
     m_nextPPFXMode = false;
     
     // Depth and Shadow mapping
-    m_useLinearizeDepth = false;
+    m_useOrthographicCamera = false;
     
     // SSAO
     // generate sample kernel

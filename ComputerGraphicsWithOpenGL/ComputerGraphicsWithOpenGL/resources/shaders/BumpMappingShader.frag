@@ -10,7 +10,10 @@ uniform struct Camera
 {
     vec3 position;
     vec3 front;
+    float znear;
+    float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
@@ -34,6 +37,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    float uvTiling;
     bool bUseAO;
     bool bUseTexture;
     bool bUseColor;
@@ -97,7 +101,6 @@ uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
 uniform SpotLight R_spotlight;
 uniform bool bUseBlinn, bUseSmoothSpot;
 uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
-uniform float uvTiling;
 
 in VS_OUT
 {
@@ -124,7 +127,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 tangent, vec3 bitangent, vec
     v.z = dot(-vertexPosition, normal);
     vec3 viewVec = v;
     
-    vec2 uv = fs_in.vTexCoord.st * uvTiling;
+    vec2 uv = fs_in.vTexCoord.st * material.uvTiling;
     
     // obtain normal from normal map in range [0,1]
     //vec3 ambientMap = texture(material.ambientMap, uv).rgb;
@@ -224,6 +227,7 @@ void main()
     mat3 TBN = transpose(mat3(T, B, N));
     vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     vec3 worldPos = fs_in.vWorldPosition;
+    vec2 uv = fs_in.vTexCoord.st * material.uvTiling;
     vec3 vVertex = fs_in.vEyePosition.xyz;
     
     // Directional lighting
@@ -289,5 +293,5 @@ void main()
     // also store the per-fragment normals into the gbuffer
     vNormal = normalize(fs_in.vWorldNormal);
     // and the diffuse per-fragment color
-    vAlbedoSpec = material.bUseAO ? vec4(0.95f, 0.95f, 0.95f, 1.0f) : texture(material.diffuseMap, fs_in.vTexCoord);
+    vAlbedoSpec = material.bUseAO ? vec4(0.95f, 0.95f, 0.95f, 1.0f) : texture(material.diffuseMap, uv);
 }

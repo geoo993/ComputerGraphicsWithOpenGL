@@ -21,6 +21,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    float uvTiling;
 } material;
 
 

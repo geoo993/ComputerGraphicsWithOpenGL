@@ -12,6 +12,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
@@ -35,6 +36,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    float uvTiling;
     bool bUseAO;
     bool bUseTexture;
     bool bUseColor;
@@ -139,7 +141,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     // toon intensity
     toonIntensity = diffuseFactor + specularFactor;
     
-    vec4 ambient = base.ambient * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+    vec4 ambient = base.ambient * (material.bUseTexture ? texture( material.ambientMap, fs_in.vTexCoord ) : materialColor);
     vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
     vec4 specular = base.specular * specularFactor * (material.bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
     return (ambient + diffuse + specular + toonColor) * base.intensity * (material.bUseColor ? lightColor : vec4(1.0f));

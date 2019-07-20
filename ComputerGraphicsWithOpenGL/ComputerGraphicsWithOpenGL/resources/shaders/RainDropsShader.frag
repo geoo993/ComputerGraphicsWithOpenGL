@@ -4,6 +4,7 @@
 // https://www.shadertoy.com/view/ltffzl
 // https://www.shadertoy.com/view/XdSGDc
 // https://seblagarde.wordpress.com/2012/12/27/water-drop-2a-dynamic-rain-and-its-effects/
+// https://hackernoon.com/converting-shaders-from-shadertoy-to-threejs-fe17480ed5c6
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material

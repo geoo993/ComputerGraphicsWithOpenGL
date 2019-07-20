@@ -80,7 +80,7 @@
 // Settings
 #define FOV 90.0
 #define ZNEAR 0.1
-#define ZFAR 2000.0
+#define ZFAR 2048.0
 #define SKYBOX 512
 
 // Default camera values

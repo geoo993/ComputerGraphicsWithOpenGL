@@ -16,6 +16,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...

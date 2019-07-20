@@ -36,7 +36,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
 //    {
 //        GLboolean useHeightMap = false;
 //        CShaderProgram *pTerrainProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 2];
-//        SetMaterialUniform(pTerrainProgram, "material", m_materialColor, m_materialShininess, useAO);
+//        SetMaterialUniform(pTerrainProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
 //        SetTerrainUniform(pTerrainProgram, useHeightMap);
 //        RenderTerrain(pTerrainProgram, glm::vec3(0.0f, -400.0f, 0), glm::vec3(0.0f), 1.0f, useHeightMap);
 //    }
@@ -63,7 +63,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
         pShaderProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 3];
         SetCameraUniform(pShaderProgram, "camera", m_pCamera);
         SetLightUniform(pShaderProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-        SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
         SetPBRMaterialUniform(pShaderProgram, "material", m_albedo, m_metallic, m_roughness, m_ao, m_useIrradiance);
         SetFogMaterialUniform(pShaderProgram, "fog", m_fogColor, m_useFog);
         
@@ -86,7 +86,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
         pShaderProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 5];
         SetCameraUniform(pShaderProgram, "camera", m_pCamera);
         SetLightUniform(pShaderProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-        SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetPBRMaterialUniform(pShaderProgram, "material", m_albedo, m_metallic, m_roughness, m_ao, m_useIrradiance);
         SetFogMaterialUniform(pShaderProgram, "fog", m_fogColor, m_useFog);
         
@@ -102,12 +102,24 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
         
     }
     
+    /// Terrain
+    {
+        if (isPBR) {
+            SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
+        }
+        
+        RenderTerrain(pShaderProgram, glm::vec3(0.0f, -100.0f, 0), glm::vec3(0.0f), 1.0f, false);
     
-    // Terrain
-    RenderTerrain(pShaderProgram, glm::vec3(0.0f, -400.0f, 0), glm::vec3(0.0f), 1.0f, false);
+        if (isPBR) {
+            SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
+        }
+    }
     
+    /// Trolley
+    {
+        RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, -100.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f), 0.5f);
+    }
     
-    /*
     // 1 - 10
     RenderSphere(pShaderProgram, m_pSpherePBR1, glm::vec3(50.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
     RenderModel(pShaderProgram, m_teapot1, glm::vec3(50.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
@@ -138,33 +150,29 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
     
     RenderSphere(pShaderProgram, m_pSpherePBR10, glm::vec3(-450.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
     RenderModel(pShaderProgram, m_teapot10, glm::vec3(-450.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
-    
-    
-    //RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, -50.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f), 0.5f);
+  
     
     /// Bump Mapping
     {
         CShaderProgram *pBumpMappingProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 7];
         SetCameraUniform(pBumpMappingProgram, "camera", m_pCamera);
         SetLightUniform(pBumpMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-        SetMaterialUniform(pBumpMappingProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pBumpMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetFogMaterialUniform(pBumpMappingProgram, "fog", m_fogColor, m_useFog);
-        SetBumpMapUniform(pBumpMappingProgram, m_uvTiling);
         // Add Bump mapping Lights
         RenderLight(pBumpMappingProgram, m_pCamera);
         
         // 11
         RenderSphere(pBumpMappingProgram, m_pSpherePBR11, glm::vec3(550.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        RenderTorus(pBumpMappingProgram, glm::vec3(550.0f, 0.0f, zback), 10.0f);
-        
-        //RenderTorusKnot(pBumpMappingProgram, glm::vec3(600.0f, 500.0f, 0.0f), 2.0f);
+        //RenderTorus(pBumpMappingProgram, glm::vec3(550.0f, 0.0f, zback), 10.0f);
+        RenderTorusKnot(pBumpMappingProgram, glm::vec3(550.0f, 0.0f, zback), 1.0f);
     }
-    
+     
     /// Environment Mapping
     {
         CShaderProgram *pEnvironmentMapProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 9];
         SetCameraUniform(pEnvironmentMapProgram, "camera", m_pCamera);
-        SetMaterialUniform(pEnvironmentMapProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pEnvironmentMapProgram, "material");
         SetHRDLightUniform(pEnvironmentMapProgram, "hrdlight", m_exposure, m_gama, m_HDR);
         SetEnvironmentMapUniform(pEnvironmentMapProgram, m_useRefraction);
         SetFogMaterialUniform(pEnvironmentMapProgram, "fog", m_fogColor, m_useFog);
@@ -172,15 +180,16 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
         // 12
         RenderSphere(pEnvironmentMapProgram, m_pSpherePBR12, glm::vec3(-550.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f, false);
         RenderCube(pEnvironmentMapProgram, m_pCube12, glm::vec3(-550.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f, false);
-        RenderMetalBalls(isPBR ? pShaderProgram : pEnvironmentMapProgram, glm::vec3(-900.0f, 0.0f, zback), 100.0f, isPBR ? m_materialUseTexture : false);
+        RenderMetalBalls(isPBR ? pShaderProgram : pEnvironmentMapProgram, glm::vec3(-880.0f, 0.0f, zback), 100.0f, isPBR ? m_materialUseTexture : false);
     }
 
+    
     /// Parallax Normal Mapping
     {
         CShaderProgram *pParallaxNormalMappingProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 8];
         SetCameraUniform(pParallaxNormalMappingProgram, "camera", m_pCamera);
         SetLightUniform(pParallaxNormalMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-        SetMaterialUniform(pParallaxNormalMappingProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pParallaxNormalMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetParallaxMapUniform(pParallaxNormalMappingProgram, m_parallaxHeightScale);
         SetFogMaterialUniform(pParallaxNormalMappingProgram, "fog", m_fogColor, m_useFog);
         // Add Parallax Normal mapping Lights
@@ -196,7 +205,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
     {
         CShaderProgram *pChromaticAberrationProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 10];
         SetCameraUniform(pChromaticAberrationProgram, "camera", m_pCamera);
-        SetMaterialUniform(pChromaticAberrationProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pChromaticAberrationProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetFogMaterialUniform(pChromaticAberrationProgram, "fog", m_fogColor, m_useFog);
         SetHRDLightUniform(pChromaticAberrationProgram, "hrdlight", m_exposure, m_gama, m_HDR);
         SetChromaticAberrationUniform(pChromaticAberrationProgram, glm::vec2(0.3f, 1.5f));
@@ -206,6 +215,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
         RenderCube(pChromaticAberrationProgram, m_pCube14, glm::vec3(-650.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
     }
     
+     
     /// Discard
     {
         CShaderProgram *pDiscardProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 81];
@@ -214,7 +224,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
         
         SetCameraUniform(pDiscardProgram, "camera", m_pCamera);
         SetLightUniform(pDiscardProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-        SetMaterialUniform(pDiscardProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pDiscardProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetFogMaterialUniform(pDiscardProgram, "fog", m_fogColor, m_useFog);
         SetDisintegrationUniform(pDiscardProgram);
         RenderLight(pDiscardProgram, m_pCamera);
@@ -232,7 +242,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
         CShaderProgram *pToonProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 14];
         SetCameraUniform(pToonProgram, "camera", m_pCamera);
         SetLightUniform(pToonProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-        SetMaterialUniform(pToonProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pToonProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetFogMaterialUniform(pToonProgram, "fog", m_fogColor, m_useFog);
         // Add Toon Shading Lights
         RenderLight(pToonProgram, m_pCamera);
@@ -245,7 +255,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
     /// Porcupine Rendering
     {
         CShaderProgram *pPorcupineRenderingProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 12];
-        SetMaterialUniform(pPorcupineRenderingProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pPorcupineRenderingProgram, "material");
         SetPorcupineRenderingUniform(pPorcupineRenderingProgram, glm::vec3(1.0f, 1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), m_magnitude);
         // 17
         RenderSphere(pPorcupineRenderingProgram, m_pSpherePBR17, glm::vec3(850.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f, false);
@@ -254,14 +264,14 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
     }
     
      /// FireBall
-     {
+    {
          CShaderProgram *pFireBallProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 54];
-         SetMaterialUniform(pFireBallProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, useAO);
+         SetMaterialUniform(pFireBallProgram, "material", glm::vec4(0.3f, 0.1f, 0.7f, 1.0f), m_materialShininess, m_uvTiling, useAO);
          SetFireBallUniform(pFireBallProgram);
          
          // 18
-         RenderSphere(pFireBallProgram, m_pSpherePBR18, glm::vec3(-850.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-     }
+         RenderSphere(pFireBallProgram, m_pSpherePBR18, glm::vec3(-880.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
+    }
     
     
     /// Wireframe Rendering
@@ -269,7 +279,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
         CShaderProgram *pWireframeProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 13];
         SetCameraUniform(pWireframeProgram, "camera", m_pCamera);
         SetLightUniform(pWireframeProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-        SetMaterialUniform(pWireframeProgram, "material", m_materialColor, m_materialShininess, useAO);
+        SetMaterialUniform(pWireframeProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetFogMaterialUniform(pWireframeProgram, "fog", m_fogColor, m_useFog);
         SetWireframeUniform(pWireframeProgram, true, 0.15f);
         // Add Wireframe Lights
@@ -280,6 +290,5 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLint &toCustomSha
         RenderModel(pWireframeProgram, m_teapot19, glm::vec3(950.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
         
     }
-    */
   
 }

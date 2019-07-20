@@ -10,6 +10,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
@@ -105,13 +106,14 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     ? pow(max(dot(normal, halfDirection), 0.0f), material.shininess)
     : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
     
+    vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;                // albedo Map
     vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;                // albedo Map
     float specularMap = texture(material.diffuseMap, fs_in.vTexCoord).a;            // specularMap
     float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
     
     vec4 lightColor = (material.bUseColor ? vec4(base.color, 1.0f) : vec4(1.0f));
     vec4 materialColor = material.color;
-    vec4 ambient = base.ambient * (material.bUseTexture ? vec4(diffuseMap * ambientOcclusion, 1.0f) : materialColor) * lightColor;
+    vec4 ambient = base.ambient * (material.bUseTexture ? vec4(ambientMap * ambientOcclusion, 1.0f) : materialColor) * lightColor;
     vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? vec4(diffuseMap, 1.0f) : materialColor) * lightColor;
     vec4 specular = base.specular * specularFactor * lightColor;
     if (material.bUseTexture) {
@@ -205,9 +207,9 @@ void main()
             
             tc = result;
         } else {
-            vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;                // albedo Map
+            vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;                // albedo Map
             float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
-            tc = vec4(diffuseMap * ambientOcclusion, 1.0f);
+            tc = vec4(ambientMap * ambientOcclusion, 1.0f);
         }
     }
     else if ( uv.x  >=  (  coverage  +   0.003f) )

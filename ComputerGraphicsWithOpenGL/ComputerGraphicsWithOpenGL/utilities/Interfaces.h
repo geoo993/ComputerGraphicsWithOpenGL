@@ -59,7 +59,8 @@ struct ICamera {
     CCamera *m_pCamera;
     virtual void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) = 0;
     virtual void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) = 0;
-    virtual void UpdateCamera(const GLdouble & deltaTime, const MouseState &mouseState, const KeyboardState &keyboardState, const GLboolean & mouseMove) = 0;
+    virtual void UpdateCamera(const GLdouble & deltaTime, const MouseState &mouseState, const KeyboardState &keyboardState,
+                            const GLboolean & mouseMove) = 0;
     virtual void ResetCamera(const GLdouble & deltaTime) = 0;
 };
 
@@ -71,7 +72,7 @@ struct IMaterials {
     glm::vec3 m_fogColor;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec4 &color, const GLfloat &shininess,
-                                    const GLboolean &useAO) = 0;
+                                    const GLfloat &uvTiling, const GLboolean &useAO) = 0;
     virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                        const GLfloat &albedo, const GLfloat &metallic, const GLfloat &roughness,
                                        const GLfloat &ao, const GLboolean &useIrradiance) = 0;
@@ -98,7 +99,6 @@ struct IShaderUniform {
     virtual void SetTerrainUniform(CShaderProgram *pShaderProgram, const GLboolean &useHeightMap) = 0;
     virtual void SetEnvironmentMapUniform(CShaderProgram *pShaderProgram, const GLboolean &useRefraction) = 0;
     virtual void SetParallaxMapUniform(CShaderProgram *pShaderProgram, const GLfloat &heightScale) = 0;
-    virtual void SetBumpMapUniform(CShaderProgram *pShaderProgram, const GLfloat &uvTiling) = 0;
     virtual void SetExplosionUniform(CShaderProgram *pShaderProgram,
                                      const GLboolean &explode, const GLboolean &animate,
                                      const GLfloat &time, const GLfloat &magnitude) = 0;
@@ -333,7 +333,7 @@ struct IPostProcessing {
     GLboolean m_ssaoNoiseUseLight;
     
     // Depth and Shadow Mapping
-    GLboolean m_useLinearizeDepth;
+    GLboolean m_useOrthographicCamera;
     
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;

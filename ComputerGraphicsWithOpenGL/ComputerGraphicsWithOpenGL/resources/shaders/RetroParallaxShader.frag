@@ -1,6 +1,7 @@
 #version 400 core
 
 // https://www.shadertoy.com/view/4sSGD1
+// https://hackernoon.com/converting-shaders-from-shadertoy-to-threejs-fe17480ed5c6
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material

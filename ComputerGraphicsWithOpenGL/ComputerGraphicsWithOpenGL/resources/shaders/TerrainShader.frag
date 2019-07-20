@@ -23,6 +23,7 @@ uniform struct Material
     sampler2D roughnessMap;         // 17.  roughness map
     vec4 color;
     float shininess;
+    float uvTiling;
     bool bUseAO;
     bool bUseTexture;
     bool bUseColor;

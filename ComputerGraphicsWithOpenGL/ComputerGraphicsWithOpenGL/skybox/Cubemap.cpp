@@ -198,7 +198,7 @@ void CCubemap::LoadHRDCubemap(const int &width, const int &height, const Texture
     glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
     
     m_shaderProgram = (*shaderPrograms)[77]; // equirectangularProgram
-    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, 1.0f, false);
     
     int iTextureUnit = static_cast<int>(equirectangularTexturetype); // cubemap
     for (unsigned int i = 0; i < 6; ++i)
@@ -305,7 +305,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     glBindFramebuffer(GL_FRAMEBUFFER, m_envFramebuffer);
     
     m_shaderProgram = (*shaderPrograms)[77]; // equirectangularProgram
-    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, 1.0f, false);
     int iTextureUnit = static_cast<int>(equirectangularTexturetype); // cubemap
     for (unsigned int i = 0; i < 6; ++i)
     {
@@ -372,7 +372,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     m_irradianceCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
     
     m_shaderProgram = (*shaderPrograms)[78]; // irradianceMapProgram
-    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, 1.0f, false);
     for (unsigned int i = 0; i < 6; ++i)
     {
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_irrTexture, 0);
@@ -423,7 +423,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     m_prefilterCube->Transform(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
     
     m_shaderProgram = (*shaderPrograms)[79]; // prefilterProgram
-    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, 1.0f, false);
     unsigned int maxMipLevels = 40;
     for (unsigned int mip = 0; mip < maxMipLevels; ++mip)
     {
@@ -482,7 +482,7 @@ void CCubemap::LoadIrradianceCubemap(const int &width, const int &height, const 
     glViewport(0, 0, width, height);
     
     m_shaderProgram = (*shaderPrograms)[80]; // m_brdfLUTProgram
-    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, false);
+    mat->SetMaterialUniform(m_shaderProgram, "material", glm::vec4(1.0f), 32.0f, 1.0f, false);
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearDepth(1.0f);

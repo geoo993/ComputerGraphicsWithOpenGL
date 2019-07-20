@@ -27,11 +27,6 @@ void Game::SetParallaxMapUniform(CShaderProgram *pShaderProgram, const GLfloat &
     pShaderProgram->SetUniform("heightScale", heightScale);
 }
 
-void Game::SetBumpMapUniform(CShaderProgram *pShaderProgram, const GLfloat &uvTiling) {
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("uvTiling", uvTiling);
-}
-
 void Game::SetExplosionUniform(CShaderProgram *pShaderProgram,
                          const GLboolean &explode, const GLboolean &animate,
                          const GLfloat &time, const GLfloat &magnitude) {
@@ -345,7 +340,7 @@ void Game::SetMotionBlurUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetDepthMappingUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bUseLinearizeDepth", m_useLinearizeDepth);
+    pShaderProgram->SetUniform("bUseLinearizeDepth", m_useOrthographicCamera);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
     
 }

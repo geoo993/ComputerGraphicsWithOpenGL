@@ -108,6 +108,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 // Structure holding PBR material information:  its albedo, metallic, roughness, etc...
@@ -134,6 +135,7 @@ uniform struct Material
     float fresnel;          // Fresnel is the percentage of light that a surface reflects at grazing angles.
     float ao;               // Ambient occlusion(AO) represents large scale occluded light and is generally baked from a 3d model.
     float shininess;
+    float uvTiling;
     bool bUseAO;
     bool bUseTexture;
     bool bUseColor;
@@ -218,14 +220,14 @@ in VS_OUT
 // Don't worry if you don't get what's going on; you generally want to do normal
 // mapping the usual way for performance anyways; I do plan make a note of this
 // technique somewhere later in the normal mapping tutorial.
-vec3 getNormalFromMap()
+vec3 getNormalFromMap(vec3 position, vec2 uv)
 {
-    vec3 tangentNormal = texture(material.normalMap, fs_in.vTexCoord).xyz * 2.0f - 1.0f;
+    vec3 tangentNormal = texture(material.normalMap, uv).xyz * 2.0f - 1.0f;
     
-    vec3 Q1  = dFdx(fs_in.vWorldPosition);
-    vec3 Q2  = dFdy(fs_in.vWorldPosition);
-    vec2 st1 = dFdx(fs_in.vTexCoord);
-    vec2 st2 = dFdy(fs_in.vTexCoord);
+    vec3 Q1  = dFdx(position);
+    vec3 Q2  = dFdy(position);
+    vec2 st1 = dFdx(uv);
+    vec2 st2 = dFdy(uv);
     
     vec3 N   = normalize(fs_in.vNormal);
     vec3 T  = normalize(Q1 * st2.t - Q2 * st1.t);
@@ -290,9 +292,10 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 //Lights
 vec3 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPos)
 {
-    vec3 albedo     = material.bUseTexture ? (pow(texture(material.albedoMap, fs_in.vTexCoord).rgb, vec3(2.2f)) * material.albedo) : (material.color.xyz * material.albedo);
-    float metallic  = material.bUseTexture ? (texture(material.metallicMap, fs_in.vTexCoord).r * material.metallic) : material.metallic;
-    float roughness = material.bUseTexture ? (texture(material.roughnessMap, fs_in.vTexCoord).r * material.roughness) : material.roughness;
+    vec2 uv = fs_in.vTexCoord.st * material.uvTiling;
+    vec3 albedo     = material.bUseTexture ? (pow(texture(material.albedoMap, uv).rgb, vec3(2.2f)) * material.albedo) : (material.color.xyz * material.albedo);
+    float metallic  = material.bUseTexture ? (texture(material.metallicMap, uv).r * material.metallic) : material.metallic;
+    float roughness = material.bUseTexture ? (texture(material.roughnessMap, uv).r * material.roughness) : material.roughness;
     
     vec3 directionToEye = normalize(camera.position - worldPos); // viewDirection aka V
     vec3 reflectDirection = reflect(-directionToEye, normal);    // specular reflection aka R
@@ -378,13 +381,14 @@ void main()
 {
     
     vec3 worldPos   = fs_in.vWorldPosition;
-    vec3 normal     = material.bUseTexture ? getNormalFromMap() : normalize(fs_in.vNormal);       // albedo map
+    vec2 uv = fs_in.vTexCoord.st * material.uvTiling;
+    vec3 normal     = material.bUseTexture ? getNormalFromMap(worldPos, uv) : normalize(fs_in.vNormal);       // albedo map
     vec3 color = vec3(0.0f, 0.0f, 0.0f);
     
-    vec3 albedo     = material.bUseTexture ? (pow(texture(material.albedoMap, fs_in.vTexCoord).rgb, vec3(2.2f)) * material.albedo) : (material.color.xyz * material.albedo);
-    float metallic  = material.bUseTexture ? (texture(material.metallicMap, fs_in.vTexCoord).r * material.metallic) : material.metallic;
-    float roughness = material.bUseTexture ? (texture(material.roughnessMap, fs_in.vTexCoord).r * material.roughness) : material.roughness;
-    float ao        = material.bUseTexture ? (texture(material.aoMap, fs_in.vTexCoord).r * material.ao) : material.ao;
+    vec3 albedo     = material.bUseTexture ? (pow(texture(material.albedoMap, uv).rgb, vec3(2.2f)) * material.albedo) : (material.color.xyz * material.albedo);
+    float metallic  = material.bUseTexture ? (texture(material.metallicMap, uv).r * material.metallic) : material.metallic;
+    float roughness = material.bUseTexture ? (texture(material.roughnessMap, uv).r * material.roughness) : material.roughness;
+    float ao        = material.bUseTexture ? (texture(material.aoMap, uv).r * material.ao) : material.ao;
     
     vec3 directionToEye = normalize(camera.position - worldPos); // viewDirection aka V
     vec3 reflectDirection = reflect(-directionToEye, normal);    // specular reflection aka R
@@ -500,8 +504,8 @@ void main()
     // also store the per-fragment normals into the gbuffer
     vNormal = normalize(fs_in.vWorldNormal);
     // and the diffuse per-fragment color
-    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.albedoMap, fs_in.vTexCoord).rgb;
+    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.albedoMap, uv).rgb;
     // store specular intensity in gAlbedoSpec's alpha component
-    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.aoMap, fs_in.vTexCoord).r;
+    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.aoMap, uv).r;
     
 }

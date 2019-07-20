@@ -27,6 +27,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    float uvTiling;
 } material;
 
 uniform struct Camera
@@ -36,6 +37,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 in VS_OUT
@@ -74,11 +76,9 @@ void main()
     
     if (uv.x < (  coverage  ) )
     {
-        float depthValue = texture(material.depthMap, uv).r;
-        float linearizedDepth = LinearizeDepth(depthValue, camera.znear, camera.zfar) / camera.zfar;
-        //vOutputColour = vec4(vec3(LinearizeDepth(depthValue) / far_plane), 1.0f); // perspective
-        //vOutputColour = vec4(vec3(depthValue), 1.0f); // orthographic
-        tc = vec4(vec3(bUseLinearizeDepth ? linearizedDepth : depthValue), 1.0f); // orthographic
+        float depthValue = texture(material.depthMap, uv).r; // orthographic
+        float depth = LinearizeDepth(depthValue, camera.znear, camera.zfar) / camera.zfar; // divide by zfar for perspective
+        tc = vec4(vec3(camera.isOrthographic ? depthValue : depth), 1.0f);
     }
     else if ( uv.x  >=  (  coverage  +   0.003f) )
     {

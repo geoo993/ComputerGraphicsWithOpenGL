@@ -28,6 +28,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    float uvTiling;
     bool bUseAO;
     bool bUseTexture;
     bool bUseColor;
@@ -55,6 +56,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 // Structure holding light information:  its position, colors, direction etc...
@@ -117,6 +119,7 @@ in VS_OUT
 
 vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
 {
+    vec2 uv = fs_in.vTexCoord.st * material.uvTiling;
     float diffuseFactor = max(dot(normal, direction), 0.0f);
     
     vec3 view =  camera.position + camera.front;
@@ -129,9 +132,9 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     
     vec4 lightColor = vec4(base.color, 1.0f);
     vec4 materialColor = material.color;
-    vec4 ambient = base.ambient * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
-    vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? texture( material.diffuseMap, fs_in.vTexCoord ) : materialColor);
-    vec4 specular = base.specular * specularFactor * (material.bUseTexture ? texture( material.specularMap, fs_in.vTexCoord ) : materialColor);
+    vec4 ambient = base.ambient * (material.bUseTexture ? texture( material.ambientMap, uv ) : materialColor);
+    vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? texture( material.diffuseMap, uv ) : materialColor);
+    vec4 specular = base.specular * specularFactor * (material.bUseTexture ? texture( material.specularMap, uv ) : materialColor);
     return (ambient + diffuse + specular) * base.intensity * (material.bUseColor ? lightColor : vec4(1.0f));
 }
 
@@ -185,6 +188,7 @@ layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
+    vec2 uv = fs_in.vTexCoord.st * material.uvTiling;
     vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     
     //base fragment color off of which edge is closest
@@ -192,7 +196,7 @@ void main()
     if (bWireFrame) {
         
         if (distance < thickness){
-            result = material.bUseTexture ? texture(material.diffuseMap, fs_in.vTexCoord) : material.color; //draw fragment if close to edge
+            result = material.bUseTexture ? texture(material.diffuseMap, uv) : material.color; //draw fragment if close to edge
         }else if (distance >= thickness){
             discard; //discard if not
         }
@@ -203,7 +207,7 @@ void main()
         else if (distance==GEdgeDistance[2])result=vec4(0.0f, 0.0f, 0.52f, 1.0f);
     }
     
-    vec3 normal = material.bUseTexture ? texture(material.normalMap, fs_in.vTexCoord).rgb : normalize(fs_in.vWorldNormal);
+    vec3 normal = material.bUseTexture ? texture(material.normalMap, uv).rgb : normalize(fs_in.vWorldNormal);
     vec3 worldPos = fs_in.vWorldPosition;
     
     if (bUseDirectionalLight){
@@ -271,7 +275,7 @@ void main()
     // also store the per-fragment normals into the gbuffer
     vNormal = normalize(fs_in.vWorldNormal);
     // and the diffuse per-fragment color
-    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, fs_in.vTexCoord).rgb;
+    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, uv).rgb;
     // store specular intensity in gAlbedoSpec's alpha component
-    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, fs_in.vTexCoord).r;
+    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, uv).r;
 }

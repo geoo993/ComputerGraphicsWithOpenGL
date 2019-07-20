@@ -13,6 +13,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
@@ -36,6 +37,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    float uvTiling;
     bool bUseAO;
     bool bUseTexture;
     bool bUseColor;
@@ -170,10 +172,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, mat3 TBN, vec3 vertexPosition)
     }
     
      // obtain normal from normal map in range [0,1]
-     //vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;
      vec3 normalMap = texture(material.normalMap, fs_in.vTexCoord).rgb;
-     vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
-     //vec3 specularMap = texture(material.specularMap, fs_in.vTexCoord).rgb;
     
      // transform normal vector to range [-1,1]
      normalMap = normalize(normalMap * 2.0f - 1.0f);  // this normal is in tangent space
@@ -182,7 +181,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, mat3 TBN, vec3 vertexPosition)
      vec4 materialColor = material.color;
     
     // ambient
-     vec4 ambient = base.ambient * (material.bUseTexture ? texture(material.diffuseMap, fs_in.vTexCoord ) : materialColor);
+     vec4 ambient = base.ambient * (material.bUseTexture ? texture(material.ambientMap, fs_in.vTexCoord ) : materialColor);
     
      // diffuse
      //vec3 lightDirection = normalize(tangentLightPos - tangentFragPos);

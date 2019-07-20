@@ -16,6 +16,7 @@ uniform struct Camera
     float znear;
     float zfar;
     bool isMoving;
+    bool isOrthographic;
 } camera;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
@@ -39,6 +40,7 @@ uniform struct Material
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
     float shininess;
+    float uvTiling;
     bool bUseAO;
     bool bUseTexture;
     bool bUseColor;
@@ -123,16 +125,16 @@ vec4 CalcLight(BaseLight base, vec3 direction, mat3 TBN, vec3 vertexPosition)
     vec3 tangentFragPos         = TBN * vertexPosition;
     
     // obtain normal from normal map in range [0,1]
-    //vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;
+    vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;
     vec3 normalMap = texture(material.normalMap, fs_in.vTexCoord).rgb;
     vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
-    //vec3 specularMap = texture(material.specularMap, fs_in.vTexCoord).rgb;
+    vec3 specularMap = texture(material.specularMap, fs_in.vTexCoord).rgb;
     
     // transform normal vector to range [-1,1]
     normalMap = normalize(normalMap * 2.0f - 1.0f);  // this normal is in tangent space
     
     // ambient
-    vec3 ambient = base.ambient * diffuseMap;
+    vec3 ambient = base.ambient * ambientMap;
     
     // diffuse
     float diffuseFactor = max(dot(direction, normalMap), 0.0f);
@@ -145,7 +147,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, mat3 TBN, vec3 vertexPosition)
     float specularFactor = bUseBlinn
     ? pow(max(dot(normalMap, halfDirection), 0.0f), material.shininess)
     : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
-    vec3 specular = vec3(base.specular) * specularFactor;
+    vec3 specular = vec3(base.specular) * specularFactor * specularMap;
     
     return (material.bUseTexture ? vec4(ambient + diffuse + specular, 1.0f) : material.color) * base.intensity
     * (material.bUseColor ? vec4(base.color, 1.0f) : vec4(1.0f));

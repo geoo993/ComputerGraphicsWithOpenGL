@@ -61,8 +61,8 @@ out vec4 vOutputColour;
 void main()
 {
 
-    float depthValue = gl_FragCoord.z; // orthographic
-    float depth = LinearizeDepth(depthValue, camera.znear, camera.zfar) / camera.zfar; // divide by zfar for perspective
-    vOutputColour = vec4(vec3(camera.isOrthographic ? depthValue : depth), 1.0f);
+    float depthValue = gl_FragCoord.z;
+    float depth = LinearizeDepth(depthValue, camera.znear, camera.zfar) / camera.zfar;
+    vOutputColour = vec4(vec3(depth), 1.0f);
 }
 

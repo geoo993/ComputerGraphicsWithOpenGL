@@ -26,6 +26,7 @@ public:
 
 	void SetSamplerObjectParameter(GLenum parameter, GLenum value);
 	void SetSamplerObjectParameterf(GLenum parameter, GLfloat value);
+    void SetSamplerObjectParameterfv(GLenum parameter, const GLfloat * value);
     
 	GLint GetWidth() const;
     GLint GetHeight() const;

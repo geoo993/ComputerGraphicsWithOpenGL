@@ -138,14 +138,28 @@ float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
     // remove shadow mapping artifact called shadow acne, using a small little hack called a shadow bias where we simply offset the depth of the surface (or the shadow map) by a small bias amount such that fragments are not incorrectly considered below the surface.
     float biasValue = 0.005f;
     
-    float bias = max(0.05f * (1.0 - dot(normal, lightDir)), biasValue);
-    
+    float bias = max(0.05f * (1.0f - dot(normal, lightDir)), biasValue);
+  
     // check whether current frag pos is in shadow
-    float shadow = currentDepth - bias > closestDepth  ? 1.0f : 0.0f;
+    // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+    // PCF
+    float shadow = 0.0f;
+    vec2 texelSize = 1.0f / textureSize(material.depthMap, 0);
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(material.depthMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += currentDepth - bias > pcfDepth  ? 1.0f : 0.0f;
+        }
+    }
+    shadow /= 9.0f;
+    
+    // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+    if(projCoords.z > 1.0f) shadow = 0.0f;
     
     return shadow;
 }
-
 
 //When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
 layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
@@ -182,5 +196,8 @@ void main()
     vec3 lighting = (ambient + (1.0f - shadow) * (diffuse + specular)) * color;
     
     vOutputColour = vec4(lighting, 1.0f);
+    
+    
+    
 }
 

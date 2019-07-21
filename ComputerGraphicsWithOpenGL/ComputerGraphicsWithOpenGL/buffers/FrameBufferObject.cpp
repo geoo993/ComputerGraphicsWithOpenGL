@@ -70,8 +70,12 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glGenSamplers(1, &m_uiSampler);
             SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-            SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+            //SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+            //SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+            float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+            SetSamplerObjectParameterfv(GL_TEXTURE_BORDER_COLOR, borderColor);
             
             // With the generated depth texture we can attach it as the framebuffer's depth buffer.
             glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_uiDepthTexture, 0);

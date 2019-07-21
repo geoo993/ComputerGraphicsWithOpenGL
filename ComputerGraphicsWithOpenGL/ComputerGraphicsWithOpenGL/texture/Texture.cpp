@@ -290,6 +290,10 @@ void CTexture::SetSamplerObjectParameterf(GLenum parameter, float value)
 	glSamplerParameterf(m_samplerObjectID, parameter, value);
 }
 
+void CTexture::SetSamplerObjectParameterfv(GLenum parameter, const GLfloat * value)
+{
+    glSamplerParameterfv(m_samplerObjectID, parameter, value);
+}
 
 // Binds a texture for rendering
 void CTexture::BindTexture2D(GLint iTextureUnit) const

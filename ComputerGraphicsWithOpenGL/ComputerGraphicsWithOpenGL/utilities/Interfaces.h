@@ -331,7 +331,7 @@ struct IPostProcessing {
     GLboolean m_ssaoNoiseUseLight;
     
     // Depth and Shadow Mapping
-    GLboolean m_isOrthographicCamera;
+    GLboolean m_isOrthographicCamera, m_fromLightPosition;
     
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;

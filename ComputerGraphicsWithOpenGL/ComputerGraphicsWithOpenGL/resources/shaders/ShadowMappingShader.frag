@@ -21,6 +21,7 @@ uniform struct Shadow
 {
     float znear;
     float zfar;
+    bool bFromLightOrCamera;
 } shadow;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
@@ -122,7 +123,8 @@ in VS_OUT
     vec4 vPosLightSpace;
 } fs_in;
 
-float ShadowCalculation(vec4 fragPosLightSpace)
+
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
 {
     // perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
@@ -132,8 +134,14 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     float closestDepth = texture(material.depthMap, projCoords.xy).r;
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
+    
+    // remove shadow mapping artifact called shadow acne, using a small little hack called a shadow bias where we simply offset the depth of the surface (or the shadow map) by a small bias amount such that fragments are not incorrectly considered below the surface.
+    float biasValue = 0.005f;
+    
+    float bias = max(0.05f * (1.0 - dot(normal, lightDir)), biasValue);
+    
     // check whether current frag pos is in shadow
-    float shadow = currentDepth > closestDepth  ? 1.0f : 0.0f;
+    float shadow = currentDepth - bias > closestDepth  ? 1.0f : 0.0f;
     
     return shadow;
 }
@@ -170,7 +178,7 @@ void main()
     spec = pow(max(dot(normal, halfwayDir), 0.0f), 64.0f);
     vec3 specular = spec * lightColor;
     // calculate shadow
-    float shadow = ShadowCalculation(lightSpace);
+    float shadow = ShadowCalculation(lightSpace, normal, lightDir);
     vec3 lighting = (ambient + (1.0f - shadow) * (diffuse + specular)) * color;
     
     vOutputColour = vec4(lighting, 1.0f);

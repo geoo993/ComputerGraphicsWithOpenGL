@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::DepthMapping;
+    m_currentPPFXMode = PostProcessingEffectMode::ShadowMapping;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -607,15 +607,14 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 m_gameWindow->SetViewport(SHADOW_WIDTH, SHADOW_HEIGHT);
                 m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
                 
-                glm::vec3 lightPos = std::get<0>(*m_pointLights.end());
-                GLfloat orthogonalBoxSize = (GLfloat)ZFAR / 2.0f; // this is the cubic bounding box from the light in the scene, determines where the light is projected
+                glm::vec3 lightPos = m_fromLightPosition ? std::get<0>(m_pointLights.back()) : m_pCamera->GetPosition();
+                GLfloat orthogonalBoxSize = m_mapSize * 0.5f; // this is the cubic bounding box from the light in the scene, determines where the light is projected
                 
                 glm::mat4 lightProjection = glm::ortho(-orthogonalBoxSize, orthogonalBoxSize, -orthogonalBoxSize, orthogonalBoxSize, near_plane, far_plane);
                 glm::mat4 lightView = glm::lookAt(lightPos,                     // The  eye is the position of the camera's viewpoint,
                                                   glm::vec3(0.0f),              // The center is where you are looking at (a position which in this case is the center of the screen). If you want to use a direction vector D instead of a center position, you can simply use eye + D as the center position, where D can be a unit vector for example.
                                                   glm::vec3(0.0f, 1.0f, 0.0f)); // The up vector is basically a vector defining your world's "upwards" direction. In almost all normal cases, this will be the vector (0, 1, 0) i.e. towards positive Y.
-                glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-                //glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+                glm::mat4 lightSpaceMatrix = lightProjection * (m_fromLightPosition ? lightView : m_pCamera->GetViewMatrix());
                 CShaderProgram *pLightSpaceProgram = (*m_pShaderPrograms)[51];
                 pLightSpaceProgram->UseProgram();
                 pLightSpaceProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
@@ -644,24 +643,69 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
         case PostProcessingEffectMode::ShadowMapping: {
             GLfloat near_plane = (GLfloat)ZNEAR; // how short the light ray goes
             GLfloat far_plane = (GLfloat)ZFAR; //how far the light ray goes
+            glm::vec3 lightPos = std::get<0>(m_pointLights.back());
+            // shadow projection
+            GLfloat orthogonalBoxSize = m_mapSize * 0.5f; // this is the cubic bounding box from the light to the scene, determines where the light is projected
+            glm::mat4 lightProjection = glm::ortho(-orthogonalBoxSize, orthogonalBoxSize, -orthogonalBoxSize, orthogonalBoxSize, near_plane, far_plane);
+            glm::mat4 lightView = glm::lookAt(lightPos,                     // The  eye is the position of the camera's viewpoint,
+                                              glm::vec3(0.0f),              // The center is where you are looking at (a position which in this case is the center of the screen). If you want to use a direction vector D instead of a center position, you can simply use eye + D as the center position, where D can be a unit vector for example.
+                                              glm::vec3(0.0f, 1.0f, 0.0f)); // The up vector is basically a vector defining your world's "upwards" direction. In almost all normal cases, this will be the vector (0, 1, 0) i.e. towards positive Y.
+            glm::mat4 lightSpaceMatrix = lightProjection * lightView;
             
             // Second Pass - Render Scene to light space
             {
+                currentFBO = m_pFBOs[3];
+                currentFBO->Bind(false); // prepare depth frame buffer (3)
+                m_gameWindow->SetViewport(SHADOW_WIDTH, SHADOW_HEIGHT);
+                m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
                 
+                CShaderProgram *pLightSpaceProgram = (*m_pShaderPrograms)[51];
+                pLightSpaceProgram->UseProgram();
+                pLightSpaceProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
+                RenderScene(true, false, 51);
             }
             
             ResetFrameBuffer();
             
             // Shadow Mapping
             {
+                m_gameWindow->SetViewport();
+                m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
                 
+                // render next scene to framebuffer
+                currentFBO = m_pFBOs[4];
+                currentFBO->Bind(true);
+                
+                // bind depth texture
+                currentFBO = m_pFBOs[3]; // depth mapping texture
+                currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
+                
+                // use depth mapping quad
+                CShaderProgram *pShadowMappingProgram = (*m_pShaderPrograms)[84];
+                pShadowMappingProgram->UseProgram();
+                pShadowMappingProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
+                pShadowMappingProgram->SetUniform("lightPos", lightPos);
+                SetCameraUniform(pShadowMappingProgram, "camera", m_pCamera);
+                SetShadowUniform(pShadowMappingProgram, "shadow", near_plane, far_plane);
+                SetMaterialUniform(pShadowMappingProgram, "material", m_materialColor, m_materialShininess, false);
+                SetLightUniform(pShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+                SetFogMaterialUniform(pShadowMappingProgram, "fog", m_fogColor, m_useFog);
+                SetDepthMappingUniform(pShadowMappingProgram);
+                
+                RenderScene(true, false, 84);
             }
             
             ResetFrameBuffer();
             
             // Third Pass - Render to quad
             {
+                // bind depth texture
+                currentFBO = m_pFBOs[4];
+                currentFBO->BindTexture(static_cast<GLint>(TextureType::DIFFUSE)); // bind to diffuse texture
                 
+                currentFBO = m_pFBOs[0]; // scene texture
+                CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+                RenderToScreen(pImageProcessingProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
             }
             return;
         }

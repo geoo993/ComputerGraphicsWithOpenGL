@@ -606,12 +606,11 @@ void Game::LoadControls() {
     CButton * depthMapping = (CButton *)AddControl(new CButton("Use Ortho Camera", guiBox,
                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthMapping));
     depthMapping->SetValue(&m_isOrthographicCamera);
+    guiBox->y += guiBox->height;
     
-    // Shadow Mapping
-    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CButton * shadowMapping = (CButton *)AddControl(new CButton("Use Ortho Camera", guiBox,
-                                                               GUIMode::DYNAMIC, false, PostProcessingEffectMode::ShadowMapping));
-    shadowMapping->SetValue(&m_isOrthographicCamera);
+    CButton * depthMappingFromLight = (CButton *)AddControl(new CButton("From Light or Camera", guiBox,
+                                                               GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthMapping));
+    depthMappingFromLight->SetValue(&m_fromLightPosition);
     
 }
 

@@ -606,6 +606,12 @@ void Game::LoadControls() {
                                                                GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthMapping));
     depthMappingFromLight->SetValue(&m_fromLightPosition);
     
+    // Depth Mapping
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * shadowMappingFromLight = (CButton *)AddControl(new CButton("From Light or Camera", guiBox,
+                                                                        GUIMode::DYNAMIC, false, PostProcessingEffectMode::ShadowMapping));
+    shadowMappingFromLight->SetValue(&m_fromLightPosition);
+    
 }
 
 void Game::RenderControls() {

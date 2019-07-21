@@ -31,6 +31,7 @@ public:
     GLfloat GetFarPlane();                              // Gets far clipping plane
     GLfloat GetNearPlane();                             // Gets near clipping plane
     GLfloat GetFieldOfView();                           // Gets camera field of view
+    GLfloat GetAspectRatio();                           // Gets camera aspect ratio
     glm::vec3 GetLeft();                               // Gets the camera left vector
     glm::vec3 GetRight();                              // Gets the camera right vector
     glm::vec3 GetUp();                                 // Gets the camera up vector

@@ -615,7 +615,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                  Perspective projections are thus most often used with spotlights and point lights while orthographic projections are used for directional lights.
                  */
                 glm::mat4 orthoProjection = glm::ortho(-orthogonalBoxSize, orthogonalBoxSize, -orthogonalBoxSize, orthogonalBoxSize, near_plane, far_plane);
-                glm::mat4 persProjection = glm::perspective(glm::radians(m_pCamera->GetFieldOfView()), 1.0f, near_plane, far_plane);
+                glm::mat4 persProjection = glm::perspective(glm::radians(m_pCamera->GetFieldOfView()), m_pCamera->GetAspectRatio(), near_plane, far_plane);
                 glm::mat4 lightProjection = m_isOrthographicCamera ? orthoProjection : persProjection;
                 glm::mat4 lightView = glm::lookAt(lightPos,                     // The  eye is the position of the camera's viewpoint,
                                                   glm::vec3(0.0f),              // The center is where you are looking at (a position which in this case is the center of the screen). If you want to use a direction vector D instead of a center position, you can simply use eye + D as the center position, where D can be a unit vector for example.
@@ -649,14 +649,20 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
         case PostProcessingEffectMode::ShadowMapping: {
             GLfloat near_plane = (GLfloat)ZNEAR; // how short the light ray goes
             GLfloat far_plane = (GLfloat)ZFAR; //how far the light ray goes
-            glm::vec3 lightPos = std::get<0>(m_pointLights.back());
+            glm::vec3 lightPos = m_fromLightPosition ? std::get<0>(m_pointLights.back()) : m_pCamera->GetPosition();
             // shadow projection
+            
+            /*
+             Perspective projections make more sense for light sources that have actual locations unlike directional lights.
+             Perspective projections are thus most often used with spotlights and point lights while orthographic projections are used for directional lights.
+             */
+            
             GLfloat orthogonalBoxSize = (GLfloat)SKYBOX; // this is the cubic bounding box from the light to the scene, determines where the light is projected
             glm::mat4 lightProjection = glm::ortho(-orthogonalBoxSize, orthogonalBoxSize, -orthogonalBoxSize, orthogonalBoxSize, near_plane, far_plane);
             glm::mat4 lightView = glm::lookAt(lightPos,                     // The  eye is the position of the camera's viewpoint,
-                                              glm::vec3(0.0f),              // The center is where you are looking at (a position which in this case is the center of the screen). If you want to use a direction vector D instead of a center position, you can simply use eye + D as the center position, where D can be a unit vector for example.
+                                              glm::vec3(0.0f),  // THIS COULD BE OUR SHADOW PROBLEM             // The center is where you are looking at (a position which in this case is the center of the screen). If you want to use a direction vector D instead of a center position, you can simply use eye + D as the center position, where D can be a unit vector for example.
                                               glm::vec3(0.0f, 1.0f, 0.0f)); // The up vector is basically a vector defining your world's "upwards" direction. In almost all normal cases, this will be the vector (0, 1, 0) i.e. towards positive Y.
-            glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+            glm::mat4 lightSpaceMatrix = lightProjection * (m_fromLightPosition ? lightView : m_pCamera->GetViewMatrix());
             
             // Second Pass - Render Scene to light space
             {

@@ -549,6 +549,10 @@ GLfloat CCamera::GetFieldOfView() {
     return m_fieldOfView;
 }
 
+GLfloat CCamera::GetAspectRatio() {
+    return (m_screenWidth/m_screenHeight);
+}
+
 GLboolean CCamera::IsMoving() const {
     return m_isMoving;
 }

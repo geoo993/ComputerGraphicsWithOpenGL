@@ -38,6 +38,12 @@ uniform struct Camera
     bool isOrthographic;
 } camera;
 
+uniform struct Shadow
+{
+    float znear;
+    float zfar;
+} shadow;
+
 in VS_OUT
 {
     vec2 vTexCoord;    // Texture coordinate
@@ -48,7 +54,6 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-uniform bool bUseLinearizeDepth;
 uniform float coverage;        // between (0.0f and 1.0f)
 
 // required when using a perspective projection matrix
@@ -74,11 +79,9 @@ void main()
     
     if (uv.x < (  coverage  ) )
     {
-        float depthValue = texture(material.depthMap, uv).r;
-        float linearizedDepth = LinearizeDepth(depthValue, camera.znear, camera.zfar) / camera.zfar;
-        //vOutputColour = vec4(vec3(LinearizeDepth(depthValue) / far_plane), 1.0f); // perspective
-        //vOutputColour = vec4(vec3(depthValue), 1.0f); // orthographic
-        tc = vec4(vec3(bUseLinearizeDepth ? linearizedDepth : depthValue), 1.0f); // orthographic
+        float depthValue = texture(material.depthMap, uv).r; // orthographic
+        float depth = LinearizeDepth(depthValue, shadow.znear, shadow.zfar) / shadow.zfar; // divide by zfar for perspective
+        tc = vec4(vec3(camera.isOrthographic ? depthValue : depth), 1.0f);
     }
     else if ( uv.x  >=  (  coverage  +   0.003f) )
     {

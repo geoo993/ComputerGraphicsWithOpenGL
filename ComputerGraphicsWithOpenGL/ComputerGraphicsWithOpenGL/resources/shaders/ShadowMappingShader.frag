@@ -1,10 +1,27 @@
-#version 400 core
+#version 410 core
 
 // http://glampert.com/2014/01-26/visualizing-the-depth-buffer/
 // https://www.geeks3d.com/20091216/geexlab-how-to-visualize-the-depth-buffer-in-glsl/
 // https://stackoverflow.com/questions/26406120/viewing-depth-buffer-in-opengl
 // https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
 
+#define NUMBER_OF_POINT_LIGHTS 10
+
+uniform struct Camera
+{
+    vec3 position;
+    vec3 front;
+    float znear;
+    float zfar;
+    bool isMoving;
+    bool isOrthographic;
+} camera;
+
+uniform struct Shadow
+{
+    float znear;
+    float zfar;
+} shadow;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
 uniform struct Material
@@ -28,17 +45,71 @@ uniform struct Material
     vec4 color;
     float shininess;
     float uvTiling;
+    bool bUseAO;
+    bool bUseTexture;
+    bool bUseColor;
 } material;
 
-uniform struct Camera
+uniform struct HRDLight
 {
+    float exposure;
+    float gamma;
+    bool bHDR;
+} hrdlight;
+
+uniform struct Fog {
+    float maxDist;
+    float minDist;
+    vec3 color;
+    bool bUseFog;
+} fog;
+
+// Structure holding light information:  its position, colors, direction etc...
+struct BaseLight
+{
+    vec3 color;
+    float intensity;
+    float ambient;
+    float diffuse;
+    float specular;
+};
+
+struct Attenuation
+{
+    float constant;
+    float linear;
+    float exponent;
+};
+
+struct DirectionalLight
+{
+    BaseLight base;
+    vec3 direction;
+};
+
+struct PointLight
+{
+    BaseLight base;
+    Attenuation attenuation;
     vec3 position;
-    vec3 front;
-    float znear;
-    float zfar;
-    bool isMoving;
-    bool isOrthographic;
-} camera;
+    float range; // This returns a radius between roughly 1.0 and 5.0 based on the light's maximum intensity.
+};
+
+struct SpotLight
+{
+    PointLight pointLight;
+    vec3 direction;
+    float cutOff;
+    float outerCutOff;
+};
+
+uniform DirectionalLight R_directionallight;
+uniform PointLight R_pointlight[NUMBER_OF_POINT_LIGHTS];
+uniform SpotLight R_spotlight;
+uniform bool bUseBlinn, bUseSmoothSpot;
+uniform bool bUseDirectionalLight, bUsePointLight, bUseSpotlight;
+
+uniform vec3 lightPos;
 
 in VS_OUT
 {
@@ -48,49 +119,60 @@ in VS_OUT
     vec3 vWorldPosition;
     vec3 vWorldNormal;
     vec4 vEyePosition;
+    vec4 vPosLightSpace;
 } fs_in;
 
-uniform bool bUseLinearizeDepth;
-uniform float coverage;        // between (0.0f and 1.0f)
-
-// required when using a perspective projection matrix
-float LinearizeDepth(float depth, float near, float far)
+float ShadowCalculation(vec4 fragPosLightSpace)
 {
-    float z = depth * 2.0f - 1.0f; // Back to NDC
-    return (2.0f * near * far) / (far + near - z * (far - near));
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5f + 0.5f;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(material.depthMap, projCoords.xy).r;
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0f : 0.0f;
+    
+    return shadow;
 }
 
-out vec4 vOutputColour;    
+
+//When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
+layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
+layout (location = 1) out vec4 vBrightColor;
+layout (location = 2) out vec3 vPosition;
+layout (location = 3) out vec3 vNormal;
+layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
-    /*
-     Sometimes it can be quite useful to visualize the depth buffer of a rendered frame.
-     Several rendering techniques such as shadow mapping and depth pre-pass rely on the depth buffer.
-     It is always handy to visualize it in real time to make sure it is being written as expected.
-     
-     */
-   
-    vec2 uv = fs_in.vTexCoord.xy;
-    vec4 tc = material.color;
+    vec3 color = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
+    vec3 normal = normalize(fs_in.vWorldNormal);
+    vec3 lightColor = vec3(0.3f);
+    vec4 lightSpace = fs_in.vPosLightSpace;
+    vec3 worldPos = fs_in.vWorldPosition;
+    vec3 viewPos = camera.position + camera.front;
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     
-    if (uv.x < (  coverage  ) )
-    {
-        float depthValue = texture(material.depthMap, uv).r; // orthographic
-        float depth = LinearizeDepth(depthValue, camera.znear, camera.zfar) / camera.zfar; // divide by zfar for perspective
-        tc = vec4(vec3(camera.isOrthographic ? depthValue : depth), 1.0f);
-    }
-    else if ( uv.x  >=  (  coverage  +   0.003f) )
-    {
-        tc = texture(material.ambientMap, uv);
-    }
-    else {
-        
-        if ( coverage > ( 1.0f + 0.003f) ) {
-            tc = texture(material.ambientMap, uv);
-        }
-    }
+    // ambient
+    vec3 ambient = 0.3 * color;
+    // diffuse
+    vec3 lightDir = normalize(lightPos - worldPos);
+    float diff = max(dot(lightDir, normal), 0.0f);
+    vec3 diffuse = diff * lightColor;
+    // specular
+    vec3 viewDir = normalize(viewPos - worldPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = 0.0f;
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    spec = pow(max(dot(normal, halfwayDir), 0.0f), 64.0f);
+    vec3 specular = spec * lightColor;
+    // calculate shadow
+    float shadow = ShadowCalculation(lightSpace);
+    vec3 lighting = (ambient + (1.0f - shadow) * (diffuse + specular)) * color;
     
-    vOutputColour = tc;
+    vOutputColour = vec4(lighting, 1.0f);
 }
 

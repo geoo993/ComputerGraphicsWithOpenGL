@@ -50,7 +50,7 @@ void Game::LoadControls() {
     m_gameWindow->SetInputs(OnMouseEnter_callback, OnMouseMove_callback,
                             OnMouseDown_callback, OnMouseScroll_callback,
                             OnKeyDown_callback);
-
+     
     GUIBoxData *guiBox = new GUIBoxData();
     guiBox->x = 10;
     guiBox->y = 10;
@@ -599,19 +599,20 @@ void Game::LoadControls() {
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
     CButton * depthTesting = (CButton *)AddControl(new CButton("Use Ortho Camera", guiBox,
                                                                GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthTesting));
-    depthTesting->SetValue(&m_useOrthographicCamera);
+    depthTesting->SetValue(&m_isOrthographicCamera);
     
     // Depth Mapping
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
     CButton * depthMapping = (CButton *)AddControl(new CButton("Use Ortho Camera", guiBox,
                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthMapping));
-    depthMapping->SetValue(&m_useOrthographicCamera);
+    depthMapping->SetValue(&m_isOrthographicCamera);
     
     // Shadow Mapping
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
     CButton * shadowMapping = (CButton *)AddControl(new CButton("Use Ortho Camera", guiBox,
                                                                GUIMode::DYNAMIC, false, PostProcessingEffectMode::ShadowMapping));
-    shadowMapping->SetValue(&m_useOrthographicCamera);
+    shadowMapping->SetValue(&m_isOrthographicCamera);
+    
 }
 
 void Game::RenderControls() {
@@ -951,6 +952,27 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
                 break;
             case GLFW_KEY_SPACE:
                 mState.m_isEnabled = !mState.m_isEnabled;
+                break;
+            case GLFW_KEY_I:
+                m_pointLightIndex = (m_pointLightIndex + 1) % m_pointLights.size();
+                break;
+            case GLFW_KEY_Q:
+                std::get<0>(m_pointLights[m_pointLightIndex]).y += 25.0f;
+                break;
+            case GLFW_KEY_A:
+                std::get<0>(m_pointLights[m_pointLightIndex]).y -= 25.0f;
+                break;
+            case GLFW_KEY_W:
+                std::get<0>(m_pointLights[m_pointLightIndex]).x -= 25.0f;
+                break;
+            case GLFW_KEY_E:
+                std::get<0>(m_pointLights[m_pointLightIndex]).x += 25.0f;
+                break;
+            case GLFW_KEY_S:
+                std::get<0>(m_pointLights[m_pointLightIndex]).z -= 25.0f;
+                break;
+            case GLFW_KEY_D:
+                std::get<0>(m_pointLights[m_pointLightIndex]).z += 25.0f;
                 break;
             default:
                 break;

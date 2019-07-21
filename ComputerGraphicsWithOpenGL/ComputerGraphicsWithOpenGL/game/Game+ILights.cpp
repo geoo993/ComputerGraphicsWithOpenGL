@@ -17,6 +17,7 @@ void Game::SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useD
     pShaderProgram->SetUniform("bUseSmoothSpot", useSmoothSpot);
     pShaderProgram->SetUniform("bUseBlinn", useBlinn);
 }
+
 void Game::SetHRDLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                         const GLfloat & exposure, const GLfloat & gamma, const GLboolean &useHDR) {
     pShaderProgram->UseProgram();
@@ -74,6 +75,12 @@ void Game::SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string
     pShaderProgram->SetUniform(uniformName + ".cutOff", spotLight.cutOff);
     pShaderProgram->SetUniform(uniformName + ".outerCutOff", spotLight.outerCutOff);
 
+}
+
+void Game::SetShadowUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const GLfloat &znear, const GLfloat &zfar) {
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform(uniformName+".znear", znear);
+    pShaderProgram->SetUniform(uniformName+".zfar", zfar);
 }
 
 void Game::RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) {

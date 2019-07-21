@@ -29,6 +29,7 @@ Game::Game()
     
     //camera setting
     m_pCamera = nullptr;
+    m_isOrthographicCamera = true;
     
     // materials
     m_parallaxHeightScale = 1.2f;
@@ -78,7 +79,6 @@ Game::Game()
     // Point Light
     m_usePoint = true;
     m_pointIntensity = 18.0f;
-    m_pointLightPositionsIndex = 0;
     
     m_pointLights = {
         std::make_tuple(glm::vec3(  100.0f,  40.0f,  250.0f     ), glm::vec4(  1.0f,  0.1f,  0.9f, 1.0f     )   ),      // 1
@@ -90,8 +90,9 @@ Game::Game()
         std::make_tuple(glm::vec3(  320.0f,  70.0f, 350.0f      ), glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f   )   ),      // 7
         std::make_tuple(glm::vec3(  -600.0f,  10.0f, 370.0f     ), glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f     )   ),      // 8
         std::make_tuple(glm::vec3(  -120.0f,  -50.0f, 233.0f    ), glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f    )   ),      // 9
-        std::make_tuple(glm::vec3(  -600.0f,  1500.0f, 130.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
+        std::make_tuple(glm::vec3(  -600.0f,  1000.0f, 130.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
     };
+    m_pointLightIndex = m_pointLights.size() - 1;
     
     // Spot Light
     m_useSpot = false;
@@ -105,9 +106,6 @@ Game::Game()
     m_changePPFXMode = false;
     m_prevPPFXMode = false;
     m_nextPPFXMode = false;
-    
-    // Depth and Shadow mapping
-    m_useOrthographicCamera = false;
     
     // SSAO
     // generate sample kernel
@@ -338,41 +336,92 @@ void Game::PreRendering() {
 void Game::Render()
 {
     /*
-     currentFBO = m_pFBOs[0];
-     currentFBO->Bind(true);     // prepare frame buffer 3
-     
-     m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
-     RenderScene();
-     
-     currentFBO = m_pFBOs[3];
-     currentFBO->Bind(false);     // prepare frame buffer 3
-     m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
-     RenderScene(true, 51);
-     
-     
-     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-     
-     m_gameWindow->SetViewport();
-     
-     // clear all relevant buffers, set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
-     m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
-     glDisable(GL_DEPTH_TEST);
-     
-     
-     // use depth mapping quad
-     CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[50];
-     SetCameraUniform(pDepthMappingProgram, "camera", m_pCamera);
-     SetMaterialUniform(pDepthMappingProgram, "material", m_materialColor, m_materialShininess, false);
-     SetDepthMappingUniform(pDepthMappingProgram);
-     
-     // bind depth texture
-     currentFBO = m_pFBOs[3];
-     currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
-     
-     currentFBO = m_pFBOs[0];
-     RenderToScreen(pDepthMappingProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
-     */
+    // pass 1
+    currentFBO = m_pFBOs[0];
+    currentFBO->Bind(true);     // prepare frame buffer 3
+
+    m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
+    RenderScene();
     
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    m_gameWindow->SetViewport();
+    m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
+    
+     // pass 2
+    // shadow projection
+    GLfloat near_plane = (GLfloat)ZNEAR; // how short the light ray goes
+    GLfloat far_plane = (GLfloat)ZFAR; //how far the light ray goes
+    glm::vec3 lightPos = std::get<0>(*m_pointLights.end());
+    GLfloat bias = 0.005f; // to fix the Shadow acne
+    GLfloat orthogonalBoxSize = (GLfloat)ZFAR / 2.0f; // this is the cubic bounding box from the light to the scene, determines where the light is projected
+    
+    glm::mat4 lightProjection = glm::ortho(-orthogonalBoxSize, orthogonalBoxSize, -orthogonalBoxSize, orthogonalBoxSize, near_plane, far_plane);
+    glm::mat4 lightView = glm::lookAt(lightPos,                     // The  eye is the position of the camera's viewpoint,
+                                      glm::vec3(0.0f),              // The center is where you are looking at (a position which in this case is the center of the screen). If you want to use a direction vector D instead of a center position, you can simply use eye + D as the center position, where D can be a unit vector for example.
+                                      glm::vec3(0.0f, 1.0f, 0.0f)); // The up vector is basically a vector defining your world's "upwards" direction. In almost all normal cases, this will be the vector (0, 1, 0) i.e. towards positive Y.
+    
+    //glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
+    //glm::mat4 lightSpaceMatrix = lightProjection * m_pCamera->GetViewMatrix();
+    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+    CShaderProgram *pLightSpaceProgram = (*m_pShaderPrograms)[51];
+    pLightSpaceProgram->UseProgram();
+    pLightSpaceProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
+    
+    currentFBO = m_pFBOs[3];
+    currentFBO->Bind(false);     // prepare frame buffer 3
+    m_gameWindow->SetViewport(SHADOW_WIDTH, SHADOW_HEIGHT);
+    m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
+    
+    RenderScene(true, false, 51);
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    m_gameWindow->SetViewport();
+
+    // clear all relevant buffers, set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
+    m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
+    glDisable(GL_DEPTH_TEST);
+
+    // 2. render scene as normal using the generated depth/shadow map
+    // --------------------------------------------------------------
+    m_gameWindow->SetViewport();
+    m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
+    
+    //currentFBO = m_pFBOs[4]; // scene texture
+    //currentFBO->Bind(true);
+    
+    // pass 3
+    // bind depth texture
+    currentFBO = m_pFBOs[3]; // depth mapping texture
+    currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
+
+    // use depth mapping quad
+    CShaderProgram *pShadowMappingProgram = (*m_pShaderPrograms)[84];
+    pShadowMappingProgram->UseProgram();
+    pShadowMappingProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
+    pShadowMappingProgram->SetUniform("lightPos", lightPos);
+    SetCameraUniform(pShadowMappingProgram, "camera", m_pCamera);
+    SetShadowUniform(pShadowMappingProgram, "shadow", near_plane, far_plane);
+    SetMaterialUniform(pShadowMappingProgram, "material", m_materialColor, m_materialShininess, false);
+    SetLightUniform(pShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+    SetFogMaterialUniform(pShadowMappingProgram, "fog", m_fogColor, m_useFog);
+    SetDepthMappingUniform(pShadowMappingProgram);
+
+    RenderScene(true, false, 84);
+    
+//    // render to screen
+//    ResetFrameBuffer();
+//
+//    currentFBO = m_pFBOs[4]; // shadow map scene
+//    //currentFBO->BindTexture(static_cast<GLint>(TextureType::DIFFUSE));
+    
+//    currentFBO = m_pFBOs[0]; // default scene
+//    //currentFBO->BindTexture(static_cast<GLint>(TextureType::AMBIENT));
+//
+//    CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+//    RenderToScreen(pImageProcessingProgram);
+    */
+    
+  
     ChangePPFXScene( m_currentPPFXMode );
     
     // bind framebuffer
@@ -381,7 +430,7 @@ void Game::Render()
     switch (m_currentPPFXMode) {
         case PostProcessingEffectMode::DepthTesting:
             m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
-            RenderScene(true, 83);
+            RenderScene(true, true, 83);
             break;
         default:
             m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);

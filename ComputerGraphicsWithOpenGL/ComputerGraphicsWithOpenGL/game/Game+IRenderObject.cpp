@@ -87,8 +87,6 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & posit
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     if (useHeightMap == true) {
         // Render the height map terrain
@@ -112,6 +110,26 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & posit
     
 }
 
+void  Game::RenderPrimitive(CShaderProgram *pShaderProgram, GameObject *object, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) {
+    glm::vec3 translation = position;
+    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
+        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
+    }
+    
+    object->Transform(translation, rotation, glm::vec3(scale));
+    
+    pShaderProgram->UseProgram();
+    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
+    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
+    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
+    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
+    
+    glm::mat4 model = object->Model();
+    pShaderProgram->SetUniform("matrices.modelMatrix", model);
+    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
+    object->Render(useTexture);
+}
+
 void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale) {
     glm::vec3 translation = position;
     if (m_pHeightmapTerrain->IsHeightMapRendered()) {
@@ -124,8 +142,6 @@ void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm
     
     glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
     pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
-    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
     
     model->Transform(translation, rotation, glm::vec3(scale));
     
@@ -135,126 +151,13 @@ void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm
     model->Render(pShaderProgram);
 }
 
-void Game::RenderCube(CShaderProgram *pShaderProgram, CCube *cube, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) {
-    glm::vec3 translation = position;
-    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
-        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
-    }
-    
-    cube->Transform(translation, rotation, glm::vec3(scale));
-    
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
-    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
-    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
-    
-    glm::mat4 model = cube->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", model);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    cube->Render(useTexture);
-}
-
-void Game::RenderSphere(CShaderProgram *pShaderProgram, CSphere *sphere, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) {
-    
-    glm::vec3 translation = position;
-    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
-        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
-    }
-    
-    sphere->Transform(translation, rotation, glm::vec3(scale));
-    
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    
-    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
-    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
-    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
-        
-    glm::mat4 model = sphere->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", model);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    sphere->Render(useTexture);
-    
-}
-
-void Game::RenderTorus(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale) {
-    
-    glm::vec3 translation = position;
-    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
-        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
-    }
-    
-    m_pTorus->Transform(translation, glm::vec3(0.0f), glm::vec3(scale));
-    
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    
-    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
-    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
-    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
-    
-    glm::mat4 model = m_pTorus->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", model);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    m_pTorus->Render();
-    
-}
-
-void Game::RenderTorusKnot(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale) {
-    glm::vec3 translation = position;
-    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
-        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
-    }
-    
-    m_pTorusKnot->Transform(translation, glm::vec3(0.0f), glm::vec3(scale));
-    
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    
-    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
-    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
-    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
-    
-    glm::mat4 model = m_pTorusKnot->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", model);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    m_pTorusKnot->Render();
-}
-
 void Game::RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale, const GLboolean &useTexture) {
-    glm::vec3 translation = position;
-    if (m_pHeightmapTerrain->IsHeightMapRendered()) {
-        translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
-    }
     
     // Update the metaballs' positions
     float time = (float)m_deltaTime / 1000.0f * 2.0f * 3.14159f * 0.5f;
     m_pMetaballs->Update(time);
     
-    // Render the metaballs
-    m_pMetaballs->Transform(translation, glm::vec3(0.0f), glm::vec3(scale));
-    
-    pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
-    pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
-    
-    glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
-    pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
-    glm::mat4 lightSpaceMatrix = (*m_pCamera->GetOrthographicProjectionMatrix()) * m_pCamera->GetViewMatrix();
-    pShaderProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
-    
-    glm::mat4 model = m_pMetaballs->Model();
-    pShaderProgram->SetUniform("matrices.modelMatrix", model);
-    pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
-    m_pMetaballs->Render(useTexture);
-    
+    // Render the metalballs
+    RenderPrimitive(pShaderProgram, m_pMetaballs, position, glm::vec3(0.0f), scale, useTexture);
 }
+

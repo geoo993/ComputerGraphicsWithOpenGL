@@ -172,6 +172,7 @@ struct IShaderUniform {
 
 struct ILights
 {
+  
     // Light
     GLfloat m_ambient;
     GLfloat m_diffuse;
@@ -194,7 +195,7 @@ struct ILights
     // Point Light
     GLboolean m_usePoint;
     GLfloat m_pointIntensity;
-    GLuint m_pointLightPositionsIndex = 0;
+    GLuint m_pointLightIndex = 0;
     std::vector<std::tuple<glm::vec3, glm::vec4>> m_pointLights;
     
     // Spot Light
@@ -204,6 +205,8 @@ struct ILights
     GLfloat m_spotIntensity;
     GLfloat m_spotCutOff;
     GLfloat m_spotOuterCutOff;
+    
+    // Uniform
     virtual void SetLightUniform(CShaderProgram *pShaderProgram, const GLboolean &useDir, const GLboolean &usePoint,
                                  const GLboolean &useSpot, const GLboolean &useSmoothSpot, const GLboolean& useBlinn) = 0;
     virtual void SetHRDLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
@@ -213,6 +216,7 @@ struct ILights
     virtual void SetPointLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const PointLight& pointLight) = 0;
     virtual void SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const SpotLight& spotLight,
                                      CCamera *camera) = 0;
+    virtual void SetShadowUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const GLfloat &znear, const GLfloat &zfar) = 0;
     virtual void RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) = 0;
     virtual void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale) = 0;
 };
@@ -222,7 +226,7 @@ struct IRenderer
     virtual void PreRendering() = 0;
     virtual void Render() = 0;
     virtual void PostRendering() = 0;
-    virtual void RenderScene(const GLboolean &toCustomShader, const GLint &toCustomShaderIndex) = 0;
+    virtual void RenderScene(const GLboolean &toCustomShader, const GLboolean &includeLampsAndSkybox, const GLint &toCustomShaderIndex) = 0;
 };
 
 struct IRenderObject
@@ -233,14 +237,8 @@ struct IRenderObject
     virtual void RenderEnvSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void ResetSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useHeightMap) = 0;
-    virtual void RenderCube(CShaderProgram *pShaderProgram, CCube *cube, const glm::vec3 & position,
-                             const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderSphere(CShaderProgram *pShaderProgram, CSphere *sphere, const glm::vec3 & position,
-                            const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) = 0;
-    virtual void RenderTorus(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                             const GLfloat & scale) = 0;
-    virtual void RenderTorusKnot(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                 const GLfloat & scale) = 0;
+    virtual void RenderPrimitive(CShaderProgram *pShaderProgram, GameObject *object, const glm::vec3 & position,
+                                const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) = 0;
     virtual void RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position,
                                   const GLfloat & scale, const GLboolean &useTexture) = 0;
 };
@@ -333,7 +331,7 @@ struct IPostProcessing {
     GLboolean m_ssaoNoiseUseLight;
     
     // Depth and Shadow Mapping
-    GLboolean m_useOrthographicCamera;
+    GLboolean m_isOrthographicCamera;
     
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;

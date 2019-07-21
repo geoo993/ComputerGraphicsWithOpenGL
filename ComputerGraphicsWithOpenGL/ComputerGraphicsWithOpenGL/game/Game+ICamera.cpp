@@ -29,7 +29,7 @@ void Game::SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &u
     pShaderProgram->SetUniform(uniformName+".front", camera->GetForward());
     pShaderProgram->SetUniform(uniformName+".znear", camera->GetNearPlane());
     pShaderProgram->SetUniform(uniformName+".zfar", camera->GetFarPlane());
-    pShaderProgram->SetUniform(uniformName+".isOrthographic", m_useOrthographicCamera);
+    pShaderProgram->SetUniform(uniformName+".isOrthographic", m_isOrthographicCamera);
     pShaderProgram->SetUniform(uniformName+".isMoving", camera->IsMoving());
 }
 

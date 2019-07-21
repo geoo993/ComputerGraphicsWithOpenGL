@@ -340,9 +340,7 @@ void Game::SetMotionBlurUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetDepthMappingUniform(CShaderProgram *pShaderProgram) {
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("bUseLinearizeDepth", m_useOrthographicCamera);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
-    
 }
 
 void Game::SetVignettingUniform(CShaderProgram *pShaderProgram){

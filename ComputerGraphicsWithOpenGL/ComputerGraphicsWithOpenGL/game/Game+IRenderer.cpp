@@ -292,7 +292,6 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         // 19
         RenderPrimitive(pWireframeProgram, m_pSpherePBR19, glm::vec3(950.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
         RenderModel(pWireframeProgram, m_teapot19, glm::vec3(950.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
-        
     }
   
 }

@@ -49,6 +49,9 @@
 
 CTexture::CTexture()
 {
+    m_format = GL_RGB;
+    m_path = "";
+    m_type = TextureType::AMBIENT;
 	m_mipMapsGenerated = false;
 }
 CTexture::~CTexture()
@@ -124,13 +127,11 @@ GLboolean CTexture::LoadTexture(const std::string &path, const TextureType &type
     if (pData == nullptr || FreeImage_GetWidth(dib) == 0 || FreeImage_GetHeight(dib) == 0)
         return false;
     
-
-    GLenum format;
     int bada = FreeImage_GetBPP(dib);
-    if(FreeImage_GetBPP(dib) == 32)format = GL_BGRA;
-    if(FreeImage_GetBPP(dib) == 24)format = GL_BGR;
-    if(FreeImage_GetBPP(dib) == 8)format = GL_LUMINANCE;
-    CreateFromData(pData, FreeImage_GetWidth(dib), FreeImage_GetHeight(dib), FreeImage_GetBPP(dib), format, type, generateMipMaps);
+    if(FreeImage_GetBPP(dib) == 32)m_format = GL_BGRA;
+    if(FreeImage_GetBPP(dib) == 24)m_format = GL_BGR;
+    if(FreeImage_GetBPP(dib) == 8)m_format = GL_LUMINANCE;
+    CreateFromData(pData, FreeImage_GetWidth(dib), FreeImage_GetHeight(dib), FreeImage_GetBPP(dib), m_format, type, generateMipMaps);
     
     FreeImage_Unload(dib);
 
@@ -182,6 +183,7 @@ GLuint CTexture::LoadTexture(char const * path, const TextureType &type,
         if(generateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
         glGenSamplers(1, &m_samplerObjectID);
         
+        m_format = format;
         stbi_image_free(data);
     }
     else
@@ -202,6 +204,7 @@ GLuint CTexture::LoadTexture(char const * path, const TextureType &type,
 
 GLuint CTexture::LoadTexture(GLint width, GLint height, GLboolean generateMipMaps, const TextureType &type, const GLvoid * data) {
     
+    m_format = GL_RGB;
     m_path = "";
     m_type = type;
     m_mipMapsGenerated = generateMipMaps;
@@ -214,7 +217,7 @@ GLuint CTexture::LoadTexture(GLint width, GLint height, GLboolean generateMipMap
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, m_format, GL_FLOAT, data);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -250,11 +253,12 @@ GLuint CTexture::LoadHDRTexture(char const * path, const TextureType &type, cons
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrComponents;
     float *data = stbi_loadf(path, &width, &height, &nrComponents, 0);
+    m_format = GL_RGB;
     if (data)
     {
         glGenTextures(1, &m_hdrTextureID);
         glBindTexture(GL_TEXTURE_2D, m_hdrTextureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, data); // note how we specify the texture's data value to be float
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, m_format, GL_FLOAT, data); // note how we specify the texture's data value to be float
         if(generateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
         glGenSamplers(1, &m_samplerObjectID);
         
@@ -347,25 +351,30 @@ void CTexture::Release()
     glDeleteTextures(1, &m_hdrTextureID);
 }
 
-GLint CTexture::GetWidth()
+GLint CTexture::GetWidth() const
 {
 	return m_width;
 }
 
-GLint CTexture::GetHeight()
+GLint CTexture::GetHeight() const
 {
 	return m_height;
 }
 
-GLint CTexture::GetBPP()
+GLint CTexture::GetBPP() const
 {
 	return m_bpp;
 }
 
-std::string CTexture::GetPath(){
+GLenum CTexture::GetFormat() const
+{
+    return m_format;
+}
+
+std::string CTexture::GetPath() {
     return m_path;
 }
 
-TextureType CTexture::GetType(){
+TextureType CTexture::GetType() {
     return m_type;
 }

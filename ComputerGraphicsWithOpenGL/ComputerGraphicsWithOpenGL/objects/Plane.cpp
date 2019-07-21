@@ -33,8 +33,8 @@ void CPlane::Create(const std::string &directory, const std::map<std::string, Te
         m_textures[i]->LoadTexture(directory+it->first, it->second, true);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, m_textures[i]->GetFormat() ==  GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT);
+        m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, m_textures[i]->GetFormat() ==  GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT);
         
         GLfloat aniso;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso);

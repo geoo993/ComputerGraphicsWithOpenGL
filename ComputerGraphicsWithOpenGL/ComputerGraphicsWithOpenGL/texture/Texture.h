@@ -27,9 +27,10 @@ public:
 	void SetSamplerObjectParameter(GLenum parameter, GLenum value);
 	void SetSamplerObjectParameterf(GLenum parameter, GLfloat value);
     
-	GLint GetWidth();
-    GLint GetHeight();
-    GLint GetBPP();
+	GLint GetWidth() const;
+    GLint GetHeight() const;
+    GLint GetBPP() const;
+    GLenum GetFormat() const;
     std::string GetPath();
     TextureType GetType();
 
@@ -39,6 +40,7 @@ public:
     ~CTexture();
 private:
     
+    GLenum m_format;
 	GLint m_width, m_height, m_bpp; // Texture width, height, and bytes per pixel
     GLuint m_textureID, m_hdrTextureID; // Texture id
 	GLuint m_samplerObjectID; // Sampler id

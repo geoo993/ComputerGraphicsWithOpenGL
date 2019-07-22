@@ -85,7 +85,7 @@
 #define SHADOW_WIDTH 1024
 #define SHADOW_HEIGHT 1024
 #define SHADOW_ZNEAR 1.0
-#define SHADOW_ZFAR 1024.0
+#define SHADOW_ZFAR 2000.0
 
 // Default camera values
 #define SPEED 50.0f

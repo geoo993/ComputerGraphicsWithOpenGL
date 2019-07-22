@@ -42,6 +42,8 @@ uniform struct Shadow
 {
     float znear;
     float zfar;
+    bool bFromLightOrCamera;
+    bool bShowDepth;
 } shadow;
 
 in VS_OUT

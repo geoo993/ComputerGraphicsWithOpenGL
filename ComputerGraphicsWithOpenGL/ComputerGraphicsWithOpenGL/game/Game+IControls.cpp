@@ -186,6 +186,10 @@ void Game::LoadControls() {
     useFog->SetValue(&m_useFog);
     guiBox->y += guiBox->height;
     
+    CButton * showTerrain = (CButton *)AddControl(new CButton("Show Terrain", guiBox));
+    showTerrain->SetValue(&m_showTerrain);
+    guiBox->y += guiBox->height;
+    
     /// Post Processing Effects Selection
     guiBox->width -= 100;
     CButton * previousPPFX = (CButton *)AddControl(new CButton("Prev", guiBox));
@@ -196,7 +200,7 @@ void Game::LoadControls() {
     nextPPFX->SetValue(&m_nextPPFXMode);
     
     /// Post Processing Effects Coverage
-    GLint ppfxY = (guiBox->height * m_pSkybox->GetNumberOfSkyboxes()) + (guiBox->height * 2) + 5;
+    GLint ppfxY = (guiBox->height * m_pSkybox->GetNumberOfSkyboxes()) + (guiBox->height * 3) + 5;
     //guiBox->y += ppfxY;
     guiBox->width += 100;
     guiBox->x -= 100;
@@ -606,11 +610,17 @@ void Game::LoadControls() {
                                                                GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthMapping));
     depthMappingFromLight->SetValue(&m_fromLightPosition);
     
-    // Depth Mapping
+    // Directional Shaddow Mapping
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
     CButton * shadowMappingFromLight = (CButton *)AddControl(new CButton("From Light or Camera", guiBox,
                                                                         GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
     shadowMappingFromLight->SetValue(&m_fromLightPosition);
+    
+    // Omnidirectional Shadow Mapping
+    guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * omniShadowMappingShowDepth = (CButton *)AddControl(new CButton("Show Depth", guiBox,
+                                                                         GUIMode::DYNAMIC, false, PostProcessingEffectMode::OmnidirectionalShadowMapping));
+    omniShadowMappingShowDepth->SetValue(&m_showDepth);
     
 }
 
@@ -972,12 +982,6 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
                 break;
             case GLFW_KEY_D:
                 std::get<0>(m_pointLights[m_pointLightIndex]).z += 25.0f;
-                break;
-            case GLFW_KEY_O:
-                m_fieldOfView -= 25.0f;
-                break;
-            case GLFW_KEY_P:
-                m_fieldOfView += 25.0f;
                 break;
             default:
                 break;

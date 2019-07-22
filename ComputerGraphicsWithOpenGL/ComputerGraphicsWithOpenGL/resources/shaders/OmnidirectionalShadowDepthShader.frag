@@ -6,6 +6,7 @@ uniform struct Shadow
     float znear;
     float zfar;
     bool bFromLightOrCamera;
+    bool bShowDepth;
 } shadow;
 
 uniform vec3 lightPos;

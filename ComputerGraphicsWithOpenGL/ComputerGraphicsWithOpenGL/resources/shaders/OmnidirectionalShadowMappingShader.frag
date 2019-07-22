@@ -22,6 +22,7 @@ uniform struct Shadow
     float znear;
     float zfar;
     bool bFromLightOrCamera;
+    bool bShowDepth;
 } shadow;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...
@@ -70,7 +71,7 @@ float ShadowCalculation(vec3 fragPos)
     vec3 fragToLight = fragPos - lightPos;
     // ise the fragment to light vector to sample from the depth map
  
-    float closestDepth = texture(material.cubeMap, fragToLight).r;
+    float closestDepth = texture(material.shadowMap, fragToLight).r;
     
     // it is currently in linear range between [0,1], let's re-transform it back to original depth value
     closestDepth *= shadow.zfar;
@@ -79,10 +80,7 @@ float ShadowCalculation(vec3 fragPos)
     // test for shadows
     float bias = 0.05f; // we use a much larger bias since depth is now in [near_plane, far_plane] range
     float shadow = currentDepth -  bias > closestDepth ? 1.0f : 0.0f;
-    // display closestDepth as debug (to visualize depth cubemap)
-    // FragColor = vec4(vec3(closestDepth / far_plane), 1.0);
-    
-    
+   
     return shadow;
 }
 
@@ -99,34 +97,37 @@ void main()
     vec3 normal = normalize(fs_in.vWorldNormal);
     vec3 lightColor = vec3(0.3f);
     vec3 worldPos = fs_in.vWorldPosition;
-    vec3 viewPos = camera.position;// + camera.front;
+    vec3 viewPos = camera.position + camera.front;
     vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     
-     
-    // ambient
-    vec3 ambient = 0.3f * color;
-    // diffuse
-    vec3 lightDir = normalize(lightPos - worldPos);
-    float diff = max(dot(lightDir, normal), 0.0f);
-    vec3 diffuse = diff * lightColor;
-    // specular
-    vec3 viewDir = normalize(viewPos - worldPos);
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = 0.0f;
-    vec3 halfwayDir = normalize(lightDir + viewDir);
-    spec = pow(max(dot(normal, halfwayDir), 0.0f), 64.0f);
-    vec3 specular = spec * lightColor;
-    // calculate shadow
-    float shadow = ShadowCalculation(worldPos);
-    vec3 lighting = (ambient + (1.0f - shadow) * (diffuse + specular)) * color;
+    if (shadow.bShowDepth) {
+        // get vector between fragment position and light position
+        vec3 fragToLight = worldPos - lightPos;
+        // ise the fragment to light vector to sample from the depth map
     
-    vOutputColour = vec4(lighting, 1.0f);
+        float closestDepth = texture(material.shadowMap, fragToLight).r;
+        result = vec4(vec3(closestDepth), 1.0f);
+    } else {
+        // ambient
+        vec3 ambient = 0.3f * color;
+        // diffuse
+        vec3 lightDir = normalize(lightPos - worldPos);
+        float diff = max(dot(lightDir, normal), 0.0f);
+        vec3 diffuse = diff * lightColor;
+        // specular
+        vec3 viewDir = normalize(viewPos - worldPos);
+        vec3 reflectDir = reflect(-lightDir, normal);
+        float spec = 0.0f;
+        vec3 halfwayDir = normalize(lightDir + viewDir);
+        spec = pow(max(dot(normal, halfwayDir), 0.0f), 64.0f);
+        vec3 specular = spec * lightColor;
+        // calculate shadow
+        float shadowColor = ShadowCalculation(worldPos);
+        vec3 lighting = (ambient + (1.0f - shadowColor) * (diffuse + specular)) * color;
+        
+        result = vec4(lighting, 1.0f);
+    }
     
-//    // get vector between fragment position and light position
-//    vec3 fragToLight = worldPos - lightPos;
-//    // ise the fragment to light vector to sample from the depth map
-//
-//    float closestDepth = texture(material.cubeMap, fragToLight).r;
-//    vOutputColour = vec4(vec3(closestDepth / shadow.zfar), 1.0f);
+    vOutputColour = result;
 }
 

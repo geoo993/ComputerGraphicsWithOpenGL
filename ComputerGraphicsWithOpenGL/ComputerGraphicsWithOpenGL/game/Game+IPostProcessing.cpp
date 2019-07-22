@@ -601,8 +601,8 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
         }
         case PostProcessingEffectMode::DepthMapping: {
             
-            GLfloat near_plane = (GLfloat)ZNEAR; // how short the light ray goes
-            GLfloat far_plane = (GLfloat)ZFAR; //how far the light ray goes
+            GLfloat near_plane = (GLfloat)SHADOW_ZNEAR; // how short the light ray goes
+            GLfloat far_plane = (GLfloat)SHADOW_ZFAR; //how far the light ray goes
             
             // Second Pass - Render Scene to light space
             {
@@ -651,8 +651,8 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::DirectionalShadowMapping: {
-            GLfloat near_plane = (GLfloat)ZNEAR; // how short the light ray goes
-            GLfloat far_plane = (GLfloat)ZFAR; //how far the light ray goes
+            GLfloat near_plane = (GLfloat)SHADOW_ZNEAR; // how short the light ray goes
+            GLfloat far_plane = (GLfloat)SHADOW_ZFAR; //how far the light ray goes
             glm::vec3 lightPos = m_fromLightPosition ? std::get<0>(m_pointLights.back()) : m_pCamera->GetPosition();
             // shadow projection
             
@@ -725,10 +725,9 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::OmnidirectionalShadowMapping: {
-            GLfloat near_plane = (GLfloat)ZNEAR; // how short the light ray goes
-            GLfloat far_plane = (GLfloat)ZFAR; //how far the light ray goes
-            GLboolean useShadows = true;
-            glm::vec3 lightPos = m_fromLightPosition ? std::get<0>(m_pointLights.back()) : m_pCamera->GetPosition();
+            GLfloat near_plane = (GLfloat)SHADOW_ZNEAR; // how short the light ray goes
+            GLfloat far_plane = (GLfloat)SHADOW_ZFAR; //how far the light ray goes
+            glm::vec3 lightPos = std::get<0>(m_pointLights.back());
             
             // Second Pass - Render Scene to light space
             {
@@ -736,7 +735,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 // configure global opengl state
                 // -----------------------------
                 m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
-                glEnable(GL_CULL_FACE);
                 
                 // 0. create depth cubemap transformation matrices
                 // -----------------------------------------------
@@ -779,14 +777,13 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 
                 // bind depth texture
                 currentFBO = m_pFBOs[8]; // depth mapping texture
-                currentFBO->BindDepthCubeMap(static_cast<GLint>(TextureType::CUBEMAP));
+                currentFBO->BindDepthCubeMap(static_cast<GLint>(TextureType::SHADOWMAP));
                 
                 // 2. render scene as normal
                 // -------------------------
                 CShaderProgram *pOmnidirectionalShadowMappingProgram = (*m_pShaderPrograms)[86];
                 pOmnidirectionalShadowMappingProgram->UseProgram();
                 pOmnidirectionalShadowMappingProgram->SetUniform("lightPos", lightPos);
-                pOmnidirectionalShadowMappingProgram->SetUniform("shadows", useShadows);
                 SetCameraUniform(pOmnidirectionalShadowMappingProgram, "camera", m_pCamera);
                 SetShadowUniform(pOmnidirectionalShadowMappingProgram, "shadow", near_plane, far_plane);
                 SetMaterialUniform(pOmnidirectionalShadowMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);

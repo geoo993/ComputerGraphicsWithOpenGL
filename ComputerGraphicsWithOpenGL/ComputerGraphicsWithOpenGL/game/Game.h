@@ -49,8 +49,6 @@ private:
 // properties
 private:
     
-    GLfloat m_fieldOfView;
-    
     // screens
     CQuad * m_pQuad;
     
@@ -64,6 +62,7 @@ private:
     
     // terrain
     GLfloat m_mapSize;
+    GLboolean m_showTerrain;
     CPlane *m_pPlanarTerrain;
     CHeightMapTerrain *m_pHeightmapTerrain;
     float m_heightMapMinHeight, m_heightMapMaxHeight;

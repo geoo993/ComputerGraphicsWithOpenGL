@@ -22,6 +22,7 @@ uniform struct Shadow
     float znear;
     float zfar;
     bool bFromLightOrCamera;
+    bool bShowDepth;
 } shadow;
 
 // Structure holding material information:  its ambient, diffuse, specular, etc...

@@ -13,8 +13,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     const GLfloat zfront = -200.0f;
     const GLfloat zback = 300.0f;
     m_sphereRotation += m_deltaTime * 0.02f;
-    /*
-     
+   
     /// Skybox
     {
         // reset cubmap
@@ -33,7 +32,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
             RenderSkyBox(pSkyBoxProgram);
         }
     }
-    */
+    
 //    /// Terrain
 //    {
 //        GLboolean useHeightMap = false;
@@ -43,18 +42,6 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
 //        RenderTerrain(pTerrainProgram, glm::vec3(0.0f, -400.0f, 0), glm::vec3(0.0f), 1.0f, useHeightMap);
 //    }
    
-    /// Render Lamps
-    {
-        GLint lampsIndex = includeLampsAndSkybox ? (toCustomShader ? toCustomShaderIndex : 4) : 4;
-        CShaderProgram *pLampProgram = (*m_pShaderPrograms)[lampsIndex];
-        SetCameraUniform(pLampProgram, "camera", m_pCamera);
-        for (auto it = m_pointLights.begin(); it != m_pointLights.end(); ++it) {
-            glm::vec3 position = std::get<0>(*it);
-            glm::vec4 color = std::get<1>(*it);
-            SetMaterialUniform(pLampProgram, "material", color, m_materialShininess, useAO);
-            RenderLamp(pLampProgram, position, 10.0f);
-        }
-    }
 
     GLboolean isPBR =
     m_currentPPFXMode == PostProcessingEffectMode::PBR
@@ -107,19 +94,11 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     }
     
     
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
-    pShaderProgram->SetUniform("bReverseNormals", 1); // A small little hack to invert normals when drawing cube from the inside so lighting still works.
-    RenderPrimitive(pShaderProgram, m_pInteriorBox, glm::vec3(-300.0f,  100.0f,  0.0f ), glm::vec3(0.0f), 50.0f); // Render Big cube underneath
-    pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
-    //glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    
-    /*
-    /// Terrain
+    if (m_showTerrain)
+        /// Terrain
     {
-        glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
+        
+        //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
         pShaderProgram->UseProgram();
         pShaderProgram->SetUniform("bReverseNormals", 1);// A small little hack to invert normals when drawing cube from the inside so lighting still works.
         if (isPBR) {
@@ -127,14 +106,26 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         }
         
         RenderTerrain(pShaderProgram, glm::vec3(0.0f, -100.0f, 0), glm::vec3(0.0f), 1.0f, false);
-    
+        
         if (isPBR) {
             SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
         }
         pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
+        //glEnable(GL_CULL_FACE);
+    } else
+    /// InterioBox
+    {
         glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+        //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
+        pShaderProgram->UseProgram();
+        pShaderProgram->SetUniform("bReverseNormals", 1); // A small little hack to invert normals when drawing cube from the inside so lighting still works.
+        RenderPrimitive(pShaderProgram, m_pInteriorBox, glm::vec3(0.0f,  0.0f,  0.0f ), glm::vec3(0.0f), 50.0f); // Render Big cube underneath
+        pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
+        //glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
     }
-    */
+    
     
     /// Trolley
     {
@@ -172,6 +163,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     RenderPrimitive(pShaderProgram, m_pSpherePBR10, glm::vec3(-450.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
     RenderModel(pShaderProgram, m_teapot10, glm::vec3(-450.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
   
+
     /*
      
     /// Bump Mapping
@@ -313,4 +305,18 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         RenderModel(pWireframeProgram, m_teapot19, glm::vec3(950.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
     }
   */
+    
+    /// Render Lamps
+    {
+        GLint lampsIndex = includeLampsAndSkybox ? (toCustomShader ? toCustomShaderIndex : 4) : 4;
+        CShaderProgram *pLampProgram = (*m_pShaderPrograms)[lampsIndex];
+        SetCameraUniform(pLampProgram, "camera", m_pCamera);
+        for (auto it = m_pointLights.begin(); it != m_pointLights.end(); ++it) {
+            glm::vec3 position = std::get<0>(*it);
+            glm::vec4 color = std::get<1>(*it);
+            SetMaterialUniform(pLampProgram, "material", color, m_materialShininess, useAO);
+            RenderLamp(pLampProgram, position, 10.0f);
+        }
+    }
+    
 }

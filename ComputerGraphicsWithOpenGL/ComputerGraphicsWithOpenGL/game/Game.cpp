@@ -90,7 +90,7 @@ Game::Game()
         std::make_tuple(glm::vec3(  320.0f,  70.0f, 350.0f      ), glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f   )   ),      // 7
         std::make_tuple(glm::vec3(  -600.0f,  10.0f, 370.0f     ), glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f     )   ),      // 8
         std::make_tuple(glm::vec3(  -120.0f,  -50.0f, 233.0f    ), glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f    )   ),      // 9
-        std::make_tuple(glm::vec3(  -300.0f,  100.0f, 130.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
+        std::make_tuple(glm::vec3(  0.0f,  0.0f, 0.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
     };
     m_pointLightIndex = m_pointLights.size() - 1;
     
@@ -103,6 +103,7 @@ Game::Game()
     
     // Depth and Shadow Mapping
     m_fromLightPosition = true;
+    m_showDepth = false;
     
     // PPFX
     m_ffaaOffset = 0.0f;
@@ -155,6 +156,7 @@ Game::Game()
     
     // terrain
     m_mapSize = (GLfloat)ZFAR;
+    m_showTerrain = true;
     m_pPlanarTerrain = nullptr;
     m_pHeightmapTerrain = nullptr;
     m_heightMapMinHeight = 0.0f ;
@@ -240,8 +242,6 @@ Game::Game()
     // inputs
     m_mouseButtonDown = false;
     m_mouseX, m_mouseY = 0.0f;
-    
-    m_fieldOfView = 90.0f;
 }
 
 // Destructor
@@ -342,73 +342,7 @@ void Game::PreRendering() {
 // Render scene method runs
 void Game::Render()
 {
-    GLfloat near_plane = 1.0f;
-    //GLfloat far_plane  = 25.0f;
-    //GLfloat near_plane = (GLfloat)ZNEAR; // how short the light ray goes
-    GLfloat far_plane = (GLfloat)ZFAR; //how far the light ray goes
-    glm::vec3 lightPos = std::get<0>(m_pointLights.back());
-    //GLfloat fieldOfView = 90.0f;//(GLfloat)SKYBOX;
-   
-    // configure global opengl state
-    // -----------------------------
-    m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
-    //glEnable(GL_CULL_FACE);
     
-    // 0. create depth cubemap transformation matrices
-    // -----------------------------------------------
-    glm::mat4 shadowProj = glm::perspective(glm::radians(m_fieldOfView), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
-    std::vector<glm::mat4> shadowTransforms;
-    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
-    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
-    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)));
-    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)));
-    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
-    shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
-    
-    // 1. render scene to depth cubemap
-    // --------------------------------
-    m_gameWindow->SetViewport(SHADOW_WIDTH, SHADOW_HEIGHT);
-    currentFBO = m_pFBOs[8];
-    currentFBO->Bind(false); // prepare depth frame buffer (7)
-    m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
-    
-    CShaderProgram *pLightSpaceProgram = (*m_pShaderPrograms)[85];
-    pLightSpaceProgram->UseProgram();
-    pLightSpaceProgram->SetUniform("lightPos", lightPos);
-    for (unsigned int i = 0; i < 6; ++i) {
-        pLightSpaceProgram->SetUniform("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
-    }
-    SetShadowUniform(pLightSpaceProgram, "shadow", near_plane, far_plane);
-    SetMaterialUniform(pLightSpaceProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
-    RenderScene(true, false, 85);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    m_gameWindow->SetViewport();
-    m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
-    
-   
-        
-    // bind depth texture
-    currentFBO = m_pFBOs[8]; // depth mapping texture
-    currentFBO->BindDepthCubeMap(static_cast<GLint>(TextureType::CUBEMAP));
-    
-    // 2. render scene as normal
-    // -------------------------
-    CShaderProgram *pOmnidirectionalShadowMappingProgram = (*m_pShaderPrograms)[86];
-    pOmnidirectionalShadowMappingProgram->UseProgram();
-    pOmnidirectionalShadowMappingProgram->SetUniform("lightPos", lightPos);
-//    pOmnidirectionalShadowMappingProgram->SetUniform("shadows", useShadows);
-    SetCameraUniform(pOmnidirectionalShadowMappingProgram, "camera", m_pCamera);
-    SetShadowUniform(pOmnidirectionalShadowMappingProgram, "shadow", near_plane, far_plane);
-    SetMaterialUniform(pOmnidirectionalShadowMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
-    //SetLightUniform(pOmnidirectionalShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-    //SetFogMaterialUniform(pOmnidirectionalShadowMappingProgram, "fog", m_fogColor, m_useFog);
-    
-    RenderScene(true, false, 86);
-  
-    
-    /*
-     
     ChangePPFXScene( m_currentPPFXMode );
     
     // bind framebuffer
@@ -424,7 +358,6 @@ void Game::Render()
     
     // Post Processing Effects
     RenderPPFX( m_currentPPFXMode );
-     */
     
     // Draw the 2D graphics after the 3D graphics
     RenderHUD();

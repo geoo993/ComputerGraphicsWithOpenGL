@@ -81,6 +81,8 @@ void Game::SetShadowUniform(CShaderProgram *pShaderProgram, const std::string &u
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName+".znear", znear);
     pShaderProgram->SetUniform(uniformName+".zfar", zfar);
+    pShaderProgram->SetUniform(uniformName+".bFromLightOrCamera", m_fromLightPosition);
+    pShaderProgram->SetUniform(uniformName+".bShowDepth", m_showDepth);
 }
 
 void Game::RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) {

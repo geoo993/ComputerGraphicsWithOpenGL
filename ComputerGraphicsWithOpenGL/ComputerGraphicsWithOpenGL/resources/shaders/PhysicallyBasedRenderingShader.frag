@@ -124,6 +124,7 @@ uniform struct Material
     sampler2D aoMap;                // 7.   ambient oclusion map
     samplerCube cubeMap;            // 18.  sky box cube map
     samplerCube irradianceMap;      // 19.  sky box irradiance cube map
+    samplerCube shadowMap;          // 10.  shadow cube map
     
     vec4 color;
     

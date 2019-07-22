@@ -288,6 +288,7 @@ std::vector<CTexture*> CModel::ProcessMaterials(const aiScene* scene, const GLui
         //std::cout << "opacity type: " << aiTextureType_OPACITY << ", texture index: " << i << std::endl;
     }
     
+    /*
     // 10. Reflection texture, Contains the color of a perfect mirror reflection.
     for(GLuint i = 0; i < material->GetTextureCount(aiTextureType_REFLECTION); i++)
     {
@@ -295,7 +296,7 @@ std::vector<CTexture*> CModel::ProcessMaterials(const aiScene* scene, const GLui
         if(reflectionMap != nullptr)textures.insert(textures.end(), reflectionMap);
         //std::cout << "reflection type: " << aiTextureType_REFLECTION << ", texture index: " << i << std::endl;
     }
-    
+    */
     return textures;
 }
 

@@ -28,7 +28,7 @@ uniform struct Material
     sampler2D aoMap;                // 7.   ambient oclusion map
     sampler2D glossinessMap;        // 8.   glossiness map
     sampler2D opacityMap;           // 9.   opacity map
-    sampler2D reflectionMap;        // 10.  reflection map
+    samplerCube shadowMap;          // 10.  shadow cube map
     sampler2D depthMap;             // 11.  depth map
     sampler2D noiseMap;             // 12.  noise map
     sampler2D maskMap;              // 13.  mask map

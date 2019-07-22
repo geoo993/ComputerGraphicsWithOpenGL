@@ -22,7 +22,7 @@ void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string 
     pShaderProgram->SetUniform(uniformName+".aoMap", 7);                // ambient oclusion map
     pShaderProgram->SetUniform(uniformName+".glossinessMap", 8);        // glossiness/shininess map
     pShaderProgram->SetUniform(uniformName+".opacityMap", 9);           // opacity map
-    pShaderProgram->SetUniform(uniformName+".reflectionMap", 10);       // reflection map
+    pShaderProgram->SetUniform(uniformName+".shadowMap", 10);           // shadow cube map
     pShaderProgram->SetUniform(uniformName+".depthMap", 11);            // depth map
     pShaderProgram->SetUniform(uniformName+".noiseMap", 12);            // noise map
     pShaderProgram->SetUniform(uniformName+".maskMap", 13);             // mask map
@@ -32,7 +32,6 @@ void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string 
     pShaderProgram->SetUniform(uniformName+".roughnessMap", 17);        // roughness, smoothness map
     pShaderProgram->SetUniform(uniformName+".cubeMap", 18);             // sky box cube map
     pShaderProgram->SetUniform(uniformName+".irradianceMap", 19);       // sky box irradiance cube map
-    pShaderProgram->SetUniform(uniformName+".shadowMap", 20);           // shadow cube map
     pShaderProgram->SetUniform(uniformName+".color", color);
     pShaderProgram->SetUniform(uniformName+".shininess", shininess);
     pShaderProgram->SetUniform(uniformName+".uvTiling", uvTiling);

@@ -25,7 +25,7 @@ enum class TextureType {
     AO,
     GLOSSINESS,
     OPACITY,
-    REFLECTION,
+    SHADOWMAP,
     DEPTH,
     NOISE,
     MASK,
@@ -35,24 +35,7 @@ enum class TextureType {
     ROUGHNESS,
     CUBEMAP,
     IRRADIANCEMAP,
-    SHADOWMAP,
     UNKNOWN
 };
 
-/*
-// Then you just need to define their string values.
-template<> char const* enumStrings<TextureType>::data[] = {
-    "ambientMap",
-    "diffuseMap",
-    "specularMap",
-    "normalMap",
-    "heightMap",
-    "emissionMap",
-    "displacementMap",
-    "glossinessMap",
-    "opacityMap",
-    "reflectionMap",
-    "unknown"
-};
-*/
 #endif /* TextureType_h */

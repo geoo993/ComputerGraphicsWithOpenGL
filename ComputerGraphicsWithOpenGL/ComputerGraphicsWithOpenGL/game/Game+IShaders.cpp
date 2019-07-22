@@ -118,8 +118,8 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("LensFlareShader.frag");
     sShaderFileNames.push_back("DepthMappingShader.vert");// 50
     sShaderFileNames.push_back("DepthMappingShader.frag");
-    sShaderFileNames.push_back("LightSpaceShader.vert");// 51
-    sShaderFileNames.push_back("LightSpaceShader.frag");
+    sShaderFileNames.push_back("DirectionalShadowDepthShader.vert");// 51
+    sShaderFileNames.push_back("DirectionalShadowDepthShader.frag");
     sShaderFileNames.push_back("ToneMappingShader.vert");// 52
     sShaderFileNames.push_back("ToneMappingShader.frag");
     sShaderFileNames.push_back("FastApproximateAntiAliasingShader.vert");// 53
@@ -185,8 +185,14 @@ void Game::LoadShaderPrograms(const std::string &path) {
     sShaderFileNames.push_back("SilhouetteShader.frag");
     sShaderFileNames.push_back("DepthTestingShader.vert");// 83
     sShaderFileNames.push_back("DepthTestingShader.frag");
-    sShaderFileNames.push_back("ShadowMappingShader.vert");// 84
-    sShaderFileNames.push_back("ShadowMappingShader.frag");
+    sShaderFileNames.push_back("DirectionalShadowMappingShader.vert");// 84
+    sShaderFileNames.push_back("DirectionalShadowMappingShader.frag");
+    sShaderFileNames.push_back("OmnidirectionalShadowDepthShader.vert");// 85
+    sShaderFileNames.push_back("OmnidirectionalShadowDepthShader.geom");
+    sShaderFileNames.push_back("OmnidirectionalShadowDepthShader.frag");
+    sShaderFileNames.push_back("OmnidirectionalShadowMappingShader.vert");// 86
+    sShaderFileNames.push_back("OmnidirectionalShadowMappingShader.frag");
+    
     
     for (int i = 0; i < (int) sShaderFileNames.size(); i++) {
         std::string sExt = sShaderFileNames[i].substr((int) sShaderFileNames[i].size()-4, 4);
@@ -606,7 +612,6 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pLensFlareShader->LinkProgram();
     m_pShaderPrograms->push_back(pLensFlareShader);
     
-    
     // Create the Depth Mapping shader program
     CShaderProgram *pDepthMappingShader = new CShaderProgram;
     pDepthMappingShader->CreateProgram();
@@ -615,7 +620,7 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pDepthMappingShader->LinkProgram();
     m_pShaderPrograms->push_back(pDepthMappingShader);
     
-    // Create the Light Space shader program
+    // Create the Directional Shadow Depth Shader program
     CShaderProgram *pLightSpaceShader = new CShaderProgram;
     pLightSpaceShader->CreateProgram();
     pLightSpaceShader->AddShaderToProgram(&shShaders[105]);
@@ -880,13 +885,30 @@ void Game::LoadShaderPrograms(const std::string &path) {
     pDepthTestingProgram->LinkProgram();
     m_pShaderPrograms->push_back(pDepthTestingProgram);
     
-    // Shadow Mapping Shader
-    CShaderProgram *pShadowMappingProgram = new CShaderProgram;
-    pShadowMappingProgram->CreateProgram();
-    pShadowMappingProgram->AddShaderToProgram(&shShaders[172]);
-    pShadowMappingProgram->AddShaderToProgram(&shShaders[173]);
-    pShadowMappingProgram->LinkProgram();
-    m_pShaderPrograms->push_back(pShadowMappingProgram);
+    // // Create the Directional Shadow Mapping Shader program
+    CShaderProgram *pDirectionalShadowMappingProgram = new CShaderProgram;
+    pDirectionalShadowMappingProgram->CreateProgram();
+    pDirectionalShadowMappingProgram->AddShaderToProgram(&shShaders[172]);
+    pDirectionalShadowMappingProgram->AddShaderToProgram(&shShaders[173]);
+    pDirectionalShadowMappingProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pDirectionalShadowMappingProgram);
+    
+    // Omnidirectional Shadow Depth Shader
+    CShaderProgram *pOmnidirectionalShadowDepthProgram = new CShaderProgram;
+    pOmnidirectionalShadowDepthProgram->CreateProgram();
+    pOmnidirectionalShadowDepthProgram->AddShaderToProgram(&shShaders[174]);
+    pOmnidirectionalShadowDepthProgram->AddShaderToProgram(&shShaders[175]);
+    pOmnidirectionalShadowDepthProgram->AddShaderToProgram(&shShaders[176]);
+    pOmnidirectionalShadowDepthProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pOmnidirectionalShadowDepthProgram);
+    
+    // Omnidirectional Shadow Mapping Shader
+    CShaderProgram *pOmnidirectionalShadowMappingProgram = new CShaderProgram;
+    pOmnidirectionalShadowMappingProgram->CreateProgram();
+    pOmnidirectionalShadowMappingProgram->AddShaderToProgram(&shShaders[177]);
+    pOmnidirectionalShadowMappingProgram->AddShaderToProgram(&shShaders[178]);
+    pOmnidirectionalShadowMappingProgram->LinkProgram();
+    m_pShaderPrograms->push_back(pOmnidirectionalShadowMappingProgram);
 }
 
 

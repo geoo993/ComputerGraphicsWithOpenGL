@@ -51,7 +51,7 @@ layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl
 
 void main()
 {
-    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     
     if (bUseEnvCubemap) {
         

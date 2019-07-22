@@ -49,6 +49,8 @@ private:
 // properties
 private:
     
+    GLfloat m_fieldOfView;
+    
     // screens
     CQuad * m_pQuad;
     
@@ -109,6 +111,7 @@ private:
     CCube * m_pCube12;
     CCube * m_pCube13;
     CCube * m_pCube14;
+    CCube * m_pInteriorBox;
     
     // lamp
     CCube *m_pLamp;

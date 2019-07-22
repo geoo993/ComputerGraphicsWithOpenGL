@@ -14,9 +14,9 @@ void Game::InitialiseAudio(const std::string &path){
     m_audioFiles.push_back(path+"/audio/Kai_Engel_-_03_-_Brooks.mp3");
     
     //// Initialise audio and play background music
-    m_pAudio->Initialise();
-    m_pAudio->LoadMusicStream(m_audioFiles[m_audioNumber].c_str());
-    m_pAudio->PlayMusicStream();
+    //m_pAudio->Initialise();
+    //m_pAudio->LoadMusicStream(m_audioFiles[m_audioNumber].c_str());
+    //m_pAudio->PlayMusicStream();
     
 }
 

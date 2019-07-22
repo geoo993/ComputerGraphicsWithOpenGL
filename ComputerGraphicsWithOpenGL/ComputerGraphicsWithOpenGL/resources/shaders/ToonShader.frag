@@ -204,7 +204,7 @@ void main()
 {
     vec3 normal = normalize(fs_in.vWorldNormal);
     vec3 worldPos = fs_in.vWorldPosition;
-    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
  
     if (bUseDirectionalLight){
         // Directional lighting

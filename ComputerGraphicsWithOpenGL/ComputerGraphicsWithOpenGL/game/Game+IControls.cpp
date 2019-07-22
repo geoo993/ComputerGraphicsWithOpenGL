@@ -609,7 +609,7 @@ void Game::LoadControls() {
     // Depth Mapping
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
     CButton * shadowMappingFromLight = (CButton *)AddControl(new CButton("From Light or Camera", guiBox,
-                                                                        GUIMode::DYNAMIC, false, PostProcessingEffectMode::ShadowMapping));
+                                                                        GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
     shadowMappingFromLight->SetValue(&m_fromLightPosition);
     
 }
@@ -972,6 +972,12 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
                 break;
             case GLFW_KEY_D:
                 std::get<0>(m_pointLights[m_pointLightIndex]).z += 25.0f;
+                break;
+            case GLFW_KEY_O:
+                m_fieldOfView -= 25.0f;
+                break;
+            case GLFW_KEY_P:
+                m_fieldOfView += 25.0f;
                 break;
             default:
                 break;

@@ -70,12 +70,8 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glGenSamplers(1, &m_uiSampler);
             SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            //SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-            //SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-            SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-            SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-            float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
-            SetSamplerObjectParameterfv(GL_TEXTURE_BORDER_COLOR, borderColor);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
             
             // With the generated depth texture we can attach it as the framebuffer's depth buffer.
             glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_uiDepthTexture, 0);
@@ -93,6 +89,93 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
             return depthMapFramebufferComplete;
+        }
+            
+        case FrameBufferType::DirectionalShadowMapping: {
+            
+            // configure depth map FBO
+            // -----------------------
+            glGenFramebuffers(1, &m_uiFramebuffer);
+            
+            // attach depth texture as FBO's depth buffer
+            glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
+            
+            // create depth texture
+            // Depth texture for Shadow Mapping https://learnopengl.com/#!Advanced-Lighting/Shadows/Shadow-Mapping
+            // we create a 2D texture that we'll use as the framebuffer's depth buffer:
+            glGenTextures(1, &m_uiDepthTexture);
+            glBindTexture(GL_TEXTURE_2D, m_uiDepthTexture);
+            
+            //We give the texture a width and height of 1024: this is the resolution of the depth map.
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+            
+            glGenerateMipmap(GL_TEXTURE_2D);
+            glGenSamplers(1, &m_uiSampler);
+            SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+            float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+            SetSamplerObjectParameterfv(GL_TEXTURE_BORDER_COLOR, borderColor);
+            
+            // With the generated depth texture we can attach it as the framebuffer's depth buffer.
+            glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_uiDepthTexture, 0);
+            
+            // We only need the depth information when rendering the scene from the light's perspective so there is no need for a color buffer. A framebuffer object however is not complete without a color buffer so we need to explicitly tell OpenGL we're not going to render any color data. We do this by setting both the read and draw buffer to GL_NONE with glDrawBuffer and glReadbuffer.
+            glDrawBuffer(GL_NONE);
+            glReadBuffer(GL_NONE);
+            
+            // Check completeness
+            bool directionalShadowMapFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+            if( directionalShadowMapFramebufferComplete == false ){
+                std::cout << "ERROR::FRAMEBUFFER:: Depth Mapping Framebuffer is not complete!" << std::endl;
+            }
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            return directionalShadowMapFramebufferComplete;
+        }
+            
+        case FrameBufferType::OmnidirectionalShadowMapping: {
+            
+            // configure depth map FBO
+            // -----------------------
+            glGenFramebuffers(1, &m_uiFramebuffer);
+            
+            
+            // create depth cubemap texture
+            // cubemap Depth texture for point Shadow Mapping https://learnopengl.com/code_viewer_gh.php?code=src/5.advanced_lighting/3.2.1.point_shadows/point_shadows.cpp
+            
+            glGenTextures(1, &m_uiDepthCubeMap);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, m_uiDepthCubeMap);
+            
+            for (unsigned int i = 0; i < 6; ++i) {
+                glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+            }
+            
+            glGenSamplers(1, &m_uiSampler);
+            SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+            
+            // attach depth texture as FBO's depth buffer
+            glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
+            glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_uiDepthCubeMap, 0);
+            
+            glDrawBuffer(GL_NONE);
+            glReadBuffer(GL_NONE);
+            
+            // Check completeness
+            bool omnidirectionalShadowMapFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+            if( omnidirectionalShadowMapFramebufferComplete == false ){
+                std::cout << "ERROR::FRAMEBUFFER:: Cube Map Shadow Mapping Framebuffer is not complete!" << std::endl;
+            }
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            return omnidirectionalShadowMapFramebufferComplete;
         }
         case FrameBufferType::SSAO: {
             // configure framebuffer to hold SSAO processing stage

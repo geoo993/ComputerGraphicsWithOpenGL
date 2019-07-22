@@ -254,7 +254,7 @@ void main()
     vec3 bitangent = normalize(fs_in.vWorldBiTangent);
     vec3 worldPos = fs_in.vWorldPosition;
     mat3 TBN = transpose(mat3(tangent, bitangent, normal));
-    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     
     // Directional lighting
     if (bUseDirectionalLight){

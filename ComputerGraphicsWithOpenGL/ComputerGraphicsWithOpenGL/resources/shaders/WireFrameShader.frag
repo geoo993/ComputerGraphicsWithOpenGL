@@ -189,7 +189,7 @@ layout (location = 4) out vec4 vAlbedoSpec;
 void main()
 {
     vec2 uv = fs_in.vTexCoord.st * material.uvTiling;
-    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     
     //base fragment color off of which edge is closest
     float distance = min(GEdgeDistance[0], min(GEdgeDistance[1], GEdgeDistance[2]));

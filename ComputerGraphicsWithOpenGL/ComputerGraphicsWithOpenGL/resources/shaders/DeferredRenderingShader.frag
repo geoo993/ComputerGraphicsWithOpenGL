@@ -186,7 +186,7 @@ void main()
         // retrieve data from gbuffer
         vec3 worldPos = texture(material.displacementMap, fs_in.vTexCoord).rgb;      // displacementMap
         vec3 normal = texture(material.normalMap, fs_in.vTexCoord).rgb;             // normalMap
-        vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+        vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
         
         if (bUseDirectionalLight){
             // Directional lighting

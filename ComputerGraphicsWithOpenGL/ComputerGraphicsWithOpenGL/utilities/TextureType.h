@@ -35,6 +35,7 @@ enum class TextureType {
     ROUGHNESS,
     CUBEMAP,
     IRRADIANCEMAP,
+    SHADOWMAP,
     UNKNOWN
 };
 

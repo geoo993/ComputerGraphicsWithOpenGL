@@ -225,7 +225,7 @@ void main()
     vec3 T = normalize(fs_in.vWorldTangent);
     vec3 B = cross(N, T);
     mat3 TBN = transpose(mat3(T, B, N));
-    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     vec3 worldPos = fs_in.vWorldPosition;
     vec2 uv = fs_in.vTexCoord.st * material.uvTiling;
     vec3 vVertex = fs_in.vEyePosition.xyz;

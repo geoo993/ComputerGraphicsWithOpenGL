@@ -11,9 +11,11 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::ShadowMapping;
+    m_currentPPFXMode = PostProcessingEffectMode::OmnidirectionalShadowMapping;
     m_coverage = 1.0f;
     
+    m_pFBOs.push_back(new CFrameBufferObject);
+    m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -34,6 +36,8 @@ void Game::LoadFrameBuffers(const GLuint &width , const GLuint &height) {
     m_pFBOs[4]->CreateFramebuffer(width, height, FrameBufferType::Default);
     m_pFBOs[5]->CreateFramebuffer(width, height, FrameBufferType::SSAO);
     m_pFBOs[6]->CreateFramebuffer(width, height, FrameBufferType::SSAO);
+    m_pFBOs[7]->CreateFramebuffer(width, height, FrameBufferType::DirectionalShadowMapping);
+    m_pFBOs[8]->CreateFramebuffer(width, height, FrameBufferType::OmnidirectionalShadowMapping);
 }
 
 
@@ -541,7 +545,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             // Fourth Pass - Screen Space Ambient Occlusion Lighting
             {
                 CShaderProgram *pScreenSpaceAmbientOcclusionLightingProgram= (*m_pShaderPrograms)[58];
-                SetMaterialUniform(pScreenSpaceAmbientOcclusionLightingProgram, "material", m_materialColor, m_materialShininess, true);
+                SetMaterialUniform(pScreenSpaceAmbientOcclusionLightingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, true);
                 SetScreenSpaceAmbientOcclusionLightingUniform(pScreenSpaceAmbientOcclusionLightingProgram);
                 
                 // Render Lighting Scene
@@ -634,7 +638,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[50];
                 SetCameraUniform(pDepthMappingProgram, "camera", m_pCamera);
                 SetShadowUniform(pDepthMappingProgram, "shadow", near_plane, far_plane);
-                SetMaterialUniform(pDepthMappingProgram, "material", m_materialColor, m_materialShininess, false);
+                SetMaterialUniform(pDepthMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
                 SetDepthMappingUniform(pDepthMappingProgram);
                 
                 // bind depth texture
@@ -646,7 +650,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             }
             return;
         }
-        case PostProcessingEffectMode::ShadowMapping: {
+        case PostProcessingEffectMode::DirectionalShadowMapping: {
             GLfloat near_plane = (GLfloat)ZNEAR; // how short the light ray goes
             GLfloat far_plane = (GLfloat)ZFAR; //how far the light ray goes
             glm::vec3 lightPos = m_fromLightPosition ? std::get<0>(m_pointLights.back()) : m_pCamera->GetPosition();
@@ -666,8 +670,8 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             
             // Second Pass - Render Scene to light space
             {
-                currentFBO = m_pFBOs[3];
-                currentFBO->Bind(false); // prepare depth frame buffer (3)
+                currentFBO = m_pFBOs[7];
+                currentFBO->Bind(false); // prepare depth frame buffer (7)
                 m_gameWindow->SetViewport(SHADOW_WIDTH, SHADOW_HEIGHT);
                 m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
                 
@@ -689,22 +693,107 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 currentFBO->Bind(true);
                 
                 // bind depth texture
-                currentFBO = m_pFBOs[3]; // depth mapping texture
+                currentFBO = m_pFBOs[7]; // depth mapping texture
                 currentFBO->BindDepthTexture(static_cast<GLint>(TextureType::DEPTH));
                 
                 // use depth mapping quad
-                CShaderProgram *pShadowMappingProgram = (*m_pShaderPrograms)[84];
-                pShadowMappingProgram->UseProgram();
-                pShadowMappingProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
-                pShadowMappingProgram->SetUniform("lightPos", lightPos);
-                SetCameraUniform(pShadowMappingProgram, "camera", m_pCamera);
-                SetShadowUniform(pShadowMappingProgram, "shadow", near_plane, far_plane);
-                SetMaterialUniform(pShadowMappingProgram, "material", m_materialColor, m_materialShininess, false);
-                SetLightUniform(pShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-                SetFogMaterialUniform(pShadowMappingProgram, "fog", m_fogColor, m_useFog);
-                SetDepthMappingUniform(pShadowMappingProgram);
+                CShaderProgram *pDirectionalShadowMappingProgram = (*m_pShaderPrograms)[84];
+                pDirectionalShadowMappingProgram->UseProgram();
+                pDirectionalShadowMappingProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
+                pDirectionalShadowMappingProgram->SetUniform("lightPos", lightPos);
+                SetCameraUniform(pDirectionalShadowMappingProgram, "camera", m_pCamera);
+                SetShadowUniform(pDirectionalShadowMappingProgram, "shadow", near_plane, far_plane);
+                SetMaterialUniform(pDirectionalShadowMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
+                SetLightUniform(pDirectionalShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+                SetFogMaterialUniform(pDirectionalShadowMappingProgram, "fog", m_fogColor, m_useFog);
                 
                 RenderScene(true, false, 84);
+            }
+            
+            ResetFrameBuffer();
+            
+            // Third Pass - Render to quad
+            {
+                // bind depth texture
+                currentFBO = m_pFBOs[4];
+                currentFBO->BindTexture(static_cast<GLint>(TextureType::DIFFUSE)); // bind to diffuse texture
+                
+                currentFBO = m_pFBOs[0]; // scene texture
+                CShaderProgram *pImageProcessingProgram = (*m_pShaderPrograms)[15];
+                RenderToScreen(pImageProcessingProgram, FrameBufferType::Default, 0, TextureType::AMBIENT);
+            }
+            return;
+        }
+        case PostProcessingEffectMode::OmnidirectionalShadowMapping: {
+            GLfloat near_plane = (GLfloat)ZNEAR; // how short the light ray goes
+            GLfloat far_plane = (GLfloat)ZFAR; //how far the light ray goes
+            GLboolean useShadows = true;
+            glm::vec3 lightPos = m_fromLightPosition ? std::get<0>(m_pointLights.back()) : m_pCamera->GetPosition();
+            
+            // Second Pass - Render Scene to light space
+            {
+                
+                // configure global opengl state
+                // -----------------------------
+                m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
+                glEnable(GL_CULL_FACE);
+                
+                // 0. create depth cubemap transformation matrices
+                // -----------------------------------------------
+                glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
+                std::vector<glm::mat4> shadowTransforms;
+                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
+                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
+                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)));
+                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)));
+                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
+                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
+
+                // 1. render scene to depth cubemap
+                // --------------------------------
+                currentFBO = m_pFBOs[8];
+                currentFBO->Bind(false); // prepare depth frame buffer (7)
+                m_gameWindow->SetViewport(SHADOW_WIDTH, SHADOW_HEIGHT);
+                m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
+                
+                CShaderProgram *pLightSpaceProgram = (*m_pShaderPrograms)[85];
+                pLightSpaceProgram->UseProgram();
+                pLightSpaceProgram->SetUniform("lightPos", lightPos);
+                for (unsigned int i = 0; i < 6; ++i) {
+                    pLightSpaceProgram->SetUniform("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
+                }
+                SetShadowUniform(pLightSpaceProgram, "shadow", near_plane, far_plane);
+                SetMaterialUniform(pLightSpaceProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
+                RenderScene(true, false, 85);
+               
+            }
+            
+            ResetFrameBuffer();
+            
+            // Shadow Mapping
+            {
+                
+                // render next scene to framebuffer
+                currentFBO = m_pFBOs[4];
+                currentFBO->Bind(true);
+                
+                // bind depth texture
+                currentFBO = m_pFBOs[8]; // depth mapping texture
+                currentFBO->BindDepthCubeMap(static_cast<GLint>(TextureType::CUBEMAP));
+                
+                // 2. render scene as normal
+                // -------------------------
+                CShaderProgram *pOmnidirectionalShadowMappingProgram = (*m_pShaderPrograms)[86];
+                pOmnidirectionalShadowMappingProgram->UseProgram();
+                pOmnidirectionalShadowMappingProgram->SetUniform("lightPos", lightPos);
+                pOmnidirectionalShadowMappingProgram->SetUniform("shadows", useShadows);
+                SetCameraUniform(pOmnidirectionalShadowMappingProgram, "camera", m_pCamera);
+                SetShadowUniform(pOmnidirectionalShadowMappingProgram, "shadow", near_plane, far_plane);
+                SetMaterialUniform(pOmnidirectionalShadowMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
+                SetLightUniform(pOmnidirectionalShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+                SetFogMaterialUniform(pOmnidirectionalShadowMappingProgram, "fog", m_fogColor, m_useFog);
+                
+                RenderScene(true, false, 86);
             }
             
             ResetFrameBuffer();
@@ -725,7 +814,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             // Second Pass - Deferred Rendering
             {
                 CShaderProgram *pDeferredRenderingProgram= (*m_pShaderPrograms)[55];
-                SetMaterialUniform(pDeferredRenderingProgram, "material", m_materialColor, m_materialShininess, false);
+                SetMaterialUniform(pDeferredRenderingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
                 SetDeferredRenderingUniform(pDeferredRenderingProgram);
                 
                 // Render Lighting Scene
@@ -1025,8 +1114,11 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::DepthMapping:
             RenderPPFXScene(PostProcessingEffectMode::DepthMapping);
             break;
-        case PostProcessingEffectMode::ShadowMapping:
-            RenderPPFXScene(PostProcessingEffectMode::ShadowMapping);
+        case PostProcessingEffectMode::DirectionalShadowMapping:
+            RenderPPFXScene(PostProcessingEffectMode::DirectionalShadowMapping);
+            break;
+        case PostProcessingEffectMode::OmnidirectionalShadowMapping:
+            RenderPPFXScene(PostProcessingEffectMode::OmnidirectionalShadowMapping);
             break;
         case PostProcessingEffectMode::DeferredRendering:
             RenderPPFXScene(PostProcessingEffectMode::DeferredRendering);
@@ -1167,8 +1259,10 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
             return "Depth Testing";
         case PostProcessingEffectMode::DepthMapping:
             return "Depth Mapping";
-        case PostProcessingEffectMode::ShadowMapping:
-            return "Shadow Mapping";
+        case PostProcessingEffectMode::DirectionalShadowMapping:
+            return "Directional Shadow Mapping";
+        case PostProcessingEffectMode::OmnidirectionalShadowMapping:
+            return "Omnidirectional Shadow Mapping";
         case PostProcessingEffectMode::DeferredRendering:
             return "Deferred Rendering";
         case PostProcessingEffectMode::RainDrops:

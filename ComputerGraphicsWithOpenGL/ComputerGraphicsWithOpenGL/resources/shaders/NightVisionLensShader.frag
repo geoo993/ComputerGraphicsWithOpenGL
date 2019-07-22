@@ -73,7 +73,7 @@ void main()
         }
     }
     
-    vec4 result = vec4(0.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     
     result.rgb = tc.rgb;
     result.a = 1.0f;

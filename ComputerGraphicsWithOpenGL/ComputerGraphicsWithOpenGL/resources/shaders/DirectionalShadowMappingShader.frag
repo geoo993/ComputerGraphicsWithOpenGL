@@ -176,10 +176,10 @@ void main()
     vec4 lightSpace = fs_in.vPosLightSpace;
     vec3 worldPos = fs_in.vWorldPosition;
     vec3 viewPos = camera.position + camera.front;
-    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     
     // ambient
-    vec3 ambient = 0.3 * color;
+    vec3 ambient = 0.3f * color;
     // diffuse
     vec3 lightDir = normalize(lightPos - worldPos);
     float diff = max(dot(lightDir, normal), 0.0f);

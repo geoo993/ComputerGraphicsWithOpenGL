@@ -13,7 +13,8 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     const GLfloat zfront = -200.0f;
     const GLfloat zback = 300.0f;
     m_sphereRotation += m_deltaTime * 0.02f;
-    
+    /*
+     
     /// Skybox
     {
         // reset cubmap
@@ -32,7 +33,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
             RenderSkyBox(pSkyBoxProgram);
         }
     }
-    
+    */
 //    /// Terrain
 //    {
 //        GLboolean useHeightMap = false;
@@ -105,8 +106,22 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         
     }
     
+    
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
+    pShaderProgram->SetUniform("bReverseNormals", 1); // A small little hack to invert normals when drawing cube from the inside so lighting still works.
+    RenderPrimitive(pShaderProgram, m_pInteriorBox, glm::vec3(-300.0f,  100.0f,  0.0f ), glm::vec3(0.0f), 50.0f); // Render Big cube underneath
+    pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
+    //glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    
+    /*
     /// Terrain
     {
+        glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
+        pShaderProgram->UseProgram();
+        pShaderProgram->SetUniform("bReverseNormals", 1);// A small little hack to invert normals when drawing cube from the inside so lighting still works.
         if (isPBR) {
             SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         }
@@ -116,7 +131,10 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         if (isPBR) {
             SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
         }
+        pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
+        glEnable(GL_CULL_FACE);
     }
+    */
     
     /// Trolley
     {

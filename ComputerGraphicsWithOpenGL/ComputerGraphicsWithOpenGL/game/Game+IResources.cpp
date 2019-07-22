@@ -65,7 +65,7 @@ void Game::InitialiseResources()
     m_pCube12 = new CCube(1.0f);
     m_pCube13 = new CCube(1.0f);
     m_pCube14 = new CCube(1.0f);
-    
+    m_pInteriorBox = new CCube(10.0f);
     m_pWoodenBox = new CCube(1.0f);
     m_pLamp = new CCube(1.0f);
     
@@ -115,7 +115,16 @@ void Game::LoadResources(const std::string &path)
                              { "specular.png",   TextureType::SPECULAR},
                              { "bump.png", TextureType::DISPLACEMENT},      // bump
                          });
-
+    m_pInteriorBox->Create(path+"/textures/pbr/harshbricks/", {
+        { "albedo.png", TextureType::ALBEDO},              // albedo map
+        { "ambient.png", TextureType::AMBIENT },            // ambientMap 0
+        { "diffuse.png", TextureType::DIFFUSE},
+        { "metallic.png",  TextureType::METALNESS },           // metallic map
+        { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
+        { "normal.png", TextureType::NORMAL},                  // normalMap 3
+        { "ao.png",   TextureType::AO },            // aoMap 4
+        { "specular.png",   TextureType::SPECULAR }
+    } );
     
     
      // how to create ao, albedo, roughness, metallic, bump, normal, specular textures:

@@ -215,7 +215,7 @@ void main()
     vec3 T = normalize(tangent - dot(tangent, normal) * normal);
     vec3 B = cross(normal, tangent);
     mat3 TBN = transpose(mat3(T, B, normal));
-    vec4 result = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     
     // Directional lighting
     if (bUseDirectionalLight){

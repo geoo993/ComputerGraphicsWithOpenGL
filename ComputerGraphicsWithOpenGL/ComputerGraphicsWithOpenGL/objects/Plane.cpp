@@ -36,10 +36,10 @@ void CPlane::Create(const std::string &directory, const std::map<std::string, Te
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, m_textures[i]->GetFormat() ==  GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT);
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, m_textures[i]->GetFormat() ==  GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT);
         
-        GLfloat aniso;
+        // Anisotropic filtering https://paroj.github.io/gltut/Texturing/Tut15%20Anisotropy.html
+        GLfloat aniso = 0.0f;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso);
         m_textures[i]->SetSamplerObjectParameterf(GL_TEXTURE_MAX_ANISOTROPY_EXT, aniso);
-        // any code including continue, break, return
     }
     
     

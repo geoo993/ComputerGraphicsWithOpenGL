@@ -306,6 +306,8 @@
 		C75C973F220E1F4400420DF6 /* ParallaxNormalMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C75C973D220E1F4400420DF6 /* ParallaxNormalMappingShader.vert */; };
 		C75C9740220E1F4400420DF6 /* ParallaxNormalMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C75C973E220E1F4400420DF6 /* ParallaxNormalMappingShader.frag */; };
 		C75CCAF322ACF2E30092B72C /* EquirectangularCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75CCAF222ACF2E30092B72C /* EquirectangularCube.cpp */; };
+		C76D818122E5078F00C7A242 /* OmnidirectionalShadowMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C76D817F22E5078E00C7A242 /* OmnidirectionalShadowMappingShader.frag */; };
+		C76D818222E5078F00C7A242 /* OmnidirectionalShadowMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C76D818022E5078F00C7A242 /* OmnidirectionalShadowMappingShader.vert */; };
 		C76ECD352220C2A600727113 /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C76ECD332220C2A600727113 /* Button.cpp */; };
 		C774664622161EF90099F081 /* Game+IGameWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C774664522161EF90099F081 /* Game+IGameWindow.cpp */; };
 		C7767436220A53A200BA7062 /* NormalMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7767434220A53A100BA7062 /* NormalMappingShader.frag */; };
@@ -358,8 +360,8 @@
 		C78AAF7022CAB4E9008BC2B6 /* DiscardShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C78AAF6E22CAB4E9008BC2B6 /* DiscardShader.vert */; };
 		C78DDCF2222498B20010A5D9 /* ListBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78DDCF0222498B20010A5D9 /* ListBox.cpp */; };
 		C78DDCF52224B4800010A5D9 /* Slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78DDCF32224B4800010A5D9 /* Slider.cpp */; };
-		C78F395E2215C81C006163EC /* LightSpaceShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C78F395C2215C819006163EC /* LightSpaceShader.vert */; };
-		C78F395F2215C81C006163EC /* LightSpaceShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C78F395D2215C81A006163EC /* LightSpaceShader.frag */; };
+		C78F395E2215C81C006163EC /* DirectionalShadowDepthShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C78F395C2215C819006163EC /* DirectionalShadowDepthShader.vert */; };
+		C78F395F2215C81C006163EC /* DirectionalShadowDepthShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C78F395D2215C81A006163EC /* DirectionalShadowDepthShader.frag */; };
 		C7A8ED8222347A2F00A9662D /* Game+IResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7A8ED8122347A2F00A9662D /* Game+IResources.cpp */; };
 		C7B70506221C1106002F5732 /* FastApproximateAntiAliasingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7B70504221C1104002F5732 /* FastApproximateAntiAliasingShader.vert */; };
 		C7B70507221C1106002F5732 /* FastApproximateAntiAliasingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7B70505221C1105002F5732 /* FastApproximateAntiAliasingShader.frag */; };
@@ -389,6 +391,9 @@
 		C7B932F221FE988500979C04 /* libfmodstudio.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7B932EA21FE987900979C04 /* libfmodstudio.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C7B932F321FE988500979C04 /* libfmodstudioL.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7B932EB21FE987900979C04 /* libfmodstudioL.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C7B932F421FE988500979C04 /* libfreeimageplus.3.17.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C7B932EC21FE987900979C04 /* libfreeimageplus.3.17.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C7BD8B1F22E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.geom in Resources */ = {isa = PBXBuildFile; fileRef = C7BD8B1C22E4F71E007F13C1 /* OmnidirectionalShadowDepthShader.geom */; };
+		C7BD8B2022E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7BD8B1D22E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.frag */; };
+		C7BD8B2122E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7BD8B1E22E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.vert */; };
 		C7C8F2E121FF6E7100AB865A /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F2DF21FF6E7100AB865A /* Audio.cpp */; };
 		C7C8F2E621FF6E8800AB865A /* VertexBufferObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F2E221FF6E8700AB865A /* VertexBufferObject.cpp */; };
 		C7C8F2E721FF6E8800AB865A /* VertexBufferObjectIndexed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F2E421FF6E8800AB865A /* VertexBufferObjectIndexed.cpp */; };
@@ -453,8 +458,8 @@
 		C7DE39F9221F2D0700595556 /* ScreenSpaceAmbientOcclusionLightingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39F5221F2D0600595556 /* ScreenSpaceAmbientOcclusionLightingShader.frag */; };
 		C7DE39FA221F2D0700595556 /* ScreenSpaceAmbientOcclusionBlurShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39F6221F2D0600595556 /* ScreenSpaceAmbientOcclusionBlurShader.vert */; };
 		C7DE39FB221F2D0700595556 /* ScreenSpaceAmbientOcclusionBlurShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7DE39F7221F2D0600595556 /* ScreenSpaceAmbientOcclusionBlurShader.frag */; };
-		C7E3506322E1205F00D74ACB /* ShadowMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7E3506122E1205F00D74ACB /* ShadowMappingShader.frag */; };
-		C7E3506422E1205F00D74ACB /* ShadowMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7E3506222E1205F00D74ACB /* ShadowMappingShader.vert */; };
+		C7E3506322E1205F00D74ACB /* DirectionalShadowMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7E3506122E1205F00D74ACB /* DirectionalShadowMappingShader.frag */; };
+		C7E3506422E1205F00D74ACB /* DirectionalShadowMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7E3506222E1205F00D74ACB /* DirectionalShadowMappingShader.vert */; };
 		C7EDB0D422064878007C7D3A /* Game+ILights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7EDB0D322064878007C7D3A /* Game+ILights.cpp */; };
 		C7EDB0D922064BCE007C7D3A /* LampShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D522064BCE007C7D3A /* LampShader.vert */; };
 		C7EDB0DA22064BCE007C7D3A /* LightShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7EDB0D622064BCE007C7D3A /* LightShader.frag */; };
@@ -831,6 +836,8 @@
 		C75CCAF122ACF2E20092B72C /* EquirectangularCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquirectangularCube.h; sourceTree = "<group>"; };
 		C75CCAF222ACF2E30092B72C /* EquirectangularCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EquirectangularCube.cpp; sourceTree = "<group>"; };
 		C76270D122DFE222004C66ED /* ClearBuffersType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClearBuffersType.h; sourceTree = "<group>"; };
+		C76D817F22E5078E00C7A242 /* OmnidirectionalShadowMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = OmnidirectionalShadowMappingShader.frag; path = ../../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/shaders/OmnidirectionalShadowMappingShader.frag; sourceTree = "<group>"; };
+		C76D818022E5078F00C7A242 /* OmnidirectionalShadowMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = OmnidirectionalShadowMappingShader.vert; path = ../../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/shaders/OmnidirectionalShadowMappingShader.vert; sourceTree = "<group>"; };
 		C76ECD332220C2A600727113 /* Button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
 		C76ECD342220C2A600727113 /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		C774664522161EF90099F081 /* Game+IGameWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IGameWindow.cpp"; sourceTree = "<group>"; };
@@ -887,8 +894,8 @@
 		C78DDCF32224B4800010A5D9 /* Slider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Slider.cpp; sourceTree = "<group>"; };
 		C78DDCF42224B4800010A5D9 /* Slider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Slider.h; sourceTree = "<group>"; };
 		C78DDCF62224B80D0010A5D9 /* ControlType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlType.h; sourceTree = "<group>"; };
-		C78F395C2215C819006163EC /* LightSpaceShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightSpaceShader.vert; sourceTree = "<group>"; };
-		C78F395D2215C81A006163EC /* LightSpaceShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightSpaceShader.frag; sourceTree = "<group>"; };
+		C78F395C2215C819006163EC /* DirectionalShadowDepthShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DirectionalShadowDepthShader.vert; sourceTree = "<group>"; };
+		C78F395D2215C81A006163EC /* DirectionalShadowDepthShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DirectionalShadowDepthShader.frag; sourceTree = "<group>"; };
 		C7A8ED8122347A2F00A9662D /* Game+IResources.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+IResources.cpp"; sourceTree = "<group>"; };
 		C7B38E0222B6724B00EE881E /* SkyboxType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyboxType.h; sourceTree = "<group>"; };
 		C7B70504221C1104002F5732 /* FastApproximateAntiAliasingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FastApproximateAntiAliasingShader.vert; sourceTree = "<group>"; };
@@ -917,6 +924,9 @@
 		C7B932EA21FE987900979C04 /* libfmodstudio.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodstudio.dylib; path = ../Libraries/libfmodstudio.dylib; sourceTree = "<group>"; };
 		C7B932EB21FE987900979C04 /* libfmodstudioL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodstudioL.dylib; path = ../Libraries/libfmodstudioL.dylib; sourceTree = "<group>"; };
 		C7B932EC21FE987900979C04 /* libfreeimageplus.3.17.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreeimageplus.3.17.0.dylib; path = ../Libraries/libfreeimageplus.3.17.0.dylib; sourceTree = "<group>"; };
+		C7BD8B1C22E4F71E007F13C1 /* OmnidirectionalShadowDepthShader.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = OmnidirectionalShadowDepthShader.geom; path = ../../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/shaders/OmnidirectionalShadowDepthShader.geom; sourceTree = "<group>"; };
+		C7BD8B1D22E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = OmnidirectionalShadowDepthShader.frag; path = ../../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/shaders/OmnidirectionalShadowDepthShader.frag; sourceTree = "<group>"; };
+		C7BD8B1E22E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = OmnidirectionalShadowDepthShader.vert; path = ../../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/shaders/OmnidirectionalShadowDepthShader.vert; sourceTree = "<group>"; };
 		C7C8F2DF21FF6E7100AB865A /* Audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
 		C7C8F2E021FF6E7100AB865A /* Audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Audio.h; sourceTree = "<group>"; };
 		C7C8F2E221FF6E8700AB865A /* VertexBufferObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBufferObject.cpp; sourceTree = "<group>"; };
@@ -1007,8 +1017,8 @@
 		C7DE39F5221F2D0600595556 /* ScreenSpaceAmbientOcclusionLightingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ScreenSpaceAmbientOcclusionLightingShader.frag; sourceTree = "<group>"; };
 		C7DE39F6221F2D0600595556 /* ScreenSpaceAmbientOcclusionBlurShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ScreenSpaceAmbientOcclusionBlurShader.vert; sourceTree = "<group>"; };
 		C7DE39F7221F2D0600595556 /* ScreenSpaceAmbientOcclusionBlurShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ScreenSpaceAmbientOcclusionBlurShader.frag; sourceTree = "<group>"; };
-		C7E3506122E1205F00D74ACB /* ShadowMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShadowMappingShader.frag; path = ../../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/shaders/ShadowMappingShader.frag; sourceTree = "<group>"; };
-		C7E3506222E1205F00D74ACB /* ShadowMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ShadowMappingShader.vert; path = ../../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/shaders/ShadowMappingShader.vert; sourceTree = "<group>"; };
+		C7E3506122E1205F00D74ACB /* DirectionalShadowMappingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = DirectionalShadowMappingShader.frag; path = ../../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/shaders/DirectionalShadowMappingShader.frag; sourceTree = "<group>"; };
+		C7E3506222E1205F00D74ACB /* DirectionalShadowMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = DirectionalShadowMappingShader.vert; path = ../../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/shaders/DirectionalShadowMappingShader.vert; sourceTree = "<group>"; };
 		C7EDB0D322064878007C7D3A /* Game+ILights.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Game+ILights.cpp"; sourceTree = "<group>"; };
 		C7EDB0D522064BCE007C7D3A /* LampShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LampShader.vert; sourceTree = "<group>"; };
 		C7EDB0D622064BCE007C7D3A /* LightShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LightShader.frag; sourceTree = "<group>"; };
@@ -1722,6 +1732,10 @@
 				C779E17722159F5200AF11E9 /* DepthMappingShader.vert */,
 				C72DE90322DFCC2F00981AED /* DepthTestingShader.frag */,
 				C72DE90422DFCC2F00981AED /* DepthTestingShader.vert */,
+				C78F395D2215C81A006163EC /* DirectionalShadowDepthShader.frag */,
+				C78F395C2215C819006163EC /* DirectionalShadowDepthShader.vert */,
+				C7E3506122E1205F00D74ACB /* DirectionalShadowMappingShader.frag */,
+				C7E3506222E1205F00D74ACB /* DirectionalShadowMappingShader.vert */,
 				C78AAF6D22CAB4E9008BC2B6 /* DiscardShader.frag */,
 				C78AAF6E22CAB4E9008BC2B6 /* DiscardShader.vert */,
 				C7090CE7223676FC006FE002 /* DistortedTVShader.frag */,
@@ -1785,8 +1799,6 @@
 				C7EEC4F122136AEF00909E4C /* LensFlareShader.vert */,
 				C7EDB0D622064BCE007C7D3A /* LightShader.frag */,
 				C7EDB0D822064BCE007C7D3A /* LightShader.vert */,
-				C78F395D2215C81A006163EC /* LightSpaceShader.frag */,
-				C78F395C2215C819006163EC /* LightSpaceShader.vert */,
 				C7090CCE223665B0006FE002 /* MicroprismMosaicShader.frag */,
 				C7090CCF223665B1006FE002 /* MicroprismMosaicShader.vert */,
 				C7090CD32236686E006FE002 /* MoneyFilterShader.frag */,
@@ -1799,6 +1811,11 @@
 				C785F9502212DA7A00F1F8FD /* NightVisionLensShader.vert */,
 				C7767434220A53A100BA7062 /* NormalMappingShader.frag */,
 				C7767435220A53A200BA7062 /* NormalMappingShader.vert */,
+				C7BD8B1D22E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.frag */,
+				C7BD8B1C22E4F71E007F13C1 /* OmnidirectionalShadowDepthShader.geom */,
+				C7BD8B1E22E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.vert */,
+				C76D817F22E5078E00C7A242 /* OmnidirectionalShadowMappingShader.frag */,
+				C76D818022E5078F00C7A242 /* OmnidirectionalShadowMappingShader.vert */,
 				C7090CEB22367B21006FE002 /* PaletteQuantizationAndDitheringShader.frag */,
 				C7090CEA22367B21006FE002 /* PaletteQuantizationAndDitheringShader.vert */,
 				C75C973E220E1F4400420DF6 /* ParallaxNormalMappingShader.frag */,
@@ -1834,8 +1851,6 @@
 				C7DE39F1221F1F1500595556 /* ScreenSpaceAmbientOcclusionShader.vert */,
 				C785F9462212D2BB00F1F8FD /* ScreenWaveShader.frag */,
 				C785F9472212D2BC00F1F8FD /* ScreenWaveShader.vert */,
-				C7E3506122E1205F00D74ACB /* ShadowMappingShader.frag */,
-				C7E3506222E1205F00D74ACB /* ShadowMappingShader.vert */,
 				C785F9552212DA7B00F1F8FD /* ShockwaveShader.frag */,
 				C785F9602212DA7D00F1F8FD /* ShockwaveShader.vert */,
 				C7403B6622D0D830009EB7A0 /* SilhouetteShader.frag */,
@@ -2128,7 +2143,7 @@
 				C7090CE4223674EB006FE002 /* RGBDisplayShader.vert in Resources */,
 				C72BB84F22E363C400DF5F1C /* roughness.png in Resources */,
 				C72BB83F22E363C400DF5F1C /* diffuse.png in Resources */,
-				C7E3506322E1205F00D74ACB /* ShadowMappingShader.frag in Resources */,
+				C7E3506322E1205F00D74ACB /* DirectionalShadowMappingShader.frag in Resources */,
 				C71A2C3D22E371FB00AC2D49 /* ambient.jpg in Resources */,
 				C72BB7FC22E363C400DF5F1C /* diffuse.png in Resources */,
 				C7332977221775D400BFE37B /* ToneMappingShader.vert in Resources */,
@@ -2207,10 +2222,11 @@
 				C72BB7E122E363C400DF5F1C /* metallic.jpg in Resources */,
 				C785F96D2212DA7E00F1F8FD /* PixelationShader.vert in Resources */,
 				C72BB81B22E363C400DF5F1C /* ao.png in Resources */,
-				C7E3506422E1205F00D74ACB /* ShadowMappingShader.vert in Resources */,
+				C7E3506422E1205F00D74ACB /* DirectionalShadowMappingShader.vert in Resources */,
 				C7767437220A53A200BA7062 /* NormalMappingShader.vert in Resources */,
 				C755BCB622B6D84A0074F8A5 /* _dn.jpg in Resources */,
 				C72BB80122E363C400DF5F1C /* ao.png in Resources */,
+				C76D818122E5078F00C7A242 /* OmnidirectionalShadowMappingShader.frag in Resources */,
 				C7C8F4AC21FFC92900AB865A /* SkyBoxShader.frag in Resources */,
 				C7090CB42235DE7D006FE002 /* CelShaderishShader.frag in Resources */,
 				C785F99A22134CAE00F1F8FD /* FishEyeShader.vert in Resources */,
@@ -2238,6 +2254,7 @@
 				C72BB83822E363C400DF5F1C /* ambient.png in Resources */,
 				C7B70506221C1106002F5732 /* FastApproximateAntiAliasingShader.vert in Resources */,
 				C72BB85122E363C400DF5F1C /* diffuse.jpg in Resources */,
+				C7BD8B2122E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.vert in Resources */,
 				C73D517E22D262B4007893B6 /* metallic.png in Resources */,
 				C755BCCA22B6E0BE0074F8A5 /* caveroom.hdr in Resources */,
 				C72BB7F222E363C400DF5F1C /* metallic.jpg in Resources */,
@@ -2327,6 +2344,7 @@
 				C72BB7E022E363C400DF5F1C /* diffuse.jpg in Resources */,
 				C7CEE2EE2212435600895F5D /* EdgeDetectionShader.frag in Resources */,
 				C71A2C5222E3840200AC2D49 /* roughness.png in Resources */,
+				C76D818222E5078F00C7A242 /* OmnidirectionalShadowMappingShader.vert in Resources */,
 				C72BB88722E363C400DF5F1C /* bump.png in Resources */,
 				C72BB7EA22E363C400DF5F1C /* metallic.png in Resources */,
 				C755BCC922B6E0BE0074F8A5 /* Mt Washington Cave Room.ibl in Resources */,
@@ -2406,6 +2424,7 @@
 				C7EED109221105360079F5C0 /* PorcupineRenderingShader.geom in Resources */,
 				C75C9740220E1F4400420DF6 /* ParallaxNormalMappingShader.frag in Resources */,
 				C7090CE022367404006FE002 /* PixelateShader.frag in Resources */,
+				C7BD8B1F22E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.geom in Resources */,
 				C72BB86222E363C400DF5F1C /* albedo.png in Resources */,
 				C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */,
 				C72BB82D22E363C400DF5F1C /* albedo.png in Resources */,
@@ -2441,13 +2460,14 @@
 				C72BB87122E363C400DF5F1C /* roughness.png in Resources */,
 				C72BB7EC22E363C400DF5F1C /* specular.png in Resources */,
 				C785F9722212DA7E00F1F8FD /* FrostedGlassEffectShader.frag in Resources */,
-				C78F395E2215C81C006163EC /* LightSpaceShader.vert in Resources */,
+				C78F395E2215C81C006163EC /* DirectionalShadowDepthShader.vert in Resources */,
 				C72BB86822E363C400DF5F1C /* ao.png in Resources */,
 				C7DE39F8221F2D0700595556 /* ScreenSpaceAmbientOcclusionLightingShader.vert in Resources */,
 				C73D517B22D262B4007893B6 /* Industrial_Trolley.obj in Resources */,
 				C72BB84922E363C400DF5F1C /* metallic.png in Resources */,
 				C7C8F43121FFBA0400AB865A /* Kai_Engel_-_03_-_Brooks.mp3 in Resources */,
 				C7EEC50922136AF700909E4C /* BloomShader.vert in Resources */,
+				C7BD8B2022E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.frag in Resources */,
 				C72BB87922E363C400DF5F1C /* ao.jpg in Resources */,
 				C71A2C4F22E3840200AC2D49 /* specular.png in Resources */,
 				C72BB70822E3530E00DF5F1C /* perlin_noise_texture.png in Resources */,
@@ -2504,7 +2524,7 @@
 				C7CEE2EB2212435600895F5D /* GrayScaleShader.vert in Resources */,
 				C72BB7F422E363C400DF5F1C /* specular.jpg in Resources */,
 				C7090CED22367B22006FE002 /* PaletteQuantizationAndDitheringShader.frag in Resources */,
-				C78F395F2215C81C006163EC /* LightSpaceShader.frag in Resources */,
+				C78F395F2215C81C006163EC /* DirectionalShadowDepthShader.frag in Resources */,
 				C72BB6FA22E3530E00DF5F1C /* heightmap3.jpg in Resources */,
 				C72BB7F122E363C400DF5F1C /* diffuse.jpg in Resources */,
 				C7403B6B22D0D831009EB7A0 /* SilhouetteShader.vert in Resources */,

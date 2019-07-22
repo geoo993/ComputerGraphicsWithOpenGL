@@ -73,15 +73,19 @@
 
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 880
-#define SHADOW_WIDTH 1024
-#define SHADOW_HEIGHT 1024
 #define FPS 60
 
 // Settings
 #define FOV 90.0
 #define ZNEAR 0.1
 #define ZFAR 2048.0
+
 #define SKYBOX 512
+
+#define SHADOW_WIDTH 1024
+#define SHADOW_HEIGHT 1024
+#define SHADOW_ZNEAR 1.0
+#define SHADOW_ZFAR 1024.0
 
 // Default camera values
 #define SPEED 50.0f

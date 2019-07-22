@@ -141,7 +141,7 @@ void main()
     //------ Write the final pixel.
     //
     vec3 color = mix(refractColor, reflectColor, fresnelTerm);
-    vec4 result = vec4(1.0f);
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     if (material.bUseTexture){
         result = vec4(mix(baseColor, color, reflectivity), 1.0f);
     }else {

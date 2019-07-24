@@ -90,7 +90,7 @@ Game::Game()
         std::make_tuple(glm::vec3(  320.0f,  70.0f, 350.0f      ), glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f   )   ),      // 7
         std::make_tuple(glm::vec3(  -600.0f,  10.0f, 370.0f     ), glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f     )   ),      // 8
         std::make_tuple(glm::vec3(  -120.0f,  -50.0f, 233.0f    ), glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f    )   ),      // 9
-        std::make_tuple(glm::vec3(  0.0f,  0.0f, 0.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
+        std::make_tuple(glm::vec3(  0.0f,  200.0f, 0.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
     };
     m_pointLightIndex = m_pointLights.size() - 1;
     
@@ -104,6 +104,7 @@ Game::Game()
     // Depth and Shadow Mapping
     m_fromLightPosition = true;
     m_showDepth = false;
+    m_shadowBias = 0.5f;
     
     // PPFX
     m_ffaaOffset = 0.0f;

@@ -612,15 +612,25 @@ void Game::LoadControls() {
     
     // Directional Shaddow Mapping
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CButton * shadowMappingFromLight = (CButton *)AddControl(new CButton("From Light or Camera", guiBox,
+    CButton * dirShadowMappingFromLight = (CButton *)AddControl(new CButton("From Light or Camera", guiBox,
                                                                         GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
-    shadowMappingFromLight->SetValue(&m_fromLightPosition);
+    dirShadowMappingFromLight->SetValue(&m_fromLightPosition);
+    guiBox->y += guiBox->height;
+    
+    CSlider *dirShadowMappingBias = (CSlider *)AddControl(new CSlider("Bias", 0.0f, 2.0f, 5, guiBox,
+                                                                       GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
+    dirShadowMappingBias->SetValue(&m_shadowBias);
     
     // Omnidirectional Shadow Mapping
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
     CButton * omniShadowMappingShowDepth = (CButton *)AddControl(new CButton("Show Depth", guiBox,
                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::OmnidirectionalShadowMapping));
     omniShadowMappingShowDepth->SetValue(&m_showDepth);
+    guiBox->y += guiBox->height;
+    
+    CSlider *omniShadowMappingBias = (CSlider *)AddControl(new CSlider("Bias", 0.0f, 1.0f, 5, guiBox,
+                                                           GUIMode::DYNAMIC, false, PostProcessingEffectMode::OmnidirectionalShadowMapping));
+    omniShadowMappingBias->SetValue(&m_shadowBias);
     
 }
 

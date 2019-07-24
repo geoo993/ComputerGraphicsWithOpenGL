@@ -77,7 +77,7 @@ void Game::InitialiseResources()
 void Game::LoadResources(const std::string &path)
 {
     // Create the planar terrain
-    m_pPlanarTerrain->Create(path+"/textures/pbr/oakfloor/", {
+    m_pPlanarTerrain->Create(path+"/textures/pbr/wood/", {
         { "albedo.png", TextureType::ALBEDO },           // albedo map
         { "metallic.png",  TextureType::METALNESS },           // metallic map
         { "roughness.png",   TextureType::ROUGHNESS},         // roughness map
@@ -115,7 +115,7 @@ void Game::LoadResources(const std::string &path)
                              { "specular.png",   TextureType::SPECULAR},
                              { "bump.png", TextureType::DISPLACEMENT},      // bump
                          });
-    m_pInteriorBox->Create(path+"/textures/pbr/harshbricks/", {
+    m_pInteriorBox->Create(path+"/textures/pbr/wood/", {
         { "albedo.png", TextureType::ALBEDO},              // albedo map
         { "ambient.png", TextureType::AMBIENT },            // ambientMap 0
         { "diffuse.png", TextureType::DIFFUSE},

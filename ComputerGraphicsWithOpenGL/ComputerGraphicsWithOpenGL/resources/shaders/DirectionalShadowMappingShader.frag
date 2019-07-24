@@ -21,6 +21,7 @@ uniform struct Shadow
 {
     float znear;
     float zfar;
+    float bias;
     bool bFromLightOrCamera;
     bool bShowDepth;
 } shadow;
@@ -137,30 +138,80 @@ float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
     float currentDepth = projCoords.z;
     
     // remove shadow mapping artifact called shadow acne, using a small little hack called a shadow bias where we simply offset the depth of the surface (or the shadow map) by a small bias amount such that fragments are not incorrectly considered below the surface.
-    float biasValue = 0.005f;
-    
-    float bias = max(0.05f * (1.0f - dot(normal, lightDir)), biasValue);
+    float bias = max(0.05f * (1.0f - dot(normal, lightDir)), shadow.bias);
   
     // check whether current frag pos is in shadow
     // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
     // PCF
-    float shadow = 0.0f;
+    float shadowColor = 0.0f;
     vec2 texelSize = 1.0f / textureSize(material.depthMap, 0);
     for(int x = -1; x <= 1; ++x)
     {
         for(int y = -1; y <= 1; ++y)
         {
             float pcfDepth = texture(material.depthMap, projCoords.xy + vec2(x, y) * texelSize).r;
-            shadow += currentDepth - bias > pcfDepth  ? 1.0f : 0.0f;
+            shadowColor += currentDepth - bias > pcfDepth  ? 1.0f : 0.0f;
         }
     }
-    shadow /= 9.0f;
+    shadowColor /= 9.0f;
     
     // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
-    if(projCoords.z > 1.0f) shadow = 0.0f;
+    if(projCoords.z > 1.0f) shadowColor = 0.0f;
     
-    return shadow;
+    return shadowColor;
 }
+
+vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
+{
+    return vec4(1.0f);
+}
+
+vec4 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 vertexPosition)
+{
+    return CalcLight(directionalLight.base, normalize(-directionalLight.direction), normal, vertexPosition);
+}
+
+vec4 CalcPointLight(PointLight pointLight, vec3 normal, vec3 vertexPosition)
+{
+    vec3 lightDirection = normalize(pointLight.position - vertexPosition);
+    float distanceToPoint = length(pointLight.position - vertexPosition);
+    
+    if(distanceToPoint > pointLight.range)
+        return vec4(0.0f, 0.0f, 0.0f, 0.0f);
+    
+    vec4 color = CalcLight(pointLight.base, lightDirection, normal, vertexPosition);
+    
+    // attenuation
+    
+    float attenuation = 1.0f / (pointLight.attenuation.constant + pointLight.attenuation.linear * distanceToPoint +
+                                pointLight.attenuation.exponent * (distanceToPoint * distanceToPoint));
+    return color * attenuation;
+    
+    
+    //float attenuation = (pointLight.attenuation.constant +
+    //                     pointLight.attenuation.linear * distanceToPoint +
+    //                     pointLight.attenuation.exponent * (distanceToPoint * distanceToPoint) + 0.0001f);
+    //return color / attenuation;
+}
+
+
+vec4 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 vertexPosition)
+{
+    vec3 lightDirection = normalize(spotLight.pointLight.position - vertexPosition);
+    float theta = max(dot(lightDirection, normalize(-spotLight.direction)), 0.0f);
+    vec4 color = vec4( 0.0f, 0.0f, 0.0f, 0.0f);
+    
+    if(theta > spotLight.cutOff)
+    {
+        float epsilon = spotLight.cutOff - spotLight.outerCutOff;
+        float intensity = bUseSmoothSpot
+        ? (1.0f - (1.0f - theta) / (1.0f - spotLight.cutOff))
+        : clamp((theta - spotLight.outerCutOff) / epsilon, 0.0f, 1.0f);
+        color = CalcPointLight(spotLight.pointLight, normal, vertexPosition) * intensity;
+    }
+    return color;
+}
+
 
 //When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
 layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
@@ -171,13 +222,14 @@ layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
-    vec3 color = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
     vec3 normal = normalize(fs_in.vWorldNormal);
+    vec3 worldPos = fs_in.vWorldPosition;
+    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    vec3 color = texture(material.diffuseMap, fs_in.vTexCoord).rgb;
     vec3 lightColor = vec3(0.3f);
     vec4 lightSpace = fs_in.vPosLightSpace;
-    vec3 worldPos = fs_in.vWorldPosition;
     vec3 viewPos = camera.position + camera.front;
-    vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     
     // ambient
     vec3 ambient = 0.3f * color;
@@ -199,6 +251,22 @@ void main()
     vOutputColour = vec4(lighting, 1.0f);
     
     
+    // Retrieve bright parts
+    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
+    if(brightness > 1.0f) {
+        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
+    } else {
+        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    }
+    
+    // store the fragment position vector in the first gbuffer texture
+    vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
+    // also store the per-fragment normals into the gbuffer
+    vNormal = normalize(fs_in.vWorldNormal);
+    // and the diffuse per-fragment color
+    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, fs_in.vTexCoord).rgb;
+    // store specular intensity in gAlbedoSpec's alpha component
+    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, fs_in.vTexCoord).r;
     
 }
 

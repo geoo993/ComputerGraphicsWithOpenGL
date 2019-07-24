@@ -98,9 +98,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         /// Terrain
     {
         
-        //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
         pShaderProgram->UseProgram();
-        pShaderProgram->SetUniform("bReverseNormals", 1);// A small little hack to invert normals when drawing cube from the inside so lighting still works.
         if (isPBR) {
             SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         }
@@ -110,8 +108,6 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         if (isPBR) {
             SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
         }
-        pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
-        //glEnable(GL_CULL_FACE);
     } else
     /// InterioBox
     {

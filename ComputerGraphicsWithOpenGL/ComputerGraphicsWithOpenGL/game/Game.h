@@ -261,12 +261,18 @@ protected:
     void SetHRDLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                             const GLfloat & exposure, const GLfloat & gamma, const GLboolean &useHDR) override;
     void SetDirectionalLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                    const DirectionalLight& directionalLight, const glm::vec3& direction) override;
+                                    const DirectionalLight& directionalLight, const glm::vec3& direction, const glm::vec3 &position) override;
     void SetPointLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const PointLight& pointLight) override;
     void SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const SpotLight& spotLight, CCamera *camera) override;
-    void SetShadowUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const GLfloat &znear, const GLfloat &zfar) override;
-    void RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) override;
-    void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale) override;
+    void SetShadowUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const GLfloat &bias) override;
+    void SetShadowMatrix(CShaderProgram *pShaderProgram, const glm::vec3 &lightPosition) override;
+    void RenderLight(CShaderProgram *pShaderProgram,
+                    const std::string &dirName,
+                    const std::string &pointName,
+                    const std::string &spotName,
+                    CCamera *camera,
+                    const GLboolean &useShadowMatrix = false) override;
+    void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const glm::vec3 & scale) override;
     
     /// Renderer
     void PreRendering() override;
@@ -276,19 +282,19 @@ protected:
     
     /// Render object
     void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),
-                    const GLfloat & scale = 1.0f, const GLboolean &bindTexture = false) override;
+                    const glm::vec3 & scale = glm::vec3(1.0f), const GLboolean &bindTexture = false) override;
     void RenderSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderEnvSkyBox(CShaderProgram *pShaderProgram) override;
     void ResetSkyBox(CShaderProgram *pShaderProgram) override;
     void RenderTerrain(CShaderProgram *pShaderProgram,
-                        const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useHeightMap) override;
+                        const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale, const GLboolean &useHeightMap) override;
     void RenderPrimitive(CShaderProgram *pShaderProgram, GameObject *object,
-                        const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale,
+                        const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale,
                         const GLboolean &useTexture = true) override;
     void RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                        const GLfloat & scale, const GLboolean &useTexture) override;
+                        const glm::vec3 & scale, const GLboolean &useTexture) override;
     void RenderModel(CShaderProgram *pShaderProgram, CModel * model,
-                        const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale);
+                        const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale);
     
     /// Post processing
     void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) override;

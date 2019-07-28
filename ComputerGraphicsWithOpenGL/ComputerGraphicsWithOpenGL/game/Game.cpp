@@ -62,6 +62,9 @@ Game::Game()
     m_specular = 0.6f;
     m_exposure = 1.0f;
     m_gama = 1.0f;
+    
+    // HDR
+    m_hdrName = "hrdlight";
     m_HDR = false;
     m_useBlinn = true;
     
@@ -71,13 +74,15 @@ Game::Game()
     m_exponent = 0.0019f;
 
     // Dir Light
+    m_dirName = "R_directionallight";
     m_useDir = true;
     m_dirColor = glm::vec3(1.0f, 1.0f, 1.0f);
     m_dirIntensity = 0.4f;
     m_directionalLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f),
     
     // Point Light
-    m_usePoint = true;
+    m_pointName = "R_pointlight";
+    m_usePoint = false;
     m_pointIntensity = 18.0f;
     
     m_pointLights = {
@@ -90,11 +95,12 @@ Game::Game()
         std::make_tuple(glm::vec3(  320.0f,  70.0f, 350.0f      ), glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f   )   ),      // 7
         std::make_tuple(glm::vec3(  -600.0f,  10.0f, 370.0f     ), glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f     )   ),      // 8
         std::make_tuple(glm::vec3(  -120.0f,  -50.0f, 233.0f    ), glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f    )   ),      // 9
-        std::make_tuple(glm::vec3(  0.0f,  200.0f, 0.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
+        std::make_tuple(glm::vec3(  -2.0f,  400.0f, 30.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
     };
     m_pointLightIndex = m_pointLights.size() - 1;
     
     // Spot Light
+    m_spotName = "R_spotlight";
     m_useSpot = false;
     m_spotColor = glm::vec3(0.3f, 0.5f, 1.0f);;
     m_spotIntensity = 40.4f;
@@ -104,7 +110,8 @@ Game::Game()
     // Depth and Shadow Mapping
     m_fromLightPosition = true;
     m_showDepth = false;
-    m_shadowBias = 0.5f;
+    m_dirShadowBias = 0.05f;
+    m_orthShadowBias = 0.5f;
     
     // PPFX
     m_ffaaOffset = 0.0f;

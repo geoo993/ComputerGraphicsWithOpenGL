@@ -177,9 +177,12 @@ struct ILights
     GLfloat m_ambient;
     GLfloat m_diffuse;
     GLfloat m_specular;
-    GLfloat m_exposure;
-    GLfloat m_gama;
-    GLboolean m_useBlinn, m_HDR;
+    GLboolean m_useBlinn;
+    
+    // HDR
+    GLfloat m_exposure, m_gama;
+    GLboolean m_HDR;
+    std::string m_hdrName;
     
     // Attenuation
     GLfloat m_constant;
@@ -187,18 +190,21 @@ struct ILights
     GLfloat m_exponent;
     
     // Directional Light
+    std::string m_dirName;
     GLboolean m_useDir;
     glm::vec3 m_dirColor;
     GLfloat m_dirIntensity;
     glm::vec3 m_directionalLightDirection;
     
     // Point Light
+    std::string m_pointName;
     GLboolean m_usePoint;
     GLfloat m_pointIntensity;
     GLuint m_pointLightIndex = 0;
     std::vector<std::tuple<glm::vec3, glm::vec4>> m_pointLights;
     
     // Spot Light
+    std::string m_spotName;
     GLboolean m_useSpot;
     GLboolean m_useSmoothSpot;
     glm::vec3 m_spotColor;
@@ -212,13 +218,19 @@ struct ILights
     virtual void SetHRDLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const GLfloat & exposure, const GLfloat & gamma, const GLboolean &useHDR) = 0;
     virtual void SetDirectionalLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
-                                            const DirectionalLight& directionalLight, const glm::vec3& direction) = 0;
+                                            const DirectionalLight& directionalLight, const glm::vec3& direction, const glm::vec3 &position) = 0;
     virtual void SetPointLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const PointLight& pointLight) = 0;
     virtual void SetSpotLightUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const SpotLight& spotLight,
                                      CCamera *camera) = 0;
-    virtual void SetShadowUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const GLfloat &znear, const GLfloat &zfar) = 0;
-    virtual void RenderLight(CShaderProgram *pShaderProgram, CCamera * camera) = 0;
-    virtual void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const GLfloat & scale) = 0;
+    virtual void SetShadowUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, const GLfloat &bias) = 0;
+    virtual void SetShadowMatrix(CShaderProgram *pShaderProgram, const glm::vec3 &lightPosition) = 0;
+    virtual void RenderLight(CShaderProgram *pShaderProgram,
+                                const std::string &dirName,
+                                const std::string &pointName,
+                                const std::string &spotName,
+                                CCamera *camera,
+                                const GLboolean &useShadowMatrix) = 0;
+    virtual void RenderLamp(CShaderProgram *pShaderProgram, const glm::vec3 &position, const glm::vec3 & scale) = 0;
 };
 
 struct IRenderer
@@ -232,15 +244,15 @@ struct IRenderer
 struct IRenderObject
 {
     virtual void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                            const GLfloat & scale, const GLboolean &bindTexture) = 0;
+                            const glm::vec3 & scale, const GLboolean &bindTexture) = 0;
     virtual void RenderSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void RenderEnvSkyBox(CShaderProgram *pShaderProgram) = 0;
     virtual void ResetSkyBox(CShaderProgram *pShaderProgram) = 0;
-    virtual void RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useHeightMap) = 0;
+    virtual void RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale, const GLboolean &useHeightMap) = 0;
     virtual void RenderPrimitive(CShaderProgram *pShaderProgram, GameObject *object, const glm::vec3 & position,
-                                const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) = 0;
+                                const glm::vec3 & rotation, const glm::vec3 & scale, const GLboolean &useTexture) = 0;
     virtual void RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                                  const GLfloat & scale, const GLboolean &useTexture) = 0;
+                                  const glm::vec3 & scale, const GLboolean &useTexture) = 0;
 };
 
 struct IPostProcessing {
@@ -332,7 +344,7 @@ struct IPostProcessing {
     
     // Depth and Shadow Mapping
     GLboolean m_isOrthographicCamera, m_fromLightPosition, m_showDepth;
-    GLfloat m_shadowBias;
+    GLfloat m_dirShadowBias, m_orthShadowBias;
     
     virtual void InitialiseFrameBuffers(const GLuint &width, const GLuint &height) = 0;
     virtual void LoadFrameBuffers(const GLuint &width , const GLuint &height) = 0;

@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::OmnidirectionalShadowMapping;
+    m_currentPPFXMode = PostProcessingEffectMode::DirectionalShadowMapping;
     m_coverage = 1.0f;
     
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -551,9 +551,8 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 // Render Lighting Scene
                 SetCameraUniform(pScreenSpaceAmbientOcclusionLightingProgram, "camera", m_pCamera);
                 SetLightUniform(pScreenSpaceAmbientOcclusionLightingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-                
-                // Add Default Lights
-                RenderLight(pScreenSpaceAmbientOcclusionLightingProgram, m_pCamera);
+                SetHRDLightUniform(pScreenSpaceAmbientOcclusionLightingProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+                RenderLight(pScreenSpaceAmbientOcclusionLightingProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
                 
                 currentFBO = m_pFBOs[5];
                 currentFBO->BindTexture(static_cast<GLint>(TextureType::AO));
@@ -611,23 +610,9 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 m_gameWindow->SetViewport(SHADOW_WIDTH, SHADOW_HEIGHT);
                 m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
                 
-                glm::vec3 lightPos = m_fromLightPosition ? std::get<0>(m_pointLights.back()) : m_pCamera->GetPosition();
-                GLfloat orthogonalBoxSize = m_mapSize * 0.5f; // this is the cubic bounding box from the light in the scene, determines where the light is projected
                 
-                /*
-                 Perspective projections make more sense for light sources that have actual locations unlike directional lights.
-                 Perspective projections are thus most often used with spotlights and point lights while orthographic projections are used for directional lights.
-                 */
-                glm::mat4 orthoProjection = glm::ortho(-orthogonalBoxSize, orthogonalBoxSize, -orthogonalBoxSize, orthogonalBoxSize, near_plane, far_plane);
-                glm::mat4 persProjection = glm::perspective(glm::radians(m_pCamera->GetFieldOfView()), m_pCamera->GetAspectRatio(), near_plane, far_plane);
-                glm::mat4 lightProjection = m_isOrthographicCamera ? orthoProjection : persProjection;
-                glm::mat4 lightView = glm::lookAt(lightPos,                     // The  eye is the position of the camera's viewpoint,
-                                                  glm::vec3(0.0f),              // The center is where you are looking at (a position which in this case is the center of the screen). If you want to use a direction vector D instead of a center position, you can simply use eye + D as the center position, where D can be a unit vector for example.
-                                                  glm::vec3(0.0f, 1.0f, 0.0f)); // The up vector is basically a vector defining your world's "upwards" direction. In almost all normal cases, this will be the vector (0, 1, 0) i.e. towards positive Y.
-                glm::mat4 lightSpaceMatrix = lightProjection * (m_fromLightPosition ? lightView : m_pCamera->GetViewMatrix());
                 CShaderProgram *pLightSpaceProgram = (*m_pShaderPrograms)[51];
-                pLightSpaceProgram->UseProgram();
-                pLightSpaceProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
+                RenderLight(pLightSpaceProgram, m_dirName, m_pointName, m_spotName, m_pCamera, true);
                 RenderScene(true, false, 51);
             }
             
@@ -637,7 +622,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             {
                 CShaderProgram *pDepthMappingProgram = (*m_pShaderPrograms)[50];
                 SetCameraUniform(pDepthMappingProgram, "camera", m_pCamera);
-                SetShadowUniform(pDepthMappingProgram, "shadow", near_plane, far_plane);
+                SetShadowUniform(pDepthMappingProgram, "shadow", m_dirShadowBias);
                 SetMaterialUniform(pDepthMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
                 SetDepthMappingUniform(pDepthMappingProgram);
                 
@@ -651,23 +636,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::DirectionalShadowMapping: {
-            GLfloat near_plane = (GLfloat)SHADOW_ZNEAR; // how short the light ray goes
-            GLfloat far_plane = (GLfloat)SHADOW_ZFAR; //how far the light ray goes
-            glm::vec3 lightPos = m_fromLightPosition ? std::get<0>(m_pointLights.back()) : m_pCamera->GetPosition();
-            // shadow projection
-            
-            /*
-             Perspective projections make more sense for light sources that have actual locations unlike directional lights.
-             Perspective projections are thus most often used with spotlights and point lights while orthographic projections are used for directional lights.
-             */
-            
-            GLfloat orthogonalBoxSize = (GLfloat)SKYBOX; // this is the cubic bounding box from the light to the scene, determines where the light is projected
-            glm::mat4 lightProjection = glm::ortho(-orthogonalBoxSize, orthogonalBoxSize, -orthogonalBoxSize, orthogonalBoxSize, near_plane, far_plane);
-            glm::mat4 lightView = glm::lookAt(lightPos,                     // The  eye is the position of the camera's viewpoint,
-                                              glm::vec3(0.0f),  // THIS COULD BE OUR SHADOW PROBLEM             // The center is where you are looking at (a position which in this case is the center of the screen). If you want to use a direction vector D instead of a center position, you can simply use eye + D as the center position, where D can be a unit vector for example.
-                                              glm::vec3(0.0f, 1.0f, 0.0f)); // The up vector is basically a vector defining your world's "upwards" direction. In almost all normal cases, this will be the vector (0, 1, 0) i.e. towards positive Y.
-            glm::mat4 lightSpaceMatrix = lightProjection * (m_fromLightPosition ? lightView : m_pCamera->GetViewMatrix());
-            
+           
             // Second Pass - Render Scene to light space
             {
                 currentFBO = m_pFBOs[7];
@@ -676,8 +645,8 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 m_gameWindow->ClearBuffers(ClearBuffersType::DEPTH);
                 
                 CShaderProgram *pLightSpaceProgram = (*m_pShaderPrograms)[51];
-                pLightSpaceProgram->UseProgram();
-                pLightSpaceProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
+                RenderLight(pLightSpaceProgram, m_dirName, m_pointName, m_spotName, m_pCamera, true);
+                
                 RenderScene(true, false, 51);
             }
             
@@ -698,14 +667,13 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 
                 // use depth mapping quad
                 CShaderProgram *pDirectionalShadowMappingProgram = (*m_pShaderPrograms)[84];
-                pDirectionalShadowMappingProgram->UseProgram();
-                pDirectionalShadowMappingProgram->SetUniform("matrices.lightSpaceMatrix", lightSpaceMatrix);
-                pDirectionalShadowMappingProgram->SetUniform("lightPos", lightPos);
                 SetCameraUniform(pDirectionalShadowMappingProgram, "camera", m_pCamera);
-                SetShadowUniform(pDirectionalShadowMappingProgram, "shadow", near_plane, far_plane);
                 SetMaterialUniform(pDirectionalShadowMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
-                SetLightUniform(pDirectionalShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
                 SetFogMaterialUniform(pDirectionalShadowMappingProgram, "fog", m_fogColor, m_useFog);
+                SetShadowUniform(pDirectionalShadowMappingProgram, "shadow", m_dirShadowBias);
+                SetLightUniform(pDirectionalShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+                SetHRDLightUniform(pDirectionalShadowMappingProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+                RenderLight(pDirectionalShadowMappingProgram, m_dirName, m_pointName, m_spotName, m_pCamera, true);
                 
                 RenderScene(true, false, 84);
             }
@@ -727,7 +695,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
         case PostProcessingEffectMode::OmnidirectionalShadowMapping: {
             GLfloat near_plane = (GLfloat)SHADOW_ZNEAR; // how short the light ray goes
             GLfloat far_plane = (GLfloat)SHADOW_ZFAR; //how far the light ray goes
-            glm::vec3 lightPos = std::get<0>(m_pointLights.back());
             
             // Second Pass - Render Scene to light space
             {
@@ -736,16 +703,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 // -----------------------------
                 m_gameWindow->ClearBuffers(ClearBuffersType::COLORDEPTHSTENCIL);
                 
-                // 0. create depth cubemap transformation matrices
-                // -----------------------------------------------
-                glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
-                std::vector<glm::mat4> shadowTransforms;
-                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
-                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
-                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)));
-                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)));
-                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
-                shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f)));
 
                 // 1. render scene to depth cubemap
                 // --------------------------------
@@ -756,12 +713,12 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 
                 CShaderProgram *pLightSpaceProgram = (*m_pShaderPrograms)[85];
                 pLightSpaceProgram->UseProgram();
-                pLightSpaceProgram->SetUniform("lightPos", lightPos);
-                for (unsigned int i = 0; i < 6; ++i) {
-                    pLightSpaceProgram->SetUniform("shadowMatrices[" + std::to_string(i) + "]", shadowTransforms[i]);
-                }
-                SetShadowUniform(pLightSpaceProgram, "shadow", near_plane, far_plane);
+
                 SetMaterialUniform(pLightSpaceProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
+                SetShadowUniform(pLightSpaceProgram, "shadow", m_orthShadowBias);
+                SetLightUniform(pLightSpaceProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+                RenderLight(pLightSpaceProgram, m_dirName, m_pointName, m_spotName, m_pCamera, true);
+                
                 RenderScene(true, false, 85);
                
             }
@@ -782,13 +739,13 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 // 2. render scene as normal
                 // -------------------------
                 CShaderProgram *pOmnidirectionalShadowMappingProgram = (*m_pShaderPrograms)[86];
-                pOmnidirectionalShadowMappingProgram->UseProgram();
-                pOmnidirectionalShadowMappingProgram->SetUniform("lightPos", lightPos);
                 SetCameraUniform(pOmnidirectionalShadowMappingProgram, "camera", m_pCamera);
-                SetShadowUniform(pOmnidirectionalShadowMappingProgram, "shadow", near_plane, far_plane);
                 SetMaterialUniform(pOmnidirectionalShadowMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, false);
-                SetLightUniform(pOmnidirectionalShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
                 SetFogMaterialUniform(pOmnidirectionalShadowMappingProgram, "fog", m_fogColor, m_useFog);
+                SetShadowUniform(pOmnidirectionalShadowMappingProgram, "shadow", m_orthShadowBias);
+                SetLightUniform(pOmnidirectionalShadowMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+                SetHRDLightUniform(pOmnidirectionalShadowMappingProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+                RenderLight(pOmnidirectionalShadowMappingProgram, m_dirName, m_pointName, m_spotName, m_pCamera, false);
                 
                 RenderScene(true, false, 86);
             }
@@ -817,9 +774,8 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 // Render Lighting Scene
                 SetCameraUniform(pDeferredRenderingProgram, "camera", m_pCamera);
                 SetLightUniform(pDeferredRenderingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-                
-                // Add Default Lights
-                RenderLight(pDeferredRenderingProgram, m_pCamera);
+                SetHRDLightUniform(pDeferredRenderingProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+                RenderLight(pDeferredRenderingProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
                 
                 // Bind Textures
                 currentFBO = m_pFBOs[1];
@@ -842,7 +798,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                     glm::vec3 position = std::get<0>(*it);
                     glm::vec4 color = std::get<1>(*it);
                     SetMaterialUniform(pLampProgram, "material", color);
-                    RenderLamp(pLampProgram, position, 10.0f);
+                    RenderLamp(pLampProgram, position, glm::vec3(10.0f));
                 }
             }
             

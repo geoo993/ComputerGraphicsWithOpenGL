@@ -52,7 +52,6 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         ///  Physically Based Rendering
         pShaderProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 3];
         SetCameraUniform(pShaderProgram, "camera", m_pCamera);
-        SetLightUniform(pShaderProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
         SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
         SetPBRMaterialUniform(pShaderProgram, "material", m_albedo, m_metallic, m_roughness, m_ao, m_useIrradiance);
         SetFogMaterialUniform(pShaderProgram, "fog", m_fogColor, m_useFog);
@@ -67,8 +66,11 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
             GLint brdfLUTTextureUnit = static_cast<GLint>(TextureType::SPECULAR);
             m_pIrrSkybox->BindBRDFLUTTextureTo(brdfLUTTextureUnit);
         }
+        
         // Render Lights
-        RenderLight(pShaderProgram, m_pCamera);
+        SetLightUniform(pShaderProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+        SetHRDLightUniform(pShaderProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+        RenderLight(pShaderProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
         
     } else {
      
@@ -79,7 +81,8 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetPBRMaterialUniform(pShaderProgram, "material", m_albedo, m_metallic, m_roughness, m_ao, m_useIrradiance);
         SetFogMaterialUniform(pShaderProgram, "fog", m_fogColor, m_useFog);
-        
+        SetHRDLightUniform(pShaderProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+        RenderLight(pShaderProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
         /*
         // Render Wooden Boxes
         for ( GLuint i = 0; i < m_woodenBoxesPosition.size(); ++i){
@@ -88,8 +91,6 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
             RenderPrimitive(pShaderProgram, m_pWoodenBox, position, glm::vec3(0.0f, angle, 0.0f), 20, m_materialUseTexture);
         }
         */
-        // Render Lights
-        RenderLight(pShaderProgram, m_pCamera);
         
     }
     
@@ -103,7 +104,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
             SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         }
         
-        RenderTerrain(pShaderProgram, glm::vec3(0.0f, -100.0f, 0), glm::vec3(0.0f), 1.0f, false);
+        RenderTerrain(pShaderProgram, glm::vec3(0.0f, -100.0f, 0), glm::vec3(0.0f), glm::vec3(1.0f), false);
         
         if (isPBR) {
             SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
@@ -116,7 +117,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
         pShaderProgram->UseProgram();
         pShaderProgram->SetUniform("bReverseNormals", 1); // A small little hack to invert normals when drawing cube from the inside so lighting still works.
-        RenderPrimitive(pShaderProgram, m_pInteriorBox, glm::vec3(0.0f,  0.0f,  0.0f ), glm::vec3(0.0f), 50.0f); // Render Big cube underneath
+        RenderPrimitive(pShaderProgram, m_pInteriorBox, glm::vec3(0.0f,  0.0f,  0.0f ), glm::vec3(0.0f), glm::vec3(100.0f, 50.0f, 50.0f)); // Render Big cube underneath
         pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
         //glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
@@ -125,43 +126,42 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     
     /// Trolley
     {
-        //RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, -100.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f), 0.5f);
+        //RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, -100.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f));
     }
     
     // 1 - 10
-    RenderPrimitive(pShaderProgram, m_pSpherePBR1, glm::vec3(50.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot1, glm::vec3(50.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR1, glm::vec3(50.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot1, glm::vec3(50.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     
-    RenderPrimitive(pShaderProgram, m_pSpherePBR2, glm::vec3(-50.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot2, glm::vec3(-50.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR2, glm::vec3(-50.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot2, glm::vec3(-50.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     
-    RenderPrimitive(pShaderProgram, m_pSpherePBR3, glm::vec3(150.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot3, glm::vec3(150.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR3, glm::vec3(150.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot3, glm::vec3(150.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     
-    RenderPrimitive(pShaderProgram, m_pSpherePBR4, glm::vec3(-150.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot4, glm::vec3(-150.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR4, glm::vec3(-150.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot4, glm::vec3(-150.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     
-    RenderPrimitive(pShaderProgram, m_pSpherePBR5, glm::vec3(250.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot5, glm::vec3(250.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR5, glm::vec3(250.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot5, glm::vec3(250.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     
-    RenderPrimitive(pShaderProgram, m_pSpherePBR6, glm::vec3(-250.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot6, glm::vec3(-250.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR6, glm::vec3(-250.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot6, glm::vec3(-250.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     
-    RenderPrimitive(pShaderProgram, m_pSpherePBR7, glm::vec3(350.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot7, glm::vec3(350.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR7, glm::vec3(350.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot7, glm::vec3(350.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     
-    RenderPrimitive(pShaderProgram, m_pSpherePBR8, glm::vec3(-350.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot8, glm::vec3(-350.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR8, glm::vec3(-350.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot8, glm::vec3(-350.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     
-    RenderPrimitive(pShaderProgram, m_pSpherePBR9, glm::vec3(450.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot9, glm::vec3(450.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR9, glm::vec3(450.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot9, glm::vec3(450.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     
-    RenderPrimitive(pShaderProgram, m_pSpherePBR10, glm::vec3(-450.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-    RenderModel(pShaderProgram, m_teapot10, glm::vec3(-450.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+    RenderPrimitive(pShaderProgram, m_pSpherePBR10, glm::vec3(-450.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+    RenderModel(pShaderProgram, m_teapot10, glm::vec3(-450.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
   
 
-    /*
-     
+    
     /// Bump Mapping
     {
         CShaderProgram *pBumpMappingProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 7];
@@ -169,13 +169,13 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         SetLightUniform(pBumpMappingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
         SetMaterialUniform(pBumpMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetFogMaterialUniform(pBumpMappingProgram, "fog", m_fogColor, m_useFog);
-        // Add Bump mapping Lights
-        RenderLight(pBumpMappingProgram, m_pCamera);
+        SetHRDLightUniform(pBumpMappingProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+        RenderLight(pBumpMappingProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
         
         // 11
-        RenderPrimitive(pBumpMappingProgram, m_pSpherePBR11, glm::vec3(550.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        //RenderPrimitive(pBumpMappingProgram, m_pTorus, glm::vec3(550.0f, 0.0f, zback), glm::vec3(0.0f), 10.0f);
-        RenderPrimitive(pBumpMappingProgram, m_pTorusKnot, glm::vec3(550.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+        RenderPrimitive(pBumpMappingProgram, m_pSpherePBR11, glm::vec3(550.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+        //RenderPrimitive(pBumpMappingProgram, m_pTorus, glm::vec3(550.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(10.0f));
+        RenderPrimitive(pBumpMappingProgram, m_pTorusKnot, glm::vec3(550.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     }
      
     /// Environment Mapping
@@ -188,10 +188,10 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         SetFogMaterialUniform(pEnvironmentMapProgram, "fog", m_fogColor, m_useFog);
         
         // 12
-        RenderPrimitive(pEnvironmentMapProgram, m_pSpherePBR12, glm::vec3(-550.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f, false);
-        RenderPrimitive(pEnvironmentMapProgram, m_pCube12, glm::vec3(-550.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f, false);
+        RenderPrimitive(pEnvironmentMapProgram, m_pSpherePBR12, glm::vec3(-550.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f), false);
+        RenderPrimitive(pEnvironmentMapProgram, m_pCube12, glm::vec3(-550.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(30.0f), false);
         
-        RenderMetalBalls(isPBR ? pShaderProgram : pEnvironmentMapProgram, glm::vec3(-880.0f, 0.0f, zback), 100.0f, isPBR ? m_materialUseTexture : false);
+        RenderMetalBalls(isPBR ? pShaderProgram : pEnvironmentMapProgram, glm::vec3(-880.0f, 0.0f, zback), glm::vec3(100.0f), isPBR ? m_materialUseTexture : false);
     }
 
     
@@ -203,12 +203,12 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         SetMaterialUniform(pParallaxNormalMappingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetParallaxMapUniform(pParallaxNormalMappingProgram, m_parallaxHeightScale);
         SetFogMaterialUniform(pParallaxNormalMappingProgram, "fog", m_fogColor, m_useFog);
-        // Add Parallax Normal mapping Lights
-        RenderLight(pParallaxNormalMappingProgram, m_pCamera);
+        SetHRDLightUniform(pParallaxNormalMappingProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+        RenderLight(pParallaxNormalMappingProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
         
         // 13
-        RenderPrimitive(pParallaxNormalMappingProgram, m_pSpherePBR13, glm::vec3(650.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        RenderPrimitive(pParallaxNormalMappingProgram, m_pCube13, glm::vec3(650.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+        RenderPrimitive(pParallaxNormalMappingProgram, m_pSpherePBR13, glm::vec3(650.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+        RenderPrimitive(pParallaxNormalMappingProgram, m_pCube13, glm::vec3(650.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(30.0f));
     }
     
 
@@ -222,8 +222,8 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         SetChromaticAberrationUniform(pChromaticAberrationProgram, glm::vec2(0.3f, 1.5f));
         
         // 14
-        RenderPrimitive(pChromaticAberrationProgram, m_pSpherePBR14, glm::vec3(-650.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        RenderPrimitive(pChromaticAberrationProgram, m_pCube14, glm::vec3(-650.0f, 0.0f, zback), glm::vec3(0.0f), 30.0f);
+        RenderPrimitive(pChromaticAberrationProgram, m_pSpherePBR14, glm::vec3(-650.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+        RenderPrimitive(pChromaticAberrationProgram, m_pCube14, glm::vec3(-650.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(30.0f));
     }
     
      
@@ -234,15 +234,16 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
         
         SetCameraUniform(pDiscardProgram, "camera", m_pCamera);
-        SetLightUniform(pDiscardProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
         SetMaterialUniform(pDiscardProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetFogMaterialUniform(pDiscardProgram, "fog", m_fogColor, m_useFog);
         SetDisintegrationUniform(pDiscardProgram);
-        RenderLight(pDiscardProgram, m_pCamera);
+        SetLightUniform(pDiscardProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+        SetHRDLightUniform(pDiscardProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+        RenderLight(pDiscardProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
         
         // 15
-        RenderPrimitive(pDiscardProgram, m_pSpherePBR15, glm::vec3(750.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        RenderModel(pDiscardProgram, m_teapot15, glm::vec3(750.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+        RenderPrimitive(pDiscardProgram, m_pSpherePBR15, glm::vec3(750.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+        RenderModel(pDiscardProgram, m_teapot15, glm::vec3(750.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
         
         // Add Discard Lights
         glDisable (GL_BLEND);
@@ -252,15 +253,15 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     {
         CShaderProgram *pToonProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 14];
         SetCameraUniform(pToonProgram, "camera", m_pCamera);
-        SetLightUniform(pToonProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
         SetMaterialUniform(pToonProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetFogMaterialUniform(pToonProgram, "fog", m_fogColor, m_useFog);
-        // Add Toon Shading Lights
-        RenderLight(pToonProgram, m_pCamera);
+        SetLightUniform(pToonProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+        SetHRDLightUniform(pToonProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+        RenderLight(pToonProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
         
         // 16
-        RenderPrimitive(pToonProgram, m_pSpherePBR16, glm::vec3(-750.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        RenderModel(pToonProgram, m_teapot16, glm::vec3(-750.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+        RenderPrimitive(pToonProgram, m_pSpherePBR16, glm::vec3(-750.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+        RenderModel(pToonProgram, m_teapot16, glm::vec3(-750.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     }
     
     /// Porcupine Rendering
@@ -269,8 +270,8 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         SetMaterialUniform(pPorcupineRenderingProgram, "material");
         SetPorcupineRenderingUniform(pPorcupineRenderingProgram, glm::vec3(1.0f, 1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), m_magnitude);
         // 17
-        RenderPrimitive(pPorcupineRenderingProgram, m_pSpherePBR17, glm::vec3(850.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f, false);
-        RenderModel(pPorcupineRenderingProgram, m_teapot17, glm::vec3(850.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+        RenderPrimitive(pPorcupineRenderingProgram, m_pSpherePBR17, glm::vec3(850.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f), false);
+        RenderModel(pPorcupineRenderingProgram, m_teapot17, glm::vec3(850.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
         
     }
     
@@ -281,7 +282,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
          SetFireBallUniform(pFireBallProgram);
          
          // 18
-         RenderPrimitive(pFireBallProgram, m_pSpherePBR18, glm::vec3(-880.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
+         RenderPrimitive(pFireBallProgram, m_pSpherePBR18, glm::vec3(-880.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
     }
     
     
@@ -289,18 +290,18 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     {
         CShaderProgram *pWireframeProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 13];
         SetCameraUniform(pWireframeProgram, "camera", m_pCamera);
-        SetLightUniform(pWireframeProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
         SetMaterialUniform(pWireframeProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
         SetFogMaterialUniform(pWireframeProgram, "fog", m_fogColor, m_useFog);
         SetWireframeUniform(pWireframeProgram, true, 0.15f);
-        // Add Wireframe Lights
-        RenderLight(pWireframeProgram, m_pCamera);
+        SetLightUniform(pWireframeProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+        SetHRDLightUniform(pWireframeProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+        RenderLight(pWireframeProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
         
         // 19
-        RenderPrimitive(pWireframeProgram, m_pSpherePBR19, glm::vec3(950.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), 30.0f);
-        RenderModel(pWireframeProgram, m_teapot19, glm::vec3(950.0f, 0.0f, zback), glm::vec3(0.0f), 1.0f);
+        RenderPrimitive(pWireframeProgram, m_pSpherePBR19, glm::vec3(950.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
+        RenderModel(pWireframeProgram, m_teapot19, glm::vec3(950.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     }
-  */
+  
     
     /// Render Lamps
     {
@@ -311,7 +312,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
             glm::vec3 position = std::get<0>(*it);
             glm::vec4 color = std::get<1>(*it);
             SetMaterialUniform(pLampProgram, "material", color, m_materialShininess, useAO);
-            RenderLamp(pLampProgram, position, 10.0f);
+            RenderLamp(pLampProgram, position, glm::vec3(10.0f));
         }
     }
     

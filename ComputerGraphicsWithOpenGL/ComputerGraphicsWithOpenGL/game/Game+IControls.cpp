@@ -612,25 +612,55 @@ void Game::LoadControls() {
     
     // Directional Shaddow Mapping
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * dirShadowMappingUseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
+                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
+    dirShadowMappingUseHDR->SetValue(&m_HDR);
+    guiBox->y += guiBox->height;
+    
+    CSlider *dirShadowMappinglightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", 0.0f, 1.0f, 5,
+                                                                                guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
+    dirShadowMappinglightExposure->SetValue(&m_exposure);
+    guiBox->y += guiBox->height;
+    
+    CSlider *dirShadowMappingGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", 0.0f, 3.0f, 5,
+                                                                        guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
+    dirShadowMappingGamma->SetValue(&m_gama);
+    guiBox->y += guiBox->height;
+    
     CButton * dirShadowMappingFromLight = (CButton *)AddControl(new CButton("From Light or Camera", guiBox,
                                                                         GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
     dirShadowMappingFromLight->SetValue(&m_fromLightPosition);
     guiBox->y += guiBox->height;
     
-    CSlider *dirShadowMappingBias = (CSlider *)AddControl(new CSlider("Bias", 0.0f, 2.0f, 5, guiBox,
+    CSlider *dirShadowMappingBias = (CSlider *)AddControl(new CSlider("Bias", 0.0f, 0.2f, 5, guiBox,
                                                                        GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
-    dirShadowMappingBias->SetValue(&m_shadowBias);
+    dirShadowMappingBias->SetValue(&m_dirShadowBias);
     
     // Omnidirectional Shadow Mapping
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
+    CButton * omniShadowMappingUseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
+                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::OmnidirectionalShadowMapping));
+    omniShadowMappingUseHDR->SetValue(&m_HDR);
+    guiBox->y += guiBox->height;
+    
+    CSlider *omniShadowMappinglightExposure = (CSlider *)AddControl(new CSlider("Light Exposure", 0.0f, 1.0f, 5,
+                                                                  guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::OmnidirectionalShadowMapping));
+    omniShadowMappinglightExposure->SetValue(&m_exposure);
+    guiBox->y += guiBox->height;
+    
+    CSlider *omniShadowMappingGamma = (CSlider *)AddControl(new CSlider("Gamma Correction", 0.0f, 3.0f, 5,
+                                                          guiBox, GUIMode::DYNAMIC, false, PostProcessingEffectMode::OmnidirectionalShadowMapping));
+    omniShadowMappingGamma->SetValue(&m_gama);
+    guiBox->y += guiBox->height;
+    
     CButton * omniShadowMappingShowDepth = (CButton *)AddControl(new CButton("Show Depth", guiBox,
                                                                          GUIMode::DYNAMIC, false, PostProcessingEffectMode::OmnidirectionalShadowMapping));
     omniShadowMappingShowDepth->SetValue(&m_showDepth);
     guiBox->y += guiBox->height;
     
-    CSlider *omniShadowMappingBias = (CSlider *)AddControl(new CSlider("Bias", 0.0f, 1.0f, 5, guiBox,
+    CSlider *omniShadowMappingBias = (CSlider *)AddControl(new CSlider("Bias", 0.0f, 2.0f, 5, guiBox,
                                                            GUIMode::DYNAMIC, false, PostProcessingEffectMode::OmnidirectionalShadowMapping));
-    omniShadowMappingBias->SetValue(&m_shadowBias);
+    omniShadowMappingBias->SetValue(&m_orthShadowBias);
     
 }
 

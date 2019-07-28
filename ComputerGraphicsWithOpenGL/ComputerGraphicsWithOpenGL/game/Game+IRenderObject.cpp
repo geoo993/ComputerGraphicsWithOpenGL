@@ -9,12 +9,12 @@
 #include "Game.h"
 
 void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position,
-                const GLfloat & scale, const GLboolean &bindTexture) {
+                const glm::vec3 & scale, const GLboolean &bindTexture) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     
-    m_pQuad->Transform(position, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(scale));
+    m_pQuad->Transform(position, glm::vec3(0.0f, 0.0f, 0.0f), scale);
     
     glm::mat4 model = m_pQuad->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);
@@ -82,7 +82,7 @@ void Game::RenderEnvSkyBox(CShaderProgram *pShaderProgram) {
     glDepthFunc(GL_LESS); // set depth function back to default
 }
 
-void Game::RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useHeightMap) {
+void Game::RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale, const GLboolean &useHeightMap) {
     
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
@@ -90,7 +90,7 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & posit
     
     if (useHeightMap == true) {
         // Render the height map terrain
-        m_pHeightmapTerrain->Transform(position, rotation, glm::vec3(scale));
+        m_pHeightmapTerrain->Transform(position, rotation, scale);
         glm::mat4 model = m_pHeightmapTerrain->Model();
         pShaderProgram->SetUniform("matrices.modelMatrix", model);
         pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(model));
@@ -110,13 +110,13 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & posit
     
 }
 
-void  Game::RenderPrimitive(CShaderProgram *pShaderProgram, GameObject *object, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale, const GLboolean &useTexture) {
+void  Game::RenderPrimitive(CShaderProgram *pShaderProgram, GameObject *object, const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale, const GLboolean &useTexture) {
     glm::vec3 translation = position;
     if (m_pHeightmapTerrain->IsHeightMapRendered()) {
         translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
     }
     
-    object->Transform(translation, rotation, glm::vec3(scale));
+    object->Transform(translation, rotation, scale);
     
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
@@ -130,7 +130,7 @@ void  Game::RenderPrimitive(CShaderProgram *pShaderProgram, GameObject *object, 
     object->Render(useTexture);
 }
 
-void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position, const glm::vec3 & rotation, const GLfloat & scale) {
+void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm::vec3 & position, const glm::vec3 & rotation, const glm::vec3 & scale) {
     glm::vec3 translation = position;
     if (m_pHeightmapTerrain->IsHeightMapRendered()) {
         translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
@@ -143,7 +143,7 @@ void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm
     glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
     pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
     
-    model->Transform(translation, rotation, glm::vec3(scale));
+    model->Transform(translation, rotation, scale);
     
     glm::mat4 m = model->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", m);
@@ -151,7 +151,7 @@ void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm
     model->Render(pShaderProgram);
 }
 
-void Game::RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position, const GLfloat & scale, const GLboolean &useTexture) {
+void Game::RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & scale, const GLboolean &useTexture) {
     
     // Update the metaballs' positions
     float time = (float)m_deltaTime / 1000.0f * 2.0f * 3.14159f * 0.5f;

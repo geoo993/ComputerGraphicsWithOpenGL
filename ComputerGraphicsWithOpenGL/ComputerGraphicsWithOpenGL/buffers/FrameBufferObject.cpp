@@ -7,10 +7,11 @@
 CFrameBufferObject::CFrameBufferObject()
 {
 	m_uiFramebuffer = 0;
+    m_uiHdrColorTexture = 0;
     m_uiPositionTexture = 0;
-	m_uiDepthTexture = 0; 
+    m_uiDepthTexture = 0;
     m_uiDepthCubeMap = 0;
-	m_uiColourTexture = 0;
+    m_uiColourTexture = 0;
     m_uiAlbedoSpecTexture = 0;
     m_uiRboDepthStencil = 0;
     m_uiRboDepth = 0;
@@ -177,6 +178,74 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             
             return omnidirectionalShadowMapFramebufferComplete;
         }
+       
+        case FrameBufferType::HighDynamicRangeLighting: {
+            
+            /*  https://learnopengl.com/#!Advanced-Lighting/HDR
+             To implement high dynamic range rendering we need some way to prevent color values getting clamped after each fragment shader run. When framebuffers use a normalized fixed-point color format (like GL_RGB) as their colorbuffer's internal format OpenGL automatically clamps the values between 0.0 and 1.0 before storing them in the framebuffer. This operation holds for most types of framebuffer formats, except for floating point formats that are used for their extended range of values.
+             
+             When the internal format of a framebuffer's colorbuffer is specified as GL_RGB16F, GL_RGBA16F, GL_RGB32F or GL_RGBA32F the framebuffer is known as a floating point framebuffer that can store floating point values outside the default range of 0.0 and 1.0. This is perfect for rendering in high dynamic range!
+             
+             To create a floating point framebuffer the only thing we need to change is its colorbuffer's internal format parameter:
+             
+             
+             glBindTexture(GL_TEXTURE_2D, colorBuffer);
+             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+             The default framebuffer of OpenGL (by default) only takes up 8 bits per color component. With a floating point framebuffer with 32 bits per color component (when using GL_RGB32F or GL_RGBA32F) we're using 4 times more memory for storing color values. As 32 bits isn't really necessary unless you need a high level of precision using GL_RGBA16F will suffice
+             
+             
+             */
+            
+            /// Create a framebuffer object and bind it with
+            glGenFramebuffers(1, &m_uiFramebuffer);
+            
+            // To bind the framebuffer we use glBindFramebuffer:
+            glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
+            
+            // create floating point color buffer
+            glGenTextures(1, &m_uiHdrColorTexture);
+            glBindTexture(GL_TEXTURE_2D, m_uiHdrColorTexture);
+            
+            /*
+             When the internal format of a framebuffer's colorbuffer is specified as GL_RGB16F, GL_RGBA16F, GL_RGB32F or GL_RGBA32F the framebuffer is known as a floating point framebuffer that can store floating point values outside the default range of 0.0 and 1.0. This is perfect for rendering in high dynamic range!
+             */
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_iWidth, m_iHeight, 0, GL_BGRA, GL_FLOAT, nullptr);
+            
+            glGenerateMipmap(GL_TEXTURE_2D);
+            
+            // Create a sampler object and set texture properties.  Note here, we're mipmapping
+            glGenSamplers(1, &m_uiSampler);
+            SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            
+            // create depth buffer (renderbuffer)
+            glGenRenderbuffers(1, &m_uiRboDepth);
+            glBindRenderbuffer(GL_RENDERBUFFER, m_uiRboDepth);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_iWidth, m_iHeight);
+            
+            // attach and bind buffers
+            glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_uiHdrColorTexture, 0);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_uiRboDepth);
+            glBindRenderbuffer(GL_RENDERBUFFER, 0);
+            
+            // Check completeness
+            bool HDRFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+            if( HDRFramebufferComplete == false ){
+                std::cout << "ERROR::FRAMEBUFFER:: HDR Framebuffer is not complete!" << std::endl;
+            }
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            return HDRFramebufferComplete;
+        }
+            
+        case FrameBufferType::HighDynamicRangeRendering: {
+            
+            return 0;
+        }
         case FrameBufferType::SSAO: {
             // configure framebuffer to hold SSAO processing stage
             // -----------------------------------------------------
@@ -206,7 +275,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glBindTexture(GL_TEXTURE_2D, 0);
             
             glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_uiColourTexture, 0);
-        
+            
             // Check completeness
             bool ssaoMapFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
             if( ssaoMapFramebufferComplete == false ){
@@ -257,22 +326,7 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             
             return pingpongFramebufferComplete;
         }
-        
         case FrameBufferType::GeometryBuffer: {
-            /*  https://learnopengl.com/#!Advanced-Lighting/HDR
-             To implement high dynamic range rendering we need some way to prevent color values getting clamped after each fragment shader run. When framebuffers use a normalized fixed-point color format (like GL_RGB) as their colorbuffer's internal format OpenGL automatically clamps the values between 0.0 and 1.0 before storing them in the framebuffer. This operation holds for most types of framebuffer formats, except for floating point formats that are used for their extended range of values.
-             
-             When the internal format of a framebuffer's colorbuffer is specified as GL_RGB16F, GL_RGBA16F, GL_RGB32F or GL_RGBA32F the framebuffer is known as a floating point framebuffer that can store floating point values outside the default range of 0.0 and 1.0. This is perfect for rendering in high dynamic range!
-             
-             To create a floating point framebuffer the only thing we need to change is its colorbuffer's internal format parameter:
-             
-             
-             glBindTexture(GL_TEXTURE_2D, colorBuffer);
-             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
-             The default framebuffer of OpenGL (by default) only takes up 8 bits per color component. With a floating point framebuffer with 32 bits per color component (when using GL_RGB32F or GL_RGBA32F) we're using 4 times more memory for storing color values. As 32 bits isn't really necessary unless you need a high level of precision using GL_RGBA16F will suffice
-             
-             
-             */
             
             //The G-buffer is the collective term of all textures used to store lighting-relevant data for the final lighting pass.
             /*  https://learnopengl.com/#!Advanced-Lighting/Bloom
@@ -581,6 +635,15 @@ void CFrameBufferObject::BindTexture(GLuint iTextureUnit)
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
+// Binding the HDR framebuffer color texture so it is active
+void CFrameBufferObject::BindHDRTexture(GLuint iTextureUnit)
+{
+    glActiveTexture(GL_TEXTURE0+iTextureUnit);
+    glBindTexture(GL_TEXTURE_2D, m_uiHdrColorTexture);
+    glBindSampler(iTextureUnit, m_uiSampler);
+    glGenerateMipmap(GL_TEXTURE_2D);
+}
+
 // Binding the HDR Render Targets framebuffer texture so it is active
 void CFrameBufferObject::BindHDRTexture(const GLuint &index, GLuint iTextureUnit)
 {
@@ -680,6 +743,7 @@ void CFrameBufferObject::Release()
     }
 	
 	glDeleteSamplers(1, &m_uiSampler);
+    glDeleteTextures(1, &m_uiHdrColorTexture);
     glDeleteTextures(1, &m_uiPositionTexture);
 	glDeleteTextures(1, &m_uiColourTexture);
     glDeleteTextures(1, &m_uiAlbedoSpecTexture);

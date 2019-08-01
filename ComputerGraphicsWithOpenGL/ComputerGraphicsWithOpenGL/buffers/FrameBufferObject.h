@@ -30,6 +30,9 @@ public:
     // Binding the framebuffer Albedo specular texture so it is active
     void BindAlbedoTexture(GLuint iTextureUnit);
    
+    // Binding the HDR framebuffer color texture so it is active
+    void BindHDRTexture(GLuint iTextureUnit);
+    
     // Binding the HDR Render Targets framebuffer texture so it is active
     void BindHDRTexture(const GLuint &index, GLuint iTextureUnit);
     
@@ -67,6 +70,7 @@ private:
 	GLuint m_iWidth, m_iHeight;
 	GLuint m_uiFramebuffer;
     GLuint m_uiColourTexture;
+    GLuint m_uiHdrColorTexture;
     GLuint m_uiPositionTexture;
     GLuint m_uiNormalTexture;
     GLuint m_uiAlbedoSpecTexture;

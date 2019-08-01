@@ -59,10 +59,6 @@
 		C713798E2203CEDF00E9A0F2 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71379852203CEDE00E9A0F2 /* Cube.cpp */; };
 		C713798F2203CEDF00E9A0F2 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C71379882203CEDE00E9A0F2 /* Sphere.cpp */; };
 		C71379912203CEDF00E9A0F2 /* Torus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C713798C2203CEDF00E9A0F2 /* Torus.cpp */; };
-		C718544B22ABBD3300E54C30 /* Road_to_MonumentValley_Env.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C718544722ABBD3300E54C30 /* Road_to_MonumentValley_Env.hdr */; };
-		C718544C22ABBD3300E54C30 /* Road_to_MonumentValley.ibl in Resources */ = {isa = PBXBuildFile; fileRef = C718544822ABBD3300E54C30 /* Road_to_MonumentValley.ibl */; };
-		C718544D22ABBD3300E54C30 /* deserthighway.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C718544922ABBD3300E54C30 /* deserthighway.hdr */; };
-		C718544E22ABBD3300E54C30 /* Road_to_MonumentValley_8k.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C718544A22ABBD3300E54C30 /* Road_to_MonumentValley_8k.jpg */; };
 		C718545122ABC68A00E54C30 /* EquirectangularToCubemapShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C718544F22ABC68900E54C30 /* EquirectangularToCubemapShader.frag */; };
 		C718545222ABC68A00E54C30 /* EquirectangularToCubemapShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C718545022ABC68A00E54C30 /* EquirectangularToCubemapShader.vert */; };
 		C71A2C3C22E371FB00AC2D49 /* albedo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C71A2C3A22E371FB00AC2D49 /* albedo.jpg */; };
@@ -283,22 +279,6 @@
 		C7403B6922D0D831009EB7A0 /* SilhouetteShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7403B6622D0D830009EB7A0 /* SilhouetteShader.frag */; };
 		C7403B6A22D0D831009EB7A0 /* SilhouetteShader.geom in Resources */ = {isa = PBXBuildFile; fileRef = C7403B6722D0D830009EB7A0 /* SilhouetteShader.geom */; };
 		C7403B6B22D0D831009EB7A0 /* SilhouetteShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7403B6822D0D830009EB7A0 /* SilhouetteShader.vert */; };
-		C755BCB522B6D84A0074F8A5 /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCAF22B6D84A0074F8A5 /* _ft.jpg */; };
-		C755BCB622B6D84A0074F8A5 /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCB022B6D84A0074F8A5 /* _dn.jpg */; };
-		C755BCB722B6D84A0074F8A5 /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCB122B6D84A0074F8A5 /* _rt.jpg */; };
-		C755BCB822B6D84A0074F8A5 /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCB222B6D84A0074F8A5 /* _bk.jpg */; };
-		C755BCB922B6D84A0074F8A5 /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCB322B6D84A0074F8A5 /* _lf.jpg */; };
-		C755BCBA22B6D84A0074F8A5 /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCB422B6D84A0074F8A5 /* _up.jpg */; };
-		C755BCC722B6E0BE0074F8A5 /* Mt-Washington-Cave-Room_Env.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C755BCBC22B6E0BD0074F8A5 /* Mt-Washington-Cave-Room_Env.hdr */; };
-		C755BCC822B6E0BE0074F8A5 /* Mt-Washington-Cave-Room_Bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCBD22B6E0BD0074F8A5 /* Mt-Washington-Cave-Room_Bg.jpg */; };
-		C755BCC922B6E0BE0074F8A5 /* Mt Washington Cave Room.ibl in Resources */ = {isa = PBXBuildFile; fileRef = C755BCBE22B6E0BD0074F8A5 /* Mt Washington Cave Room.ibl */; };
-		C755BCCA22B6E0BE0074F8A5 /* caveroom.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C755BCBF22B6E0BD0074F8A5 /* caveroom.hdr */; };
-		C755BCCB22B6E0BE0074F8A5 /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCC122B6E0BD0074F8A5 /* _ft.jpg */; };
-		C755BCCC22B6E0BE0074F8A5 /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCC222B6E0BD0074F8A5 /* _dn.jpg */; };
-		C755BCCD22B6E0BE0074F8A5 /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCC322B6E0BD0074F8A5 /* _rt.jpg */; };
-		C755BCCE22B6E0BE0074F8A5 /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCC422B6E0BD0074F8A5 /* _bk.jpg */; };
-		C755BCCF22B6E0BE0074F8A5 /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCC522B6E0BD0074F8A5 /* _lf.jpg */; };
-		C755BCD022B6E0BE0074F8A5 /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C755BCC622B6E0BD0074F8A5 /* _up.jpg */; };
 		C75C4CCF22208EA500C1F836 /* Control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C75C4CCD22208EA500C1F836 /* Control.cpp */; };
 		C75C971F220DD69F00420DF6 /* EnvironmentMappingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C75C971D220DD69E00420DF6 /* EnvironmentMappingShader.vert */; };
 		C75C9720220DD69F00420DF6 /* EnvironmentMappingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C75C971E220DD69E00420DF6 /* EnvironmentMappingShader.frag */; };
@@ -372,6 +352,66 @@
 		C7AE7ED722E8FA3300D01C4C /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AE7ECE22E8FA3200D01C4C /* normal.png */; };
 		C7AE7ED822E8FA3300D01C4C /* ao.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AE7ECF22E8FA3200D01C4C /* ao.png */; };
 		C7AE7ED922E8FA3300D01C4C /* roughness.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AE7ED022E8FA3300D01C4C /* roughness.png */; };
+		C7AF3FFF22F15468008EDDA2 /* Road_to_MonumentValley_Env.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FAA22F15467008EDDA2 /* Road_to_MonumentValley_Env.hdr */; };
+		C7AF400022F15468008EDDA2 /* Road_to_MonumentValley.ibl in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FAB22F15467008EDDA2 /* Road_to_MonumentValley.ibl */; };
+		C7AF400122F15468008EDDA2 /* deserthighway.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FAC22F15467008EDDA2 /* deserthighway.hdr */; };
+		C7AF400222F15468008EDDA2 /* Road_to_MonumentValley_8k.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FAD22F15467008EDDA2 /* Road_to_MonumentValley_8k.jpg */; };
+		C7AF400322F15468008EDDA2 /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FAF22F15467008EDDA2 /* _ft.jpg */; };
+		C7AF400422F15468008EDDA2 /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FB022F15467008EDDA2 /* _dn.jpg */; };
+		C7AF400522F15468008EDDA2 /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FB122F15467008EDDA2 /* _rt.jpg */; };
+		C7AF400622F15468008EDDA2 /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FB222F15467008EDDA2 /* _bk.jpg */; };
+		C7AF400722F15468008EDDA2 /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FB322F15467008EDDA2 /* _lf.jpg */; };
+		C7AF400822F15468008EDDA2 /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FB422F15467008EDDA2 /* _up.jpg */; };
+		C7AF400922F15468008EDDA2 /* 10-Shiodome_Stairs_8k.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FB622F15467008EDDA2 /* 10-Shiodome_Stairs_8k.jpg */; };
+		C7AF400A22F15468008EDDA2 /* Shiodome_Stairs.ibl in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FB722F15467008EDDA2 /* Shiodome_Stairs.ibl */; };
+		C7AF400B22F15468008EDDA2 /* 10-Shiodome_Stairs_Env.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FB822F15467008EDDA2 /* 10-Shiodome_Stairs_Env.hdr */; };
+		C7AF400C22F15468008EDDA2 /* shiodome.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FB922F15467008EDDA2 /* shiodome.hdr */; };
+		C7AF400D22F15468008EDDA2 /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FBB22F15467008EDDA2 /* _ft.jpg */; };
+		C7AF400E22F15468008EDDA2 /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FBC22F15467008EDDA2 /* _dn.jpg */; };
+		C7AF400F22F15468008EDDA2 /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FBD22F15467008EDDA2 /* _rt.jpg */; };
+		C7AF401022F15468008EDDA2 /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FBE22F15467008EDDA2 /* _bk.jpg */; };
+		C7AF401122F15468008EDDA2 /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FBF22F15467008EDDA2 /* _lf.jpg */; };
+		C7AF401222F15468008EDDA2 /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FC022F15467008EDDA2 /* _up.jpg */; };
+		C7AF401F22F15468008EDDA2 /* grandcanyon.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FD022F15467008EDDA2 /* grandcanyon.hdr */; };
+		C7AF402022F15468008EDDA2 /* GCanyon_C_YumaPoint_8k.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FD122F15467008EDDA2 /* GCanyon_C_YumaPoint_8k.jpg */; };
+		C7AF402122F15468008EDDA2 /* GCanyon_C_YumaPoint_Env.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FD222F15467008EDDA2 /* GCanyon_C_YumaPoint_Env.hdr */; };
+		C7AF402222F15468008EDDA2 /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FD422F15467008EDDA2 /* _ft.jpg */; };
+		C7AF402322F15468008EDDA2 /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FD522F15467008EDDA2 /* _dn.jpg */; };
+		C7AF402422F15468008EDDA2 /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FD622F15467008EDDA2 /* _rt.jpg */; };
+		C7AF402522F15468008EDDA2 /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FD722F15467008EDDA2 /* _bk.jpg */; };
+		C7AF402622F15468008EDDA2 /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FD822F15467008EDDA2 /* _lf.jpg */; };
+		C7AF402722F15468008EDDA2 /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FD922F15467008EDDA2 /* _up.jpg */; };
+		C7AF402822F15468008EDDA2 /* GrandCanyon_C_YumaPoint.ibl in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FDA22F15467008EDDA2 /* GrandCanyon_C_YumaPoint.ibl */; };
+		C7AF402922F15468008EDDA2 /* goldroom.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FDC22F15467008EDDA2 /* goldroom.hdr */; };
+		C7AF402A22F15468008EDDA2 /* Mt-Washington-Gold-Room_Env.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FDD22F15467008EDDA2 /* Mt-Washington-Gold-Room_Env.hdr */; };
+		C7AF402B22F15468008EDDA2 /* Mt-Washington-Gold-Room_Bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FDE22F15467008EDDA2 /* Mt-Washington-Gold-Room_Bg.jpg */; };
+		C7AF402C22F15468008EDDA2 /* Mt Washington Gold Room.ibl in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FDF22F15467008EDDA2 /* Mt Washington Gold Room.ibl */; };
+		C7AF402D22F15468008EDDA2 /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FE122F15467008EDDA2 /* _ft.jpg */; };
+		C7AF402E22F15468008EDDA2 /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FE222F15467008EDDA2 /* _dn.jpg */; };
+		C7AF402F22F15468008EDDA2 /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FE322F15467008EDDA2 /* _rt.jpg */; };
+		C7AF403022F15468008EDDA2 /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FE422F15467008EDDA2 /* _bk.jpg */; };
+		C7AF403122F15468008EDDA2 /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FE522F15467008EDDA2 /* _lf.jpg */; };
+		C7AF403222F15468008EDDA2 /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FE622F15467008EDDA2 /* _up.jpg */; };
+		C7AF403322F15468008EDDA2 /* MonValley_A_LookoutPoint_Env.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FE822F15467008EDDA2 /* MonValley_A_LookoutPoint_Env.hdr */; };
+		C7AF403422F15468008EDDA2 /* mountainvalley.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FE922F15467008EDDA2 /* mountainvalley.hdr */; };
+		C7AF403522F15468008EDDA2 /* MonValley_Lookout.ibl in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FEA22F15467008EDDA2 /* MonValley_Lookout.ibl */; };
+		C7AF403622F15468008EDDA2 /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FEC22F15467008EDDA2 /* _ft.jpg */; };
+		C7AF403722F15468008EDDA2 /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FED22F15467008EDDA2 /* _dn.jpg */; };
+		C7AF403822F15468008EDDA2 /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FEE22F15467008EDDA2 /* _rt.jpg */; };
+		C7AF403922F15468008EDDA2 /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FEF22F15467008EDDA2 /* _bk.jpg */; };
+		C7AF403A22F15468008EDDA2 /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FF022F15467008EDDA2 /* _lf.jpg */; };
+		C7AF403B22F15468008EDDA2 /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FF122F15467008EDDA2 /* _up.jpg */; };
+		C7AF403C22F15468008EDDA2 /* MonValley_A_LookoutPoint_8k.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FF222F15467008EDDA2 /* MonValley_A_LookoutPoint_8k.jpg */; };
+		C7AF403D22F15468008EDDA2 /* Mt-Washington-Cave-Room_Env.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FF422F15467008EDDA2 /* Mt-Washington-Cave-Room_Env.hdr */; };
+		C7AF403E22F15468008EDDA2 /* Mt-Washington-Cave-Room_Bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FF522F15467008EDDA2 /* Mt-Washington-Cave-Room_Bg.jpg */; };
+		C7AF403F22F15468008EDDA2 /* Mt Washington Cave Room.ibl in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FF622F15467008EDDA2 /* Mt Washington Cave Room.ibl */; };
+		C7AF404022F15468008EDDA2 /* caveroom.hdr in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FF722F15467008EDDA2 /* caveroom.hdr */; };
+		C7AF404122F15468008EDDA2 /* _ft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FF922F15467008EDDA2 /* _ft.jpg */; };
+		C7AF404222F15468008EDDA2 /* _dn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FFA22F15467008EDDA2 /* _dn.jpg */; };
+		C7AF404322F15468008EDDA2 /* _rt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FFB22F15467008EDDA2 /* _rt.jpg */; };
+		C7AF404422F15468008EDDA2 /* _bk.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FFC22F15467008EDDA2 /* _bk.jpg */; };
+		C7AF404522F15468008EDDA2 /* _lf.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FFD22F15467008EDDA2 /* _lf.jpg */; };
+		C7AF404622F15468008EDDA2 /* _up.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C7AF3FFE22F15467008EDDA2 /* _up.jpg */; };
 		C7B70506221C1106002F5732 /* FastApproximateAntiAliasingShader.vert in Resources */ = {isa = PBXBuildFile; fileRef = C7B70504221C1104002F5732 /* FastApproximateAntiAliasingShader.vert */; };
 		C7B70507221C1106002F5732 /* FastApproximateAntiAliasingShader.frag in Resources */ = {isa = PBXBuildFile; fileRef = C7B70505221C1105002F5732 /* FastApproximateAntiAliasingShader.frag */; };
 		C7B754662204CE1400E54C30 /* MarchingCubes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7B754622204CE1400E54C30 /* MarchingCubes.cpp */; };
@@ -595,10 +635,6 @@
 		C71379892203CEDE00E9A0F2 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
 		C713798A2203CEDE00E9A0F2 /* Torus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Torus.h; sourceTree = "<group>"; };
 		C713798C2203CEDF00E9A0F2 /* Torus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Torus.cpp; sourceTree = "<group>"; };
-		C718544722ABBD3300E54C30 /* Road_to_MonumentValley_Env.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Road_to_MonumentValley_Env.hdr; sourceTree = "<group>"; };
-		C718544822ABBD3300E54C30 /* Road_to_MonumentValley.ibl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Road_to_MonumentValley.ibl; sourceTree = "<group>"; };
-		C718544922ABBD3300E54C30 /* deserthighway.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = deserthighway.hdr; sourceTree = "<group>"; };
-		C718544A22ABBD3300E54C30 /* Road_to_MonumentValley_8k.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Road_to_MonumentValley_8k.jpg; sourceTree = "<group>"; };
 		C718544F22ABC68900E54C30 /* EquirectangularToCubemapShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EquirectangularToCubemapShader.frag; sourceTree = "<group>"; };
 		C718545022ABC68A00E54C30 /* EquirectangularToCubemapShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EquirectangularToCubemapShader.vert; sourceTree = "<group>"; };
 		C71A2C3A22E371FB00AC2D49 /* albedo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = albedo.jpg; sourceTree = "<group>"; };
@@ -819,22 +855,6 @@
 		C7403B6622D0D830009EB7A0 /* SilhouetteShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SilhouetteShader.frag; sourceTree = "<group>"; };
 		C7403B6722D0D830009EB7A0 /* SilhouetteShader.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SilhouetteShader.geom; sourceTree = "<group>"; };
 		C7403B6822D0D830009EB7A0 /* SilhouetteShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = SilhouetteShader.vert; sourceTree = "<group>"; };
-		C755BCAF22B6D84A0074F8A5 /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
-		C755BCB022B6D84A0074F8A5 /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
-		C755BCB122B6D84A0074F8A5 /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
-		C755BCB222B6D84A0074F8A5 /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
-		C755BCB322B6D84A0074F8A5 /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
-		C755BCB422B6D84A0074F8A5 /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
-		C755BCBC22B6E0BD0074F8A5 /* Mt-Washington-Cave-Room_Env.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Mt-Washington-Cave-Room_Env.hdr"; sourceTree = "<group>"; };
-		C755BCBD22B6E0BD0074F8A5 /* Mt-Washington-Cave-Room_Bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Mt-Washington-Cave-Room_Bg.jpg"; sourceTree = "<group>"; };
-		C755BCBE22B6E0BD0074F8A5 /* Mt Washington Cave Room.ibl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Mt Washington Cave Room.ibl"; sourceTree = "<group>"; };
-		C755BCBF22B6E0BD0074F8A5 /* caveroom.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = caveroom.hdr; sourceTree = "<group>"; };
-		C755BCC122B6E0BD0074F8A5 /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
-		C755BCC222B6E0BD0074F8A5 /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
-		C755BCC322B6E0BD0074F8A5 /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
-		C755BCC422B6E0BD0074F8A5 /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
-		C755BCC522B6E0BD0074F8A5 /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
-		C755BCC622B6E0BD0074F8A5 /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
 		C75C4CCD22208EA500C1F836 /* Control.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Control.cpp; sourceTree = "<group>"; };
 		C75C4CCE22208EA500C1F836 /* Control.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Control.h; sourceTree = "<group>"; };
 		C75C971D220DD69E00420DF6 /* EnvironmentMappingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = EnvironmentMappingShader.vert; sourceTree = "<group>"; };
@@ -915,6 +935,66 @@
 		C7AE7ECE22E8FA3200D01C4C /* normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normal.png; sourceTree = "<group>"; };
 		C7AE7ECF22E8FA3200D01C4C /* ao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ao.png; sourceTree = "<group>"; };
 		C7AE7ED022E8FA3300D01C4C /* roughness.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = roughness.png; sourceTree = "<group>"; };
+		C7AF3FAA22F15467008EDDA2 /* Road_to_MonumentValley_Env.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Road_to_MonumentValley_Env.hdr; sourceTree = "<group>"; };
+		C7AF3FAB22F15467008EDDA2 /* Road_to_MonumentValley.ibl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Road_to_MonumentValley.ibl; sourceTree = "<group>"; };
+		C7AF3FAC22F15467008EDDA2 /* deserthighway.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = deserthighway.hdr; sourceTree = "<group>"; };
+		C7AF3FAD22F15467008EDDA2 /* Road_to_MonumentValley_8k.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Road_to_MonumentValley_8k.jpg; sourceTree = "<group>"; };
+		C7AF3FAF22F15467008EDDA2 /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
+		C7AF3FB022F15467008EDDA2 /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
+		C7AF3FB122F15467008EDDA2 /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
+		C7AF3FB222F15467008EDDA2 /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
+		C7AF3FB322F15467008EDDA2 /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
+		C7AF3FB422F15467008EDDA2 /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
+		C7AF3FB622F15467008EDDA2 /* 10-Shiodome_Stairs_8k.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "10-Shiodome_Stairs_8k.jpg"; sourceTree = "<group>"; };
+		C7AF3FB722F15467008EDDA2 /* Shiodome_Stairs.ibl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Shiodome_Stairs.ibl; sourceTree = "<group>"; };
+		C7AF3FB822F15467008EDDA2 /* 10-Shiodome_Stairs_Env.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "10-Shiodome_Stairs_Env.hdr"; sourceTree = "<group>"; };
+		C7AF3FB922F15467008EDDA2 /* shiodome.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; path = shiodome.hdr; sourceTree = "<group>"; };
+		C7AF3FBB22F15467008EDDA2 /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
+		C7AF3FBC22F15467008EDDA2 /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
+		C7AF3FBD22F15467008EDDA2 /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
+		C7AF3FBE22F15467008EDDA2 /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
+		C7AF3FBF22F15467008EDDA2 /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
+		C7AF3FC022F15467008EDDA2 /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
+		C7AF3FD022F15467008EDDA2 /* grandcanyon.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; path = grandcanyon.hdr; sourceTree = "<group>"; };
+		C7AF3FD122F15467008EDDA2 /* GCanyon_C_YumaPoint_8k.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = GCanyon_C_YumaPoint_8k.jpg; sourceTree = "<group>"; };
+		C7AF3FD222F15467008EDDA2 /* GCanyon_C_YumaPoint_Env.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GCanyon_C_YumaPoint_Env.hdr; sourceTree = "<group>"; };
+		C7AF3FD422F15467008EDDA2 /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
+		C7AF3FD522F15467008EDDA2 /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
+		C7AF3FD622F15467008EDDA2 /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
+		C7AF3FD722F15467008EDDA2 /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
+		C7AF3FD822F15467008EDDA2 /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
+		C7AF3FD922F15467008EDDA2 /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
+		C7AF3FDA22F15467008EDDA2 /* GrandCanyon_C_YumaPoint.ibl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GrandCanyon_C_YumaPoint.ibl; sourceTree = "<group>"; };
+		C7AF3FDC22F15467008EDDA2 /* goldroom.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = goldroom.hdr; sourceTree = "<group>"; };
+		C7AF3FDD22F15467008EDDA2 /* Mt-Washington-Gold-Room_Env.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Mt-Washington-Gold-Room_Env.hdr"; sourceTree = "<group>"; };
+		C7AF3FDE22F15467008EDDA2 /* Mt-Washington-Gold-Room_Bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Mt-Washington-Gold-Room_Bg.jpg"; sourceTree = "<group>"; };
+		C7AF3FDF22F15467008EDDA2 /* Mt Washington Gold Room.ibl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Mt Washington Gold Room.ibl"; sourceTree = "<group>"; };
+		C7AF3FE122F15467008EDDA2 /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
+		C7AF3FE222F15467008EDDA2 /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
+		C7AF3FE322F15467008EDDA2 /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
+		C7AF3FE422F15467008EDDA2 /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
+		C7AF3FE522F15467008EDDA2 /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
+		C7AF3FE622F15467008EDDA2 /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
+		C7AF3FE822F15467008EDDA2 /* MonValley_A_LookoutPoint_Env.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MonValley_A_LookoutPoint_Env.hdr; sourceTree = "<group>"; };
+		C7AF3FE922F15467008EDDA2 /* mountainvalley.hdr */ = {isa = PBXFileReference; lastKnownFileType = file; path = mountainvalley.hdr; sourceTree = "<group>"; };
+		C7AF3FEA22F15467008EDDA2 /* MonValley_Lookout.ibl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MonValley_Lookout.ibl; sourceTree = "<group>"; };
+		C7AF3FEC22F15467008EDDA2 /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
+		C7AF3FED22F15467008EDDA2 /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
+		C7AF3FEE22F15467008EDDA2 /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
+		C7AF3FEF22F15467008EDDA2 /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
+		C7AF3FF022F15467008EDDA2 /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
+		C7AF3FF122F15467008EDDA2 /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
+		C7AF3FF222F15467008EDDA2 /* MonValley_A_LookoutPoint_8k.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MonValley_A_LookoutPoint_8k.jpg; sourceTree = "<group>"; };
+		C7AF3FF422F15467008EDDA2 /* Mt-Washington-Cave-Room_Env.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Mt-Washington-Cave-Room_Env.hdr"; sourceTree = "<group>"; };
+		C7AF3FF522F15467008EDDA2 /* Mt-Washington-Cave-Room_Bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Mt-Washington-Cave-Room_Bg.jpg"; sourceTree = "<group>"; };
+		C7AF3FF622F15467008EDDA2 /* Mt Washington Cave Room.ibl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Mt Washington Cave Room.ibl"; sourceTree = "<group>"; };
+		C7AF3FF722F15467008EDDA2 /* caveroom.hdr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = caveroom.hdr; sourceTree = "<group>"; };
+		C7AF3FF922F15467008EDDA2 /* _ft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _ft.jpg; sourceTree = "<group>"; };
+		C7AF3FFA22F15467008EDDA2 /* _dn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _dn.jpg; sourceTree = "<group>"; };
+		C7AF3FFB22F15467008EDDA2 /* _rt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _rt.jpg; sourceTree = "<group>"; };
+		C7AF3FFC22F15467008EDDA2 /* _bk.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _bk.jpg; sourceTree = "<group>"; };
+		C7AF3FFD22F15467008EDDA2 /* _lf.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _lf.jpg; sourceTree = "<group>"; };
+		C7AF3FFE22F15467008EDDA2 /* _up.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = _up.jpg; sourceTree = "<group>"; };
 		C7B38E0222B6724B00EE881E /* SkyboxType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyboxType.h; sourceTree = "<group>"; };
 		C7B70504221C1104002F5732 /* FastApproximateAntiAliasingShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FastApproximateAntiAliasingShader.vert; sourceTree = "<group>"; };
 		C7B70505221C1105002F5732 /* FastApproximateAntiAliasingShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = FastApproximateAntiAliasingShader.frag; sourceTree = "<group>"; };
@@ -1112,18 +1192,6 @@
 				C71379402203218B00E9A0F2 /* Lighting.h */,
 			);
 			path = lighting;
-			sourceTree = "<group>";
-		};
-		C718544622ABBD3300E54C30 /* deserthighway */ = {
-			isa = PBXGroup;
-			children = (
-				C755BCAE22B6D84A0074F8A5 /* flipped */,
-				C718544722ABBD3300E54C30 /* Road_to_MonumentValley_Env.hdr */,
-				C718544822ABBD3300E54C30 /* Road_to_MonumentValley.ibl */,
-				C718544922ABBD3300E54C30 /* deserthighway.hdr */,
-				C718544A22ABBD3300E54C30 /* Road_to_MonumentValley_8k.jpg */,
-			);
-			path = deserthighway;
 			sourceTree = "<group>";
 		};
 		C71A2C4022E3840200AC2D49 /* diamondplate */ = {
@@ -1542,44 +1610,6 @@
 			path = trolley;
 			sourceTree = "<group>";
 		};
-		C755BCAE22B6D84A0074F8A5 /* flipped */ = {
-			isa = PBXGroup;
-			children = (
-				C755BCAF22B6D84A0074F8A5 /* _ft.jpg */,
-				C755BCB022B6D84A0074F8A5 /* _dn.jpg */,
-				C755BCB122B6D84A0074F8A5 /* _rt.jpg */,
-				C755BCB222B6D84A0074F8A5 /* _bk.jpg */,
-				C755BCB322B6D84A0074F8A5 /* _lf.jpg */,
-				C755BCB422B6D84A0074F8A5 /* _up.jpg */,
-			);
-			path = flipped;
-			sourceTree = "<group>";
-		};
-		C755BCBB22B6E0BD0074F8A5 /* caveroom */ = {
-			isa = PBXGroup;
-			children = (
-				C755BCBC22B6E0BD0074F8A5 /* Mt-Washington-Cave-Room_Env.hdr */,
-				C755BCBD22B6E0BD0074F8A5 /* Mt-Washington-Cave-Room_Bg.jpg */,
-				C755BCBE22B6E0BD0074F8A5 /* Mt Washington Cave Room.ibl */,
-				C755BCBF22B6E0BD0074F8A5 /* caveroom.hdr */,
-				C755BCC022B6E0BD0074F8A5 /* flipped */,
-			);
-			path = caveroom;
-			sourceTree = "<group>";
-		};
-		C755BCC022B6E0BD0074F8A5 /* flipped */ = {
-			isa = PBXGroup;
-			children = (
-				C755BCC122B6E0BD0074F8A5 /* _ft.jpg */,
-				C755BCC222B6E0BD0074F8A5 /* _dn.jpg */,
-				C755BCC322B6E0BD0074F8A5 /* _rt.jpg */,
-				C755BCC422B6E0BD0074F8A5 /* _bk.jpg */,
-				C755BCC522B6E0BD0074F8A5 /* _lf.jpg */,
-				C755BCC622B6E0BD0074F8A5 /* _up.jpg */,
-			);
-			path = flipped;
-			sourceTree = "<group>";
-		};
 		C75C4CCC22208E7F00C1F836 /* controls */ = {
 			isa = PBXGroup;
 			children = (
@@ -1609,6 +1639,170 @@
 				C7AE7ED022E8FA3300D01C4C /* roughness.png */,
 			);
 			path = wood;
+			sourceTree = "<group>";
+		};
+		C7AF3FA822F15467008EDDA2 /* skyboxes */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FA922F15467008EDDA2 /* deserthighway */,
+				C7AF3FB522F15467008EDDA2 /* shiodome */,
+				C7AF3FCF22F15467008EDDA2 /* grandcanyon */,
+				C7AF3FDB22F15467008EDDA2 /* goldroom */,
+				C7AF3FE722F15467008EDDA2 /* mountainvalley */,
+				C7AF3FF322F15467008EDDA2 /* caveroom */,
+			);
+			name = skyboxes;
+			path = ../../../../../../../System/Volumes/Data/Users/GeorgeQuentin/Dev/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/ComputerGraphicsWithOpenGL/resources/skyboxes;
+			sourceTree = "<group>";
+		};
+		C7AF3FA922F15467008EDDA2 /* deserthighway */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FAA22F15467008EDDA2 /* Road_to_MonumentValley_Env.hdr */,
+				C7AF3FAB22F15467008EDDA2 /* Road_to_MonumentValley.ibl */,
+				C7AF3FAC22F15467008EDDA2 /* deserthighway.hdr */,
+				C7AF3FAD22F15467008EDDA2 /* Road_to_MonumentValley_8k.jpg */,
+				C7AF3FAE22F15467008EDDA2 /* flipped */,
+			);
+			path = deserthighway;
+			sourceTree = "<group>";
+		};
+		C7AF3FAE22F15467008EDDA2 /* flipped */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FAF22F15467008EDDA2 /* _ft.jpg */,
+				C7AF3FB022F15467008EDDA2 /* _dn.jpg */,
+				C7AF3FB122F15467008EDDA2 /* _rt.jpg */,
+				C7AF3FB222F15467008EDDA2 /* _bk.jpg */,
+				C7AF3FB322F15467008EDDA2 /* _lf.jpg */,
+				C7AF3FB422F15467008EDDA2 /* _up.jpg */,
+			);
+			path = flipped;
+			sourceTree = "<group>";
+		};
+		C7AF3FB522F15467008EDDA2 /* shiodome */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FB622F15467008EDDA2 /* 10-Shiodome_Stairs_8k.jpg */,
+				C7AF3FB722F15467008EDDA2 /* Shiodome_Stairs.ibl */,
+				C7AF3FB822F15467008EDDA2 /* 10-Shiodome_Stairs_Env.hdr */,
+				C7AF3FB922F15467008EDDA2 /* shiodome.hdr */,
+				C7AF3FBA22F15467008EDDA2 /* flipped */,
+			);
+			path = shiodome;
+			sourceTree = "<group>";
+		};
+		C7AF3FBA22F15467008EDDA2 /* flipped */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FBB22F15467008EDDA2 /* _ft.jpg */,
+				C7AF3FBC22F15467008EDDA2 /* _dn.jpg */,
+				C7AF3FBD22F15467008EDDA2 /* _rt.jpg */,
+				C7AF3FBE22F15467008EDDA2 /* _bk.jpg */,
+				C7AF3FBF22F15467008EDDA2 /* _lf.jpg */,
+				C7AF3FC022F15467008EDDA2 /* _up.jpg */,
+			);
+			path = flipped;
+			sourceTree = "<group>";
+		};
+		C7AF3FCF22F15467008EDDA2 /* grandcanyon */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FD022F15467008EDDA2 /* grandcanyon.hdr */,
+				C7AF3FD122F15467008EDDA2 /* GCanyon_C_YumaPoint_8k.jpg */,
+				C7AF3FD222F15467008EDDA2 /* GCanyon_C_YumaPoint_Env.hdr */,
+				C7AF3FD322F15467008EDDA2 /* flipped */,
+				C7AF3FDA22F15467008EDDA2 /* GrandCanyon_C_YumaPoint.ibl */,
+			);
+			path = grandcanyon;
+			sourceTree = "<group>";
+		};
+		C7AF3FD322F15467008EDDA2 /* flipped */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FD422F15467008EDDA2 /* _ft.jpg */,
+				C7AF3FD522F15467008EDDA2 /* _dn.jpg */,
+				C7AF3FD622F15467008EDDA2 /* _rt.jpg */,
+				C7AF3FD722F15467008EDDA2 /* _bk.jpg */,
+				C7AF3FD822F15467008EDDA2 /* _lf.jpg */,
+				C7AF3FD922F15467008EDDA2 /* _up.jpg */,
+			);
+			path = flipped;
+			sourceTree = "<group>";
+		};
+		C7AF3FDB22F15467008EDDA2 /* goldroom */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FDC22F15467008EDDA2 /* goldroom.hdr */,
+				C7AF3FDD22F15467008EDDA2 /* Mt-Washington-Gold-Room_Env.hdr */,
+				C7AF3FDE22F15467008EDDA2 /* Mt-Washington-Gold-Room_Bg.jpg */,
+				C7AF3FDF22F15467008EDDA2 /* Mt Washington Gold Room.ibl */,
+				C7AF3FE022F15467008EDDA2 /* flipped */,
+			);
+			path = goldroom;
+			sourceTree = "<group>";
+		};
+		C7AF3FE022F15467008EDDA2 /* flipped */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FE122F15467008EDDA2 /* _ft.jpg */,
+				C7AF3FE222F15467008EDDA2 /* _dn.jpg */,
+				C7AF3FE322F15467008EDDA2 /* _rt.jpg */,
+				C7AF3FE422F15467008EDDA2 /* _bk.jpg */,
+				C7AF3FE522F15467008EDDA2 /* _lf.jpg */,
+				C7AF3FE622F15467008EDDA2 /* _up.jpg */,
+			);
+			path = flipped;
+			sourceTree = "<group>";
+		};
+		C7AF3FE722F15467008EDDA2 /* mountainvalley */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FE822F15467008EDDA2 /* MonValley_A_LookoutPoint_Env.hdr */,
+				C7AF3FE922F15467008EDDA2 /* mountainvalley.hdr */,
+				C7AF3FEA22F15467008EDDA2 /* MonValley_Lookout.ibl */,
+				C7AF3FEB22F15467008EDDA2 /* flipped */,
+				C7AF3FF222F15467008EDDA2 /* MonValley_A_LookoutPoint_8k.jpg */,
+			);
+			path = mountainvalley;
+			sourceTree = "<group>";
+		};
+		C7AF3FEB22F15467008EDDA2 /* flipped */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FEC22F15467008EDDA2 /* _ft.jpg */,
+				C7AF3FED22F15467008EDDA2 /* _dn.jpg */,
+				C7AF3FEE22F15467008EDDA2 /* _rt.jpg */,
+				C7AF3FEF22F15467008EDDA2 /* _bk.jpg */,
+				C7AF3FF022F15467008EDDA2 /* _lf.jpg */,
+				C7AF3FF122F15467008EDDA2 /* _up.jpg */,
+			);
+			path = flipped;
+			sourceTree = "<group>";
+		};
+		C7AF3FF322F15467008EDDA2 /* caveroom */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FF422F15467008EDDA2 /* Mt-Washington-Cave-Room_Env.hdr */,
+				C7AF3FF522F15467008EDDA2 /* Mt-Washington-Cave-Room_Bg.jpg */,
+				C7AF3FF622F15467008EDDA2 /* Mt Washington Cave Room.ibl */,
+				C7AF3FF722F15467008EDDA2 /* caveroom.hdr */,
+				C7AF3FF822F15467008EDDA2 /* flipped */,
+			);
+			path = caveroom;
+			sourceTree = "<group>";
+		};
+		C7AF3FF822F15467008EDDA2 /* flipped */ = {
+			isa = PBXGroup;
+			children = (
+				C7AF3FF922F15467008EDDA2 /* _ft.jpg */,
+				C7AF3FFA22F15467008EDDA2 /* _dn.jpg */,
+				C7AF3FFB22F15467008EDDA2 /* _rt.jpg */,
+				C7AF3FFC22F15467008EDDA2 /* _bk.jpg */,
+				C7AF3FFD22F15467008EDDA2 /* _lf.jpg */,
+				C7AF3FFE22F15467008EDDA2 /* _up.jpg */,
+			);
+			path = flipped;
 			sourceTree = "<group>";
 		};
 		C7B932AE21FE863000979C04 = {
@@ -1680,7 +1874,7 @@
 				C7C8F2C821FF5F3700AB865A /* fonts */,
 				C7C8F2CB21FF5F5C00AB865A /* models */,
 				C7C8F2C921FF5F3C00AB865A /* shaders */,
-				C7C8F2CC21FF5F6000AB865A /* skyboxes */,
+				C7AF3FA822F15467008EDDA2 /* skyboxes */,
 				C7C8F2CA21FF5F4D00AB865A /* textures */,
 			);
 			path = resources;
@@ -1940,15 +2134,6 @@
 			path = models;
 			sourceTree = "<group>";
 		};
-		C7C8F2CC21FF5F6000AB865A /* skyboxes */ = {
-			isa = PBXGroup;
-			children = (
-				C755BCBB22B6E0BD0074F8A5 /* caveroom */,
-				C718544622ABBD3300E54C30 /* deserthighway */,
-			);
-			path = skyboxes;
-			sourceTree = "<group>";
-		};
 		C7C8F2D621FF6CF200AB865A /* objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -2167,13 +2352,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7090CE5223674EB006FE002 /* RGBDisplayShader.frag in Resources */,
+				C7AF402022F15468008EDDA2 /* GCanyon_C_YumaPoint_8k.jpg in Resources */,
 				C72BB70222E3530E00DF5F1C /* noise_texture_colored.png in Resources */,
 				C72BB81322E363C400DF5F1C /* roughness.png in Resources */,
 				C785F9672212DA7E00F1F8FD /* PosterizationShader.vert in Resources */,
 				C73D517F22D262B4007893B6 /* specular.png in Resources */,
 				C72BB88A22E363C400DF5F1C /* ao.png in Resources */,
 				C7CEE2EC2212435600895F5D /* KernelShader.vert in Resources */,
+				C7AF400E22F15468008EDDA2 /* _dn.jpg in Resources */,
 				C72BB88022E363C400DF5F1C /* normal.png in Resources */,
+				C7AF402622F15468008EDDA2 /* _lf.jpg in Resources */,
 				C7C8F4AB21FFC92900AB865A /* TerrainShader.vert in Resources */,
 				C7090CE4223674EB006FE002 /* RGBDisplayShader.vert in Resources */,
 				C72BB84F22E363C400DF5F1C /* roughness.png in Resources */,
@@ -2188,14 +2376,13 @@
 				C72BB86B22E363C400DF5F1C /* diffuse.png in Resources */,
 				C7EED107221105360079F5C0 /* WireFrameShader.geom in Resources */,
 				C72BB84A22E363C400DF5F1C /* ambient.png in Resources */,
+				C7AF402A22F15468008EDDA2 /* Mt-Washington-Gold-Room_Env.hdr in Resources */,
 				C72BB83722E363C400DF5F1C /* metallic.png in Resources */,
 				C7DE39F3221F1F1500595556 /* ScreenSpaceAmbientOcclusionShader.vert in Resources */,
-				C718544B22ABBD3300E54C30 /* Road_to_MonumentValley_Env.hdr in Resources */,
 				C72BB82222E363C400DF5F1C /* normal.png in Resources */,
-				C755BCBA22B6D84A0074F8A5 /* _up.jpg in Resources */,
-				C755BCCF22B6E0BE0074F8A5 /* _lf.jpg in Resources */,
 				C7EEC50E22136AF700909E4C /* MotionBlurShader.frag in Resources */,
 				C72BB83B22E363C400DF5F1C /* height.png in Resources */,
+				C7AF403C22F15468008EDDA2 /* MonValley_A_LookoutPoint_8k.jpg in Resources */,
 				C72BB80422E363C400DF5F1C /* diffuse.png in Resources */,
 				C72BB88822E363C400DF5F1C /* specular.png in Resources */,
 				C7090CCC22365F4C006FE002 /* KnittedPixelationShader.frag in Resources */,
@@ -2207,6 +2394,7 @@
 				C779E17922159F5300AF11E9 /* DepthMappingShader.vert in Resources */,
 				C72BB7E322E363C400DF5F1C /* bump.jpg in Resources */,
 				C72BB84522E363C400DF5F1C /* ao.png in Resources */,
+				C7AF403622F15468008EDDA2 /* _ft.jpg in Resources */,
 				C72BB86922E363C400DF5F1C /* roughness.png in Resources */,
 				C7AE7ED122E8FA3300D01C4C /* albedo.png in Resources */,
 				C77FC08322C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.vert in Resources */,
@@ -2214,27 +2402,34 @@
 				C7EED10E221105360079F5C0 /* WireFrameShader.frag in Resources */,
 				C7AE7ED222E8FA3300D01C4C /* diffuse.png in Resources */,
 				C72BB83022E363C400DF5F1C /* ambient.png in Resources */,
+				C7AF400222F15468008EDDA2 /* Road_to_MonumentValley_8k.jpg in Resources */,
 				C78AAF7022CAB4E9008BC2B6 /* DiscardShader.vert in Resources */,
 				C785F988221341CC00F1F8FD /* SobelEdgeDetectionShader.vert in Resources */,
 				C7CEE2D92211E33F00895F5D /* ImageProcessingShader.vert in Resources */,
 				C7EEC50C22136AF700909E4C /* MotionBlurShader.vert in Resources */,
 				C72BB81D22E363C400DF5F1C /* albedo.png in Resources */,
+				C7AF404022F15468008EDDA2 /* caveroom.hdr in Resources */,
 				C7403B6A22D0D831009EB7A0 /* SilhouetteShader.geom in Resources */,
 				C785F99622134CAE00F1F8FD /* FishEyeLensShader.frag in Resources */,
+				C7AF401222F15468008EDDA2 /* _up.jpg in Resources */,
 				C785F9642212DA7E00F1F8FD /* ToonifyShader.vert in Resources */,
 				C72BB84622E363C400DF5F1C /* roughness.png in Resources */,
+				C7AF400522F15468008EDDA2 /* _rt.jpg in Resources */,
 				C7C8F43421FFBA0400AB865A /* Marcel_Pequel_-_06_-_Six.mp3 in Resources */,
 				C72BB7E922E363C400DF5F1C /* diffuse.png in Resources */,
+				C7AF400722F15468008EDDA2 /* _lf.jpg in Resources */,
 				C72BB88222E363C400DF5F1C /* roughness.png in Resources */,
 				C72BB70522E3530E00DF5F1C /* night_vision_binoculars_mask.png in Resources */,
 				C7090CD0223665B1006FE002 /* MicroprismMosaicShader.frag in Resources */,
 				C70A1F92220EEED100170280 /* BumpMappingShader.frag in Resources */,
 				C72BB82522E363C400DF5F1C /* albedo.png in Resources */,
 				C7090CE9223676FD006FE002 /* DistortedTVShader.frag in Resources */,
+				C7AF403522F15468008EDDA2 /* MonValley_Lookout.ibl in Resources */,
 				C7C8F4A921FFC6F200AB865A /* HudShader.vert in Resources */,
 				C7EED106221105360079F5C0 /* ExplosionShader.frag in Resources */,
 				C72BB7F622E363C400DF5F1C /* height.jpg in Resources */,
 				C72BB83E22E363C400DF5F1C /* albedo.png in Resources */,
+				C7AF403F22F15468008EDDA2 /* Mt Washington Cave Room.ibl in Resources */,
 				C72BB85422E363C400DF5F1C /* bump.jpg in Resources */,
 				C7EEC51022136AF700909E4C /* BlurShader.frag in Resources */,
 				C72BB86E22E363C400DF5F1C /* specular.png in Resources */,
@@ -2245,23 +2440,25 @@
 				C7EED11122111ECC0079F5C0 /* moon_surface.jpg in Resources */,
 				C72BB85022E363C400DF5F1C /* albedo.jpg in Resources */,
 				C72BB6FE22E3530E00DF5F1C /* stone.png in Resources */,
-				C755BCB922B6D84A0074F8A5 /* _lf.jpg in Resources */,
 				C785F96F2212DA7E00F1F8FD /* PosterizationShader.frag in Resources */,
 				C7D4D80722B66B7D00A251BC /* SkyBoxIrradianceShader.frag in Resources */,
+				C7AF403422F15468008EDDA2 /* mountainvalley.hdr in Resources */,
 				C785F99422134CAE00F1F8FD /* FishEyeLensShader.vert in Resources */,
 				C72BB7FA22E363C400DF5F1C /* granitesmooth-albedo2.png in Resources */,
 				C72BB7E622E363C400DF5F1C /* roughness.jpg in Resources */,
 				C72BB7F722E363C400DF5F1C /* ao.jpg in Resources */,
+				C7AF400122F15468008EDDA2 /* deserthighway.hdr in Resources */,
 				C7090CC8223659C2006FE002 /* BayerMatrixDitheringShader.vert in Resources */,
+				C7AF403222F15468008EDDA2 /* _up.jpg in Resources */,
 				C72BB7E822E363C400DF5F1C /* albedo.png in Resources */,
 				C7090CDD223671A8006FE002 /* RetroParallaxShader.vert in Resources */,
+				C7AF400D22F15468008EDDA2 /* _ft.jpg in Resources */,
 				C7EEC50A22136AF700909E4C /* BrightPartsShader.frag in Resources */,
 				C72BB7E122E363C400DF5F1C /* metallic.jpg in Resources */,
 				C785F96D2212DA7E00F1F8FD /* PixelationShader.vert in Resources */,
 				C72BB81B22E363C400DF5F1C /* ao.png in Resources */,
 				C7E3506422E1205F00D74ACB /* DirectionalShadowMappingShader.vert in Resources */,
 				C7767437220A53A200BA7062 /* NormalMappingShader.vert in Resources */,
-				C755BCB622B6D84A0074F8A5 /* _dn.jpg in Resources */,
 				C72BB80122E363C400DF5F1C /* ao.png in Resources */,
 				C76D818122E5078F00C7A242 /* OmnidirectionalShadowMappingShader.frag in Resources */,
 				C7C8F4AC21FFC92900AB865A /* SkyBoxShader.frag in Resources */,
@@ -2271,13 +2468,14 @@
 				C71A2C3C22E371FB00AC2D49 /* albedo.jpg in Resources */,
 				C7CEE2EF2212435600895F5D /* EdgeDetectionShader.vert in Resources */,
 				C785F96C2212DA7E00F1F8FD /* NightVisionLensShader.frag in Resources */,
-				C755BCD022B6E0BE0074F8A5 /* _up.jpg in Resources */,
+				C7AF403322F15468008EDDA2 /* MonValley_A_LookoutPoint_Env.hdr in Resources */,
 				C7C8F4AA21FFC92900AB865A /* TerrainShader.frag in Resources */,
 				C72BB81422E363C400DF5F1C /* albedo.png in Resources */,
 				C72BB87B22E363C400DF5F1C /* albedo.png in Resources */,
 				C72BB84422E363C400DF5F1C /* normal.png in Resources */,
 				C72BB80222E363C400DF5F1C /* roughness.png in Resources */,
 				C72BB86622E363C400DF5F1C /* specular.png in Resources */,
+				C7AF403B22F15468008EDDA2 /* _up.jpg in Resources */,
 				C7F7D28D22C0088C00627215 /* SkyBoxPreFilteringShader.frag in Resources */,
 				C7090CBD2235E465006FE002 /* EMInterferenceShader.frag in Resources */,
 				C72BB7E722E363C400DF5F1C /* moss.png in Resources */,
@@ -2290,13 +2488,12 @@
 				C72BB87F22E363C400DF5F1C /* specular.png in Resources */,
 				C72BB83822E363C400DF5F1C /* ambient.png in Resources */,
 				C7B70506221C1106002F5732 /* FastApproximateAntiAliasingShader.vert in Resources */,
+				C7AF400022F15468008EDDA2 /* Road_to_MonumentValley.ibl in Resources */,
 				C72BB85122E363C400DF5F1C /* diffuse.jpg in Resources */,
 				C7BD8B2122E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.vert in Resources */,
 				C73D517E22D262B4007893B6 /* metallic.png in Resources */,
-				C755BCCA22B6E0BE0074F8A5 /* caveroom.hdr in Resources */,
 				C72BB7F222E363C400DF5F1C /* metallic.jpg in Resources */,
 				C72BB87422E363C400DF5F1C /* metallic.jpg in Resources */,
-				C718544C22ABBD3300E54C30 /* Road_to_MonumentValley.ibl in Resources */,
 				C72BB86422E363C400DF5F1C /* metallic.png in Resources */,
 				C72BB80022E363C400DF5F1C /* normal.png in Resources */,
 				C72BB81822E363C400DF5F1C /* specular.png in Resources */,
@@ -2305,24 +2502,24 @@
 				C7090CE8223676FD006FE002 /* DistortedTVShader.vert in Resources */,
 				C73D518022D262B4007893B6 /* normal.png in Resources */,
 				C72BB81222E363C400DF5F1C /* ao.png in Resources */,
+				C7AF400B22F15468008EDDA2 /* 10-Shiodome_Stairs_Env.hdr in Resources */,
 				C73D517A22D262B4007893B6 /* utah-teapot.mtl in Resources */,
 				C72BB7F522E363C400DF5F1C /* normal.jpg in Resources */,
 				C7EDB0D922064BCE007C7D3A /* LampShader.vert in Resources */,
 				C72BB70622E3530E00DF5F1C /* lensDirt.png in Resources */,
 				C785F99B22134CAE00F1F8FD /* MultiScreenFishEyeShader.frag in Resources */,
 				C785F94B2212D2BD00F1F8FD /* ScreenWaveShader.vert in Resources */,
+				C7AF402322F15468008EDDA2 /* _dn.jpg in Resources */,
 				C72DE90622DFCC3000981AED /* DepthTestingShader.vert in Resources */,
 				C72BB82C22E363C400DF5F1C /* roughness.png in Resources */,
 				C71A2C4E22E3840200AC2D49 /* bump.png in Resources */,
 				C72BB82922E363C400DF5F1C /* specular.png in Resources */,
 				C7EED108221105360079F5C0 /* WireFrameShader.vert in Resources */,
 				C72BB87022E363C400DF5F1C /* ao.png in Resources */,
-				C755BCCD22B6E0BE0074F8A5 /* _rt.jpg in Resources */,
 				C72BB7FE22E363C400DF5F1C /* ambient.png in Resources */,
 				C785F9732212DA7E00F1F8FD /* LensCircleShader.frag in Resources */,
 				C7C8F4AD21FFC92900AB865A /* SkyBoxShader.vert in Resources */,
 				C785F9682212DA7E00F1F8FD /* CrosshatchingShader.vert in Resources */,
-				C718544D22ABBD3300E54C30 /* deserthighway.hdr in Resources */,
 				C72BB70722E3530E00DF5F1C /* lensTexture.jpg in Resources */,
 				C718545122ABC68A00E54C30 /* EquirectangularToCubemapShader.frag in Resources */,
 				C72BB84E22E363C400DF5F1C /* ao.png in Resources */,
@@ -2337,13 +2534,13 @@
 				C779E17822159F5300AF11E9 /* DepthMappingShader.frag in Resources */,
 				C785F9662212DA7E00F1F8FD /* NightVisionLensShader.vert in Resources */,
 				C72BB85522E363C400DF5F1C /* specular.jpg in Resources */,
-				C755BCB722B6D84A0074F8A5 /* _rt.jpg in Resources */,
 				C7090CD52236686F006FE002 /* MoneyFilterShader.frag in Resources */,
 				C72BB6FC22E3530E00DF5F1C /* heightmap1.jpg in Resources */,
 				C7EDB0DA22064BCE007C7D3A /* LightShader.frag in Resources */,
+				C7AF403822F15468008EDDA2 /* _rt.jpg in Resources */,
+				C7AF400422F15468008EDDA2 /* _dn.jpg in Resources */,
 				C7AE7ED422E8FA3300D01C4C /* ambient.png in Resources */,
 				C72BB81022E363C400DF5F1C /* specular.png in Resources */,
-				C755BCCC22B6E0BE0074F8A5 /* _dn.jpg in Resources */,
 				C72BB80822E363C400DF5F1C /* normal.png in Resources */,
 				C72BB85D22E363C400DF5F1C /* ambient.png in Resources */,
 				C7090CC52235E727006FE002 /* JuliaFreakShader.vert in Resources */,
@@ -2352,13 +2549,18 @@
 				C7EEC51422136AF700909E4C /* BloomShader.frag in Resources */,
 				C72BB85F22E363C400DF5F1C /* normal.png in Resources */,
 				C7EDB0DC22064BCE007C7D3A /* LightShader.vert in Resources */,
+				C7AF401122F15468008EDDA2 /* _lf.jpg in Resources */,
 				C785F94C2212D2BD00F1F8FD /* SwirlShader.frag in Resources */,
+				C7AF402D22F15468008EDDA2 /* _ft.jpg in Resources */,
 				C72BB85622E363C400DF5F1C /* normal.jpg in Resources */,
 				C7CEE2D32211E2AB00895F5D /* ToonShader.frag in Resources */,
 				C7CEE2DF221241BA00895F5D /* ColorInversionShader.vert in Resources */,
 				C72BB70322E3530E00DF5F1C /* noise_texture_gray.png in Resources */,
 				C72BB86D22E363C400DF5F1C /* ambient.png in Resources */,
 				C7CEE2D82211E33F00895F5D /* ImageProcessingShader.frag in Resources */,
+				C7AF404522F15468008EDDA2 /* _lf.jpg in Resources */,
+				C7AF404222F15468008EDDA2 /* _dn.jpg in Resources */,
+				C7AF404422F15468008EDDA2 /* _bk.jpg in Resources */,
 				C7EED10B221105360079F5C0 /* PorcupineRenderingShader.vert in Resources */,
 				C72BB81F22E363C400DF5F1C /* metallic.png in Resources */,
 				C71A2C4B22E3840200AC2D49 /* diffuse.png in Resources */,
@@ -2372,10 +2574,12 @@
 				C785F9712212DA7E00F1F8FD /* PredatorsThermalVisionShader.vert in Resources */,
 				C7CEE2ED2212435600895F5D /* KernelBlurShader.vert in Resources */,
 				C7FB5780220CBE2A006F2D91 /* PhysicallyBasedRenderingShader.frag in Resources */,
+				C7AF402522F15468008EDDA2 /* _bk.jpg in Resources */,
 				C71A2C4C22E3840200AC2D49 /* metallic.png in Resources */,
 				C72BB7E522E363C400DF5F1C /* normal.jpg in Resources */,
 				C7090CD42236686F006FE002 /* MoneyFilterShader.vert in Resources */,
 				C72BB83522E363C400DF5F1C /* albedo.png in Resources */,
+				C7AF404322F15468008EDDA2 /* _rt.jpg in Resources */,
 				C72BB83922E363C400DF5F1C /* specular.png in Resources */,
 				C785F9742212DA7E00F1F8FD /* LensCircleShader.vert in Resources */,
 				C7090CCD22365F4C006FE002 /* KnittedPixelationShader.vert in Resources */,
@@ -2387,10 +2591,10 @@
 				C76D818222E5078F00C7A242 /* OmnidirectionalShadowMappingShader.vert in Resources */,
 				C72BB88722E363C400DF5F1C /* bump.png in Resources */,
 				C72BB7EA22E363C400DF5F1C /* metallic.png in Resources */,
-				C755BCC922B6E0BE0074F8A5 /* Mt Washington Cave Room.ibl in Resources */,
 				C72BB7EF22E363C400DF5F1C /* roughness.png in Resources */,
 				C72BB82822E363C400DF5F1C /* ambient.png in Resources */,
 				C72BB84D22E363C400DF5F1C /* height.png in Resources */,
+				C7AF402422F15468008EDDA2 /* _rt.jpg in Resources */,
 				C72BB85922E363C400DF5F1C /* roughness.jpg in Resources */,
 				C72BB83422E363C400DF5F1C /* roughness.png in Resources */,
 				C7EED10A221105360079F5C0 /* PorcupineRenderingShader.frag in Resources */,
@@ -2404,9 +2608,11 @@
 				C785F99922134CAE00F1F8FD /* FishEyeAntiFishEyeShader.vert in Resources */,
 				C785F96A2212DA7E00F1F8FD /* DreamVisionShader.vert in Resources */,
 				C7090CB12235D733006FE002 /* CartoonVideoShader.vert in Resources */,
+				C7AF400322F15468008EDDA2 /* _ft.jpg in Resources */,
 				C72BB85822E363C400DF5F1C /* ao.jpg in Resources */,
 				C72BB81C22E363C400DF5F1C /* roughness.png in Resources */,
 				C72BB88122E363C400DF5F1C /* ao.png in Resources */,
+				C7AF402822F15468008EDDA2 /* GrandCanyon_C_YumaPoint.ibl in Resources */,
 				C72BB83A22E363C400DF5F1C /* normal.png in Resources */,
 				C72BB88622E363C400DF5F1C /* ambient.png in Resources */,
 				C78AAF6F22CAB4E9008BC2B6 /* DiscardShader.frag in Resources */,
@@ -2415,14 +2621,15 @@
 				C7DE39FB221F2D0700595556 /* ScreenSpaceAmbientOcclusionBlurShader.frag in Resources */,
 				C72BB82E22E363C400DF5F1C /* diffuse.png in Resources */,
 				C72BB7EB22E363C400DF5F1C /* ambient.png in Resources */,
+				C7AF400A22F15468008EDDA2 /* Shiodome_Stairs.ibl in Resources */,
 				C7B70507221C1106002F5732 /* FastApproximateAntiAliasingShader.frag in Resources */,
 				C7C8F43021FFBA0400AB865A /* Kai_Engel_-_02_-_Better_Way.mp3 in Resources */,
 				C72BB88322E363C400DF5F1C /* albedo.png in Resources */,
 				C7EEC51322136AF700909E4C /* VignettingShader.frag in Resources */,
 				C7DE3902221CCD1B00595556 /* DeferredRenderingShader.frag in Resources */,
 				C7C8F42F21FFB9FF00AB865A /* Arial.ttf in Resources */,
-				C755BCB822B6D84A0074F8A5 /* _bk.jpg in Resources */,
 				C7CEE2EA2212435600895F5D /* KernelShader.frag in Resources */,
+				C7AF402222F15468008EDDA2 /* _ft.jpg in Resources */,
 				C72BB80722E363C400DF5F1C /* specular.png in Resources */,
 				C72BB7EE22E363C400DF5F1C /* ao.png in Resources */,
 				C72BB7F922E363C400DF5F1C /* granitesmooth-albedo3.png in Resources */,
@@ -2436,7 +2643,7 @@
 				C7EEC50822136AF700909E4C /* LensFlareShader.frag in Resources */,
 				C72BB84322E363C400DF5F1C /* specular.png in Resources */,
 				C72BB7FB22E363C400DF5F1C /* albedo.png in Resources */,
-				C755BCC822B6E0BE0074F8A5 /* Mt-Washington-Cave-Room_Bg.jpg in Resources */,
+				C7AF404622F15468008EDDA2 /* _up.jpg in Resources */,
 				C73D518222D262B4007893B6 /* roughness.png in Resources */,
 				C7090CAC2235CBF5006FE002 /* RainDropsShader.frag in Resources */,
 				C72BB7ED22E363C400DF5F1C /* normal.png in Resources */,
@@ -2450,13 +2657,16 @@
 				C7EEC50622136AF700909E4C /* RadialBlurShader.vert in Resources */,
 				C72BB83222E363C400DF5F1C /* normal.png in Resources */,
 				C72BB81722E363C400DF5F1C /* ambient.png in Resources */,
+				C7AF400922F15468008EDDA2 /* 10-Shiodome_Stairs_8k.jpg in Resources */,
 				C72BB80322E363C400DF5F1C /* albedo.png in Resources */,
+				C7AF401022F15468008EDDA2 /* _bk.jpg in Resources */,
+				C7AF400F22F15468008EDDA2 /* _rt.jpg in Resources */,
 				C72BB87222E363C400DF5F1C /* albedo.jpg in Resources */,
 				C71A2C4D22E3840200AC2D49 /* ambient.png in Resources */,
 				C72BB81A22E363C400DF5F1C /* height.png in Resources */,
 				C7EEC50D22136AF700909E4C /* VignettingShader.vert in Resources */,
 				C72BB86022E363C400DF5F1C /* ao.png in Resources */,
-				C718544E22ABBD3300E54C30 /* Road_to_MonumentValley_8k.jpg in Resources */,
+				C7AF400822F15468008EDDA2 /* _up.jpg in Resources */,
 				C7090CBC2235E465006FE002 /* EMInterferenceShader.vert in Resources */,
 				C71E7E83223ADB9500336C6C /* JupiterColorShader.frag in Resources */,
 				C7DE39F2221F1F1500595556 /* ScreenSpaceAmbientOcclusionShader.frag in Resources */,
@@ -2467,11 +2677,15 @@
 				C7090CE022367404006FE002 /* PixelateShader.frag in Resources */,
 				C7BD8B1F22E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.geom in Resources */,
 				C72BB86222E363C400DF5F1C /* albedo.png in Resources */,
+				C7AF403A22F15468008EDDA2 /* _lf.jpg in Resources */,
+				C7AF403D22F15468008EDDA2 /* Mt-Washington-Cave-Room_Env.hdr in Resources */,
+				C7AF402C22F15468008EDDA2 /* Mt Washington Gold Room.ibl in Resources */,
 				C7332978221775D400BFE37B /* ToneMappingShader.frag in Resources */,
 				C72BB82D22E363C400DF5F1C /* albedo.png in Resources */,
 				C7EEC50522136AF700909E4C /* BrightPartsShader.vert in Resources */,
 				C72BB80A22E363C400DF5F1C /* ao.png in Resources */,
 				C77FC08422C0330F00199356 /* BidirectionalReflectanceDistributionFunctionShader.frag in Resources */,
+				C7AF402922F15468008EDDA2 /* goldroom.hdr in Resources */,
 				C7EEC51122136AF700909E4C /* GaussianBlurShader.vert in Resources */,
 				C72BB87822E363C400DF5F1C /* height.jpg in Resources */,
 				C785F99822134CAE00F1F8FD /* BarrelDistortionPixelShader.frag in Resources */,
@@ -2482,10 +2696,10 @@
 				C72BB84122E363C400DF5F1C /* ambient.png in Resources */,
 				C72BB80E22E363C400DF5F1C /* metallic.png in Resources */,
 				C7CEE2E0221241BA00895F5D /* ColorInversionShader.frag in Resources */,
-				C755BCCB22B6E0BE0074F8A5 /* _ft.jpg in Resources */,
 				C72BB84B22E363C400DF5F1C /* specular.png in Resources */,
 				C72BB83122E363C400DF5F1C /* specular.png in Resources */,
 				C7AE7ED522E8FA3300D01C4C /* bump.png in Resources */,
+				C7AF403722F15468008EDDA2 /* _dn.jpg in Resources */,
 				C785F99522134CAE00F1F8FD /* FishEyeShader.frag in Resources */,
 				C7DE38FC221C843D00595556 /* FireBallShader.frag in Resources */,
 				C785F96B2212DA7E00F1F8FD /* ShockwaveShader.frag in Resources */,
@@ -2493,6 +2707,7 @@
 				C7090CAD2235CBF5006FE002 /* RainDropsShader.vert in Resources */,
 				C72BB70422E3530E00DF5F1C /* lensColor.jpg in Resources */,
 				C72BB80C22E363C400DF5F1C /* albedo.png in Resources */,
+				C7AF403122F15468008EDDA2 /* _lf.jpg in Resources */,
 				C7EED10C221105360079F5C0 /* ExplosionShader.geom in Resources */,
 				C7EEC50322136AF700909E4C /* LensFlareShader.vert in Resources */,
 				C72BB88422E363C400DF5F1C /* diffuse.png in Resources */,
@@ -2503,10 +2718,12 @@
 				C72BB7EC22E363C400DF5F1C /* specular.png in Resources */,
 				C785F9722212DA7E00F1F8FD /* FrostedGlassEffectShader.frag in Resources */,
 				C78F395E2215C81C006163EC /* DirectionalShadowDepthShader.vert in Resources */,
+				C7AF402122F15468008EDDA2 /* GCanyon_C_YumaPoint_Env.hdr in Resources */,
 				C72BB86822E363C400DF5F1C /* ao.png in Resources */,
 				C7DE39F8221F2D0700595556 /* ScreenSpaceAmbientOcclusionLightingShader.vert in Resources */,
 				C73D517B22D262B4007893B6 /* Industrial_Trolley.obj in Resources */,
 				C72BB84922E363C400DF5F1C /* metallic.png in Resources */,
+				C7AF400622F15468008EDDA2 /* _bk.jpg in Resources */,
 				C7C8F43121FFBA0400AB865A /* Kai_Engel_-_03_-_Brooks.mp3 in Resources */,
 				C7EEC50922136AF700909E4C /* BloomShader.vert in Resources */,
 				C7BD8B2022E4F71F007F13C1 /* OmnidirectionalShadowDepthShader.frag in Resources */,
@@ -2514,6 +2731,7 @@
 				C71A2C4F22E3840200AC2D49 /* specular.png in Resources */,
 				C72BB70822E3530E00DF5F1C /* perlin_noise_texture.png in Resources */,
 				C72BB82622E363C400DF5F1C /* diffuse.png in Resources */,
+				C7AF3FFF22F15468008EDDA2 /* Road_to_MonumentValley_Env.hdr in Resources */,
 				C72BB82F22E363C400DF5F1C /* metallic.png in Resources */,
 				C72BB83322E363C400DF5F1C /* ao.png in Resources */,
 				C72BB7E422E363C400DF5F1C /* specular.jpg in Resources */,
@@ -2527,12 +2745,13 @@
 				C72BB81122E363C400DF5F1C /* normal.png in Resources */,
 				C7090CB02235D733006FE002 /* CartoonVideoShader.frag in Resources */,
 				C72BB86C22E363C400DF5F1C /* metallic.png in Resources */,
-				C755BCB522B6D84A0074F8A5 /* _ft.jpg in Resources */,
 				C72BB7FF22E363C400DF5F1C /* specular.png in Resources */,
 				C72BB84022E363C400DF5F1C /* metallic.png in Resources */,
+				C7AF403922F15468008EDDA2 /* _bk.jpg in Resources */,
 				C72BB82022E363C400DF5F1C /* ambient.png in Resources */,
 				C72BB7F322E363C400DF5F1C /* ambient.jpg in Resources */,
 				C72BB87D22E363C400DF5F1C /* metallic.png in Resources */,
+				C7AF402722F15468008EDDA2 /* _up.jpg in Resources */,
 				C7090CD822366F95006FE002 /* ScaryRetroParallaxShader.frag in Resources */,
 				C72BB88522E363C400DF5F1C /* metallic.png in Resources */,
 				C72BB82122E363C400DF5F1C /* specular.png in Resources */,
@@ -2541,19 +2760,23 @@
 				C72BB85A22E363C400DF5F1C /* albedo.png in Resources */,
 				C7090CC12235E666006FE002 /* HeartBlendShader.vert in Resources */,
 				C72BB81922E363C400DF5F1C /* normal.png in Resources */,
+				C7AF402E22F15468008EDDA2 /* _dn.jpg in Resources */,
 				C7CEE2D42211E2AB00895F5D /* ToonShader.vert in Resources */,
 				C72BB85E22E363C400DF5F1C /* specular.png in Resources */,
 				C7090CB52235DE7D006FE002 /* CelShaderishShader.vert in Resources */,
 				C7090CB82235E38E006FE002 /* CubicLensDistortionShader.vert in Resources */,
 				C7D4D80622B66B7D00A251BC /* SkyBoxIrradianceShader.vert in Resources */,
-				C755BCC722B6E0BE0074F8A5 /* Mt-Washington-Cave-Room_Env.hdr in Resources */,
 				C7090CD1223665B1006FE002 /* MicroprismMosaicShader.vert in Resources */,
 				C72BB7F022E363C400DF5F1C /* albedo.jpg in Resources */,
 				C785F9702212DA7E00F1F8FD /* PredatorsThermalVisionShader.frag in Resources */,
+				C7AF403E22F15468008EDDA2 /* Mt-Washington-Cave-Room_Bg.jpg in Resources */,
 				C7090CE122367404006FE002 /* PixelateShader.vert in Resources */,
 				C785F987221341CC00F1F8FD /* FreiChenEdgeDetectionShader.vert in Resources */,
+				C7AF400C22F15468008EDDA2 /* shiodome.hdr in Resources */,
 				C7DE38FE221CA1CA00595556 /* explosion.png in Resources */,
+				C7AF402F22F15468008EDDA2 /* _rt.jpg in Resources */,
 				C72BB80F22E363C400DF5F1C /* ambient.png in Resources */,
+				C7AF404122F15468008EDDA2 /* _ft.jpg in Resources */,
 				C7767436220A53A200BA7062 /* NormalMappingShader.frag in Resources */,
 				C72BB70022E3530E00DF5F1C /* heightmap4.bmp in Resources */,
 				C73D517922D262B4007893B6 /* utah-teapot.obj in Resources */,
@@ -2571,6 +2794,7 @@
 				C78F395F2215C81C006163EC /* DirectionalShadowDepthShader.frag in Resources */,
 				C72BB6FA22E3530E00DF5F1C /* heightmap3.jpg in Resources */,
 				C72BB7F122E363C400DF5F1C /* diffuse.jpg in Resources */,
+				C7AF402B22F15468008EDDA2 /* Mt-Washington-Gold-Room_Bg.jpg in Resources */,
 				C7403B6B22D0D831009EB7A0 /* SilhouetteShader.vert in Resources */,
 				C785F99D22134CAE00F1F8FD /* FishEyeAntiFishEyeShader.frag in Resources */,
 				C72BB85322E363C400DF5F1C /* ambient.jpg in Resources */,
@@ -2578,15 +2802,16 @@
 				C72BB81622E363C400DF5F1C /* metallic.png in Resources */,
 				C718545222ABC68A00E54C30 /* EquirectangularToCubemapShader.vert in Resources */,
 				C72BB87722E363C400DF5F1C /* normal.jpg in Resources */,
-				C755BCCE22B6E0BE0074F8A5 /* _bk.jpg in Resources */,
 				C7090CC42235E727006FE002 /* JuliaFreakShader.frag in Resources */,
 				C72BB83D22E363C400DF5F1C /* roughness.png in Resources */,
 				C785F9772212DA7E00F1F8FD /* DreamVisionShader.frag in Resources */,
 				C71A2C5122E3840200AC2D49 /* ao.png in Resources */,
 				C70A1F94220EEED100170280 /* ChromaticAberrationShader.vert in Resources */,
 				C785F99C22134CAE00F1F8FD /* BarrelDistortionPixelShader.vert in Resources */,
+				C7AF401F22F15468008EDDA2 /* grandcanyon.hdr in Resources */,
 				C7C8F4A821FFC6ED00AB865A /* HudShader.frag in Resources */,
 				C72BB70922E3530E00DF5F1C /* lensStarburst.png in Resources */,
+				C7AF403022F15468008EDDA2 /* _bk.jpg in Resources */,
 				C72BB83622E363C400DF5F1C /* diffuse.png in Resources */,
 				C72BB85B22E363C400DF5F1C /* diffuse.png in Resources */,
 				C7EED11222111ECC0079F5C0 /* clean-gray-paper.png in Resources */,

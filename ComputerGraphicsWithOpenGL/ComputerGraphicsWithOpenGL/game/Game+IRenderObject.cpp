@@ -97,15 +97,15 @@ void Game::RenderTerrain(CShaderProgram *pShaderProgram, const glm::vec3 & posit
         m_pHeightmapTerrain->Render();
     } else {
         // Render the planar terrain
-        glEnable (GL_BLEND);
-        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//        glEnable (GL_BLEND);
+//        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         m_pPlanarTerrain->Transform(position, rotation, glm::vec3(scale));
         
         glm::mat4 terrainModel = m_pPlanarTerrain->Model();
         pShaderProgram->SetUniform("matrices.modelMatrix", terrainModel);
         pShaderProgram->SetUniform("matrices.normalMatrix", m_pCamera->ComputeNormalMatrix(terrainModel));
         m_pPlanarTerrain->Render();
-        glDisable (GL_BLEND);
+//        glDisable (GL_BLEND);
     }
     
 }

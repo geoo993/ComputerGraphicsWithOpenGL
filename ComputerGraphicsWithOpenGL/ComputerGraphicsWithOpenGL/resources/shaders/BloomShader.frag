@@ -61,20 +61,20 @@ void main()
         hdrColor += blurColor; // additive blending
         
         // HDR
+        vec3 result = hdrColor.rgb;
         if(hrdlight.bHDR)
         {
             // reinhard
             // vec3 result = hdrColor / (hdrColor + vec3(1.0f));
             // tone mapping with exposure
-            vec3 result = vec3(1.0f) - exp(-hdrColor.rgb * hrdlight.exposure);
+            result = vec3(1.0f) - exp(-hdrColor.rgb * hrdlight.exposure);
             // also gamma correct while we're at it
             result = pow(result, vec3(1.0f / hrdlight.gamma));
-            tc = vec4(result, 1.0f);
-        } else {
-            vec3 result = pow(hdrColor.rgb, vec3(1.0f / hrdlight.gamma));
-            tc = vec4(result, 1.0f);
         }
-       //tc = hdrColor + blurColor * exposure;
+        else {
+            result = pow(hdrColor.rgb, vec3(1.0f / hrdlight.gamma));
+        }
+        tc = vec4(result, hdrColor.w);
     } else if (uv.x >= ( coverage + 0.003f) )
     {
         tc = texture(material.ambientMap, uv);

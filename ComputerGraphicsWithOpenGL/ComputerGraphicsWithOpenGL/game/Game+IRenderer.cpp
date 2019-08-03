@@ -48,31 +48,31 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     || m_currentPPFXMode == PostProcessingEffectMode::IBL;
      
     CShaderProgram *pShaderProgram;
-    if (isPBR) {
-        ///  Physically Based Rendering
-        pShaderProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 3];
-        SetCameraUniform(pShaderProgram, "camera", m_pCamera);
-        SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
-        SetPBRMaterialUniform(pShaderProgram, "material", m_albedo, m_metallic, m_roughness, m_ao, m_useIrradiance);
-        SetFogMaterialUniform(pShaderProgram, "fog", m_fogColor, m_useFog);
-        
-        if (m_currentPPFXMode == PostProcessingEffectMode::IBL) {
-            GLint irradianceTextureUnit = static_cast<GLint>(TextureType::IRRADIANCEMAP);
-            m_pIrrSkybox->BindIrrSkyboxTo(irradianceTextureUnit);
-            
-            GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
-            m_pIrrSkybox->BindPrefilterSkyboxTo(cubemapTextureUnit);
-            
-            GLint brdfLUTTextureUnit = static_cast<GLint>(TextureType::SPECULAR);
-            m_pIrrSkybox->BindBRDFLUTTextureTo(brdfLUTTextureUnit);
-        }
-        
-        // Render Lights
-        SetLightUniform(pShaderProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
-        SetHRDLightUniform(pShaderProgram, m_hdrName, m_exposure, m_gama, m_HDR);
-        RenderLight(pShaderProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
-        
-    } else {
+//    if (isPBR) {
+//        ///  Physically Based Rendering
+//        pShaderProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 3];
+//        SetCameraUniform(pShaderProgram, "camera", m_pCamera);
+//        SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
+//        SetPBRMaterialUniform(pShaderProgram, "material", m_albedo, m_metallic, m_roughness, m_ao, m_useIrradiance);
+//        SetFogMaterialUniform(pShaderProgram, "fog", m_fogColor, m_useFog);
+//
+//        if (m_currentPPFXMode == PostProcessingEffectMode::IBL) {
+//            GLint irradianceTextureUnit = static_cast<GLint>(TextureType::IRRADIANCEMAP);
+//            m_pIrrSkybox->BindIrrSkyboxTo(irradianceTextureUnit);
+//
+//            GLint cubemapTextureUnit = static_cast<GLint>(TextureType::CUBEMAP);
+//            m_pIrrSkybox->BindPrefilterSkyboxTo(cubemapTextureUnit);
+//
+//            GLint brdfLUTTextureUnit = static_cast<GLint>(TextureType::SPECULAR);
+//            m_pIrrSkybox->BindBRDFLUTTextureTo(brdfLUTTextureUnit);
+//        }
+//
+//        // Render Lights
+//        SetLightUniform(pShaderProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+//        SetHRDLightUniform(pShaderProgram, m_hdrName, m_exposure, m_gama, m_HDR);
+//        RenderLight(pShaderProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
+//
+//    } else {
      
         /// Blinn Phong Lighting
         pShaderProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 5];
@@ -91,24 +91,23 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
             RenderPrimitive(pShaderProgram, m_pWoodenBox, position, glm::vec3(0.0f, angle, 0.0f), 20, m_materialUseTexture);
         }
         */
-        
-    }
+    //}
     
     
     if (m_showTerrain)
         /// Terrain
     {
         
-        pShaderProgram->UseProgram();
-        if (isPBR) {
-            SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
-        }
-        
+//        pShaderProgram->UseProgram();
+//        if (isPBR) {
+//            SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
+//        }
+//
         RenderTerrain(pShaderProgram, glm::vec3(0.0f, -100.0f, 0), glm::vec3(0.0f), glm::vec3(1.0f), false);
         
-        if (isPBR) {
-            SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
-        }
+//        if (isPBR) {
+//            SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
+//        }
     } else
     /// InterioBox
     {
@@ -161,7 +160,8 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     RenderModel(pShaderProgram, m_teapot10, glm::vec3(-450.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
   
 
-    
+    /*
+     
     /// Bump Mapping
     {
         CShaderProgram *pBumpMappingProgram = (*m_pShaderPrograms)[toCustomShader ? toCustomShaderIndex : 7];
@@ -301,7 +301,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         RenderPrimitive(pWireframeProgram, m_pSpherePBR19, glm::vec3(950.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
         RenderModel(pWireframeProgram, m_teapot19, glm::vec3(950.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     }
-  
+  */
     
     /// Render Lamps
     {

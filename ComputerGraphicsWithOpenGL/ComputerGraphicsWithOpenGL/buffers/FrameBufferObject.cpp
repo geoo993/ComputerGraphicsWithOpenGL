@@ -235,16 +235,122 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             bool HDRFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
             if( HDRFramebufferComplete == false ){
                 std::cout << "ERROR::FRAMEBUFFER:: HDR Framebuffer is not complete!" << std::endl;
+                
             }
-            
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
             return HDRFramebufferComplete;
         }
             
         case FrameBufferType::HighDynamicRangeRendering: {
+            /*  https://learnopengl.com/#!Advanced-Lighting/Bloom
+             High Dynamic Range Multiple Render Targets for extracting bright colors
+             
+             Extracting bright color
+             The first step requires us to extract two images from a rendered scene. We could render the scene twice, both rendering to a different framebuffer with different shaders, but we can also use a neat little trick called Multiple Render Targets (MRT) that allows us to specify more than one fragment shader output; this gives us the option to extract the first two images in a single render pass. By specifying a layout location specifier before a fragment shader's output we can control to which colorbuffer a fragment shader writes to:
+             
+             
+             layout (location = 0) out vec4 FragColor;
+             layout (location = 1) out vec4 BrightColor;
+             
+             This only works however if we actually have multiple places to write to. As a requirement for using multiple fragment shader outputs we need multiple colorbuffers attached to the currently bound framebuffer object. You might remember from the framebuffers tutorial that we can specify a color attachment when linking a texture as a framebuffer's colorbuffer. Up until now we've always used GL_COLOR_ATTACHMENT0, but by also using GL_COLOR_ATTACHMENT1 we can have have two colorbuffers attached to a framebuffer object:
+             
+             
+             */
+            // configure (floating point) framebuffers
+            // ---------------------------------------
+            /// Create a framebuffer object and bind it with
+            glGenFramebuffers(1, &m_uiFramebuffer);
             
-            return 0;
+            // To bind the framebuffer we use glBindFramebuffer:
+            glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
+            
+            // create 2 floating point color buffers (1 for normal rendering, other for brightness treshold values)
+            glGenTextures(2, m_uiHdrColorTextures);
+            for (unsigned int i = 0; i < 2; i++)
+            {
+                glBindTexture(GL_TEXTURE_2D, m_uiHdrColorTextures[i]);
+                /*
+                 When the internal format of a framebuffer's colorbuffer is specified as GL_RGB16F, GL_RGBA16F, GL_RGB32F or GL_RGBA32F the framebuffer is known as a floating point framebuffer that can store floating point values outside the default range of 0.0 and 1.0. This is perfect for rendering in high dynamic range!
+                 */
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_iWidth, m_iHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+                
+                glGenerateMipmap(GL_TEXTURE_2D);
+                
+                // Create a sampler object and set texture properties.  Note here, we're mipmapping
+                glGenSamplers(1, &m_uiSampler);
+                SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);// we clamp to the edge as the blur filter would otherwise sample repeated texture values!
+                SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glBindTexture(GL_TEXTURE_2D, 0);
+                
+                // attach texture to framebuffer
+                glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, m_uiHdrColorTextures[i], 0);
+                
+            }
+            
+            // create and attach depth buffer (renderbuffer)
+            glGenRenderbuffers(1, &m_uiRboDepth);
+            glBindRenderbuffer(GL_RENDERBUFFER, m_uiRboDepth);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_iWidth, m_iHeight);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_uiRboDepth);
+            
+            // tell OpenGL which color attachments we'll use (of this framebuffer) for rendering
+            // We do have to explicitly tell OpenGL we're rendering to multiple colorbuffers via glDrawBuffers as otherwise OpenGL only renders to a framebuffer's first color attachment ignoring all others. We can do this by passing an array of color attachment enums that we'd like to render to in subsequent operations:
+            unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+            glDrawBuffers(2, attachments);
+            
+            // Check completeness
+            bool HDRframebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+
+            if( HDRframebufferComplete == false ){
+                std::cout << "ERROR::FRAMEBUFFER:: HDR Rendering Framebuffer is not complete!" << std::endl;
+            }
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            return HDRframebufferComplete;
+        }
+        case FrameBufferType::PingPongRendering: {
+            
+            // configure ping pong map FBO
+            // ping-pong-framebuffer for blurring
+            // -----------------------
+            glGenFramebuffers(2, m_uiPingpongFramebuffers);
+            glGenTextures(2, m_uiPingpongColorTextures);
+            
+            bool pingpongFramebufferComplete = false;
+            for (unsigned int i = 0; i < 2; i++)
+            {
+                glBindFramebuffer(GL_FRAMEBUFFER, m_uiPingpongFramebuffers[i]);
+                
+                glBindTexture(GL_TEXTURE_2D, m_uiPingpongColorTextures[i]);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_iWidth, m_iHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+                
+                glGenerateMipmap(GL_TEXTURE_2D);
+                
+                // Create a sampler object and set texture properties.  Note here, we're mipmapping
+                glGenSamplers(1, &m_uiSampler);
+                SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // we clamp to the edge as the blur filter would otherwise sample repeated texture values!
+                //glBindTexture(GL_TEXTURE_2D, 0);
+                
+                glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_uiPingpongColorTextures[i], 0);
+                
+                // also check if framebuffers are complete (no need for depth buffer)
+                pingpongFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+                if( pingpongFramebufferComplete == false ){
+                    std::cout << "ERROR::FRAMEBUFFER:: ping-pong Framebuffer is not complete!" << std::endl;
+                    break;
+                }
+            }
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            return pingpongFramebufferComplete;
         }
         case FrameBufferType::SSAO: {
             // configure framebuffer to hold SSAO processing stage
@@ -285,46 +391,6 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
             return ssaoMapFramebufferComplete;
-        }
-        case FrameBufferType::PingPongRendering: {
-        
-            // configure ping pong map FBO
-            // ping-pong-framebuffer for blurring
-            // -----------------------
-            glGenFramebuffers(2, m_uiPingpongFramebuffers);
-            glGenTextures(2, m_uiPingpongColorTextures);
-            
-            bool pingpongFramebufferComplete = false;
-            for (unsigned int i = 0; i < 2; i++)
-            {
-                glBindFramebuffer(GL_FRAMEBUFFER, m_uiPingpongFramebuffers[i]);
-                
-                glBindTexture(GL_TEXTURE_2D, m_uiPingpongColorTextures[i]);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_iWidth, m_iHeight, 0, GL_RGB, GL_FLOAT, nullptr);
-                
-                glGenerateMipmap(GL_TEXTURE_2D);
-                
-                // Create a sampler object and set texture properties.  Note here, we're mipmapping
-                glGenSamplers(1, &m_uiSampler);
-                SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // we clamp to the edge as the blur filter would otherwise sample repeated texture values!
-                //glBindTexture(GL_TEXTURE_2D, 0);
-                
-                glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_uiPingpongColorTextures[i], 0);
-                
-                // also check if framebuffers are complete (no need for depth buffer)
-                pingpongFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
-                if( pingpongFramebufferComplete == false ){
-                    std::cout << "ERROR::FRAMEBUFFER:: ping-pong Framebuffer is not complete!" << std::endl;
-                    break;
-                }
-            }
-            
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            
-            return pingpongFramebufferComplete;
         }
         case FrameBufferType::GeometryBuffer: {
             

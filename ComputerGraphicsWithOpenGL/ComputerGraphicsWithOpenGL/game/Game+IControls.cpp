@@ -79,7 +79,7 @@ void Game::LoadControls() {
     useBlinn->SetValue(&m_useBlinn);
     guiBox->y += guiBox->height;
     
-    CSlider *dirIntensity = (CSlider *)AddControl(new CSlider("Dir Light Intensity", 0.0f, 10.0f, 5, guiBox));
+    CSlider *dirIntensity = (CSlider *)AddControl(new CSlider("Dir Light Intensity", 0.0f, 2.0f, 5, guiBox));
     dirIntensity->SetValue(&m_dirIntensity);
     guiBox->y += guiBox->height;
     

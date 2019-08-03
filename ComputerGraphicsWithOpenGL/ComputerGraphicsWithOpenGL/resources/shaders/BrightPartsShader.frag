@@ -53,20 +53,21 @@ void main()
     {
         vec4 colour = texture(material.depthMap, uv);
         float b = (colour.r * 0.2126f) + (colour.g * 0.7152f) + (colour.b * 0.0722f);
-        
+
         if (bSmoothGradient == true){
             tc = colour * b * b * b;
         } else {
             if (b > intensity){
                 // to make the gradient steeper you can multiply by the brightness a few more times.
                 tc = colour * intensity;
-            }else {
+            } else {
                 tc = colour;
             }
         }
-    } else if (uv.x >= ( coverage + 0.003f) )
-    {
+    } else if (uv.x >= ( coverage + 0.003f) ) {
+        
         tc = texture(material.ambientMap, uv);
+        
     } else {
         
         if ( coverage > ( 1.0f + 0.003f) ) {

@@ -72,7 +72,7 @@ struct IMaterials {
     glm::vec3 m_fogColor;
     virtual void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                     const glm::vec4 &color, const GLfloat &shininess,
-                                    const GLfloat &uvTiling, const GLboolean &useAO) = 0;
+                                    const GLfloat &uvTiling, const GLboolean &useAO, const glm::vec4 &guiColor) = 0;
     virtual void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                        const GLfloat &albedo, const GLfloat &metallic, const GLfloat &roughness,
                                        const GLfloat &ao, const GLboolean &useIrradiance) = 0;
@@ -239,6 +239,9 @@ struct IRenderer
     virtual void Render() = 0;
     virtual void PostRendering() = 0;
     virtual void RenderScene(const GLboolean &toCustomShader, const GLboolean &includeLampsAndSkybox, const GLint &toCustomShaderIndex) = 0;
+    virtual void RenderPBRScene(CShaderProgram *pShaderProgram, const GLboolean &toCustomShader, const GLint &toCustomShaderIndex, const GLfloat zfront, const GLfloat zback) = 0;
+    virtual void RenderRandomScene(CShaderProgram *pShaderProgram, const GLboolean &toCustomShader, const GLint &toCustomShaderIndex, const GLfloat zfront, const GLfloat zback) = 0;
+    virtual void RenderTerrainScene(CShaderProgram *pShaderProgram, const GLfloat yPos) = 0;
 };
 
 struct IRenderObject
@@ -352,7 +355,7 @@ struct IPostProcessing {
     virtual void RenderPPFXScene(const PostProcessingEffectMode &mode) = 0;
     virtual void ChangePPFXScene(PostProcessingEffectMode &mode) = 0;
     virtual void RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType,
-                                const GLuint &bufferIndex, const TextureType &textureType) = 0;
+                                const GLuint &bufferIndex, const TextureType &textureType, const GLboolean &useAO) = 0;
     virtual void RenderPPFX(const PostProcessingEffectMode &mode) = 0;
     virtual void ResetFrameBuffer(const GLboolean &clearBuffers) = 0;
     virtual const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) = 0;

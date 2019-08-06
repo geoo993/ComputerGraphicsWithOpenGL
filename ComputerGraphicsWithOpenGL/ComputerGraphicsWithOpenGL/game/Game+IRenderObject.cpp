@@ -153,6 +153,8 @@ void Game::RenderModel(CShaderProgram *pShaderProgram, CModel * model, const glm
 
 void Game::RenderMetalBalls(CShaderProgram *pShaderProgram, const glm::vec3 & position, const glm::vec3 & scale, const GLboolean &useTexture) {
     
+    pShaderProgram->UseProgram();
+    
     // Update the metaballs' positions
     float time = (float)m_deltaTime / 1000.0f * 2.0f * 3.14159f * 0.5f;
     m_pMetaballs->Update(time);

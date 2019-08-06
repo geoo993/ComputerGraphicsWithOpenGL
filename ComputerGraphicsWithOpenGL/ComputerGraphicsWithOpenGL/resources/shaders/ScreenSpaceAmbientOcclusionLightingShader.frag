@@ -33,6 +33,7 @@ uniform struct Material
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
+    vec4 guiColor;
     float shininess;
     bool bUseTexture;
     bool bUseColor;
@@ -97,7 +98,22 @@ in VS_OUT
 
 vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
 {
+    
+    vec4 lightColor = (material.bUseColor ? vec4(base.color, 1.0f) : vec4(1.0f));
+    vec4 materialColor = material.color;
+    vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;                // scene Map
+    vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;                // albedo Map
+    float specularMap = texture(material.diffuseMap, fs_in.vTexCoord).a;            // specularMap
+    float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
+    
+    // ambient
+    vec4 ambient = base.ambient * (material.bUseTexture ? vec4(diffuseMap * ambientOcclusion, 1.0f) : vec4(materialColor.xyz * ambientOcclusion, 1.0f));
+    
+    // diffuse
     float diffuseFactor = max(dot(normal, direction), 0.0f);
+    vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? vec4(diffuseMap, 1.0f) : materialColor) * lightColor;
+    
+    // specular
     vec3 view =  camera.position + camera.front;
     vec3 directionToEye = normalize(view - vertexPosition); // viewDirection
     vec3 reflectDirection = reflect(-direction, normal);    // specular reflection
@@ -105,23 +121,7 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     float specularFactor = bUseBlinn
     ? pow(max(dot(normal, halfDirection), 0.0f), material.shininess)
     : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
-    
-    vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;                // albedo Map
-    vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;                // albedo Map
-    float specularMap = texture(material.diffuseMap, fs_in.vTexCoord).a;            // specularMap
-    float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
-    
-    vec4 lightColor = (material.bUseColor ? vec4(base.color, 1.0f) : vec4(1.0f));
-    vec4 materialColor = material.color;
-    vec4 ambient = base.ambient * (material.bUseTexture ? vec4(ambientMap * ambientOcclusion, 1.0f) : materialColor) * lightColor;
-    vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? vec4(diffuseMap, 1.0f) : materialColor) * lightColor;
     vec4 specular = base.specular * specularFactor * lightColor;
-    if (material.bUseTexture) {
-        specular *= specularMap;
-    } else {
-        specular *= materialColor;
-    }
-    
     return (ambient + diffuse + specular) * base.intensity;
 }
 
@@ -176,12 +176,13 @@ void main()
 {
   
     vec2 uv = fs_in.vTexCoord.xy;
-    vec4 tc = material.color;
+    vec4 tc = material.guiColor;
+     
     if (uv.x < (  coverage  ) )
     {
         // retrieve data from gbuffer
-        vec3 worldPos = texture(material.displacementMap, fs_in.vTexCoord).rgb;      // displacementMap
-        vec3 normal = texture(material.normalMap, fs_in.vTexCoord).rgb;             // normalMap
+        vec3 worldPos = texture(material.displacementMap, uv).rgb;      // displacementMap
+        vec3 normal = texture(material.normalMap, uv).rgb;             // normalMap
         vec4 result = vec4(0.0f, 0.0f, 0.0f, 1.0f);
         
         if (bUseLight) {
@@ -207,8 +208,8 @@ void main()
             
             tc = result;
         } else {
-            vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;                // albedo Map
-            float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
+            vec3 ambientMap = texture(material.ambientMap, uv).rgb;                // albedo Map
+            float ambientOcclusion = texture(material.aoMap, uv).r;            // ssao Map
             tc = vec4(ambientMap * ambientOcclusion, 1.0f);
         }
     }
@@ -222,6 +223,5 @@ void main()
             tc = texture(material.ambientMap, uv);
         }
     }
-    
     vOutputColour = tc;
 }

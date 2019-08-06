@@ -451,7 +451,7 @@ void Game::SetDeferredRenderingUniform(CShaderProgram *pShaderProgram) {
 }
 
 void Game::SetScreenSpaceAmbientOcclusionUniform(CShaderProgram *pShaderProgram) {
-    m_textures[7]->BindTexture2DToTextureType();        // bind SSAO noise texture
+    m_textures[7]->BindCustomTexture2DToTextureType();        // bind SSAO noise texture
 
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("projection", *m_pCamera->GetPerspectiveProjectionMatrix());

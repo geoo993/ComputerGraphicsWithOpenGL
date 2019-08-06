@@ -535,13 +535,6 @@ void Game::LoadControls() {
     lensFlareIntensity->SetValue(&m_gaussianBlurIntensity);
     guiBox->y += guiBox->height;
     
-    m_lensFlareGhostCount = 5.0f;
-    m_lensFlareGhostDispersal = 0.39f;
-    m_lensFlareGhostThreshold = 10.0f;
-    m_lensFlareGhostDistortion = 4.3f;
-    m_lensFlareHaloRadius = 0.3f;
-    m_lensFlareHaloThreshold = 9.0f;
-    
     CSlider *lensFlareGhostCount = (CSlider *)AddControl(new CSlider("Ghost Count", 0.0f, 10.0f, 5, guiBox,
                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::LensFlare));
     lensFlareGhostCount->SetValue(&m_lensFlareGhostCount);
@@ -579,17 +572,17 @@ void Game::LoadControls() {
     ssaoNoiseUseLight->SetValue(&m_ssaoNoiseUseLight);
     guiBox->y += guiBox->height;
     
-    CSlider *ssaoBias = (CSlider *)AddControl(new CSlider("Bias", 0.0f, 2.0f, 5, guiBox,
+    CSlider *ssaoBias = (CSlider *)AddControl(new CSlider("Bias", 0.0025f, 2.0f, 5, guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
     ssaoBias->SetValue(&m_ssaoBias);
     guiBox->y += guiBox->height;
     
-    CSlider *ssaoRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 50.0f, 5, guiBox,
+    CSlider *ssaoRadius = (CSlider *)AddControl(new CSlider("Radius", 0.005f, 100.0f, 5, guiBox,
                                                           GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
     ssaoRadius->SetValue(&m_ssaoRadius);
     guiBox->y += guiBox->height;
     
-    CSlider *ssaoNoise = (CSlider *)AddControl(new CSlider("Noise", 0.0f, 10.0f, 5, guiBox,
+    CSlider *ssaoNoise = (CSlider *)AddControl(new CSlider("Noise", 0.0f, 24.0f, 5, guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
     ssaoNoise->SetValue(&m_ssaoNoiseSize);
     
@@ -627,7 +620,7 @@ void Game::LoadControls() {
     dirShadowMappingGamma->SetValue(&m_gama);
     guiBox->y += guiBox->height;
     
-    CButton * dirShadowMappingFromLight = (CButton *)AddControl(new CButton("From Light or Camera", guiBox,
+    CButton * dirShadowMappingFromLight = (CButton *)AddControl(new CButton("From Light View", guiBox,
                                                                         GUIMode::DYNAMIC, false, PostProcessingEffectMode::DirectionalShadowMapping));
     dirShadowMappingFromLight->SetValue(&m_fromLightPosition);
     guiBox->y += guiBox->height;

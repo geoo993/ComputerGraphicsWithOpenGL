@@ -12,13 +12,14 @@ public:
     GLboolean LoadTexture(const std::string &path, const TextureType &type, const GLboolean &generateMipMaps);
     GLuint LoadTexture(char const * path, const TextureType &type = TextureType::AMBIENT,
                        const GLboolean &generateMipMaps = true, GLboolean gammaCorrection = false);
-    GLuint LoadTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
-                       const TextureType &type = TextureType::AMBIENT, const GLvoid * data = nullptr);
+    GLuint LoadCustomTexture(GLint width, GLint height, GLboolean generateMipMaps = true,
+                            const TextureType &type = TextureType::AMBIENT, const GLvoid * data = nullptr);
     GLuint LoadHDRTexture(char const * path, const TextureType &type = TextureType::AMBIENT,
                           const GLboolean &generateMipMaps = true);
 
 	void BindTexture2D(GLint textureUnit = 0) const;
     void BindTexture2DToTextureType() const;
+    void BindCustomTexture2DToTextureType() const;
     void BindHDRTexture2D(GLint textureUnit = 0) const;
     void BindHDRTexture2DToTextureType() const;
     void BindTexture3D(GLint textureUnit = 0);

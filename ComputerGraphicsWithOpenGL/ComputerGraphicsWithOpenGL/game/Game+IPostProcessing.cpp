@@ -11,9 +11,10 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::LensFlare;
+    m_currentPPFXMode = PostProcessingEffectMode::SSAO;
     m_coverage = 1.0f;
     
+    m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -32,7 +33,7 @@ void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
 void Game::LoadFrameBuffers(const GLuint &width , const GLuint &height) {
 
     m_pFBOs[0]->CreateFramebuffer(width, height, FrameBufferType::Default);
-    m_pFBOs[1]->CreateFramebuffer(width, height, FrameBufferType::GeometryBuffer);
+    m_pFBOs[1]->CreateFramebuffer(width, height, FrameBufferType::DeferredRendering);
     m_pFBOs[2]->CreateFramebuffer(width, height, FrameBufferType::PingPongRendering);
     m_pFBOs[3]->CreateFramebuffer(width, height, FrameBufferType::DepthMapping);
     m_pFBOs[4]->CreateFramebuffer(width, height, FrameBufferType::Default);
@@ -42,6 +43,7 @@ void Game::LoadFrameBuffers(const GLuint &width , const GLuint &height) {
     m_pFBOs[8]->CreateFramebuffer(width, height, FrameBufferType::OmnidirectionalShadowMapping);
     m_pFBOs[9]->CreateFramebuffer(width, height, FrameBufferType::HighDynamicRangeRendering);
     m_pFBOs[10]->CreateFramebuffer(width, height, FrameBufferType::HighDynamicRangeLighting);
+    m_pFBOs[11]->CreateFramebuffer(width, height, FrameBufferType::GeometryBuffer);
 }
 
 
@@ -106,8 +108,12 @@ void Game::BindPPFXFBO(const PostProcessingEffectMode &mode) {
             currentFBO = m_pFBOs[10];
             currentFBO->Bind(true);     // prepare frame buffer 4
             break;
-        case FrameBufferType::GeometryBuffer:
+        case FrameBufferType::DeferredRendering:
             currentFBO = m_pFBOs[1];
+            currentFBO->Bind(true);     // prepare frame buffer 1
+            break;
+        case FrameBufferType::GeometryBuffer:
+            currentFBO = m_pFBOs[11];
             currentFBO->Bind(true);     // prepare frame buffer 1
             break;
         default: break;
@@ -526,17 +532,16 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 
                 currentFBO = m_pFBOs[5];
                 currentFBO->Bind(true);     // prepare frame buffer 5
+                m_gameWindow->ClearBuffers(ClearBuffersType::COLORSTENCIL);
                 
-                CShaderProgram *pScreenSpaceAmbientOcclusionProgram= (*m_pShaderPrograms)[56];
+                CShaderProgram *pScreenSpaceAmbientOcclusionProgram = (*m_pShaderPrograms)[56];
                 SetScreenSpaceAmbientOcclusionUniform(pScreenSpaceAmbientOcclusionProgram);
-                
+
                 // Bind Textures
-                currentFBO = m_pFBOs[1];
+                currentFBO = m_pFBOs[11];
                 currentFBO->BindPositionTexture(static_cast<GLint>(TextureType::DISPLACEMENT));
                 currentFBO->BindNormalTexture(static_cast<GLint>(TextureType::NORMAL));
-                currentFBO->BindAlbedoTexture(static_cast<GLint>(TextureType::DIFFUSE));
-                
-                RenderToScreen(pScreenSpaceAmbientOcclusionProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT);
+                RenderToScreen(pScreenSpaceAmbientOcclusionProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT, true);
                 
             }
             
@@ -546,6 +551,7 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             {
                 currentFBO = m_pFBOs[6];
                 currentFBO->Bind(true);     // prepare frame buffer 5
+                m_gameWindow->ClearBuffers(ClearBuffersType::COLORSTENCIL);
                 
                 CShaderProgram *pScreenSpaceAmbientOcclusionBlurProgram= (*m_pShaderPrograms)[57];
                 SetScreenSpaceAmbientOcclusionBlurUniform(pScreenSpaceAmbientOcclusionBlurProgram);
@@ -559,25 +565,26 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             // Fourth Pass - Screen Space Ambient Occlusion Lighting
             {
                 CShaderProgram *pScreenSpaceAmbientOcclusionLightingProgram= (*m_pShaderPrograms)[58];
-                SetMaterialUniform(pScreenSpaceAmbientOcclusionLightingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, true);
                 SetScreenSpaceAmbientOcclusionLightingUniform(pScreenSpaceAmbientOcclusionLightingProgram);
                 
                 // Render Lighting Scene
                 SetCameraUniform(pScreenSpaceAmbientOcclusionLightingProgram, "camera", m_pCamera);
                 SetLightUniform(pScreenSpaceAmbientOcclusionLightingProgram, m_useDir, m_usePoint, m_useSpot, m_useSmoothSpot, m_useBlinn);
+                SetMaterialUniform(pScreenSpaceAmbientOcclusionLightingProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, true);
+                SetFogMaterialUniform(pScreenSpaceAmbientOcclusionLightingProgram, "fog", m_fogColor, m_useFog);
                 SetHRDLightUniform(pScreenSpaceAmbientOcclusionLightingProgram, m_hdrName, m_exposure, m_gama, m_HDR);
                 RenderLight(pScreenSpaceAmbientOcclusionLightingProgram, m_dirName, m_pointName, m_spotName, m_pCamera);
                 
-                currentFBO = m_pFBOs[5];
+                currentFBO = m_pFBOs[6];
                 currentFBO->BindTexture(static_cast<GLint>(TextureType::AO));
                 
-                currentFBO = m_pFBOs[1];
+                currentFBO = m_pFBOs[11];
                 currentFBO->BindPositionTexture(static_cast<GLint>(TextureType::DISPLACEMENT));
                 currentFBO->BindNormalTexture(static_cast<GLint>(TextureType::NORMAL));
                 currentFBO->BindAlbedoTexture(static_cast<GLint>(TextureType::DIFFUSE));
-                RenderToScreen(pScreenSpaceAmbientOcclusionLightingProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT);
+                RenderToScreen(pScreenSpaceAmbientOcclusionLightingProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT, true);
             }
-            
+        
             return;
         }
         case PostProcessingEffectMode::FXAA: {
@@ -797,13 +804,12 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
                 currentFBO->BindNormalTexture(static_cast<GLint>(TextureType::NORMAL));
                 currentFBO->BindAlbedoTexture(static_cast<GLint>(TextureType::DIFFUSE));
                 
-                RenderToScreen(pDeferredRenderingProgram, FrameBufferType::GeometryBuffer, 0, TextureType::AMBIENT);
+                RenderToScreen(pDeferredRenderingProgram, FrameBufferType::DeferredRendering, 0, TextureType::AMBIENT);
                 
             }
             
             // Blit to default frame buffer
             currentFBO->BlitToDepthBuffer(0);
-            ResetFrameBuffer(false);
             
             {
                 /// Render Lamps
@@ -910,9 +916,12 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
 
 /// render to screen with frame buffer
 void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType,
-                          const GLuint &bufferIndex, const TextureType &textureType) {
+                          const GLuint &bufferIndex, const TextureType &textureType, const GLboolean &useAO) {
     switch(fboType) {
         case FrameBufferType::Default:
+            currentFBO->BindTexture(static_cast<GLint>(textureType)); // ambient
+            break;
+        case FrameBufferType::SSAO:
             currentFBO->BindTexture(static_cast<GLint>(textureType)); // ambient
             break;
         case FrameBufferType::DepthMapping:
@@ -927,13 +936,16 @@ void Game::RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType 
         case FrameBufferType::HighDynamicRangeRendering:
             currentFBO->BindHDRTexture(bufferIndex, static_cast<GLint>(textureType));
             break;
+        case FrameBufferType::DeferredRendering:
+            currentFBO->BindHDRTexture(bufferIndex, static_cast<GLint>(textureType));
+            break;
         case FrameBufferType::GeometryBuffer:
             currentFBO->BindHDRTexture(bufferIndex, static_cast<GLint>(textureType));
             break;
         default: break;
     }
                               
-    SetMaterialUniform(pShaderProgram, "material", m_guiColor, m_materialShininess);
+    SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO, m_guiColor);
     SetImageProcessingUniform(pShaderProgram, true);
     m_pQuad->Render(false);
 }
@@ -1266,8 +1278,7 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
             return "Cel Shaderish";
         case PostProcessingEffectMode::CartoonVideo:
             return "Cartoon Video";
-        default:
-        return "";
+        default: return "";
     }
     
 }
@@ -1276,22 +1287,21 @@ FrameBufferType Game::GetFBOtype(const PostProcessingEffectMode &mode){
     
     switch(mode) {
         case PostProcessingEffectMode::GaussianBlur:
-        return FrameBufferType::HighDynamicRangeRendering;
+            return FrameBufferType::HighDynamicRangeRendering;
         case PostProcessingEffectMode::BrightParts:
-        return FrameBufferType::HighDynamicRangeRendering;
+            return FrameBufferType::HighDynamicRangeRendering;
         case PostProcessingEffectMode::Bloom:
-        return FrameBufferType::HighDynamicRangeRendering;
+            return FrameBufferType::HighDynamicRangeRendering;
         case PostProcessingEffectMode::HDRToneMapping:
-        return FrameBufferType::HighDynamicRangeLighting;
+            return FrameBufferType::HighDynamicRangeLighting;
         case PostProcessingEffectMode::LensFlare:
-        return FrameBufferType::HighDynamicRangeRendering;
+            return FrameBufferType::HighDynamicRangeRendering;
         case PostProcessingEffectMode::DeferredRendering:
-        return FrameBufferType::GeometryBuffer;
+            return FrameBufferType::DeferredRendering;
         case PostProcessingEffectMode::SSAO:
-        return FrameBufferType::GeometryBuffer;
+            return FrameBufferType::GeometryBuffer;
         default:
-        return FrameBufferType::Default;
+            return FrameBufferType::Default;
     }
-    
 }
 

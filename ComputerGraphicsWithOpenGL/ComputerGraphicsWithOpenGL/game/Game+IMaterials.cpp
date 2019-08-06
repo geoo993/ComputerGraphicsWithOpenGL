@@ -10,7 +10,7 @@
 
 void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                               const glm::vec4 &color, const GLfloat &shininess,
-                              const GLfloat &uvTiling, const GLboolean &useAO) {
+                              const GLfloat &uvTiling, const GLboolean &useAO, const glm::vec4 &guiColor) {
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform(uniformName+".ambientMap", 0);           // ambient map
     pShaderProgram->SetUniform(uniformName+".diffuseMap", 1);           // diffuse map
@@ -33,6 +33,7 @@ void Game::SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string 
     pShaderProgram->SetUniform(uniformName+".cubeMap", 18);             // sky box cube map
     pShaderProgram->SetUniform(uniformName+".irradianceMap", 19);       // sky box irradiance cube map
     pShaderProgram->SetUniform(uniformName+".color", color);
+    pShaderProgram->SetUniform(uniformName+".guiColor", guiColor);
     pShaderProgram->SetUniform(uniformName+".shininess", shininess);
     pShaderProgram->SetUniform(uniformName+".uvTiling", uvTiling);
     pShaderProgram->SetUniform(uniformName+".bUseAO", useAO);

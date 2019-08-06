@@ -54,5 +54,4 @@ void main()
         }
     }
     vOutputColour = result / (noiseSize * noiseSize);
-     
 }

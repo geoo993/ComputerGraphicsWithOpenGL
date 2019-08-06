@@ -45,6 +45,6 @@ CTexture * Game::AddHDRTexture(const std::string &textureFile, const TextureType
 
 CTexture * Game::AddTexture(const GLfloat &width, const GLfloat &height, const TextureType &type, const GLvoid * data) {
     CTexture *texture = new CTexture;
-    texture->LoadTexture(width, width, true, type, data);
+    texture->LoadCustomTexture(width, width, false, type, data);
     return texture;
 }

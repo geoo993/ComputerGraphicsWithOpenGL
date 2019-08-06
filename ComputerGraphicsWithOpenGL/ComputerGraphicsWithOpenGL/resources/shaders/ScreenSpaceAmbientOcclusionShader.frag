@@ -41,8 +41,8 @@ in VS_OUT
 
 uniform mat4 projection;
 uniform vec3 samples[KERNEL_SIZE];
-uniform float radius = 30.5f;
-uniform float bias = 1.025f;
+uniform float radius = 0.5f;
+uniform float bias = 0.025f;
 uniform float width, height;
 uniform float noiseSize = 4.0f;
 
@@ -64,7 +64,7 @@ void main()
     vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
     vec3 bitangent = cross(normal, tangent);
     mat3 TBN = mat3(tangent, bitangent, normal);
-    
+     
     // iterate over the sample kernel and calculate occlusion factor
     float occlusion = 0.0f;
     for(int i = 0; i < KERNEL_SIZE; ++i)
@@ -87,6 +87,6 @@ void main()
         occlusion += ( (sampleDepth >= vSample.z + bias) ? 1.0f : 0.0f) * rangeCheck;   
     }
     occlusion = 1.0f - (occlusion / float(KERNEL_SIZE));
-     
+    
     vOutputColour = occlusion;
 }

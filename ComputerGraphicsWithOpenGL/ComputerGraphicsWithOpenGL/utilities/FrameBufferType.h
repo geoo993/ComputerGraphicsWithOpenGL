@@ -18,6 +18,7 @@ enum class FrameBufferType {
     PingPongRendering,
     HighDynamicRangeLighting,
     HighDynamicRangeRendering,
+    DeferredRendering,
     GeometryBuffer,
     SSAO,
 };

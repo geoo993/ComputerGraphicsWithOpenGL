@@ -15,6 +15,7 @@ enum class ClearBuffersType {
     // Define mouse touches
     COLORDEPTHSTENCIL,
     COLORDEPTH,
+    COLORSTENCIL,
     DEPTH,
     
 };

@@ -202,7 +202,7 @@ GLuint CTexture::LoadTexture(char const * path, const TextureType &type,
     return m_textureID;
 }
 
-GLuint CTexture::LoadTexture(GLint width, GLint height, GLboolean generateMipMaps, const TextureType &type, const GLvoid * data) {
+GLuint CTexture::LoadCustomTexture(GLint width, GLint height, GLboolean generateMipMaps, const TextureType &type, const GLvoid * data) {
     
     m_format = GL_RGB;
     m_path = "";
@@ -225,7 +225,6 @@ GLuint CTexture::LoadTexture(GLint width, GLint height, GLboolean generateMipMap
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     
     if(generateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
-    glGenSamplers(1, &m_samplerObjectID);
     
     return m_textureID;
 }
@@ -301,7 +300,6 @@ void CTexture::BindTexture2D(GLint iTextureUnit) const
 	glActiveTexture(GL_TEXTURE0+iTextureUnit);
 	glBindTexture(GL_TEXTURE_2D, m_textureID);
 	glBindSampler(iTextureUnit, m_samplerObjectID);
-    
 }
 
 void CTexture::BindTexture2DToTextureType() const
@@ -312,13 +310,19 @@ void CTexture::BindTexture2DToTextureType() const
     glBindSampler(iTextureUnit, m_samplerObjectID);
 }
 
+void CTexture::BindCustomTexture2DToTextureType() const
+{
+    GLint iTextureUnit = static_cast<GLint>(m_type);
+    glActiveTexture(GL_TEXTURE0+iTextureUnit);
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
+}
+
 // Binds a hdr texture for rendering
 void CTexture::BindHDRTexture2D(GLint iTextureUnit) const
 {
     glActiveTexture(GL_TEXTURE0+iTextureUnit);
     glBindTexture(GL_TEXTURE_2D, m_hdrTextureID);
-    glBindSampler(iTextureUnit, m_hdrTextureID);
-    
+    glBindSampler(iTextureUnit, m_samplerObjectID);
 }
 
 void CTexture::BindHDRTexture2DToTextureType() const

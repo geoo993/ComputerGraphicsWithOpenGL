@@ -165,7 +165,8 @@ protected:
     /// Materials
     void SetMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                             const glm::vec4 &color = glm::vec4(1.0f), const GLfloat &shininess = 32.0f,
-                            const GLfloat &uvTiling = 1.0f, const GLboolean &useAO = false) override;
+                            const GLfloat &uvTiling = 1.0f, const GLboolean &useAO = false,
+                            const glm::vec4 &guiColor = glm::vec4(0.5f)) override;
     void SetPBRMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,
                                const GLfloat &albedo, const GLfloat &metallic, const GLfloat &roughness,
                                const GLfloat &ao, const GLboolean &useIrradiance) override;
@@ -279,6 +280,9 @@ protected:
     void Render() override;
     void PostRendering() override;
     void RenderScene(const GLboolean &toCustomShader = false, const GLboolean &includeLampsAndSkybox = false, const GLint &toCustomShaderIndex = 4) override;
+    void RenderPBRScene(CShaderProgram *pShaderProgram, const GLboolean &toCustomShader, const GLint &toCustomShaderIndex, const GLfloat zfront, const GLfloat zback) override;
+    void RenderRandomScene(CShaderProgram *pShaderProgram, const GLboolean &toCustomShader, const GLint &toCustomShaderIndex, const GLfloat zfront, const GLfloat zback) override;
+    void RenderTerrainScene(CShaderProgram *pShaderProgram, const GLfloat yPos) override;
     
     /// Render object
     void RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position = glm::vec3(0.0f),
@@ -303,7 +307,8 @@ protected:
     void RenderPPFXScene(const PostProcessingEffectMode &mode) override;
     void ChangePPFXScene(PostProcessingEffectMode &mode) override;
     void RenderToScreen(CShaderProgram *pShaderProgram, const FrameBufferType &fboType = FrameBufferType::Default,
-                        const GLuint &bufferIndex = 0, const TextureType &textureType = TextureType::AMBIENT) override;
+                        const GLuint &bufferIndex = 0, const TextureType &textureType = TextureType::AMBIENT,
+                        const GLboolean &useAO = false) override;
     void RenderPPFX(const PostProcessingEffectMode &mode) override;
     void ResetFrameBuffer(const GLboolean &clearBuffers = true) override;
     const char * const PostProcessingEffectToString(const PostProcessingEffectMode &mode) override;

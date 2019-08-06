@@ -95,7 +95,7 @@ Game::Game()
         std::make_tuple(glm::vec3(  320.0f,  70.0f, 350.0f      ), glm::vec4(  0.97f,  0.6f, 0.1f  , 1.0f   )   ),      // 7
         std::make_tuple(glm::vec3(  -600.0f,  10.0f, 370.0f     ), glm::vec4(  0.6f,  0.8f, 0.0f , 1.0f     )   ),      // 8
         std::make_tuple(glm::vec3(  -120.0f,  -50.0f, 233.0f    ), glm::vec4(  1.0f,  0.2f, 0.5f  , 1.0f    )   ),      // 9
-        std::make_tuple(glm::vec3(  -2.0f,  400.0f, 30.0f   ), glm::vec4(  200.0f, 200.0f, 200.0f, 1.0f )   )       // 10
+        std::make_tuple(glm::vec3(  -2.0f,  800.0f, 30.0f   ), glm::vec4(  50.0f, 50.0f, 50.0f, 1.0f )   )       // 10
     };
     m_pointLightIndex = m_pointLights.size() - 1;
     
@@ -119,11 +119,21 @@ Game::Game()
     m_prevPPFXMode = false;
     m_nextPPFXMode = false;
     
+    // Lens flare
+    m_lensFlareGhostCount = 5.0f;
+    m_lensFlareGhostDispersal = 0.39f;
+    m_lensFlareGhostThreshold = 10.0f;
+    m_lensFlareGhostDistortion = 4.3f;
+    m_lensFlareHaloRadius = 0.3f;
+    m_lensFlareHaloThreshold = 9.0f;
+    
     // SSAO
     // generate sample kernel
     // ----------------------
     srand(glfwGetTime()); // initialize random seed
-    m_ssaoBias, m_ssaoRadius, m_ssaoNoiseSize = 0.0f;
+    m_ssaoBias = 0.25f;
+    m_ssaoRadius = 50.0f;
+    m_ssaoNoiseSize = 2.0f;
     m_ssaoKernelSamples = 64;
     for (GLuint i = 0; i < m_ssaoKernelSamples; ++i)
     {

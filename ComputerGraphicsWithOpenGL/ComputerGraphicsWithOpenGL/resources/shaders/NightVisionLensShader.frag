@@ -22,6 +22,7 @@ uniform struct Material
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
+    vec4 guiColor;
     float shininess;
 } material;
 
@@ -44,7 +45,7 @@ out vec4 vOutputColour;		// The output colour formely  gl_FragColor
 
 void main()
 {
-    vec4 tc = material.color;
+    vec4 tc = material.guiColor;
     
     // Set effectCoverage to 1.0 for normal use.
     if (fs_in.vTexCoord.x < coverage)

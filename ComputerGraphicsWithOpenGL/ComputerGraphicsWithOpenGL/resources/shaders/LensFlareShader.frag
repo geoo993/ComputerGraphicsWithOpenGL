@@ -21,6 +21,7 @@ uniform struct Material
     sampler2D lensMap;              // 14.  lens map
     samplerCube cubeMap;            // 15.  sky box or environment mapping cube map
     vec4 color;
+    vec4 guiColor;
     float shininess;
 } material;
 
@@ -45,7 +46,7 @@ void main()
 {
     
     vec2 uv = fs_in.vTexCoord.xy;
-    vec4 tc = material.color;
+    vec4 tc = material.guiColor;
     vec4 sceneColor = texture(material.ambientMap, uv);
     vec4 lensDirt = texture(material.noiseMap, uv);
     vec4 lensFlare = texture(material.lensMap, uv);

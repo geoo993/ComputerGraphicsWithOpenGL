@@ -352,6 +352,88 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             
             return pingpongFramebufferComplete;
         }
+        case FrameBufferType::DeferredRendering: {
+
+            glGenFramebuffers(1, &m_uiFramebuffer);
+            
+            // To bind the framebuffer we use glBindFramebuffer:
+            glBindFramebuffer(GL_FRAMEBUFFER, m_uiFramebuffer);
+            
+            // create 2 floating point color buffers (1 for normal rendering, other for brightness treshold values)
+            glGenTextures(2, m_uiHdrColorTextures);
+            for (unsigned int i = 0; i < 2; i++)
+            {
+                glBindTexture(GL_TEXTURE_2D, m_uiHdrColorTextures[i]);
+                /*
+                 When the internal format of a framebuffer's colorbuffer is specified as GL_RGB16F, GL_RGBA16F, GL_RGB32F or GL_RGBA32F the framebuffer is known as a floating point framebuffer that can store floating point values outside the default range of 0.0 and 1.0. This is perfect for rendering in high dynamic range!
+                 */
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_iWidth, m_iHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+                
+                glGenerateMipmap(GL_TEXTURE_2D);
+                
+                // Create a sampler object and set texture properties.  Note here, we're mipmapping
+                glGenSamplers(1, &m_uiSampler);
+                // SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glBindTexture(GL_TEXTURE_2D, 0);
+                
+                // attach texture to framebuffer
+                glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, m_uiHdrColorTextures[i], 0);
+            }
+            
+            // - position buffer
+            /*
+             To get the position texture, we can use it to obtain depth values for each of the kernel samples. Note that we store the positions in a floating point data format; this way position values aren't clamped to [0.0,1.0]. Also note the texture wrapping method of GL_CLAMP_TO_EDGE. This ensures we don't accidentally oversample position/depth values in screen-space outside the texture's default coordinate region.
+             */
+            glGenTextures(1, &m_uiPositionTexture);
+            glBindTexture(GL_TEXTURE_2D, m_uiPositionTexture);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_iWidth, m_iHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+            SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, m_uiPositionTexture, 0);
+            
+            // - normal buffer
+            // Now, create a normal texture for the FBO
+            glGenTextures(1, &m_uiNormalTexture);
+            glBindTexture(GL_TEXTURE_2D, m_uiNormalTexture);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_iWidth, m_iHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+            SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, m_uiNormalTexture, 0);
+            
+            // - color + specular color buffer
+            // Now, create a colot spec texture for the FBO
+            glGenTextures(1, &m_uiAlbedoSpecTexture);
+            glBindTexture(GL_TEXTURE_2D, m_uiAlbedoSpecTexture);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_iWidth, m_iHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, m_uiAlbedoSpecTexture, 0);
+            
+            // tell OpenGL which color attachments we'll use (of this framebuffer) for rendering
+            unsigned int attachments[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
+            glDrawBuffers(5, attachments);
+            
+            // create and attach depth buffer (renderbuffer)
+            glGenRenderbuffers(1, &m_uiRboDepth);
+            glBindRenderbuffer(GL_RENDERBUFFER, m_uiRboDepth);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_iWidth, m_iHeight);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_uiRboDepth);
+            
+            // also check if framebuffers are complete (no need for depth buffer)
+            bool deferredRenderingFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+            if( deferredRenderingFramebufferComplete == false ){
+                std::cout << "ERROR::FRAMEBUFFER:: Geometry Framebuffer is not complete!" << std::endl;
+            }
+            
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            return deferredRenderingFramebufferComplete;
+        }
         case FrameBufferType::SSAO: {
             // configure framebuffer to hold SSAO processing stage
             // -----------------------------------------------------
@@ -376,8 +458,6 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glGenSamplers(1, &m_uiSampler);
             SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glBindTexture(GL_TEXTURE_2D, 0);
             
             glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_uiColourTexture, 0);
@@ -432,10 +512,8 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
                 // Create a sampler object and set texture properties.  Note here, we're mipmapping
                 glGenSamplers(1, &m_uiSampler);
                // SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+                SetSamplerObjectParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                 SetSamplerObjectParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                SetSamplerObjectParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);// we clamp to the edge as the blur filter would otherwise sample repeated texture values!
-                SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 glBindTexture(GL_TEXTURE_2D, 0);
                 
                 // attach texture to framebuffer
@@ -487,14 +565,14 @@ bool CFrameBufferObject::CreateFramebuffer(const int &a_iWidth, const int &a_iHe
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_uiRboDepth);
             
             // also check if framebuffers are complete (no need for depth buffer)
-            bool deferredRenderingFramebufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
-            if( deferredRenderingFramebufferComplete == false ){
+            bool gBufferComplete = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+            if( gBufferComplete == false ){
                 std::cout << "ERROR::FRAMEBUFFER:: Geometry Framebuffer is not complete!" << std::endl;
             }
             
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             
-            return deferredRenderingFramebufferComplete;
+            return gBufferComplete;
         }
     
         case FrameBufferType::Default: {
@@ -779,6 +857,7 @@ void CFrameBufferObject::BlitToColorBuffer(GLuint colorbuffer)
     glBindFramebuffer(GL_READ_FRAMEBUFFER, m_uiFramebuffer);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, colorbuffer);
     glBlitFramebuffer(0, 0, m_iWidth, m_iHeight, 0, 0, m_iWidth, m_iHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 // Blit multisampled buffer(s) to the usual depthbuffer of intermediate FBO. Image is stored in depthBuffer texture

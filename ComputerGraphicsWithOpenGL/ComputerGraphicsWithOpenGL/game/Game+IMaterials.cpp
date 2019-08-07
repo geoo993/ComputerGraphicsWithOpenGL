@@ -49,7 +49,7 @@ void Game::SetPBRMaterialUniform(CShaderProgram *pShaderProgram,  const std::str
     pShaderProgram->SetUniform(uniformName+".albedo", albedo);
     pShaderProgram->SetUniform(uniformName+".metallic", metallic);
     pShaderProgram->SetUniform(uniformName+".roughness", roughness);
-    pShaderProgram->SetUniform(uniformName+".ao", ao);    // 1.0f
+    pShaderProgram->SetUniform(uniformName+".ao", ao);
 }
 
 void Game::SetFogMaterialUniform(CShaderProgram *pShaderProgram, const std::string &uniformName,

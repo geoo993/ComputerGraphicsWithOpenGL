@@ -258,13 +258,13 @@ void Game::LoadControls() {
     
     // Screen wave
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CSlider *screenWaveOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 1.0f, 5, guiBox,
+    CSlider *screenWaveOffset = (CSlider *)AddControl(new CSlider("Offset", 0.0f, 2.0f, 5, guiBox,
                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::ScreenWave));
     screenWaveOffset->SetValue(&m_screenWaveOffset);
     
     /// Swirl
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CSlider *swirlRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, 720.0f, 5, guiBox,
+    CSlider *swirlRadius = (CSlider *)AddControl(new CSlider("Radius", 0.0f, SCREEN_HEIGHT, 5, guiBox,
                                                              GUIMode::DYNAMIC, false, PostProcessingEffectMode::Swirl));
     swirlRadius->SetValue(&m_swirlRadius);
     guiBox->y += guiBox->height;
@@ -330,12 +330,12 @@ void Game::LoadControls() {
     
     /// Frosted Glass
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CSlider *frostedGlassRandomFactor = (CSlider *)AddControl(new CSlider("Random Factor", 0.0f, 0.4f, 5, guiBox,
+    CSlider *frostedGlassRandomFactor = (CSlider *)AddControl(new CSlider("Random Factor", 0.0f, 0.1f, 5, guiBox,
                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
     frostedGlassRandomFactor->SetValue(&m_frostedGlassRandomFactor);
     guiBox->y += guiBox->height;
     
-    CSlider *frostedGlassRandomScale = (CSlider *)AddControl(new CSlider("Random Scale", 0.0f, 0.4f, 5, guiBox,
+    CSlider *frostedGlassRandomScale = (CSlider *)AddControl(new CSlider("Random Scale", 0.0f, 0.1f, 5, guiBox,
                                                                     GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
     frostedGlassRandomScale->SetValue(&m_frostedGlassRandomScale);
     
@@ -434,12 +434,12 @@ void Game::LoadControls() {
     
     // Motion Blur
     guiBox->y = rightStartingY + ppfxY + guiBox->height + 5;
-    CSlider *motionBlurTargetFps = (CSlider *)AddControl(new CSlider("Target FPS", 0.0f, 300.0f, 5, guiBox,
+    CSlider *motionBlurTargetFps = (CSlider *)AddControl(new CSlider("Target FPS", 0.0f, 120.0f, 5, guiBox,
                                                                   GUIMode::DYNAMIC, false, PostProcessingEffectMode::MotionBlur));
     motionBlurTargetFps->SetValue(&m_motionBlurTargetFps);
     guiBox->y += guiBox->height;
     
-    CSlider *motionBlurSamples = (CSlider *)AddControl(new CSlider("Samples", 0.0f, 20.0f, 5, guiBox,
+    CSlider *motionBlurSamples = (CSlider *)AddControl(new CSlider("Samples", 0.0f, 50.0f, 5, guiBox,
                                                                       GUIMode::DYNAMIC, false, PostProcessingEffectMode::MotionBlur));
     motionBlurSamples->SetValue(&m_motionBlurSamples);
     
@@ -599,7 +599,7 @@ void Game::LoadControls() {
     depthMapping->SetValue(&m_isOrthographicCamera);
     guiBox->y += guiBox->height;
     
-    CButton * depthMappingFromLight = (CButton *)AddControl(new CButton("From Light or Camera", guiBox,
+    CButton * depthMappingFromLight = (CButton *)AddControl(new CButton("From Light View", guiBox,
                                                                GUIMode::DYNAMIC, false, PostProcessingEffectMode::DepthMapping));
     depthMappingFromLight->SetValue(&m_fromLightPosition);
     

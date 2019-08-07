@@ -198,8 +198,6 @@ void Game::RenderRandomScene(CShaderProgram *pShaderProgram, const GLboolean &to
         RenderPrimitive(pWireframeProgram, m_pSpherePBR19, glm::vec3(450.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
         RenderModel(pWireframeProgram, m_teapot19, glm::vec3(450.0f, 0.0f, zback), glm::vec3(0.0f), glm::vec3(1.0f));
     }
-    
-    
 }
 
 
@@ -231,7 +229,7 @@ void Game::RenderTerrainScene(CShaderProgram *pShaderProgram, const GLfloat yPos
         //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
         pShaderProgram->UseProgram();
         pShaderProgram->SetUniform("bReverseNormals", 1); // A small little hack to invert normals when drawing cube from the inside so lighting still works.
-        RenderPrimitive(pShaderProgram, m_pInteriorBox, glm::vec3(0.0f,  0.0f,  0.0f ), glm::vec3(0.0f), glm::vec3(100.0f, 50.0f, 80.0f)); // Render Big cube underneath
+        RenderPrimitive(pShaderProgram, m_pInteriorBox, glm::vec3(0.0f,  0.0f,  0.0f ), glm::vec3(0.0f), glm::vec3(100.0f, 80.0f, 80.0f)); // Render Big cube underneath
         pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
         //glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);

@@ -10,10 +10,111 @@
 
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
-    // post processing
-    m_currentPPFXMode = PostProcessingEffectMode::SSAO;
-    m_coverage = 1.0f;
     
+    m_currentPPFXMode = PostProcessingEffectMode::ScreenWave;
+    m_coverage = 1.0f;
+    m_changePPFXMode = false;
+    m_prevPPFXMode = false;
+    m_nextPPFXMode = false;
+    
+    m_screenWaveOffset = 1.0f;
+    m_swirlRadius = 0.0f;
+    m_swirlAngle = 1.45f;
+    
+    m_nightVisionluminanceThreshold = 0.2f;
+    m_nightVisionColorAmplification = 5.0f;
+    m_posterizationGama = 0.4f;
+    m_posterizationColors = 15.0f;
+    m_pixelateSize = 5.0f;
+    m_pixelWidth = 5.0f;
+    m_pixelHeight = 5.0f;
+    m_frostedGlassPixelX = 8.0f;
+    m_frostedGlassPixelY = 8.0f;
+    m_frostedGlassFrequency = 0.2f;
+    m_frostedGlassRandomFactor = 0.01f;
+    m_frostedGlassRandomScale = 0.05f;
+    m_crosshatchingOffset = 10.0f;
+    m_crosshatchingThreshold_1 = 1.0f;
+    m_crosshatchingThreshold_2 = 0.7f;
+    m_crosshatchingThreshold_3 = 0.3f;
+    m_crosshatchingThreshold_4 = 0.2f;
+    m_toonifyLowerTres = 0.4f;
+    m_toonifyUpperTres = 5.0f;
+    m_fishEyeRadius = 0.6f;
+    m_barrelDistortionPower = 6.0f;
+    m_multiScreenFishEyeOffsetX = 0.5f;
+    m_multiScreenFishEyeOffsetY = 0.5f;
+    m_multiScreenFishEyeRadius = 3.0f;
+    m_multiScreenFishEyeCurvature = 5.0f;
+    m_fishEyeLensSize = 0.5f;
+    m_gaussianBlurIntensity = 0.2f;
+    m_gaussianBlurIntensity = 0.5f;
+    m_radialBlurRadius = 0.4f;
+    m_radialBlurResolution = 4.0f;
+    m_motionBlurTargetFps = 60.0f;
+    m_motionBlurSamples = 10.0f;
+    m_vignettingTint = true;
+    m_vignettingSepia = true;
+    m_vignettingRadius = 0.5f;
+    m_vignettingSoftness = 0.5f;
+    m_brightPartsSmoothGradient = true;
+    m_brightPartsIntensity = 1.0f;
+    
+    // Lens flare
+    m_lensFlareUseDirt = true;
+    m_lensFlareGhostCount = 5.0f;
+    m_lensFlareGhostDispersal = 0.39f;
+    m_lensFlareGhostThreshold = 10.0f;
+    m_lensFlareGhostDistortion = 4.3f;
+    m_lensFlareHaloRadius = 0.3f;
+    m_lensFlareHaloThreshold = 9.0f;
+    
+    // SSAO
+    // generate sample kernel
+    // ----------------------
+    srand(glfwGetTime()); // initialize random seed
+    m_ssaoBias = 0.25f;
+    m_ssaoRadius = 50.0f;
+    m_ssaoNoiseSize = 2.0f;
+    m_ssaoKernelSamples = 64;
+    for (GLuint i = 0; i < m_ssaoKernelSamples; ++i)
+    {
+        glm::vec3 sample(Extensions::randFloat() * 2.0f - 1.0f,
+                         Extensions::randFloat() * 2.0f - 1.0f,
+                         Extensions::randFloat());
+        sample = glm::normalize(sample);
+        sample *= Extensions::randFloat();
+        float scale = float(i) / m_ssaoKernelSamples;
+        
+        // scale samples s.t. they're more aligned to center of kernel
+        scale = Extensions::interpolate(0.1f, 1.0f, scale * scale);
+        sample *= scale;
+        m_ssaoKernel.push_back(sample);
+    }
+    
+    // generate noise texture
+    // ----------------------
+    m_ssaoNoiseSamples = 16;
+    for (GLuint i = 0; i < m_ssaoNoiseSamples; i++)
+    {
+        glm::vec3 noise(Extensions::randFloat() * 2.0f - 1.0f,
+                        Extensions::randFloat() * 2.0f - 1.0f,
+                        0.0f); // rotate around z-axis (in tangent space)
+        m_ssaoNoise.push_back(noise);
+    }
+    
+    
+    
+    // Depth and Shadow Mapping
+    m_fromLightPosition = true;
+    m_showDepth = false;
+    m_dirShadowBias = 0.05f;
+    m_orthShadowBias = 0.5f;
+    
+    m_ffaaOffset = 50.0f;
+    
+    
+    // framebuffers
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
@@ -26,7 +127,6 @@ void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
     m_pFBOs.push_back(new CFrameBufferObject);
-    LoadFrameBuffers(width, height);
 }
 
 /// create frame buffers

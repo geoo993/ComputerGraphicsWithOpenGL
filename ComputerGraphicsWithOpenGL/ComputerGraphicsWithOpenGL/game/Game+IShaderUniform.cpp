@@ -116,8 +116,9 @@ void Game::SetEdgeDetectionUniform(CShaderProgram *pShaderProgram){
 
 void Game::SetScreenWaveUniform(CShaderProgram *pShaderProgram){
     
+    GLfloat move = m_timeInSeconds * m_screenWaveOffset * 3.14159f * 0.75f;
     pShaderProgram->UseProgram();
-    pShaderProgram->SetUniform("offset", m_timePerSecond * m_screenWaveOffset);
+    pShaderProgram->SetUniform("offset", move);
     pShaderProgram->SetUniform("coverage", m_coverage); // between 0 and 1
 }
 

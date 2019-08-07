@@ -106,61 +106,7 @@ Game::Game()
     m_spotIntensity = 40.4f;
     m_spotCutOff = 22.5f;
     m_spotOuterCutOff = 28.0f;
-    
-    // Depth and Shadow Mapping
-    m_fromLightPosition = true;
-    m_showDepth = false;
-    m_dirShadowBias = 0.05f;
-    m_orthShadowBias = 0.5f;
-    
-    // PPFX
-    m_ffaaOffset = 0.0f;
-    m_changePPFXMode = false;
-    m_prevPPFXMode = false;
-    m_nextPPFXMode = false;
-    
-    // Lens flare
-    m_lensFlareGhostCount = 5.0f;
-    m_lensFlareGhostDispersal = 0.39f;
-    m_lensFlareGhostThreshold = 10.0f;
-    m_lensFlareGhostDistortion = 4.3f;
-    m_lensFlareHaloRadius = 0.3f;
-    m_lensFlareHaloThreshold = 9.0f;
-    
-    // SSAO
-    // generate sample kernel
-    // ----------------------
-    srand(glfwGetTime()); // initialize random seed
-    m_ssaoBias = 0.25f;
-    m_ssaoRadius = 50.0f;
-    m_ssaoNoiseSize = 2.0f;
-    m_ssaoKernelSamples = 64;
-    for (GLuint i = 0; i < m_ssaoKernelSamples; ++i)
-    {
-        glm::vec3 sample(Extensions::randFloat() * 2.0f - 1.0f,
-                         Extensions::randFloat() * 2.0f - 1.0f,
-                         Extensions::randFloat());
-        sample = glm::normalize(sample);
-        sample *= Extensions::randFloat();
-        float scale = float(i) / m_ssaoKernelSamples;
-        
-        // scale samples s.t. they're more aligned to center of kernel
-        scale = Extensions::interpolate(0.1f, 1.0f, scale * scale);
-        sample *= scale;
-        m_ssaoKernel.push_back(sample);
-    }
-    
-    // generate noise texture
-    // ----------------------
-    m_ssaoNoiseSamples = 16;
-    for (GLuint i = 0; i < m_ssaoNoiseSamples; i++)
-    {
-        glm::vec3 noise(Extensions::randFloat() * 2.0f - 1.0f,
-                        Extensions::randFloat() * 2.0f - 1.0f,
-                        0.0f); // rotate around z-axis (in tangent space)
-        m_ssaoNoise.push_back(noise);
-    }
-    
+
     // screens
     m_pQuad = nullptr;
     
@@ -410,6 +356,7 @@ void Game::Execute(const std::string &filepath, const GLuint &width, const GLuin
     InitialiseAudio(filepath);
     
     LoadShaderPrograms(filepath);
+    LoadFrameBuffers(width, height);
     LoadResources(filepath);
     LoadTextures(filepath);
     LoadControls();

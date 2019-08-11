@@ -1,0 +1,9 @@
+# ignore make build folder
+*.txt
+*.c
+*.cxx
+*.log
+*.xcodeproj
+*.h
+*.cpp
+*.cmake

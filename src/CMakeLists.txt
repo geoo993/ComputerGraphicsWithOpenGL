@@ -21,8 +21,6 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/Includes
 	${PROJECT_SOURCE_DIR}/Includes/freetype2
 )
-# you can also use target include to specify the target to include files
-# target_include_directories(ComputerGraphicsWithOpenGL PUBLIC include)
 
 # add the executable target
 add_executable( ComputerGraphicsWithOpenGL ${SRCS} )
@@ -34,11 +32,11 @@ add_executable( ComputerGraphicsWithOpenGL ${SRCS} )
 link_directories( ${PROJECT_SOURCE_DIR}/Libraries )
 
 
-# add all external libraries/frameworks from using the linking paths.
+# add all system frameworks from using the linking paths.
 macro(ADD_SYSTEM_FRAMEWORK fwname appname)
     find_library(FRAMEWORK_${fwname}
         NAMES ${fwname}
-        PATHS ${CMAKE_OSX_SYSROOT}/System/Library
+        PATHS /System/Library
         PATH_SUFFIXES Frameworks
         NO_DEFAULT_PATH)
     if( ${FRAMEWORK_${fwname}} STREQUAL FRAMEWORK_${fwname}-NOTFOUND)
@@ -51,7 +49,11 @@ endmacro(ADD_SYSTEM_FRAMEWORK)
 
 ADD_SYSTEM_FRAMEWORK(OpenGL ComputerGraphicsWithOpenGL)
 ADD_SYSTEM_FRAMEWORK(Cocoa ComputerGraphicsWithOpenGL)
+# target_link_libraries(ComputerGraphicsWithOpenGL 
+# 			"-framework Cocoa"
+# 			"-framework OpenGL")
 
+# add all external libraries/frameworks using the linking paths.
 macro(ADD_FRAMEWORK fwname appname)
     find_library(FRAMEWORK_${fwname}
         NAMES ${fwname}

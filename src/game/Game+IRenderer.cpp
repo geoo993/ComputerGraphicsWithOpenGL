@@ -241,7 +241,7 @@ void Game::RenderTerrainScene(CShaderProgram *pShaderProgram, const GLfloat yPos
 void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &includeLampsAndSkybox, const GLint &toCustomShaderIndex) {
     const GLboolean useAO = m_currentPPFXMode == PostProcessingEffectMode::SSAO;
     const GLfloat zfront = -200.0f;
-    const GLfloat zback = 300.0f;
+    const GLfloat zback = 200.0f;
     m_sphereRotation += m_deltaTime * 0.02f;
    
     /// Skybox
@@ -316,7 +316,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     
     RenderTerrainScene(pShaderProgram, -100.0f);
     RenderPBRScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
-    //RenderRandomScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
+    RenderRandomScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront-400, zback+400);
     
     /// Render Lamps
     {

@@ -31,4 +31,4 @@
 *.app
 
 # ignore make build folder
-*build*/
+build/

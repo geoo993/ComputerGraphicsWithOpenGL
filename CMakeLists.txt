@@ -24,7 +24,6 @@ configure_file (
 
 
 # set Xcode build settings properties
-set_property(GLOBAL PROPERTY USE_FOLDERS OFF)
 set (XCODE_ATTRIBUTE_SDKROOT macosx)
 set (CMAKE_OSX_SYSROOT macosx)
 set (CMAKE_OSX_DEPLOYMENT_TARGET 10.14)

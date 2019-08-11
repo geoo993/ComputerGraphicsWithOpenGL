@@ -12,18 +12,12 @@
 
 int main(int argc, const char * argv[])
 {
-//    if (argc < 2)
-//    {
-//        fprintf(stdout,"%s Version %d.%d\n", argv[0],
-//                ComputerGraphicsWithOpenGL_VERSION_MAJOR,
-//                ComputerGraphicsWithOpenGL_VERSION_MINOR);
-//        fprintf(stdout,"Usage: %s number\n",argv[0]);
-//        return 1;
-//    }
-//
+
+    std::cout << "Project Major Version: " << ComputerGraphicsWithOpenGL_VERSION_MAJOR << std::endl;
+    std::cout << "Project Minor Version: " << ComputerGraphicsWithOpenGL_VERSION_MINOR << std::endl;
+    
     srand((unsigned)time(nullptr));//time should write like this .
     //srand(glfwGetTime()); // initialize random seed
-    
 
     /*
      This path is set in Edit scheme => Use custom working direcotry.
@@ -42,11 +36,7 @@ int main(int argc, const char * argv[])
     
     std::cout << "Current working directory: " << (path) << std::endl;
     std::cout << "full working direcotry of resources: " << (filepath) << std::endl;
-    
-//    double inputValue = atof(argv[1]);
-//    double outputValue = sqrt(inputValue);
-//    fprintf(stdout,"The square root of %g is %g\n", inputValue, outputValue);
-//    
+
     //start game
     Game game;
     game.Execute(filepath, SCREEN_WIDTH, SCREEN_HEIGHT);

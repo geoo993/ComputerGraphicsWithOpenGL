@@ -13,7 +13,6 @@
 
 // Setup includes
 #include "Extensions.h"
-#include "MatrixStack.h"
 #include "Interfaces.h"
 #include "Button.h"
 #include "ListBox.h"
@@ -43,9 +42,7 @@ class CQuad;
 
 class Game: IGameWindow, IResources, IGameTimer, IAudio, ICamera, IMaterials, ITextures, IShaders, IShaderUniform,
 ILights, IRenderer, IRenderObject, IPostProcessing, IHud, IControls {
-private:
-    
-    
+
 // properties
 private:
     

@@ -454,13 +454,11 @@
 		C7C8F2FC21FF6FF600AB865A /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F2FB21FF6FF600AB865A /* Grid.cpp */; };
 		C7C8F2FF21FF6FFF00AB865A /* Shaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F2FD21FF6FFF00AB865A /* Shaders.cpp */; };
 		C7C8F30221FF700700AB865A /* HighResolutionTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F30121FF700700AB865A /* HighResolutionTimer.cpp */; };
-		C7C8F30721FF700F00AB865A /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F30521FF700F00AB865A /* Vector.cpp */; };
 		C7C8F30821FF700F00AB865A /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F30621FF700F00AB865A /* Transform.cpp */; };
 		C7C8F30B21FF701700AB865A /* GameWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F30921FF701700AB865A /* GameWindow.cpp */; };
 		C7C8F30E21FF7EB600AB865A /* FrameBufferObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F30C21FF7EB600AB865A /* FrameBufferObject.cpp */; };
 		C7C8F31221FF809300AB865A /* Cubemap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F31121FF809300AB865A /* Cubemap.cpp */; };
 		C7C8F31721FF88D800AB865A /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F31521FF88D800AB865A /* ShaderProgram.cpp */; };
-		C7C8F31B21FF8B3800AB865A /* MatrixStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F31921FF8B3800AB865A /* MatrixStack.cpp */; };
 		C7C8F31E21FF8B4400AB865A /* Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F31C21FF8B4400AB865A /* Plane.cpp */; };
 		C7C8F32221FF8B6100AB865A /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F32021FF8B6100AB865A /* Camera.cpp */; };
 		C7C8F32521FF967500AB865A /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7C8F32321FF967500AB865A /* GameManager.cpp */; };
@@ -573,6 +571,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C705118022FFF68F0009E4D5 /* Vertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vertex.h; sourceTree = "<group>"; };
 		C7090CA92235421C006FE002 /* GUIType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GUIType.h; sourceTree = "<group>"; };
 		C7090CAA2235CBF4006FE002 /* RainDropsShader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = RainDropsShader.frag; sourceTree = "<group>"; };
 		C7090CAB2235CBF5006FE002 /* RainDropsShader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = RainDropsShader.vert; sourceTree = "<group>"; };
@@ -1048,14 +1047,11 @@
 		C7C8F30021FF700600AB865A /* HighResolutionTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighResolutionTimer.h; sourceTree = "<group>"; };
 		C7C8F30121FF700700AB865A /* HighResolutionTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HighResolutionTimer.cpp; sourceTree = "<group>"; };
 		C7C8F30321FF700F00AB865A /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
-		C7C8F30421FF700F00AB865A /* Vertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vertex.h; sourceTree = "<group>"; };
-		C7C8F30521FF700F00AB865A /* Vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector.cpp; sourceTree = "<group>"; };
 		C7C8F30621FF700F00AB865A /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
 		C7C8F30921FF701700AB865A /* GameWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameWindow.cpp; sourceTree = "<group>"; };
 		C7C8F30A21FF701700AB865A /* GameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameWindow.h; sourceTree = "<group>"; };
 		C7C8F30C21FF7EB600AB865A /* FrameBufferObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrameBufferObject.cpp; sourceTree = "<group>"; };
 		C7C8F30D21FF7EB600AB865A /* FrameBufferObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameBufferObject.h; sourceTree = "<group>"; };
-		C7C8F30F21FF803700AB865A /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		C7C8F31021FF809300AB865A /* Cubemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cubemap.h; sourceTree = "<group>"; };
 		C7C8F31121FF809300AB865A /* Cubemap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cubemap.cpp; sourceTree = "<group>"; };
 		C7C8F31321FF879F00AB865A /* RenderMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderMode.h; sourceTree = "<group>"; };
@@ -1063,8 +1059,6 @@
 		C7C8F31521FF88D800AB865A /* ShaderProgram.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgram.cpp; sourceTree = "<group>"; };
 		C7C8F31621FF88D800AB865A /* ShaderProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderProgram.h; sourceTree = "<group>"; };
 		C7C8F31821FF8A7500AB865A /* LightType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LightType.h; sourceTree = "<group>"; };
-		C7C8F31921FF8B3800AB865A /* MatrixStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatrixStack.cpp; sourceTree = "<group>"; };
-		C7C8F31A21FF8B3800AB865A /* MatrixStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixStack.h; sourceTree = "<group>"; };
 		C7C8F31C21FF8B4400AB865A /* Plane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Plane.cpp; sourceTree = "<group>"; };
 		C7C8F31D21FF8B4400AB865A /* Plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plane.h; sourceTree = "<group>"; };
 		C7C8F32021FF8B6100AB865A /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -2176,8 +2170,6 @@
 				C7090CA92235421C006FE002 /* GUIType.h */,
 				C71379422203287A00E9A0F2 /* Interfaces.h */,
 				C7C8F31821FF8A7500AB865A /* LightType.h */,
-				C7C8F31921FF8B3800AB865A /* MatrixStack.cpp */,
-				C7C8F31A21FF8B3800AB865A /* MatrixStack.h */,
 				C7F053192200B16F00864C31 /* PostProcessingEffectMode.h */,
 				C7C8F31321FF879F00AB865A /* RenderMode.h */,
 				C7C8F31421FF87AD00AB865A /* RenderType.h */,
@@ -2185,9 +2177,7 @@
 				C7FB577B220CAACB006F2D91 /* TextureType.h */,
 				C7C8F30621FF700F00AB865A /* Transform.cpp */,
 				C7C8F30321FF700F00AB865A /* Transform.h */,
-				C7C8F30521FF700F00AB865A /* Vector.cpp */,
-				C7C8F30F21FF803700AB865A /* Vector.h */,
-				C7C8F30421FF700F00AB865A /* Vertex.h */,
+				C705118022FFF68F0009E4D5 /* Vertex.h */,
 			);
 			path = utilities;
 			sourceTree = "<group>";
@@ -2861,7 +2851,6 @@
 				C75C4CCF22208EA500C1F836 /* Control.cpp in Sources */,
 				C75CCAF322ACF2E30092B72C /* EquirectangularCube.cpp in Sources */,
 				C7C8F2FF21FF6FFF00AB865A /* Shaders.cpp in Sources */,
-				C7C8F30721FF700F00AB865A /* Vector.cpp in Sources */,
 				C7CEE2DC221209CF00895F5D /* Quad.cpp in Sources */,
 				C71379412203218B00E9A0F2 /* Lighting.cpp in Sources */,
 				C7C8F31E21FF8B4400AB865A /* Plane.cpp in Sources */,
@@ -2878,7 +2867,6 @@
 				C7C8F32B21FFA48900AB865A /* Game+IHUD.cpp in Sources */,
 				C713796C2203964000E9A0F2 /* Game+ITextures.cpp in Sources */,
 				C7C8F2FC21FF6FF600AB865A /* Grid.cpp in Sources */,
-				C7C8F31B21FF8B3800AB865A /* MatrixStack.cpp in Sources */,
 				C713796F22039AF400E9A0F2 /* HeightMapTerrain.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3000,6 +2988,7 @@
 		C7B932BF21FE863000979C04 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
@@ -3018,6 +3007,7 @@
 		C7B932C021FE863000979C04 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (

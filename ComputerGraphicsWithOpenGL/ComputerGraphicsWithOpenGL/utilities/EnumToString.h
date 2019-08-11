@@ -9,11 +9,6 @@
 #ifndef EnumToString_h
 #define EnumToString_h
 
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <algorithm>
-
 // https://codereview.stackexchange.com/questions/14309/conversion-between-enum-and-string-in-c-class-header
 // This is the type that will hold all the strings.
 // Each enumeration type will declare its own specialization.

@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     
-    m_currentPPFXMode = PostProcessingEffectMode::ScreenWave;
+    m_currentPPFXMode = PostProcessingEffectMode::PBR;
     m_coverage = 1.0f;
     m_changePPFXMode = false;
     m_prevPPFXMode = false;
@@ -102,7 +102,6 @@ void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
                         0.0f); // rotate around z-axis (in tangent space)
         m_ssaoNoise.push_back(noise);
     }
-    
     
     
     // Depth and Shadow Mapping

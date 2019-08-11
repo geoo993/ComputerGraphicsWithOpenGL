@@ -23,9 +23,12 @@
 *.lai
 *.la
 *.a
-*.lib
+## *.lib
 
 # Executables
 *.exe
 *.out
 *.app
+
+# ignore make build folder
+*build*/

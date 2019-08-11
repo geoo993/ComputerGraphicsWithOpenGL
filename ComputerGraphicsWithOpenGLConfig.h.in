@@ -1,0 +1,7 @@
+// Author: George Quentin
+// Date: 10th August 2019
+// This is the configured options and settings for ComputerGraphicsWithOpenGL project
+
+#define ComputerGraphicsWithOpenGL_VERSION_MAJOR @ComputerGraphicsWithOpenGL_VERSION_MAJOR@
+#define ComputerGraphicsWithOpenGL_VERSION_MINOR @ComputerGraphicsWithOpenGL_VERSION_MINOR@
+#define ComputerGraphicsWithOpenGL_RESOURCES "@ComputerGraphicsWithOpenGL_RESOURCES@"

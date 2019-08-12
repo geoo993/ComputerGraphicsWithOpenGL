@@ -1,37 +1,95 @@
 # Computer Graphics With OpenGL
+
 Adapted from Joey de Vries - Learn OpenGL and David Wolff - OpenGL 4.0 Shading Language Cookbook.
 
-One Paragraph of project description goes here
+### Getting Started
 
-## Getting Started
+The project is configured for Mac OSX using [CMake](https://cmake.org/download/).
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
-
+1) Download and install CMake.app
+2) Open Terminal.app on your Mac
+2) Install CMake Command Line Tools for terminal:
 ```
-Give examples
+$ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
+```
+3) Locate project root directory and ensure that you have the 'build', 'src', 'Include', 
+'Libraries' folders, including 'CMakeLists.txt' and ComputerGraphicsWithOpenGLConfig.h.in files.
+```
+$ cd ./Downlads/ComputerGraphicsWithOpenGL
+$ ls  
+
+CMakeLists.txt				Libraries
+README.md
+ComputerGraphicsWithOpenGLConfig.h.in	build
+Includes				src
+```
+4) Check that cmake is running in Terminal.
+```
+$ cmake --version
+cmake version 3.7.2
+
+$ which cmake   
+/usr/local/bin/cmake
 ```
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
+5) Go to the build folder
 ```
-Give the example
+$ cd ./build
 ```
 
-And repeat
-
+6) Configure and generate the Xcode project inside the build folder
 ```
-until finished
+$ cmake -G "Xcode" ../
+$ ls
+CMakeCache.txt				ComputerGraphicsWithOpenGLConfig.h
+CMakeFiles				cmake_install.cmake
+CMakeScripts				src
+ComputerGraphicsWithOpenGL.xcodeproj
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+7) The Xcode project should be available in the build folder of the project. 
+Open the Xcode project and set the active scheme to ComputerGraphicsWithOpenGL target in the Build Scheme.
+```
+Product => Scheme => Choose Scheme => ComputerGraphicsWithOpenGL
+```
+
+8) Build and Run ComputerGraphicsWithOpenGL
+```
+Product => Run
+```
+
+
+
+## Controls
+
+### Move Camera: 
+* Move in the scene with **Arrow Keys** :arrow_right:    :arrow_left:   :arrow_up:   :arrow_down:  
+
+
+
+### Move Pointlights: 
+* Move pointlight Up with ***Q***
+* Move pointlight Down with ***A***
+* Move pointlight Forward with ***S***
+* Move pointlight Backward with ***D***
+* Move pointlight Right with ***E***
+* Move pointlight Left with ***W***
+* Select pointlight with ***I***
+
+
+
+### Look Around:
+* **Move and Hold** screen with :computer_mouse:
+
+* **Zoom** with :computer_mouse: (Mouse wheel)
+
+
+
+### UI Interaction:
+* Click on **Buttons** or drag **Sliders** with :computer_mouse:
+
+
+
 
 ## Content
 
@@ -43,11 +101,11 @@ End with an example of getting some data out of the system or using it for a lit
 * Torus Knot
 * Metal Balls
 * Teapot
-* Trolley
 * Planar Terrain and HeightMap Terrain
+* Trolley
 
 ### Lighting 
-* Blinn Phong
+* Blinn Phong Lighting
 * HDR Tone Mapping
 * Image Based Lighting (IBL)
 
@@ -61,7 +119,7 @@ End with an example of getting some data out of the system or using it for a lit
 * Explosion Fireball (Geometry Shader)
 * Wireframe (Geometry Shader)
 * Porcupine / Display Normal (Geometry Shader)
-* Toon/Cell shading
+* Toon / Cell shading
 * Physically Based Rendering (PBR)
 * Fast Approximate Anti-Aliasing (FXAA)
 
@@ -81,8 +139,8 @@ End with an example of getting some data out of the system or using it for a lit
 * Pixelate
 * Pixelation
 * Knitted Pixelation
-* Frosted Glass
-* Frosted Glass Extra
+* Frosted Glass 1
+* Frosted Glass 2
 * Crosshatching
 * Predators Thermal Vision
 * Toonify
@@ -101,8 +159,9 @@ End with an example of getting some data out of the system or using it for a lit
 * Bloom
 * Lens Flare
 * Screen Space Ambient Occlusion
+* Depth Testing
 * Depth Mapping
-* Shadow Mapping
+* Directional Shadow Mapping
 * Deferred Rendering
 * Rain Drops
 * Palette Quantization And Dithering
@@ -112,18 +171,13 @@ End with an example of getting some data out of the system or using it for a lit
 * Money Filter
 * Microprism Mosaic
 * Bayer Matrix Dithering
-* Julia Freak"
+* Julia Freak
 * Heart Blend
 * EM Interference
 * Cubic Lens Distortion
 * Cel Shaderish
-* Cartoon Video"
+* Cartoon Video
 
-### Controls 
-* **Arrow Keys** - Move in the scene
-* **Mouse Drag** - Look around
-* **Mouse Wheel** - Zoom
-* **Mouse Click** - Select  GUI Button or Slider
 
 ## Built With
 

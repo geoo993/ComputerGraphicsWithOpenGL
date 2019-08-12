@@ -12,7 +12,7 @@ The project is configured for Mac OSX using [CMake](https://cmake.org/download/)
 ```
 $ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
-3) Locate project root directory and ensure that you have the 'build', 'src', 'Include', 
+3) Locate project root directory and ensure that you have the 'build', 'src', 'Includes', 
 'Libraries' folders, including 'CMakeLists.txt' and ComputerGraphicsWithOpenGLConfig.h.in files.
 ```
 $ cd ./Downlads/ComputerGraphicsWithOpenGL
@@ -48,7 +48,7 @@ ComputerGraphicsWithOpenGL.xcodeproj
 ```
 
 7) The Xcode project should be available in the build folder of the project. 
-Open the Xcode project and set the active scheme to ComputerGraphicsWithOpenGL target in the Build Scheme.
+Open the Xcode project `ComputerGraphicsWithOpenGL.xcodeproj` and set the active scheme to ComputerGraphicsWithOpenGL target in the Build Scheme.
 ```
 Product => Scheme => Choose Scheme => ComputerGraphicsWithOpenGL
 ```

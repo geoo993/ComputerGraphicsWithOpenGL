@@ -162,6 +162,7 @@ Product => Run
 * Depth Testing
 * Depth Mapping
 * Directional Shadow Mapping
+* Omnidirectional Shadow Mapping
 * Deferred Rendering
 * Rain Drops
 * Palette Quantization And Dithering

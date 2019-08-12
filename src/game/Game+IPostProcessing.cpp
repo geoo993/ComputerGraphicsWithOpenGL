@@ -55,13 +55,14 @@ void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     m_motionBlurSamples = 10.0f;
     m_vignettingTint = true;
     m_vignettingSepia = true;
-    m_vignettingRadius = 0.5f;
+    m_vignettingRadius = 0.4f;
     m_vignettingSoftness = 0.5f;
     m_brightPartsSmoothGradient = true;
     m_brightPartsIntensity = 1.0f;
     
     // Lens flare
     m_lensFlareUseDirt = true;
+    m_lensFlareNumber = 0;
     m_lensFlareGhostCount = 5.0f;
     m_lensFlareGhostDispersal = 0.39f;
     m_lensFlareGhostThreshold = 10.0f;

@@ -15,7 +15,7 @@ $ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 3) Locate the project root directory (Where you Downloaded the project) and ensure that you have the 'build', 'src', 'Includes', 
 'Libraries' folders, including 'CMakeLists.txt' and ComputerGraphicsWithOpenGLConfig.h.in files.
 ```
-$ cd ./Downlads/ComputerGraphicsWithOpenGL
+$ cd ./Downloads/ComputerGraphicsWithOpenGL
 $ ls  
 
 CMakeLists.txt				Libraries

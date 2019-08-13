@@ -76,6 +76,7 @@ ADD_FRAMEWORK(libfmodstudioL.dylib ComputerGraphicsWithOpenGL)
 ADD_FRAMEWORK(libfreeimage.3.17.0.dylib ComputerGraphicsWithOpenGL)
 ADD_FRAMEWORK(libfreeimageplus.3.17.0.dylib ComputerGraphicsWithOpenGL)
 ADD_FRAMEWORK(libfreetype.6.dylib ComputerGraphicsWithOpenGL)
+ADD_FRAMEWORK(libpng16.16.dylib ComputerGraphicsWithOpenGL)
 ADD_FRAMEWORK(libGLEW.2.1.0.dylib ComputerGraphicsWithOpenGL)
 ADD_FRAMEWORK(libglfw.3.2.dylib ComputerGraphicsWithOpenGL)
 

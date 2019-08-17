@@ -2,7 +2,7 @@
 
 Adapted from Joey de Vries - Learn OpenGL and David Wolff - OpenGL 4.0 Shading Language Cookbook.
 
-### Getting Started
+## Getting Started
 
 The project is configured for Mac OSX using [CMake](https://cmake.org/download/).
 

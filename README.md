@@ -8,12 +8,13 @@ The project is configured for Mac OSX using [CMake](https://cmake.org/download/)
 
 1) Download and install CMake.app
 2) Open Terminal.app on your Mac
-2) Install CMake Command Line Tools for terminal:
+2) Install CMake Command Line Tools for Terminal
 ```
 $ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
-3) Locate the project root directory (Where you Downloaded the project) and ensure that you have the 'build', 'src', 'Includes', 
-'Libraries' folders, including 'CMakeLists.txt' and ComputerGraphicsWithOpenGLConfig.h.in files.
+3) Locate the project root directory (Where you Downloaded the project) and ensure 
+that you have the 'build', 'src', 'Includes', 'Libraries' folders, 
+including 'CMakeLists.txt' and ComputerGraphicsWithOpenGLConfig.h.in files
 ```
 $ cd ./Downloads/ComputerGraphicsWithOpenGL
 $ ls  
@@ -23,7 +24,25 @@ README.md
 ComputerGraphicsWithOpenGLConfig.h.in	build
 Includes				src
 ```
-4) Check that cmake is running in Terminal.
+
+4) Check all the project libraries are available
+```
+$ cd Libraries 
+$ ls
+libGLEW.2.1.0.dylib           libfmodstudioL.dylib
+libassimp.4.1.0.dylib         libfreeimage.3.17.0.dylib
+libfmod.dylib                 libfreeimageplus.3.17.0.dylib
+libfmodL.dylib                libfreetype.6.dylib
+libfmodstudio.dylib           libglfw.3.2.dylib
+```
+
+5) Download the missing ```libpng16.16.dylib``` shared library of ```libfreetype.6.dylib```
+```
+$ brew install libpng
+🍺  /usr/local/Cellar/libpng/1.6.37: 27 files, 1.2MB
+```
+
+6) Check that cmake is running in Terminal
 ```
 $ cmake --version
 cmake version 3.7.2
@@ -32,12 +51,12 @@ $ which cmake
 /usr/local/bin/cmake
 ```
 
-5) Go to the build folder
+7) Go to the build folder
 ```
-$ cd ./build
+$ cd ../build
 ```
 
-6) Configure and generate the Xcode project inside the build folder
+8) Configure and generate the Xcode project inside the build folder
 ```
 $ cmake -G "Xcode" ../
 $ ls
@@ -47,17 +66,21 @@ CMakeScripts				src
 ComputerGraphicsWithOpenGL.xcodeproj
 ```
 
-7) The Xcode project should be available in the build folder of the project. 
-Open the Xcode project `ComputerGraphicsWithOpenGL.xcodeproj` and set the active scheme to ComputerGraphicsWithOpenGL target in the Build Scheme.
+9) The Xcode project should be available in the build folder of the project. 
+Open the Xcode project ```ComputerGraphicsWithOpenGL.xcodeproj``` and set the active scheme to ComputerGraphicsWithOpenGL target in the Build Scheme
 ```
 Product => Scheme => Choose Scheme => ComputerGraphicsWithOpenGL
 ```
 
-8) Build and Run ComputerGraphicsWithOpenGL
+10) Build and Run ComputerGraphicsWithOpenGL in Xcode
 ```
 Product => Run
 ```
-
+or use Terminal 
+```
+$ cmake --build . --target ComputerGraphicsWithOpenGL --config Debug
+$ ./src/Debug/ComputerGraphicsWithOpenGL
+```
 
 
 ## Controls

@@ -23,21 +23,24 @@ void Game::RenderQuad(CShaderProgram *pShaderProgram, const glm::vec3 & position
 }
 
 void Game::ResetSkyBox(CShaderProgram *pShaderProgram) {
+    // start by deleting current skybox and create new one
     if (m_changeSkybox == true) {
-        // start by deleting current skybox and create new one
-        if (m_changeSkybox == true) {
-            m_pSkybox->Clear();
-            m_pSkybox->Create(m_skyboxSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
-            
-            m_pEnvSkybox->Clear();
-            m_pEnvSkybox->Create(m_skyboxSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::EnvironmentMap, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
-            
-            m_pIrrSkybox->Clear();
-            m_pIrrSkybox->Create(m_skyboxSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::IrradianceMap, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
-            
-            m_changeSkybox = false;
-        }
+        
+        // Create the skybox
+        // Skybox downloaded from http://www.akimbo.in/forum/viewtopic.php?f=10&t=9
+
+        m_pSkybox->Clear();
+        m_pSkybox->Create(m_skyboxSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::Default, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
+        
+        m_pEnvSkybox->Clear();
+        m_pEnvSkybox->Create(m_skyboxSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::EnvironmentMap, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
+
+        m_pIrrSkybox->Clear();
+        m_pIrrSkybox->Create(m_skyboxSize, m_gameManager->GetResourcePath(), TextureType::CUBEMAP, SkyboxType::IrradianceMap, m_pShaderPrograms, this, TextureType::EMISSION, m_skyboxNumber);
+        
+        m_changeSkybox = false;
     }
+    
 }
 
 void Game::RenderSkyBox(CShaderProgram *pShaderProgram) {

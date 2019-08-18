@@ -4,6 +4,8 @@
 // Constructor
 Game::Game()
 {
+    srand(glfwGetTime()); // initialize random seed
+    
     // game window
     m_gameWindow = nullptr;
     m_gameManager = nullptr;
@@ -114,12 +116,13 @@ Game::Game()
     m_pEnvSkybox = nullptr;
     m_pIrrSkybox = nullptr;
     m_skyboxSize = (GLfloat)SKYBOX;
-    m_skyboxNumber = 0;
-    m_changeSkybox = false;
+    m_skyboxNumber = Extensions::randomInt(0, 5);
+    m_changeSkybox = true;
     
     // terrain
     m_mapSize = (GLfloat)ZFAR;
     m_showTerrain = true;
+    m_useTerrain = true;
     m_pPlanarTerrain = nullptr;
     m_pHeightmapTerrain = nullptr;
     m_heightMapMinHeight = 0.0f ;
@@ -204,7 +207,8 @@ Game::Game()
     
     // inputs
     m_mouseButtonDown = false;
-    m_mouseX, m_mouseY = 0.0f;
+    m_mouseX = 0.0f;
+    m_mouseY = 0.0f;
 }
 
 // Destructor

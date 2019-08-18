@@ -208,35 +208,36 @@ void Game::RenderTerrainScene(CShaderProgram *pShaderProgram, const GLfloat yPos
     m_currentPPFXMode == PostProcessingEffectMode::PBR
     || m_currentPPFXMode == PostProcessingEffectMode::IBL;
     
-    if (m_showTerrain)
-        /// Terrain
-    {
-        
-        pShaderProgram->UseProgram();
-        if (isPBR) {
-            SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
+    if (m_showTerrain) {
+
+        if (m_useTerrain)
+        {
+            /// Terrain
+            
+            pShaderProgram->UseProgram();
+            if (isPBR) {
+                SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, m_uvTiling, useAO);
+            }
+            
+            RenderTerrain(pShaderProgram, glm::vec3(0.0f, yPos, 0), glm::vec3(0.0f), glm::vec3(1.0f), false);
+            
+            if (isPBR) {
+                SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
+            }
+        } else {
+            /// InterioBox
+            
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_FRONT);
+            //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
+            pShaderProgram->UseProgram();
+            pShaderProgram->SetUniform("bReverseNormals", 1); // A small little hack to invert normals when drawing cube from the inside so lighting still works.
+            RenderPrimitive(pShaderProgram, m_pInteriorBox, glm::vec3(0.0f,  0.0f,  0.0f ), glm::vec3(0.0f), glm::vec3(100.0f, 80.0f, 80.0f)); // Render Big cube underneath
+            pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
+            //glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
+            
         }
-        
-        RenderTerrain(pShaderProgram, glm::vec3(0.0f, yPos, 0), glm::vec3(0.0f), glm::vec3(1.0f), false);
-        
-        if (isPBR) {
-            SetMaterialUniform(pShaderProgram, "material", m_materialColor, m_materialShininess, 1.0f, useAO);
-        }
-    } else
-        /// InterioBox
-    {
-        /*
-         
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_FRONT);
-        //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
-        pShaderProgram->UseProgram();
-        pShaderProgram->SetUniform("bReverseNormals", 1); // A small little hack to invert normals when drawing cube from the inside so lighting still works.
-        RenderPrimitive(pShaderProgram, m_pInteriorBox, glm::vec3(0.0f,  0.0f,  0.0f ), glm::vec3(0.0f), glm::vec3(100.0f, 80.0f, 80.0f)); // Render Big cube underneath
-        pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
-        //glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-        */
     }
     
     

@@ -59,6 +59,7 @@ private:
     // terrain
     GLfloat m_mapSize;
     GLboolean m_showTerrain;
+    GLboolean m_useTerrain;
     CPlane *m_pPlanarTerrain;
     CHeightMapTerrain *m_pHeightmapTerrain;
     float m_heightMapMinHeight, m_heightMapMaxHeight;

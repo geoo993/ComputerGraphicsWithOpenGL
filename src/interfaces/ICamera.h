@@ -16,6 +16,7 @@
 
 struct ICamera {
     CCamera *m_pCamera;
+    GLfloat m_viewPointAngle;
     virtual void InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 &position) = 0;
     virtual void SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &uniformName, CCamera *camera) = 0;
     virtual void UpdateCamera(const GLdouble & deltaTime, const MouseState &mouseState, const KeyboardState &keyboardState,

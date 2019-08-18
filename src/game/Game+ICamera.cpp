@@ -9,6 +9,7 @@
 #include "Game.h"
 
 void Game::InitialiseCamera(const GLuint &width, const GLuint &height, const glm::vec3 & position){
+    m_viewPointAngle = 0.0f;
     
     // Set the orthographic and perspective projection matrices based on the image size
     m_pCamera->Create(position,                // position
@@ -34,8 +35,10 @@ void Game::SetCameraUniform(CShaderProgram *pShaderProgram, const std::string &u
 }
 
 void Game::UpdateCamera(const GLdouble & deltaTime, const MouseState &mouseState, const KeyboardState &keyboardState, const GLboolean & mouseMove) {
+    m_viewPointAngle ++;
     // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
     m_pCamera->Update(m_gameWindow->GetWindow(), deltaTime, mouseState, keyboardState, true);
+    //m_pCamera->RotateAroundPoint(50.0f, glm::vec3(0, 50, 50), m_viewPointAngle, 100.0f);
 }
 
 void Game::ResetCamera(const GLdouble & deltaTime) {

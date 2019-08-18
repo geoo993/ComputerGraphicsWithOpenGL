@@ -659,9 +659,11 @@ void Game::LoadControls() {
 
 void Game::RenderControls() {
     
+     
     for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
         CControl * control = (*it);
         if (m_currentPPFXMode == control->GetPostProcessingEffectMode()) {
+            
             // // Create dynamic GUI objects
             switch(control->GetGUIType()) {
                 case GUIType::BUTTON: {
@@ -686,6 +688,7 @@ void Game::RenderControls() {
                     break;
                 }
             }
+            
         } else {
             if (control->GetGUIMode() == GUIMode::DYNAMIC) {
                 control->SetIsActive(false);
@@ -693,6 +696,7 @@ void Game::RenderControls() {
             }
         }
     }
+    
     
     CShaderProgram *hudProgram = (*m_pShaderPrograms)[0];
     SetMaterialUniform(hudProgram, "material", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -710,13 +714,16 @@ void Game::RenderControls() {
         
         /// Render GUI objects
         if (control->GetIsActive() == true) {
-            control->Render(m_pFtFont, hudProgram, "material",
+            if(m_enableHud) {
+                control->Render(m_pFtFont, hudProgram, "material",
                             m_textColor, m_guiHighlightedColor, m_guiColor, m_guiBackgroundColor);
+            }
             
             if ( (controlled != nullptr && controlled != control) || mState.m_isNavigating) {
                 // our current controll is being controlled
                 continue;
             }
+            
             if (control->Update(mState)) {
                 // Handle events of this control
                 controlled = control;
@@ -734,6 +741,7 @@ void Game::RenderControls() {
     glEnable(GL_DEPTH_TEST);            // Re-Enable Depth Testing
     glEnable(GL_TEXTURE_2D);            // Re-Enable Texture Mapping
     
+     
     for (std::list<CControl *>::iterator it = CControl::m_controls.begin(); it != CControl::m_controls.end(); it++) {
         CControl * control = (*it);
         if (m_currentPPFXMode == control->GetPostProcessingEffectMode()) {
@@ -763,6 +771,7 @@ void Game::RenderControls() {
             }
         }
     }
+    
 }
 
 void Game::UpdateControls() {
@@ -989,11 +998,8 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
                 m_changeAudio = true;
                 break;
                 */
-            case GLFW_KEY_SLASH:
-                m_enableHud = !m_enableHud;
-                break;
             case GLFW_KEY_SPACE:
-                mState.m_isEnabled = !mState.m_isEnabled;
+                m_enableHud = !m_enableHud;
                 break;
             case GLFW_KEY_I:
                 m_pointLightIndex = (m_pointLightIndex + 1) % m_pointLights.size();

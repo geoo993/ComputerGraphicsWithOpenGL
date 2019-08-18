@@ -9,12 +9,13 @@
 #include "Game.h"
 
 void Game::RenderPBRScene(CShaderProgram *pShaderProgram, const GLboolean &toCustomShader, const GLint &toCustomShaderIndex, const GLfloat zfront, const GLfloat zback) {
-   
+    /*
+     
     /// Trolley
     {
         RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, -100.0f, 0.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f));
     }
-    
+    */
     
     // 1 - 10
     RenderPrimitive(pShaderProgram, m_pSpherePBR1, glm::vec3(50.0f, 0.0f, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
@@ -224,6 +225,8 @@ void Game::RenderTerrainScene(CShaderProgram *pShaderProgram, const GLfloat yPos
     } else
         /// InterioBox
     {
+        /*
+         
         glEnable(GL_CULL_FACE);
         glCullFace(GL_FRONT);
         //glDisable(GL_CULL_FACE); // note that we disable culling here since we render 'inside' the cube instead of the usual 'outside' which throws off the normal culling methods.
@@ -233,6 +236,7 @@ void Game::RenderTerrainScene(CShaderProgram *pShaderProgram, const GLfloat yPos
         pShaderProgram->SetUniform("bReverseNormals", 0); // and of course disable it
         //glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
+        */
     }
     
     
@@ -241,7 +245,7 @@ void Game::RenderTerrainScene(CShaderProgram *pShaderProgram, const GLfloat yPos
 void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &includeLampsAndSkybox, const GLint &toCustomShaderIndex) {
     const GLboolean useAO = m_currentPPFXMode == PostProcessingEffectMode::SSAO;
     const GLfloat zfront = -200.0f;
-    const GLfloat zback = 200.0f;
+    const GLfloat zback = 300.0f;
     m_sphereRotation += m_deltaTime * 0.02f;
    
     /// Skybox
@@ -316,7 +320,7 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     
     RenderTerrainScene(pShaderProgram, -100.0f);
     RenderPBRScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
-    RenderRandomScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront-400, zback+400);
+    //RenderRandomScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
     
     /// Render Lamps
     {

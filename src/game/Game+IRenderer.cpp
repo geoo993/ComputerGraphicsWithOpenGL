@@ -259,9 +259,9 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
         CShaderProgram *pSkyBoxProgram = (*m_pShaderPrograms)[shyboxIndex];
         SetMaterialUniform(pSkyBoxProgram, "material");
         SetFogMaterialUniform(pSkyBoxProgram, "fog", m_fogColor, m_useFog);
+        SetHRDLightUniform(pSkyBoxProgram, "hrdlight", m_exposure, m_gama, m_HDR);
         
         if (m_currentPPFXMode == PostProcessingEffectMode::IBL) {
-            SetHRDLightUniform(pSkyBoxProgram, "hrdlight", m_exposure, m_gama, m_HDR);
             RenderEnvSkyBox(pSkyBoxProgram);
         } else {
             RenderSkyBox(pSkyBoxProgram);

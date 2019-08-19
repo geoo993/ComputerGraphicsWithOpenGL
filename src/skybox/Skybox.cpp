@@ -93,6 +93,8 @@ void CSkybox::Create(const GLfloat &size, const std::string &path, const Texture
                                                     path+"/skyboxes/"+m_skyboxes[ind]+"/", m_skyboxes[ind]+".hdr", equirectangularTexturetype);
         }
             break;
+        case SkyboxType::PrefilterMap:
+            break;
     }
     
     CreateAttributes(size);

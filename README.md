@@ -1,6 +1,9 @@
 # Computer Graphics With OpenGL
 
-Adapted from Joey de Vries - Learn OpenGL and David Wolff and OpenGL 4.0 Shading Language Cookbook.
+This project was inspired and adapted from [Joey de Vries](https://learnopengl.com/Introduction "Learn OpenGL Introduction") and [David Wolff](https://github.com/daw42/glslcookbook "David Wolff OpenGL 4.0 Shading Language Cookbook"). Computer graphics is a field in Computer Science which studies methods for digitally synthesizing and manipulating visual content to make computers easier to interact with, and better for understanding and interpreting many types of data. Computer graphics development has had a profound impact on many types of media and have revolutionised movies, medical imaging, product design, and the computer game industry.
+
+This project aims to illustrate some of the most common types of computer graphics techniques created using c++ and OpenGL. These include primitive rendering, camera system, lighting, materials, texturing, fragment and geometry shading, and post processing filters.
+
 
 ## Getting Started
 
@@ -24,7 +27,7 @@ README.md
 ComputerGraphicsWithOpenGLConfig.h.in	build
 Includes				src
 ```
-NOTE: fetch the large files from ```resources``` using git lfs
+NOTE: Please fetch all the large files from ```$ cd src/resources``` using git lfs
 ```
 $ git lfs install
 $ git lfs pull
@@ -222,4 +225,5 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 
 * Joey de Vries - [Learn OpenGL](https://learnopengl.com/Introduction "Learn OpenGL Introduction").
 * David Wolff - [OpenGL 4.0 Shading Language Cookbook](https://github.com/daw42/glslcookbook "David Wolff OpenGL 4.0 Shading Language Cookbook").
+* [Geeks3D](https://www.geeks3d.com)
 * [Shadertoy](https://www.shadertoy.com)

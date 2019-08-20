@@ -31,6 +31,7 @@ NOTE: Please fetch all the large files from ```$ cd src/resources``` using git l
 ```
 $ git lfs install
 $ git lfs pull
+Downloading LFS objects:  53% (101/190), 198 MB | 2.7 MB/s
 ```
 
 4) Check all the project libraries are available

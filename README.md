@@ -1,6 +1,6 @@
 # Computer Graphics With OpenGL
 
-Adapted from Joey de Vries - Learn OpenGL and David Wolff - OpenGL 4.0 Shading Language Cookbook.
+Adapted from Joey de Vries - Learn OpenGL and David Wolff and OpenGL 4.0 Shading Language Cookbook.
 
 ## Getting Started
 
@@ -24,7 +24,7 @@ README.md
 ComputerGraphicsWithOpenGLConfig.h.in	build
 Includes				src
 ```
-NOTE: fetch the large files from resources using git lfs
+NOTE: fetch the large files from ```resources``` using git lfs
 ```
 $ git lfs install
 $ git lfs pull
@@ -222,3 +222,4 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 
 * Joey de Vries - [Learn OpenGL](https://learnopengl.com/Introduction "Learn OpenGL Introduction").
 * David Wolff - [OpenGL 4.0 Shading Language Cookbook](https://github.com/daw42/glslcookbook "David Wolff OpenGL 4.0 Shading Language Cookbook").
+* [Shadertoy](https://www.shadertoy.com)

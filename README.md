@@ -137,22 +137,49 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 * Trolley
 
 ### Lighting 
-* Blinn Phong Lighting
-* HDR Tone Mapping
-* Image Based Lighting (IBL)
+<p align="right"> Physically Based Rendering (PBR) </p>
+<p align="right"><img src="images/PBR.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Image Based Lighting (IBL) </p>
+<p align="left"> <img src="images/IBL.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Blinn Phong Lighting </p>
+<p align="right"><img src="images/BlinnPhong.png" width="960px" height="540px" /> </p>
+ 
+Physically Based Rendering (PBR)
 
+* HDR Tone Mapping
+  
 ### Shaders
-* Bump mapping
-* Parallax Mapping
-* Chromatic Aberration
-* Environment Mapping (reflection and refraction)
-* Disintergration
-* Explosion Fireball (Geometry Shader)
-* Wireframe (Geometry Shader)
-* Porcupine / Display Normal (Geometry Shader)
-* Toon / Cell shading
-* Physically Based Rendering (PBR)
-* Fast Approximate Anti-Aliasing (FXAA)
+<p align="left"> Bump mapping </p>
+<p align="left"> <img src="images/BumpMapping.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Parallax Mapping </p>
+<p align="right"><img src="images/ParallaxMapping.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Chromatic Aberration (IBL) </p>
+<p align="left"> <img src="images/ChromaticAberration.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Environment Mapping (reflection and refraction) </p>
+<p align="right"><img src="images/EnvironmentMapping.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left">  Disintergration </p>
+<p align="left"> <img src="images/Disintergration.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Fireball (Geometry Shader) </p>
+<p align="right"><img src="images/Fireball.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Wireframe (Geometry Shader) </p>
+<p align="left"> <img src="images/Wireframe.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Porcupine / Display Normal (Geometry Shader) </p>
+<p align="right"><img src="images/Porcupine.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Toon / Cell shading </p>
+<p align="left"> <img src="images/Toon.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Fast Approximate Anti-Aliasing (FXAA) (Geometry Shader) </p>
+<p align="right"><img src="images/Faaa.png" width="960px" height="540px" /> </p>
 
 ### Post Processing Effects
 * Color Inversion

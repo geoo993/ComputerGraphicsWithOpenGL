@@ -245,29 +245,31 @@ void CCamera::SetViewByMouse(const MouseState &state)
 // Update the camera to respond to key presses for translation
 void CCamera::TranslateByKeyboard(const double &dt, const KeyboardState &keyboardState)
 {
+    
+    double speed = keyboardState.m_isSlowMotion ? m_movementSpeed * 0.02f : m_movementSpeed;
     if (keyboardState.m_arrowKeyDown != ControlType::UNKNOWN){        
         //if (keyPressed == GLFW_KEY_UP)// || keyPressed == GLFW_KEY_W )  // FORWARD
         if (keyboardState.m_arrowKeyDown == ControlType::KEYFORWARD)
         {
-            Advance(m_movementSpeed * dt);
+            Advance(speed * dt);
         }
         
         //if (keyPressed == GLFW_KEY_DOWN)// || keyPressed == GLFW_KEY_S )  // BACKWARD
         if (keyboardState.m_arrowKeyDown == ControlType::KEYBACKWARD)
         {
-            Advance(-m_movementSpeed * dt);
+            Advance(-speed * dt);
         }
         
         //if (keyPressed == GLFW_KEY_LEFT)// || keyPressed == GLFW_KEY_A )  // LEFT
         if (keyboardState.m_arrowKeyDown == ControlType::KEYLEFT)
         {
-            Strafe(-m_movementSpeed * dt);
+            Strafe(-speed * dt);
         }
         
         //if (keyPressed == GLFW_KEY_RIGHT)// || keyPressed == GLFW_KEY_D )   //RIGHT
         if (keyboardState.m_arrowKeyDown == ControlType::KEYRIGHT)
         {
-            Strafe(m_movementSpeed * dt);
+            Strafe(speed * dt);
         }
     }
     

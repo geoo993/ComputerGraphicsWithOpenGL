@@ -41,7 +41,6 @@ struct MouseState {
     GLdouble yoffset;
     GLboolean m_isDragging;
     GLboolean m_isNavigating;
-    
     GLdouble m_scroll;
     
     MouseState(): m_leftButtonDown(ControlType::UNKNOWN),
@@ -57,8 +56,10 @@ struct KeyboardState {
     GLint m_keyReleased;
     GLdouble m_keyPressTime;
     GLdouble m_lastKeyPressTime;
+    GLboolean m_isSlowMotion;
     KeyboardState(): m_arrowKeyDown(ControlType::UNKNOWN),
-    m_keyPressed(0), m_keyReleased(0), m_keyPressTime(0), m_lastKeyPressTime(0)  {}
+    m_keyPressed(0), m_keyReleased(0), m_keyPressTime(0), m_lastKeyPressTime(0),
+    m_isSlowMotion(false)  {}
 };
 
 

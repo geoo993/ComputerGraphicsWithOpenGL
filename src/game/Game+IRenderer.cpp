@@ -320,8 +320,8 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     
     
     RenderTerrainScene(pShaderProgram, -100.0f);
-    RenderPBRScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
-    //RenderRandomScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
+    //RenderPBRScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
+    RenderRandomScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
     
     /// Render Lamps
     {

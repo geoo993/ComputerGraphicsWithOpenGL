@@ -143,7 +143,6 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 
 ### Shaders
 * Bump mapping
-* Normal Mapping
 * Parallax Mapping
 * Chromatic Aberration
 * Environment Mapping (reflection and refraction)

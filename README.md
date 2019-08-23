@@ -9,8 +9,8 @@ This project aims to illustrate some of the most common types of computer graphi
 
 The project is configured for Mac OSX using [CMake](https://cmake.org/download/).
 
-1) Download and install CMake.app
-2) Open Terminal.app on your Mac
+1) Download and install ```CMake.app```
+2) Open ```Terminal.app``` on your Mac
 2) Install CMake Command Line Tools for Terminal
 ```
 $ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install

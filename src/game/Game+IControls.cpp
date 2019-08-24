@@ -1009,6 +1009,9 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
             case GLFW_KEY_I:
                 m_pointLightIndex = (m_pointLightIndex + 1) % m_pointLights.size();
                 break;
+            case GLFW_KEY_O:
+                state.m_isSlowMotion = !state.m_isSlowMotion;
+                break;
             case GLFW_KEY_Q:
                 std::get<0>(m_pointLights[m_pointLightIndex]).y += 25.0f;
                 break;

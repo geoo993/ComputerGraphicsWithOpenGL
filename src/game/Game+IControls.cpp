@@ -997,14 +997,12 @@ void Game::UpdateKeyBoardControls(KeyboardState &state) {
         
         switch (state.m_keyPressed)
         {
-                /*
-            case GLFW_KEY_PERIOD:
-                m_audioNumber = (m_audioNumber + 1) % 5;
-                m_changeAudio = true;
-                break;
-                */
             case GLFW_KEY_SPACE:
                 m_enableHud = !m_enableHud;
+                break;
+            case GLFW_KEY_U:
+                m_audioNumber = (m_audioNumber + 1) % m_audioFiles.size();
+                m_changeAudio = true;
                 break;
             case GLFW_KEY_I:
                 m_pointLightIndex = (m_pointLightIndex + 1) % m_pointLights.size();

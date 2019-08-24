@@ -145,22 +145,20 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 <br/>
 <p align="right"> Blinn Phong Lighting </p>
 <p align="right"><img src="images/BlinnPhong.png" width="960px" height="540px" /> </p>
- 
-Physically Based Rendering (PBR)
 
 * HDR Tone Mapping
   
 ### Shaders
-<p align="left"> Bump mapping </p>
+<p align="left"> Bump Mapping </p>
 <p align="left"> <img src="images/BumpMapping.png" width="960px" height="540px" /> </p>
 <br/>
 <p align="right"> Parallax Mapping </p>
 <p align="right"><img src="images/ParallaxMapping.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="left"> Chromatic Aberration (IBL) </p>
+<p align="left"> Chromatic Aberration </p>
 <p align="left"> <img src="images/ChromaticAberration.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="right"> Environment Mapping (reflection and refraction) </p>
+<p align="right"> Environment Mapping (Reflection and Refraction) </p>
 <p align="right"><img src="images/EnvironmentMapping.png" width="960px" height="540px" /> </p>
 <br/>
 <p align="left">  Disintergration </p>
@@ -182,22 +180,55 @@ Physically Based Rendering (PBR)
 <p align="right"><img src="images/Faaa.png" width="960px" height="540px" /> </p>
 
 ### Post Processing Effects
-* Color Inversion
-* GrayScale
-* Kernel
-* Kernel Blur
-* Sobel Edge Detection
-* Frei-Chen Edge Detection
-* Screen Wave
-* Swirl
-* Night Vision
-* Lens Circle
-* Posterization
-* Dream Vision
-* Pixelate
-* Pixelation
-* Knitted Pixelation
-* Frosted Glass 1
+<p align="left"> Color Inversion </p>
+<p align="left"> <img src="images/ColorInversion.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Gray Scale </p>
+<p align="right"><img src="images/Grayscale.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Kernel </p>
+<p align="left"> <img src="images/Kernel.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Kernel Blur </p>
+<p align="right"><img src="images/KernelBlur.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Sobel Edge Detection </p>
+<p align="left"> <img src="images/SobelEdgeDetection.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Frei-Chen Edge Detection </p>
+<p align="right"><img src="images/FreiCheinEdgeDetection.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Screen Wave </p>
+<p align="left"> <img src="images/ScreenWave.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Swirl </p>
+<p align="right"><img src="images/Swirl.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Night Vision </p>
+<p align="left"> <img src="images/NightVision.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Lens Circle </p>
+<p align="right"><img src="images/LensCircle.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Posterization </p>
+<p align="left"> <img src="images/Posterization.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Dream Vision </p>
+<p align="right"><img src="images/DreamVision.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Pixelate </p>
+<p align="left"> <img src="images/Pixelate.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Pixelation </p>
+<p align="right"><img src="images/Pixelation.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Knitted Pixelation </p>
+<p align="left"> <img src="images/KnittedPixelation.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="right"> Frosted Glass 1 </p>
+<p align="right"><img src="images/ParallaxMapping.png" width="960px" height="540px" /> </p>
+<br/>
+
 * Frosted Glass 2
 * Crosshatching
 * Predators Thermal Vision

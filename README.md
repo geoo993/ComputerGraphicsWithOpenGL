@@ -138,8 +138,9 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 
 ### Lighting 
 <p align="left"> Image Based Lighting (IBL) </p>
-<p align="left"> <img src="images/IBL.png" width="960px" height="540px" /> </p>
+<p align="left"> <a href="https://vimeo.com"><img src="images/IBL.png" width="960px" height="540px" title="Image Based Lighting (IBL)" alt="Image Based Lighting (IBL)"> </a></p>
 <br/>
+
 <p align="right"> Blinn Phong Lighting </p>
 <p align="right"><img src="images/BlinnPhong.png" width="960px" height="540px" /> </p>
 <br/>

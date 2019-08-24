@@ -137,47 +137,50 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 * Trolley
 
 ### Lighting 
-<p align="right"> Physically Based Rendering (PBR) </p>
-<p align="right"><img src="images/PBR.png" width="960px" height="540px" /> </p>
-<br/>
 <p align="left"> Image Based Lighting (IBL) </p>
 <p align="left"> <img src="images/IBL.png" width="960px" height="540px" /> </p>
 <br/>
 <p align="right"> Blinn Phong Lighting </p>
 <p align="right"><img src="images/BlinnPhong.png" width="960px" height="540px" /> </p>
-
-* HDR Tone Mapping
+<br/>
+<p align="left"> HDR Tone Mapping </p>
+<p align="left"> <img src="images/None.png" width="960px" height="540px" /> </p>
+<br/>
   
 ### Shaders
-<p align="left"> Bump Mapping </p>
-<p align="left"> <img src="images/BumpMapping.png" width="960px" height="540px" /> </p>
+<p align="left"> Physically Based Rendering (PBR) </p>
+<p align="left"><img src="images/PBR.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="right"> Parallax Mapping </p>
-<p align="right"><img src="images/ParallaxMapping.png" width="960px" height="540px" /> </p>
+<p align="right"> Bump Mapping </p>
+<p align="right"> <img src="images/BumpMapping.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="left"> Chromatic Aberration </p>
-<p align="left"> <img src="images/ChromaticAberration.png" width="960px" height="540px" /> </p>
+<p align="left"> Parallax Mapping </p>
+<p align="left"><img src="images/ParallaxMapping.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="right"> Environment Mapping (Reflection and Refraction) </p>
-<p align="right"><img src="images/EnvironmentMapping.png" width="960px" height="540px" /> </p>
+<p align="right"> Chromatic Aberration </p>
+<p align="right"> <img src="images/ChromaticAberration.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="left">  Disintergration </p>
-<p align="left"> <img src="images/Disintergration.png" width="960px" height="540px" /> </p>
+<p align="left"> Environment Mapping (Reflection and Refraction) </p>
+<p align="left"><img src="images/EnvironmentMapping.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="right"> Fireball (Geometry Shader) </p>
-<p align="right"><img src="images/Fireball.png" width="960px" height="540px" /> </p>
+<p align="right">  Disintergration </p>
+<p align="right"> <img src="images/Disintergration.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="left"> Wireframe (Geometry Shader) </p>
-<p align="left"> <img src="images/Wireframe.png" width="960px" height="540px" /> </p>
+<p align="left"> Fireball (Geometry Shader) </p>
+<p align="left"><img src="images/Fireball.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="right"> Porcupine / Display Normal (Geometry Shader) </p>
-<p align="right"><img src="images/Porcupine.png" width="960px" height="540px" /> </p>
+<p align="right"> Wireframe (Geometry Shader) </p>
+<p align="right"> <img src="images/Wireframe.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="left"> Toon / Cell shading </p>
-<p align="left"> <img src="images/Toon.png" width="960px" height="540px" /> </p>
+<p align="left"> Porcupine / Display Normal (Geometry Shader) </p>
+<p align="left"><img src="images/Porcupine.png" width="960px" height="540px" /> </p>
 <br/>
-<p align="right"> Fast Approximate Anti-Aliasing (FXAA) (Geometry Shader) </p>
-<p align="right"><img src="images/Faaa.png" width="960px" height="540px" /> </p>
+<p align="right"> Toon / Cell shading </p>
+<p align="right"> <img src="images/Toon.png" width="960px" height="540px" /> </p>
+<br/>
+<p align="left"> Fast Approximate Anti-Aliasing (FXAA) (Geometry Shader) </p>
+<p align="left"><img src="images/Faaa.png" width="960px" height="540px" /> </p>
+<br/>
 
 ### Post Processing Effects
 <p align="left"> Color Inversion </p>
@@ -226,7 +229,7 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 <p align="left"> <img src="images/KnittedPixelation.png" width="960px" height="540px" /> </p>
 <br/>
 <p align="right"> Frosted Glass 1 </p>
-<p align="right"><img src="images/ParallaxMapping.png" width="960px" height="540px" /> </p>
+<p align="right"><img src="images/None.png" width="960px" height="540px" /> </p>
 <br/>
 
 * Frosted Glass 2

@@ -14,7 +14,7 @@
 
 struct IAudio {
     CAudio *m_pAudio;
-    GLfloat m_audioNumber;
+    GLint m_audioNumber;
     GLboolean m_changeAudio;
     std::vector <std::string> m_audioFiles;
     virtual void InitialiseAudio(const std::string &path) = 0;

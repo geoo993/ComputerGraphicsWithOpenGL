@@ -1,6 +1,6 @@
 # Computer Graphics With OpenGL
 
-This project was inspired and adapted from [Joey de Vries - Learn OpenGL Introduction](https://learnopengl.com/Introduction "Learn OpenGL Introduction") and [David Wolff OpenGL 4.0 Shading Language Cookbook](https://github.com/daw42/glslcookbook "David Wolff - OpenGL 4.0 Shading Language Cookbook"). 
+This project was inspired and adapted from [Joey de Vries - Learn OpenGL Introduction](https://learnopengl.com/Introduction "Learn OpenGL Introduction") and [David Wolff - OpenGL 4.0 Shading Language Cookbook](https://github.com/daw42/glslcookbook "David Wolff - OpenGL 4.0 Shading Language Cookbook"). 
 Computer graphics is a field in Computer Science which studies methods for digitally synthesizing and manipulating visual content to make computers easier to interact with, and better for understanding and interpreting many types of data. It has had a profound impact on many types of media and have revolutionised movies, medical imaging, product design, and the computer game industry.
 
 This project aims to illustrate some of the most common types of computer graphics techniques created using c++ and OpenGL. These include primitive rendering, camera system, lighting, materials, texturing, fragment and geometry shading, and post processing filters.
@@ -145,7 +145,7 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 <p align="right"> <a href="https://vimeo.com/355708337"><img src="images/BlinnPhong.png" width="960px" height="540px" title="Blinn Phong Lighting" alt="Blinn Phong Lighting"> </a></p>
 <br/>
 <p align="left"> HDR Tone Mapping </p>
-<p align="left"> <a href="https://vimeo.com"><img src="images/HRDToneMapping.png" width="960px" height="540px" title="HDR Tone Mapping" alt="HDR Tone Mapping"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355865376"><img src="images/HRDToneMapping.png" width="960px" height="540px" title="HDR Tone Mapping" alt="HDR Tone Mapping"></a> </p>
 <br/>
   
 ### Shaders
@@ -230,61 +230,61 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 <p align="left"> <a href="https://vimeo.com/355717607"><img src="images/KnittedPixelation.png" width="960px" height="540px" title="Knitted Pixelation" alt="Knitted Pixelation"></a> </p>
 <br/>
 <p align="right"> Frosted Glass Pixelation Effect </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/FrostedGlassPixelationEffect.png" width="960px" height="540px" title="Frosted Glass Pixelation Effect" alt="Frosted Glass Pixelation Effect"></a> </p>
+<p align="right"><a href="https://vimeo.com/355854901"><img src="images/FrostedGlassPixelationEffect.png" width="960px" height="540px" title="Frosted Glass Pixelation Effect" alt="Frosted Glass Pixelation Effect"></a> </p>
 <br/>
 <p align="left"> Frosted Glass Screen Wave Effect </p>
-<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/FrostedGlassScreenWaveEffect.png" width="960px" height="540px" title="Frosted Glass Screen Wave Effect" alt="Frosted Glass Screen Wave Effect"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355855225"><img src="images/FrostedGlassScreenWaveEffect.png" width="960px" height="540px" title="Frosted Glass Screen Wave Effect" alt="Frosted Glass Screen Wave Effect"></a> </p>
 <br/>
 <p align="right"> Cross Hatching </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/CrossHatching.png" width="960px" height="540px" title="Cross Hatching" alt="Cross Hatching"></a> </p>
+<p align="right"><a href="https://vimeo.com/355853403"><img src="images/CrossHatching.png" width="960px" height="540px" title="Cross Hatching" alt="Cross Hatching"></a> </p>
 <br/>
 <p align="left"> Predators Thermal Vision </p>
-<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/PredatorsThermalVision.png" width="960px" height="540px" title="Predators Thermal Vision" alt="Predators Thermal Vision"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355856468"><img src="images/PredatorsThermalVision.png" width="960px" height="540px" title="Predators Thermal Vision" alt="Predators Thermal Vision"></a> </p>
 <br/>
 <p align="right"> Toonify </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/Toonify.png" width="960px" height="540px" title="Toonify" alt="Toonify"></a> </p>
+<p align="right"><a href="https://vimeo.com/355857166"><img src="images/Toonify.png" width="960px" height="540px" title="Toonify" alt="Toonify"></a> </p>
 <br/>
 <p align="left"> Shockwave </p>
-<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/Shockwave.png" width="960px" height="540px" title="Shockwave" alt="Shockwave"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355857032"><img src="images/Shockwave.png" width="960px" height="540px" title="Shockwave" alt="Shockwave"></a> </p>
 <br/>
 <p align="right"> Fish Eye </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/FishEye.png" width="960px" height="540px" title="Fish Eye" alt="Fish Eye"></a> </p>
+<p align="right"><a href="https://vimeo.com/355853503"><img src="images/FishEye.png" width="960px" height="540px" title="Fish Eye" alt="Fish Eye"></a> </p>
 <br/>
 <p align="left"> Barrel Distortion </p>
-<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/BarrelDistortion.png" width="960px" height="540px" title="Barrel Distortion" alt="Barrel Distortion"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355852385"><img src="images/BarrelDistortion.png" width="960px" height="540px" title="Barrel Distortion" alt="Barrel Distortion"></a> </p>
 <br/>
 <p align="right"> Multi-Screen Fish Eye </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/MultiScreenFishEye.png" width="960px" height="540px" title="Multi-Screen Fish Eye" alt="Multi-Screen Fish Eye"></a> </p>
+<p align="right"><a href="https://vimeo.com/355856355"><img src="images/MultiScreenFishEye.png" width="960px" height="540px" title="Multi-Screen Fish Eye" alt="Multi-Screen Fish Eye"></a> </p>
 <br/>
 <p align="left"> Fish Eye Lens </p>
-<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/FishEyeLens.png" width="960px" height="540px" title="Fish Eye Lens" alt="Fish Eye Lens"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355854021"><img src="images/FishEyeLens.png" width="960px" height="540px" title="Fish Eye Lens" alt="Fish Eye Lens"></a> </p>
 <br/>
 <p align="right"> Fish Eye / Anti-Fish Eye </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/FishEyeAntiFishEye.png" width="960px" height="540px" title="Fish Eye / Anti-Fish Eye" alt="Fish Eye / Anti-Fish Eye"></a> </p>
+<p align="right"><a href="https://vimeo.com/355853810"><img src="images/FishEyeAntiFishEye.png" width="960px" height="540px" title="Fish Eye / Anti-Fish Eye" alt="Fish Eye / Anti-Fish Eye"></a> </p>
 <br/>
 <p align="left"> Gaussian Blur </p>
-<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/GaussianBlur.png" width="960px" height="540px" title="Gaussian Blur" alt="Gaussian Blur"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355855503"><img src="images/GaussianBlur.png" width="960px" height="540px" title="Gaussian Blur" alt="Gaussian Blur"></a> </p>
 <br/>
 <p align="right"> Blur </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/Blur.png" width="960px" height="540px" title="Blur" alt="Blur"></a> </p>
+<p align="right"><a href="https://vimeo.com/355852994"><img src="images/Blur.png" width="960px" height="540px" title="Blur" alt="Blur"></a> </p>
 <br/>
 <p align="left"> Radial Blur </p>
-<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/RadialBlur.png" width="960px" height="540px" title="Radial Blur" alt="Radial Blur"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355856744"><img src="images/RadialBlur.png" width="960px" height="540px" title="Radial Blur" alt="Radial Blur"></a> </p>
 <br/>
 <p align="right"> Motion Blur </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/MotionBlur.png" width="960px" height="540px" title="Motion Blur" alt="Motion Blur"></a> </p>
+<p align="right"><a href="https://vimeo.com/355856138"><img src="images/MotionBlur.png" width="960px" height="540px" title="Motion Blur" alt="Motion Blur"></a> </p>
 <br/>
 <p align="left"> Vignetting </p>
-<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/Vignetting.png" width="960px" height="540px" title="Vignetting" alt="Vignetting"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355857463"><img src="images/Vignetting.png" width="960px" height="540px" title="Vignetting" alt="Vignetting"></a> </p>
 <br/>
 <p align="right"> Bright Parts </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/BrightParts.png" width="960px" height="540px" title="Bright Parts" alt="Bright Parts"></a> </p>
+<p align="right"><a href="https://vimeo.com/355853121"><img src="images/BrightParts.png" width="960px" height="540px" title="Bright Parts" alt="Bright Parts"></a> </p>
 <br/>
 <p align="left"> Bloom </p>
-<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/Bloom.png" width="960px" height="540px" title="Bloom" alt="Bloom"></a> </p>
+<p align="left"> <a href="https://vimeo.com/355852729"><img src="images/Bloom.png" width="960px" height="540px" title="Bloom" alt="Bloom"></a> </p>
 <br/>
 <p align="right"> Lens Flare </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/LensFlare.png" width="960px" height="540px" title="Lens Flare" alt="Lens Flare"></a> </p>
+<p align="right"><a href="https://vimeo.com/355855785"><img src="images/LensFlare.png" width="960px" height="540px" title="Lens Flare" alt="Lens Flare"></a> </p>
 <br/>
 
 

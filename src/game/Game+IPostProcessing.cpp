@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     
-    m_currentPPFXMode = PostProcessingEffectMode::PBR;
+    m_currentPPFXMode = PostProcessingEffectMode::BlinnPhong;
     m_coverage = 1.0f;
     m_changePPFXMode = false;
     m_prevPPFXMode = false;
@@ -73,18 +73,17 @@ void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // SSAO
     // generate sample kernel
     // ----------------------
-    srand(glfwGetTime()); // initialize random seed
     m_ssaoBias = 0.25f;
     m_ssaoRadius = 50.0f;
     m_ssaoNoiseSize = 2.0f;
     m_ssaoKernelSamples = 64;
     for (GLuint i = 0; i < m_ssaoKernelSamples; ++i)
     {
-        glm::vec3 sample(Extensions::randFloat() * 2.0f - 1.0f,
-                         Extensions::randFloat() * 2.0f - 1.0f,
-                         Extensions::randFloat());
+        glm::vec3 sample(Extensions::randUnitFloat() * 2.0f - 1.0f,
+                         Extensions::randUnitFloat() * 2.0f - 1.0f,
+                         Extensions::randUnitFloat());
         sample = glm::normalize(sample);
-        sample *= Extensions::randFloat();
+        sample *= Extensions::randUnitFloat();
         float scale = float(i) / m_ssaoKernelSamples;
         
         // scale samples s.t. they're more aligned to center of kernel
@@ -98,8 +97,8 @@ void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     m_ssaoNoiseSamples = 16;
     for (GLuint i = 0; i < m_ssaoNoiseSamples; i++)
     {
-        glm::vec3 noise(Extensions::randFloat() * 2.0f - 1.0f,
-                        Extensions::randFloat() * 2.0f - 1.0f,
+        glm::vec3 noise(Extensions::randUnitFloat() * 2.0f - 1.0f,
+                        Extensions::randUnitFloat() * 2.0f - 1.0f,
                         0.0f); // rotate around z-axis (in tangent space)
         m_ssaoNoise.push_back(noise);
     }

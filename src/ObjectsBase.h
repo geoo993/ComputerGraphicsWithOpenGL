@@ -17,5 +17,6 @@
 #include "buffers/VertexBufferObjectIndexed.h"
 #include "interfaces/IGameObject.h"
 #include "utilities/Vertex.h"
+#include "utilities/Extensions.h"
 
 #endif /* ObjectsBase_h */

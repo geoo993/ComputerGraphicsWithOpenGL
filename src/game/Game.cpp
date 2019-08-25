@@ -4,8 +4,7 @@
 // Constructor
 Game::Game()
 {
-    srand(glfwGetTime()); // initialize random seed
-    
+
     // game window
     m_gameWindow = nullptr;
     m_gameManager = nullptr;
@@ -116,7 +115,7 @@ Game::Game()
     m_pEnvSkybox = nullptr;
     m_pIrrSkybox = nullptr;
     m_skyboxSize = (GLfloat)SKYBOX;
-    m_skyboxNumber = Extensions::randomInt(0, 5);
+    m_skyboxNumber = Extensions::randomInt(0, 6);
     m_changeSkybox = true;
     
     // terrain

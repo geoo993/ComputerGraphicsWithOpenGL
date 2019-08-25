@@ -54,10 +54,6 @@ void CMetaballs::Create(const float &level, const int &numberOfBalls, const int 
         m_textures[i]->SetSamplerObjectParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
         // any code including continue, break, return
     }
-    
-    //srand ( time(nullptr) );
-    srand(glfwGetTime());
-
 
 	for( int i = 0; i < m_nNumBalls; i++ )
 	{
@@ -67,10 +63,10 @@ void CMetaballs::Create(const float &level, const int &numberOfBalls, const int 
 		m_Balls[i].v[0] = 0;
 		m_Balls[i].v[1] = 0;
 		m_Balls[i].v[2] = 0;
-		m_Balls[i].a[0] = (float(rand())/RAND_MAX*2-1)/2;
-		m_Balls[i].a[1] = (float(rand())/RAND_MAX*2-1)/2;
-		m_Balls[i].a[2] = (float(rand())/RAND_MAX*2-1)/2;
-		m_Balls[i].t = float(rand())/RAND_MAX;
+		m_Balls[i].a[0] = (float(Extensions::randFloat())/RAND_MAX*2-1) / 2;
+		m_Balls[i].a[1] = (float(Extensions::randFloat())/RAND_MAX*2-1) / 2;
+		m_Balls[i].a[2] = (float(Extensions::randFloat())/RAND_MAX*2-1) / 2;
+        m_Balls[i].t = float(Extensions::randFloat())/RAND_MAX;
 		m_Balls[i].m = 1;
 	}
     
@@ -89,12 +85,12 @@ void CMetaballs::Update(const GLfloat &fDeltaTime)
 		if( m_Balls[i].t < 0 )
 		{
 			// When is the next time to act?
-			m_Balls[i].t = float(rand())/RAND_MAX;
+			m_Balls[i].t = float(Extensions::randFloat())/RAND_MAX;
 
 			// Use a new attraction point
-			m_Balls[i].a[0] = (float(rand())/RAND_MAX*2-1)/2;
-			m_Balls[i].a[1] = (float(rand())/RAND_MAX*2-1)/2;
-			m_Balls[i].a[2] = (float(rand())/RAND_MAX*2-1)/2;
+			m_Balls[i].a[0] = (float(Extensions::randFloat())/RAND_MAX*2-1)/2;
+			m_Balls[i].a[1] = (float(Extensions::randFloat())/RAND_MAX*2-1)/2;
+			m_Balls[i].a[2] = (float(Extensions::randFloat())/RAND_MAX*2-1)/2;
 		}
 
 		// Accelerate towards the attraction point

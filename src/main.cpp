@@ -15,10 +15,7 @@ int main(int argc, const char * argv[])
 
     std::cout << "Project Major Version: " << ComputerGraphicsWithOpenGL_VERSION_MAJOR << std::endl;
     std::cout << "Project Minor Version: " << ComputerGraphicsWithOpenGL_VERSION_MINOR << std::endl;
-    
-    srand((unsigned)time(nullptr));//time should write like this .
-    //srand(glfwGetTime()); // initialize random seed
-
+   
     /*
      This path is set in Edit scheme => Use custom working direcotry.
      Add the path by enabling Use project working direction,
@@ -29,7 +26,7 @@ int main(int argc, const char * argv[])
      //char * path = getcwd(NULL, 0);
      
      OR
-    */
+     */
 
     std::string path = ComputerGraphicsWithOpenGL_RESOURCES; // from project configuration file
     std::string filepath = std::string(path) + "/resources";

@@ -114,14 +114,7 @@ public:
         delete [] buffer;
         return str;
     }
-    
-    static float uniformRandomInRange(float min, float max) {
-        assert(min < max);
-        double n = (double) rand() / (double) RAND_MAX;
-        double v = min + n * (max - min);
-        return v;
-    }
-    
+
     /*
          float lerp(float a, float b, float f)
          {
@@ -177,24 +170,30 @@ public:
     }
     
     static float randFloat(){
-        return float( (double)rand() / (RAND_MAX + 1.0f));
-        //return  static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        std::random_device dev;
+        std::mt19937 rng(dev());
+        std::uniform_int_distribution<std::mt19937::result_type> distBetween(0, RAND_MAX);
+        return (float)distBetween(rng);
+    }
+    
+    static float randUnitFloat() {
+        return (float)randFloat() / ((float)RAND_MAX);
     }
     
     //Random between 2 floats 
-    static float  randomFloatBetween(float min, float max)    
+    static float  randomFloat(float min, float max)
     {    
-        return (min + 1) + (((float) rand()) / (float) RAND_MAX) * (max - (min + 1));    
+        return (min + 1) + (randUnitFloat()) * (max - (min + 1));
     }
     
     //Random between 2 int 
     static int    randomInt(int min, int max)    
     {    
-        return rand() % (max - min) + min + 1;     
+        return (int)randFloat() % (max - min) + min + 1;
     }
     
     static glm::vec3 randRGB(){
-        return glm::vec3 (randFloat(), randFloat(), randFloat());
+        return glm::vec3 (randUnitFloat(), randUnitFloat(), randUnitFloat());
     }
     
   

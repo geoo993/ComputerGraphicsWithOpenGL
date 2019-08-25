@@ -338,13 +338,13 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             RenderToScreen(pKnittedPixelationProgram);
             return;
         }
-        case PostProcessingEffectMode::FrostedGlassEffect: {
+        case PostProcessingEffectMode::FrostedGlassPixelationEffect: {
             CShaderProgram *pFrostedGlassProgram = (*m_pShaderPrograms)[30];
             SetFrostedGlassEffectUniform(pFrostedGlassProgram);
             RenderToScreen(pFrostedGlassProgram);
             return;
         }
-        case PostProcessingEffectMode::FrostedGlass: {
+        case PostProcessingEffectMode::FrostedGlassScreenWaveEffect: {
             CShaderProgram *pFrostedGlassExtraProgram = (*m_pShaderPrograms)[31];
             SetFrostedGlassUniform(pFrostedGlassExtraProgram);
             RenderToScreen(pFrostedGlassExtraProgram);
@@ -1127,11 +1127,11 @@ void Game::RenderPPFX(const PostProcessingEffectMode &mode)
         case PostProcessingEffectMode::KnittedPixelation:
             RenderPPFXScene(PostProcessingEffectMode::KnittedPixelation);
             break;
-        case PostProcessingEffectMode::FrostedGlassEffect:
-            RenderPPFXScene(PostProcessingEffectMode::FrostedGlassEffect);
+        case PostProcessingEffectMode::FrostedGlassPixelationEffect:
+            RenderPPFXScene(PostProcessingEffectMode::FrostedGlassPixelationEffect);
             break;
-        case PostProcessingEffectMode::FrostedGlass:
-            RenderPPFXScene(PostProcessingEffectMode::FrostedGlass);
+        case PostProcessingEffectMode::FrostedGlassScreenWaveEffect:
+            RenderPPFXScene(PostProcessingEffectMode::FrostedGlassScreenWaveEffect);
             break;
         case PostProcessingEffectMode::Crosshatching:
             RenderPPFXScene(PostProcessingEffectMode::Crosshatching);
@@ -1296,10 +1296,10 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         return "Pixelation";
         case PostProcessingEffectMode::KnittedPixelation:
         return "Knitted Pixelation";
-        case PostProcessingEffectMode::FrostedGlassEffect:
-        return "Frosted Glass Effect";
-        case PostProcessingEffectMode::FrostedGlass:
-        return "Frosted Glass";
+        case PostProcessingEffectMode::FrostedGlassPixelationEffect:
+        return "Frosted Glass Pixelation Effect";
+        case PostProcessingEffectMode::FrostedGlassScreenWaveEffect:
+        return "Frosted Glass Screen Wave Effect";
         case PostProcessingEffectMode::Crosshatching:
         return "Crosshatching";
         case PostProcessingEffectMode::PredatorsThermalVision:
@@ -1313,7 +1313,7 @@ const char * const Game::PostProcessingEffectToString(const PostProcessingEffect
         case PostProcessingEffectMode::BarrelDistortion:
         return "Barrel Distortion";
         case PostProcessingEffectMode::MultiScreenFishEye:
-        return "MultiScreen Fish Eye";
+        return "Multi-Screen Fish Eye";
         case PostProcessingEffectMode::FishEyeLens:
         return "Fish Eye Lens";
         case PostProcessingEffectMode::FishEyeAntiFishEye:

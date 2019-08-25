@@ -320,28 +320,28 @@ void Game::LoadControls() {
     /// Frosted Glass Effect
     guiBox->y = rightStartingY + ppfxY + guiBox->height + spaceAtCoverage;
     CSlider *frostedGlassPixelX = (CSlider *)AddControl(new CSlider("Pixel X", 0.0f, 20.0f, 5, guiBox,
-                                                                 GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassEffect));
+                                                                 GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassPixelationEffect));
     frostedGlassPixelX->SetValue(&m_frostedGlassPixelX);
     guiBox->y += guiBox->height;
     
     CSlider *frostedGlassPixelY = (CSlider *)AddControl(new CSlider("Pixel Y", 0.0f, 20.0f, 5, guiBox,
-                                                                  GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassEffect));
+                                                                  GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassPixelationEffect));
     frostedGlassPixelY->SetValue(&m_frostedGlassPixelY);
     guiBox->y += guiBox->height;
     
     CSlider *frostedGlassFrequency = (CSlider *)AddControl(new CSlider("Frequency", 0.0f, 1.0f, 5, guiBox,
-                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassEffect));
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassPixelationEffect));
     frostedGlassFrequency->SetValue(&m_frostedGlassFrequency);
     
     /// Frosted Glass
     guiBox->y = rightStartingY + ppfxY + guiBox->height + spaceAtCoverage;
     CSlider *frostedGlassRandomFactor = (CSlider *)AddControl(new CSlider("Random Factor", 0.0f, 0.1f, 5, guiBox,
-                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassScreenWaveEffect));
     frostedGlassRandomFactor->SetValue(&m_frostedGlassRandomFactor);
     guiBox->y += guiBox->height;
     
     CSlider *frostedGlassRandomScale = (CSlider *)AddControl(new CSlider("Random Scale", 0.0f, 0.1f, 5, guiBox,
-                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlass));
+                                                                    GUIMode::DYNAMIC, false, PostProcessingEffectMode::FrostedGlassScreenWaveEffect));
     frostedGlassRandomScale->SetValue(&m_frostedGlassRandomScale);
     
     /// Crosshatching

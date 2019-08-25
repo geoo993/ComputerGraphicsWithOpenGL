@@ -115,7 +115,7 @@ Game::Game()
     m_pEnvSkybox = nullptr;
     m_pIrrSkybox = nullptr;
     m_skyboxSize = (GLfloat)SKYBOX;
-    m_skyboxNumber = Extensions::randomInt(0, 6);
+    m_skyboxNumber = int(Extensions::randomFloat(0.0f, 6.0f));
     m_changeSkybox = true;
     
     // terrain

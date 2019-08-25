@@ -16,7 +16,7 @@ void Game::InitialiseAudio(const std::string &path){
     m_audioFiles.push_back(path+"/audio/Kai_Engel_-_03_-_Realness.mp3");
     m_audioFiles.push_back(path+"/audio/Kai_Engel_-_08_-_Oecumene_Sleeps.mp3");
     
-    m_audioNumber = Extensions::randomInt(0, m_audioFiles.size());
+    m_audioNumber = int(Extensions::randomFloat(0.0f, m_audioFiles.size()));
     
     //// Initialise audio and play background music
     m_pAudio->Initialise();

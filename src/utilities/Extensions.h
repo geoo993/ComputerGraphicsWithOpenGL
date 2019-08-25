@@ -180,16 +180,10 @@ public:
         return (float)randFloat() / ((float)RAND_MAX);
     }
     
-    //Random between 2 floats 
     static float  randomFloat(float min, float max)
-    {    
-        return (min + 1) + (randUnitFloat()) * (max - (min + 1));
-    }
-    
-    //Random between 2 int 
-    static int    randomInt(int min, int max)    
-    {    
-        return (int)randFloat() % (max - min) + min + 1;
+    {
+        float minimum = min < max ? min : max;
+        return randUnitFloat() * abs(float(min - max)) + minimum;
     }
     
     static glm::vec3 randRGB(){

@@ -1,6 +1,7 @@
 # Computer Graphics With OpenGL
 
-This project was inspired and adapted from [Joey de Vries](https://learnopengl.com/Introduction "Learn OpenGL Introduction") and [David Wolff](https://github.com/daw42/glslcookbook "David Wolff OpenGL 4.0 Shading Language Cookbook"). Computer graphics is a field in Computer Science which studies methods for digitally synthesizing and manipulating visual content to make computers easier to interact with, and better for understanding and interpreting many types of data. Computer graphics development has had a profound impact on many types of media and have revolutionised movies, medical imaging, product design, and the computer game industry.
+This project was inspired and adapted from [Joey de Vries - Learn OpenGL Introduction](https://learnopengl.com/Introduction "Learn OpenGL Introduction") and [David Wolff OpenGL 4.0 Shading Language Cookbook](https://github.com/daw42/glslcookbook "David Wolff - OpenGL 4.0 Shading Language Cookbook"). 
+Computer graphics is a field in Computer Science which studies methods for digitally synthesizing and manipulating visual content to make computers easier to interact with, and better for understanding and interpreting many types of data. It has had a profound impact on many types of media and have revolutionised movies, medical imaging, product design, and the computer game industry.
 
 This project aims to illustrate some of the most common types of computer graphics techniques created using c++ and OpenGL. These include primitive rendering, camera system, lighting, materials, texturing, fragment and geometry shading, and post processing filters.
 
@@ -144,7 +145,7 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 <p align="right"> <a href="https://vimeo.com/355708337"><img src="images/BlinnPhong.png" width="960px" height="540px" title="Blinn Phong Lighting" alt="Blinn Phong Lighting"> </a></p>
 <br/>
 <p align="left"> HDR Tone Mapping </p>
-<p align="left"> <a href="https://vimeo.com"><img src="images/None.png" width="960px" height="540px" title="HDR Tone Mapping" alt="HDR Tone Mapping"></a> </p>
+<p align="left"> <a href="https://vimeo.com"><img src="images/HRDToneMapping.png" width="960px" height="540px" title="HDR Tone Mapping" alt="HDR Tone Mapping"></a> </p>
 <br/>
   
 ### Shaders

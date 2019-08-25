@@ -228,28 +228,65 @@ $ ./src/Debug/ComputerGraphicsWithOpenGL
 <p align="left"> Knitted Pixelation </p>
 <p align="left"> <a href="https://vimeo.com/355717607"><img src="images/KnittedPixelation.png" width="960px" height="540px" title="Knitted Pixelation" alt="Knitted Pixelation"></a> </p>
 <br/>
-<p align="right"> Frosted Glass 1 </p>
-<p align="right"><a href="https://vimeo.com"><img src="images/None.png" width="960px" height="540px" title="Frosted Glass 1" alt="Frosted Glass 1"></a> </p>
+<p align="right"> Frosted Glass Pixelation Effect </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/FrostedGlassPixelationEffect.png" width="960px" height="540px" title="Frosted Glass Pixelation Effect" alt="Frosted Glass Pixelation Effect"></a> </p>
+<br/>
+<p align="left"> Frosted Glass Screen Wave Effect </p>
+<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/FrostedGlassScreenWaveEffect.png" width="960px" height="540px" title="Frosted Glass Screen Wave Effect" alt="Frosted Glass Screen Wave Effect"></a> </p>
+<br/>
+<p align="right"> Cross Hatching </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/CrossHatching.png" width="960px" height="540px" title="Cross Hatching" alt="Cross Hatching"></a> </p>
+<br/>
+<p align="left"> Predators Thermal Vision </p>
+<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/PredatorsThermalVision.png" width="960px" height="540px" title="Predators Thermal Vision" alt="Predators Thermal Vision"></a> </p>
+<br/>
+<p align="right"> Toonify </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/Toonify.png" width="960px" height="540px" title="Toonify" alt="Toonify"></a> </p>
+<br/>
+<p align="left"> Shockwave </p>
+<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/Shockwave.png" width="960px" height="540px" title="Shockwave" alt="Shockwave"></a> </p>
+<br/>
+<p align="right"> Fish Eye </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/FishEye.png" width="960px" height="540px" title="Fish Eye" alt="Fish Eye"></a> </p>
+<br/>
+<p align="left"> Barrel Distortion </p>
+<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/BarrelDistortion.png" width="960px" height="540px" title="Barrel Distortion" alt="Barrel Distortion"></a> </p>
+<br/>
+<p align="right"> Multi-Screen Fish Eye </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/MultiScreenFishEye.png" width="960px" height="540px" title="Multi-Screen Fish Eye" alt="Multi-Screen Fish Eye"></a> </p>
+<br/>
+<p align="left"> Fish Eye Lens </p>
+<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/FishEyeLens.png" width="960px" height="540px" title="Fish Eye Lens" alt="Fish Eye Lens"></a> </p>
+<br/>
+<p align="right"> Fish Eye / Anti-Fish Eye </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/FishEyeAntiFishEye.png" width="960px" height="540px" title="Fish Eye / Anti-Fish Eye" alt="Fish Eye / Anti-Fish Eye"></a> </p>
+<br/>
+<p align="left"> Gaussian Blur </p>
+<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/GaussianBlur.png" width="960px" height="540px" title="Gaussian Blur" alt="Gaussian Blur"></a> </p>
+<br/>
+<p align="right"> Blur </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/Blur.png" width="960px" height="540px" title="Blur" alt="Blur"></a> </p>
+<br/>
+<p align="left"> Radial Blur </p>
+<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/RadialBlur.png" width="960px" height="540px" title="Radial Blur" alt="Radial Blur"></a> </p>
+<br/>
+<p align="right"> Motion Blur </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/MotionBlur.png" width="960px" height="540px" title="Motion Blur" alt="Motion Blur"></a> </p>
+<br/>
+<p align="left"> Vignetting </p>
+<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/Vignetting.png" width="960px" height="540px" title="Vignetting" alt="Vignetting"></a> </p>
+<br/>
+<p align="right"> Bright Parts </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/BrightParts.png" width="960px" height="540px" title="Bright Parts" alt="Bright Parts"></a> </p>
+<br/>
+<p align="left"> Bloom </p>
+<p align="left"> <a href="https://vimeo.com/355717607"><img src="images/Bloom.png" width="960px" height="540px" title="Bloom" alt="Bloom"></a> </p>
+<br/>
+<p align="right"> Lens Flare </p>
+<p align="right"><a href="https://vimeo.com"><img src="images/LensFlare.png" width="960px" height="540px" title="Lens Flare" alt="Lens Flare"></a> </p>
 <br/>
 
-* Frosted Glass 2
-* Crosshatching
-* Predators Thermal Vision
-* Toonify
-* Shockwave
-* Fish Eye
-* Barrel Distortion
-* MultiScreen Fish Eye
-* Fish Eye Lens
-* Fish Eye / Anti-Fish Eye
-* Gaussian Blur
-* Blur
-* Radial Blur
-* Motion Blur
-* Vignetting
-* Bright Parts
-* Bloom
-* Lens Flare
+
 * Screen Space Ambient Occlusion
 * Depth Testing
 * Depth Mapping

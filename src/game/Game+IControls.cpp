@@ -470,6 +470,11 @@ void Game::LoadControls() {
     
     // BrightParts
     guiBox->y = rightStartingY + ppfxY + guiBox->height + spaceAtCoverage;
+        CButton * brightPartsUseHDR = (CButton *)AddControl(new CButton("Use HDR Light", guiBox,
+                                                              GUIMode::DYNAMIC, false, PostProcessingEffectMode::BrightParts));
+    brightPartsUseHDR->SetValue(&m_HDR);
+    guiBox->y += guiBox->height;
+    
     CButton * brightPartsSmoothGradient = (CButton *)AddControl(new CButton("Smooth Gradient", guiBox,
                                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::BrightParts));
     brightPartsSmoothGradient->SetValue(&m_brightPartsSmoothGradient);

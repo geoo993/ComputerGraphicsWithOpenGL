@@ -47,7 +47,6 @@ void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     m_multiScreenFishEyeRadius = 3.0f;
     m_multiScreenFishEyeCurvature = 5.0f;
     m_fishEyeLensSize = 0.5f;
-    m_gaussianBlurIntensity = 0.2f;
     m_gaussianBlurIntensity = 0.5f;
     m_radialBlurRadius = 0.4f;
     m_radialBlurResolution = 4.0f;

@@ -99,19 +99,17 @@ in VS_OUT
 vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
 {
     
-    vec4 lightColor = (material.bUseColor ? vec4(base.color, 1.0f) : vec4(1.0f));
-    vec4 materialColor = material.color;
-    vec3 ambientMap = texture(material.ambientMap, fs_in.vTexCoord).rgb;                // scene Map
     vec3 diffuseMap = texture(material.diffuseMap, fs_in.vTexCoord).rgb;                // albedo Map
-    float specularMap = texture(material.diffuseMap, fs_in.vTexCoord).a;            // specularMap
     float ambientOcclusion = texture(material.aoMap, fs_in.vTexCoord).r;            // ssao Map
+    vec3 lightColor = (material.bUseColor ? base.color : vec3(1.0f));
+    vec3 materialColor = material.color.xyz;
     
     // ambient
-    vec4 ambient = base.ambient * (material.bUseTexture ? vec4(diffuseMap * ambientOcclusion, 1.0f) : vec4(materialColor.xyz * ambientOcclusion, 1.0f));
+    vec3 ambient = vec3(base.ambient * (material.bUseTexture ? diffuseMap : materialColor) * ambientOcclusion);
     
     // diffuse
     float diffuseFactor = max(dot(normal, direction), 0.0f);
-    vec4 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? vec4(diffuseMap, 1.0f) : materialColor) * lightColor;
+    vec3 diffuse = base.diffuse * diffuseFactor * (material.bUseTexture ? diffuseMap : materialColor) * lightColor;
     
     // specular
     vec3 view =  camera.position + camera.front;
@@ -121,8 +119,8 @@ vec4 CalcLight(BaseLight base, vec3 direction, vec3 normal, vec3 vertexPosition)
     float specularFactor = bUseBlinn
     ? pow(max(dot(normal, halfDirection), 0.0f), material.shininess)
     : pow(max(dot(directionToEye, reflectDirection), 0.0f), material.shininess);
-    vec4 specular = base.specular * specularFactor * lightColor;
-    return (ambient + diffuse + specular) * base.intensity;
+    vec3 specular = base.specular * specularFactor * lightColor;
+    return vec4((ambient + diffuse + specular) * base.intensity, 1.0f);
 }
 
 vec4 CalcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 vertexPosition)
@@ -208,9 +206,9 @@ void main()
             
             tc = result;
         } else {
-            vec3 ambientMap = texture(material.ambientMap, uv).rgb;                // albedo Map
+            vec3 diffuseMap = texture(material.diffuseMap, uv).rgb;
             float ambientOcclusion = texture(material.aoMap, uv).r;            // ssao Map
-            tc = vec4(ambientMap * ambientOcclusion, 1.0f);
+            tc = vec4(diffuseMap * ambientOcclusion, 1.0f);
         }
     }
     else if ( uv.x  >=  (  coverage  +   0.003f) )

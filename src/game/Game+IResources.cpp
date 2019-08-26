@@ -463,10 +463,9 @@ void Game::LoadResources(const std::string &path)
                               { "ambient.jpg", TextureType::AMBIENT },            // ambientMap 0
                               { "diffuse.jpg",   TextureType::DIFFUSE},
                               { "specular.jpg",   TextureType::SPECULAR},
-                              { "bump.jpg", TextureType::DISPLACEMENT},
-                              { "moss.png", TextureType::NOISE }
+                              { "moss.png", TextureType::DISPLACEMENT }
                           }, 50, 50);
-    m_teapot15->Create(path+"/models/teapot/utah-teapot.obj", path+"/textures/dirtpile/",
+    m_teapot15->Create(path+"/models/teapot/utah-teapot.obj", path+"/textures/pbr/dirtpile/",
                       {
                           { "albedo.jpg", TextureType::ALBEDO },           // albedo map
                           { "metallic.jpg",  TextureType::METALNESS },           // metallic map
@@ -476,8 +475,7 @@ void Game::LoadResources(const std::string &path)
                           { "ambient.jpg", TextureType::AMBIENT },            // ambientMap 0
                           { "diffuse.jpg",   TextureType::DIFFUSE},
                           { "specular.jpg",   TextureType::SPECULAR},
-                          { "bump.jpg", TextureType::DISPLACEMENT},
-                          { "moss.png", TextureType::NOISE }
+                          { "moss.png", TextureType::DISPLACEMENT }
                       });
     
     m_pSpherePBR16->Create(path+"/textures/pbr/metalpainted/",
@@ -502,12 +500,13 @@ void Game::LoadResources(const std::string &path)
                        });
     
     
-    m_pSpherePBR17->Create("", {}, 50, 50);
-    m_teapot17->Create(path+"/models/teapot/utah-teapot.obj", "", {});
+    m_pSpherePBR17->Create(path+"/textures/", {}, 50, 50);
+    m_teapot17->Create(path+"/models/teapot/utah-teapot.obj", path+"/textures/", {});
     
     
-    m_pSpherePBR18->Create(path+"/textures/",
-                           {   { "explosion.png", TextureType::NOISE }
+    m_pSpherePBR18->Create(path+"/textures/pbr/fireball/",
+                           {
+                               { "explosion.png", TextureType::DISPLACEMENT }
                            }, 50, 50);
     
     

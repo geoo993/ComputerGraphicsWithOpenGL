@@ -115,12 +115,6 @@ public:
         return str;
     }
 
-    /*
-         float lerp(float a, float b, float f)
-         {
-             return a + f * (b - a);
-         }
-     */
     static float interpolate(float a, float b, float f) {
         return a + f * (b - a);
     }

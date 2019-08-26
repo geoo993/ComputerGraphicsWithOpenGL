@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     
-    m_currentPPFXMode = PostProcessingEffectMode::BlinnPhong;
+    m_currentPPFXMode = PostProcessingEffectMode::SSAO;
     m_coverage = 1.0f;
     m_changePPFXMode = false;
     m_prevPPFXMode = false;
@@ -75,7 +75,7 @@ void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     // ----------------------
     m_ssaoBias = 0.25f;
     m_ssaoRadius = 50.0f;
-    m_ssaoNoiseSize = 2.0f;
+    m_ssaoNoiseSize = 4.0f;
     m_ssaoKernelSamples = 64;
     for (GLuint i = 0; i < m_ssaoKernelSamples; ++i)
     {
@@ -719,9 +719,6 @@ void Game::RenderPPFXScene(const PostProcessingEffectMode &mode) {
             return;
         }
         case PostProcessingEffectMode::DepthMapping: {
-            
-            GLfloat near_plane = (GLfloat)SHADOW_ZNEAR; // how short the light ray goes
-            GLfloat far_plane = (GLfloat)SHADOW_ZFAR; //how far the light ray goes
             
             // Second Pass - Render Scene to light space
             {

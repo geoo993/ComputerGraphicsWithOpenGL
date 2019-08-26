@@ -22,6 +22,9 @@ uniform struct Material
     vec4 color;
     float shininess;
     float uvTiling;
+    bool bUseAO;
+    bool bUseTexture;
+    bool bUseColor;
 } material;
 
 
@@ -36,11 +39,32 @@ in VS_OUT
     vec4 vEyePosition;
 } fs_in;
 
-out vec4 vOutputColour;        // The output colour formely  gl_FragColor
+//When rendering into the current framebuffer, whenever a fragment shader uses the layout location specifier the respective colorbuffer of framebuffor colors array, which is used to render the fragments to that color buffer.
+layout (location = 0) out vec4 vOutputColour;   // The output colour formely  gl_FragColor
+layout (location = 1) out vec4 vBrightColor;
+layout (location = 2) out vec3 vPosition;
+layout (location = 3) out vec3 vNormal;
+layout (location = 4) out vec4 vAlbedoSpec;
 
 void main()
 {
     
     vOutputColour = vec4(fs_in.vWorldNormal, 1.0f);
+    // Retrieve bright parts
+    float brightness = dot(vOutputColour.rgb, vec3(0.2126f, 0.7152f, 0.0722f));
+    if(brightness > 1.0f) {
+        vBrightColor = vec4(vOutputColour.rgb, 1.0f);
+    } else {
+        vBrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    }
     
+    // store the fragment position vector in the first gbuffer texture
+    vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
+    // also store the per-fragment normals into the gbuffer
+    vNormal = normalize(fs_in.vWorldNormal);
+    // and the diffuse per-fragment color
+    vAlbedoSpec.rgb = vec3(0.95f);
+    // store specular intensity in gAlbedoSpec's alpha component
+    vAlbedoSpec.a = 1.0f;
+
 }

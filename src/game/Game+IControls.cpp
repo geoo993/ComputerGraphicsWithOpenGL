@@ -587,7 +587,7 @@ void Game::LoadControls() {
     ssaoRadius->SetValue(&m_ssaoRadius);
     guiBox->y += guiBox->height;
     
-    CSlider *ssaoNoise = (CSlider *)AddControl(new CSlider("Noise", 0.0f, 24.0f, 5, guiBox,
+    CSlider *ssaoNoise = (CSlider *)AddControl(new CSlider("Noise", 0.0f, 12.0f, 5, guiBox,
                                                             GUIMode::DYNAMIC, false, PostProcessingEffectMode::SSAO));
     ssaoNoise->SetValue(&m_ssaoNoiseSize);
     

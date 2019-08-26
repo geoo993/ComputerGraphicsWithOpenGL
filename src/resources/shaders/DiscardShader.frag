@@ -181,7 +181,7 @@ void disintegration(inout vec4 result) {
             
     // Read texel (pixel from image)
     vec4 mainTexColour = texture(material.diffuseMap, fs_in.vTexCoord);
-    vec4 noiseTexColour = texture(material.noiseMap, fs_in.vTexCoord);
+    vec4 noiseTexColour = texture(material.displacementMap, fs_in.vTexCoord);
     
     /*
      // Discard 1

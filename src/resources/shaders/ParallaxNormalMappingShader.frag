@@ -322,5 +322,5 @@ void main()
     // and the diffuse per-fragment color
     vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.diffuseMap, fs_in.vTexCoord).rgb;
     // store specular intensity in gAlbedoSpec's alpha component
-    vAlbedoSpec.a = material.bUseAO ? 1.0f : texture(material.specularMap, fs_in.vTexCoord).r;
+    vAlbedoSpec.a = 1.0f;
 }

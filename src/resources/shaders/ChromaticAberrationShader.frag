@@ -34,7 +34,9 @@ uniform struct Material
     vec4 color;
     float shininess;
     float uvTiling;
+    bool bUseAO;
     bool bUseTexture;
+    bool bUseColor;
 } material;
 
 uniform struct HRDLight
@@ -186,9 +188,11 @@ void main()
     }
     
     // store the fragment position vector in the first gbuffer texture
-    vPosition = fs_in.vWorldPosition;
+    vPosition = material.bUseAO ? fs_in.vEyePosition.xyz : fs_in.vWorldPosition;
     // also store the per-fragment normals into the gbuffer
     vNormal = normalize(fs_in.vWorldNormal);
     // and the diffuse per-fragment color
-    vAlbedoSpec = texture(material.glossinessMap, fs_in.vTexCoord);
+    vAlbedoSpec.rgb = material.bUseAO ? vec3(0.95f) : texture(material.glossinessMap, fs_in.vTexCoord).rgb;
+    // store specular intensity in gAlbedoSpec's alpha component
+    vAlbedoSpec.a = 1.0f;
 }

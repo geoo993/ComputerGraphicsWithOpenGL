@@ -119,13 +119,13 @@ void  Game::RenderPrimitive(CShaderProgram *pShaderProgram, IGameObject *object,
         translation = glm::vec3(position.x, position.y+m_pHeightmapTerrain->ReturnGroundHeight(position), position.z);
     }
     
-    object->Transform(translation, rotation, scale);
-    
     pShaderProgram->UseProgram();
     pShaderProgram->SetUniform("matrices.projMatrix", m_pCamera->GetPerspectiveProjectionMatrix());
     pShaderProgram->SetUniform("matrices.viewMatrix", m_pCamera->GetViewMatrix());
     glm::mat4 inverseViewMatrix = glm::inverse(m_pCamera->GetViewMatrix());
     pShaderProgram->SetUniform("matrices.inverseViewMatrix", inverseViewMatrix);
+    
+    object->Transform(translation, rotation, scale);
     
     glm::mat4 model = object->Model();
     pShaderProgram->SetUniform("matrices.modelMatrix", model);

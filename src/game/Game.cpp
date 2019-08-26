@@ -76,7 +76,7 @@ Game::Game()
     // Dir Light
     m_dirName = "R_directionallight";
     m_useDir = true;
-    m_dirColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    m_dirColor = glm::vec3(0.95f, 0.9f, 1.0f);
     m_dirIntensity = 0.4f;
     m_directionalLightDirection = glm::vec3(-0.2f, -1.0f, -0.3f),
     
@@ -116,7 +116,7 @@ Game::Game()
     m_pIrrSkybox = nullptr;
     m_skyboxSize = (GLfloat)SKYBOX;
     m_skyboxNumber = int(Extensions::randomFloat(0.0f, 6.0f));
-    m_changeSkybox = true;
+    m_changeSkybox = false;
     
     // terrain
     m_mapSize = (GLfloat)ZFAR;

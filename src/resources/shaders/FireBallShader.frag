@@ -28,6 +28,8 @@ uniform struct Material
     float shininess;
     float uvTiling;
     bool bUseAO;
+    bool bUseTexture;
+    bool bUseColor;
 } material;
 
 in VS_OUT
@@ -62,7 +64,7 @@ void main()
     // lookup vertically in the texture, using noise and offset
     // to get the right RGB colour
     vec2 tPos = vec2( 0.0f, 1.3f * fs_in.vNoise + r );
-    vec4 vTexColour = texture(material.noiseMap, tPos );
+    vec4 vTexColour = texture(material.displacementMap, tPos );
     //vec3 vTangentColour = fs_in.vWorldTangent * 0.5f + 0.5f;
     
     vOutputColour = vec4( vTexColour.rgb, 1.0f);
@@ -80,6 +82,6 @@ void main()
     // also store the per-fragment normals into the gbuffer
     vNormal = normalize(fs_in.vWorldNormal);
     // and the diffuse per-fragment color
-    vAlbedoSpec = material.bUseAO ? vec4(0.95f, 0.95f, 0.95f, 1.0f) : texture(material.noiseMap, fs_in.vTexCoord);
+    vAlbedoSpec = material.bUseAO ? vec4(0.95f, 0.95f, 0.95f, 1.0f) : texture(material.displacementMap, fs_in.vTexCoord);
 }
 

@@ -10,13 +10,6 @@
 
 void Game::RenderPBRScene(CShaderProgram *pShaderProgram, const GLboolean &toCustomShader, const GLint &toCustomShaderIndex, const GLfloat zfront, const GLfloat zback) {
     GLfloat yPos = m_currentPPFXMode == PostProcessingEffectMode::SSAO ? (m_useTerrain ? -100.0f : -800.0f) : 0.0f;
-    ///*
-    /// Trolley
-    {
-        RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, m_useTerrain ? -100.0f : -800.0f, 0.0f),
-                    glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f));
-    }
-    //*/
     
     // 1 - 10
     RenderPrimitive(pShaderProgram, m_pSpherePBR1, glm::vec3(50.0f, yPos+30, zfront), glm::vec3(0.0f, m_sphereRotation, 0.0f), glm::vec3(30.0f));
@@ -322,10 +315,15 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
          */
     }
     
+    ///*
+    {
+        RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, m_useTerrain ? -100.0f : -800.0f, 0.0f),
+                    glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f));
+    }
     
     RenderTerrainScene(pShaderProgram, -100.0f);
     RenderPBRScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
-    RenderRandomScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront-200, zback+200);
+    //RenderRandomScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront-200, zback+200);
     
     /// Render Lamps
     {

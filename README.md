@@ -2,7 +2,7 @@
 
 This project was inspired [Joey de Vries - Learn OpenGL](https://learnopengl.com/Introduction "Learn OpenGL Introduction") and [David Wolff - OpenGL 4.0 Shading Language Cookbook](https://github.com/daw42/glslcookbook "David Wolff - OpenGL 4.0 Shading Language Cookbook"). It will illustrate some of the most common computer graphics techinques used in the industry, including topics such as primitive objects, camera system, texturing, lighting, fragment and geometry shading, shadows and screen-space rendering.
 
-Computer graphics is a field in Computer Science which studies methods for digitally synthesizing and manipulating visual content to make computers easier to interact with, and better for understanding and interpreting many types of data. It has had a profound impact on many types of media (graphics design, medical imaging, image processing, computer generated imagery) and revolutionised many digital and entertainment industries (films, advertising and video games).
+[Computer graphics](https://en.wikipedia.org/wiki/Computer_graphics "Computer Graphics") is a field in Computer Science which studies methods for digitally synthesizing and manipulating visual content to make computers easier to interact with, and better for understanding and interpreting many types of data. It has had a profound impact on many types of media (graphics design, medical imaging, image processing, computer generated imagery) and revolutionised many digital and entertainment industries (films, advertising and video games).
 
 
 ## Getting Started

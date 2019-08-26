@@ -11,7 +11,7 @@
 /// initialise frame buffer elements
 void Game::InitialiseFrameBuffers(const GLuint &width , const GLuint &height) {
     
-    m_currentPPFXMode = PostProcessingEffectMode::SSAO;
+    m_currentPPFXMode = PostProcessingEffectMode::PBR;
     m_coverage = 1.0f;
     m_changePPFXMode = false;
     m_prevPPFXMode = false;

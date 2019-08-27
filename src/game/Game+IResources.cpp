@@ -40,7 +40,8 @@ void Game::InitialiseResources()
     m_teapot16 = new CModel;
     m_teapot17 = new CModel;
     m_teapot19 = new CModel;
-    m_vehicle = new CModel;
+    m_trolley = new CModel;
+    m_lamborginhi = new CModel;
     
     m_pSpherePBR1 = new CSphere;
     m_pSpherePBR2 = new CSphere;
@@ -537,7 +538,7 @@ void Game::LoadResources(const std::string &path)
                        });
     
     
-    m_vehicle->Create(path+"/models/trolley/Industrial_Trolley.obj", path+"/models/trolley/",
+    m_trolley->Create(path+"/models/trolley/Industrial_Trolley.obj", path+"/models/trolley/",
                       {
                           { "albedo.png", TextureType::ALBEDO },           // albedo map
                           { "ambient.png", TextureType::AMBIENT },            // ambientMap 0
@@ -548,8 +549,20 @@ void Game::LoadResources(const std::string &path)
                           { "diffuse.png",   TextureType::DIFFUSE},
                           { "specular.png",   TextureType::SPECULAR}
                       });
-  
-
+    m_lamborginhi->Create(path+"/models/lamborginhi/lamborginhi.obj", path+"/models/lamborginhi/",
+                      {
+                          { "albedo.jpg", TextureType::ALBEDO },           // albedo map
+                          { "ambient.jpg", TextureType::AMBIENT },            // ambientMap 0
+                          { "metallic.jpg",  TextureType::METALNESS },           // metallic map
+                          { "roughness.jpg",   TextureType::ROUGHNESS},         // roughness map
+                          { "normal.jpg", TextureType::NORMAL},          // normalMap 3
+                          { "ao.jpg",   TextureType::AO },                          // aoMap 4
+                          { "diffuse.jpg",   TextureType::DIFFUSE},
+                          { "specular.jpg",   TextureType::SPECULAR},
+                          { "bump.jpg",   TextureType::DISPLACEMENT },
+                          { "glossiness.jpg",   TextureType::GLOSSINESS }
+                      });
+    
     // font
     m_pFtFont->LoadFont(path+"/fonts/Arial.ttf", 32, TextureType::DEPTH);
     

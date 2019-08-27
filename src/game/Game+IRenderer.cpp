@@ -317,12 +317,12 @@ void Game::RenderScene(const GLboolean &toCustomShader, const GLboolean &include
     
     ///*
     {
-        RenderModel(pShaderProgram, m_vehicle, glm::vec3(0.0f, m_useTerrain ? -100.0f : -800.0f, 0.0f),
+        RenderModel(pShaderProgram, m_lamborginhi, glm::vec3(0.0f, m_useTerrain ? -100.0f : -800.0f, 0.0f),
                     glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f));
     }
     
     RenderTerrainScene(pShaderProgram, -100.0f);
-    RenderPBRScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
+    //RenderPBRScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront, zback);
     //RenderRandomScene(pShaderProgram, toCustomShader, toCustomShaderIndex, zfront-200, zback+200);
     
     /// Render Lamps

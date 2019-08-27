@@ -142,7 +142,8 @@ Game::Game()
     m_teapot17 = nullptr;
     m_teapot19 = nullptr;
     
-    m_vehicle = nullptr;
+    m_trolley = nullptr;
+    m_lamborginhi = nullptr;
     
     //sphere object
     m_sphereRotation = 0.0f;
@@ -237,7 +238,8 @@ Game::~Game()
     delete m_teapot17;
     delete m_teapot19;
     
-    delete m_vehicle;
+    delete m_trolley;
+    delete m_lamborginhi;
     delete m_pSpherePBR1;
     delete m_pSpherePBR2;
     delete m_pSpherePBR3;

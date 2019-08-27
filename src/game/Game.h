@@ -79,7 +79,8 @@ private:
     CModel * m_teapot16;
     CModel * m_teapot17;
     CModel * m_teapot19;
-    CModel * m_vehicle;
+    CModel * m_lamborginhi;
+    CModel * m_trolley;
     
     //sphere objects
     GLfloat m_sphereRotation;

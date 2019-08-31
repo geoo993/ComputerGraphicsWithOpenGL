@@ -15,7 +15,7 @@ NOTE: The project is configured for Mac OSX using [CMake](https://cmake.org/down
 ```
 $ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
-3) [Download](https://github.com/geoo993/ComputerGraphicsWithOpenGL) and Locate the project on your Mac and ensure 
+3) [Clone](https://github.com/geoo993/ComputerGraphicsWithOpenGL) and locate the project on your Mac and ensure 
 that you have the 'build', 'src', 'Includes', 'Libraries' folders, 
 including 'CMakeLists.txt' and ComputerGraphicsWithOpenGLConfig.h.in files.
 ```
@@ -27,7 +27,7 @@ README.md
 ComputerGraphicsWithOpenGLConfig.h.in	build
 Includes				src
 ```
-NOTE: Please fetch all the large files from the ```$ cd src/resources``` project folder using git lfs
+NOTE: Please fetch all the large files from the resources ```$ cd src/resources``` directory using git lfs
 ```
 $ git lfs install
 $ git lfs pull

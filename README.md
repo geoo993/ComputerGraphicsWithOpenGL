@@ -15,11 +15,13 @@ NOTE: The project is configured for Mac OSX using [CMake](https://cmake.org/down
 ```
 $ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
-3) [Clone](https://github.com/geoo993/ComputerGraphicsWithOpenGL) and locate the project on your Mac and ensure 
+3) [Clone](https://github.com/geoo993/ComputerGraphicsWithOpenGL) the project on your Mac and ensure 
 that you have the 'build', 'src', 'Includes', 'Libraries' folders, 
 including 'CMakeLists.txt' and ComputerGraphicsWithOpenGLConfig.h.in files.
 ```
-$ cd ./Downloads/ComputerGraphicsWithOpenGL
+$ cd ./Downloads
+$ git clone https://github.com/geoo993/ComputerGraphicsWithOpenGL.git
+$ cd ./ComputerGraphicsWithOpenGL
 $ ls  
 
 CMakeLists.txt				Libraries
@@ -27,8 +29,9 @@ README.md
 ComputerGraphicsWithOpenGLConfig.h.in	build
 Includes				src
 ```
-NOTE: Please fetch all the large files from the resources ```$ cd src/resources``` directory using git lfs
+NOTE: Please fetch all the large files from the resources directory using git lfs
 ```
+$ cd ./src/resources
 $ git lfs install
 $ git lfs pull
 Downloading LFS objects:  53% (101/190), 198 MB | 2.7 MB/s
@@ -36,7 +39,7 @@ Downloading LFS objects:  53% (101/190), 198 MB | 2.7 MB/s
 
 4) Check that all the project libraries are available
 ```
-$ cd ../Libraries 
+$ cd ../../Libraries 
 $ ls
 libGLEW.2.1.0.dylib           libfmodstudioL.dylib
 libassimp.4.1.0.dylib         libfreeimage.3.17.0.dylib
@@ -45,7 +48,7 @@ libfmodL.dylib                libfreetype.6.dylib
 libfmodstudio.dylib           libglfw.3.2.dylib
 ```
 
-5) Download the missing ```libpng16.16.dylib``` shared library of ```libfreetype.6.dylib```
+5) Download the missing ```libpng16.16.dylib``` shared library of ```libfreetype.6.dylib``` with [Homebrew](https://brew.sh/)
 ```
 $ brew install libpng
 🍺  /usr/local/Cellar/libpng/1.6.37: 27 files, 1.2MB
@@ -54,7 +57,7 @@ $ brew install libpng
 6) Check that cmake is running in Terminal
 ```
 $ cmake --version
-cmake version 3.7.2
+cmake version 3.15.2
 
 $ which cmake   
 /usr/local/bin/cmake
@@ -83,7 +86,7 @@ Find and select: Product => Scheme => Choose Scheme => ComputerGraphicsWithOpenG
 
 10) Build and Run ComputerGraphicsWithOpenGL in Xcode
 ```
-Product => Run
+Find and select: Product => Run
 ```
 or using Terminal 
 ```

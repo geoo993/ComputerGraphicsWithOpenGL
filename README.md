@@ -1,21 +1,21 @@
 # Computer Graphics With OpenGL
 
-This project was inspired [Joey de Vries - Learn OpenGL](https://learnopengl.com/Introduction "Learn OpenGL Introduction") and [David Wolff - OpenGL 4.0 Shading Language Cookbook](https://github.com/daw42/glslcookbook "David Wolff - OpenGL 4.0 Shading Language Cookbook"). It will illustrate some of the most common computer graphics techinques used in the industry, including topics such as primitive objects, camera system, texturing, lighting, fragment and geometry shading, shadows and screen-space rendering.
+This project was inspired [Joey de Vries - Learn OpenGL](https://learnopengl.com/Introduction "Learn OpenGL Introduction") and [David Wolff - OpenGL 4.0 Shading Language Cookbook](https://github.com/daw42/glslcookbook "David Wolff - OpenGL 4.0 Shading Language Cookbook"). It will illustrate some of the most common computer graphics techinques used in the industry, including topics such as primitive objects, camera system, texturing, lighting, fragment and geometry shading, shadows and screen-space filters.
 
-[Computer graphics](https://en.wikipedia.org/wiki/Computer_graphics "Computer Graphics") is a field in Computer Science which studies methods for digitally synthesizing and manipulating visual content to make computers easier to interact with, and better for understanding and interpreting many types of data. It has profound impact in many types of media (graphics design, medical imaging, image processing, computer generated imagery) and industries (films, television, advertising and video games).
+[Computer graphics](https://en.wikipedia.org/wiki/Computer_graphics "Computer Graphics") is a field in Computer Science which studies methods for digitally synthesizing and manipulating visual content to make computers ```easier``` to interact with, and ```better``` for understanding and interpreting many types of data. It has profound impact in many types of media (graphics design, animation, 3d modelling, medical imaging, image processing, and computer vision among others) and industries (films, television, advertising and video games).
 
 
 ## Getting Started
 
-The project is configured for Mac OSX using [CMake](https://cmake.org/download/).
+NOTE: The project is configured for Mac OSX using [CMake](https://cmake.org/download/).
 
-1) Download and install ```CMake.app```
-2) Open ```Terminal.app``` on your Mac
-2) Install CMake Command Line Tools for Terminal
+1) Download and install the [CMake.app](https://cmake.org/download/) for ```Mac OS X 10.7 or later```
+2) Open ```Terminal.app``` on your Mac and enter the following commands.
+2) Install ```CMake Command Line Tools``` for Terminal
 ```
 $ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
-3) Locate the project root directory (Where you Downloaded the project) and ensure 
+3) [Download](https://github.com/geoo993/ComputerGraphicsWithOpenGL) and Locate the project on your Mac and ensure 
 that you have the 'build', 'src', 'Includes', 'Libraries' folders, 
 including 'CMakeLists.txt' and ComputerGraphicsWithOpenGLConfig.h.in files.
 ```
@@ -27,16 +27,16 @@ README.md
 ComputerGraphicsWithOpenGLConfig.h.in	build
 Includes				src
 ```
-NOTE: Please fetch all the large files from ```$ cd src/resources``` using git lfs
+NOTE: Please fetch all the large files from the ```$ cd src/resources``` project folder using git lfs
 ```
 $ git lfs install
 $ git lfs pull
 Downloading LFS objects:  53% (101/190), 198 MB | 2.7 MB/s
 ```
 
-4) Check all the project libraries are available
+4) Check that all the project libraries are available
 ```
-$ cd Libraries 
+$ cd ../Libraries 
 $ ls
 libGLEW.2.1.0.dylib           libfmodstudioL.dylib
 libassimp.4.1.0.dylib         libfreeimage.3.17.0.dylib
@@ -60,12 +60,12 @@ $ which cmake
 /usr/local/bin/cmake
 ```
 
-7) Go to the build folder
+7) Go to the ```build``` folder
 ```
 $ cd ../build
 ```
 
-8) Configure and generate the Xcode project inside the build folder
+8) Configure and generate the Xcode project inside the ```build``` folder
 ```
 $ cmake -G "Xcode" ../
 $ ls
@@ -75,17 +75,17 @@ CMakeScripts				src
 ComputerGraphicsWithOpenGL.xcodeproj
 ```
 
-9) The Xcode project should be available in the build folder of the project. 
-Open the Xcode project ```ComputerGraphicsWithOpenGL.xcodeproj``` and set the active scheme to ComputerGraphicsWithOpenGL target in the Build Scheme
+9) The Xcode project should be available in the ```build``` folder of the project. 
+Open the Xcode project ```ComputerGraphicsWithOpenGL.xcodeproj``` and set the active scheme to ```ComputerGraphicsWithOpenGL``` target in the ```Build Scheme```
 ```
-Product => Scheme => Choose Scheme => ComputerGraphicsWithOpenGL
+Find and select: Product => Scheme => Choose Scheme => ComputerGraphicsWithOpenGL
 ```
 
 10) Build and Run ComputerGraphicsWithOpenGL in Xcode
 ```
 Product => Run
 ```
-or use Terminal 
+or using Terminal 
 ```
 $ cmake --build . --target ComputerGraphicsWithOpenGL --config Debug
 $ ./src/Debug/ComputerGraphicsWithOpenGL

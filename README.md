@@ -13,16 +13,16 @@ NOTE: The project is configured for Mac OSX using [CMake](https://cmake.org/down
 2) Open ```Terminal.app``` on your Mac and enter the following commands.
 2) Install ```CMake Command Line Tools``` for Terminal
 ```
-$ sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
+% sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 ```
 3) [Clone](https://github.com/geoo993/ComputerGraphicsWithOpenGL) the project on your Mac and ensure 
 that you have the 'build', 'src', 'Includes', 'Libraries' folders, 
 including 'CMakeLists.txt' and ComputerGraphicsWithOpenGLConfig.h.in files.
 ```
-$ cd ./Downloads
-$ git clone https://github.com/geoo993/ComputerGraphicsWithOpenGL.git
-$ cd ./ComputerGraphicsWithOpenGL
-$ ls  
+% cd ./Downloads
+% git clone https://github.com/geoo993/ComputerGraphicsWithOpenGL.git
+% cd ./ComputerGraphicsWithOpenGL
+% ls  
 
 CMakeLists.txt				Libraries
 README.md
@@ -31,16 +31,17 @@ Includes				src
 ```
 NOTE: Please fetch all the large files from the resources directory using git lfs
 ```
-$ cd ./src/resources
-$ git lfs install
-$ git lfs pull
+% cd ./src/resources
+% brew install git lfs
+% git lfs install
+% git lfs pull
 Downloading LFS objects:  53% (101/190), 198 MB | 2.7 MB/s
 ```
 
 4) Check that all the project libraries are available
 ```
-$ cd ../../Libraries 
-$ ls
+% cd ../../Libraries 
+% ls
 libGLEW.2.1.0.dylib           libfmodstudioL.dylib
 libassimp.4.1.0.dylib         libfreeimage.3.17.0.dylib
 libfmod.dylib                 libfreeimageplus.3.17.0.dylib
@@ -50,28 +51,37 @@ libfmodstudio.dylib           libglfw.3.2.dylib
 
 5) Download the missing ```libpng16.16.dylib``` shared library of ```libfreetype.6.dylib``` with [Homebrew](https://brew.sh/)
 ```
-$ brew install libpng
+% brew install libpng
 🍺  /usr/local/Cellar/libpng/1.6.37: 27 files, 1.2MB
 ```
 
 6) Check that cmake is running in Terminal
 ```
-$ cmake --version
+% cmake --version
 cmake version 3.15.2
 
-$ which cmake   
+% which cmake   
 /usr/local/bin/cmake
 ```
 
 7) Go to the ```build``` folder
 ```
-$ cd ../build
+% cd ../build
+```
+and make sure you have installed ```Xcode Command Line Tools``` and pointing towards the Xcode `Developer` directory
+```
+% xcode-select --install # Install Command Line Tools if you haven't already.
+% sudo xcode-select --switch /Library/Developer/CommandLineTools # Enable command line tools
+```
+or alternatively specify to use the full Xcode.app (if you have it installed) with:
+```
+% sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
 ```
 
 8) Configure and generate the Xcode project inside the ```build``` folder
 ```
-$ cmake -G "Xcode" ../
-$ ls
+% cmake -G "Xcode" ../
+% ls
 CMakeCache.txt				ComputerGraphicsWithOpenGLConfig.h
 CMakeFiles				cmake_install.cmake
 CMakeScripts				src
@@ -90,16 +100,16 @@ Find and select: Product => Run
 ```
 or using Terminal 
 ```
-$ cmake --build . --target ComputerGraphicsWithOpenGL --config Debug
-$ ./src/Debug/ComputerGraphicsWithOpenGL
+% cmake --build . --target ComputerGraphicsWithOpenGL --config Debug
+% ./src/Debug/ComputerGraphicsWithOpenGL
 ```
 
 
 ## Controls
 
-### Move Camera: 
+### Movement: 
 * Move in the scene with **Arrow Keys** :arrow_right:    :arrow_left:   :arrow_up:   :arrow_down:  
-
+* Toggle movement speed with ***O***
 
 
 ### Move Pointlights: 
